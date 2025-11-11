@@ -1,0 +1,509 @@
+/*!
+Theme Name: Marble Store
+Theme URI: http://marblestore.sa/
+Author: Underscores.me
+Author URI: http://marblestore.sa/
+Description: Description
+Version: 1.0.0
+Tested up to: 5.4
+Requires PHP: 5.6
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: marble-store
+Tags: custom-cakes, custom-icecreams, cookie cakes, Ice cream cakes, Sponge cakes,cute cakes,Cup N cakes, DIY Cookie box
+
+
+*/
+
+@font-face {
+  font-family: "Bourton"; /* Choose a name for your font */
+  src: url("./assets/fonts/Bourton/BourtonBase.ttf") format("truetype"); /* Adjust the path and format accordingly */
+  /* You can also include additional font variations like bold, italic, etc. if available */
+}
+@font-face {
+  font-family: "Brandon_Grotesque_black"; /* Choose a name for your font */
+  src: url("./assets/fonts/HvDTrial_Brandon_Grotesque_black-BF64a625c944b08.otf")
+    format("truetype"); /* Adjust the path and format accordingly */
+  /* You can also include additional font variations like bold, italic, etc. if available */
+}
+
+@font-face {
+  font-family: "Brandon_Grotesque"; /* Choose a name for your font */
+  src: url("./assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf")
+    format("truetype"); /* Adjust the path and format accordingly */
+  /* You can also include additional font variations like bold, italic, etc. if available */
+}
+@font-face {
+  font-family: "Brandon_Grotesque-Bold"; /* Choose a name for the bold version */
+  src: url("./assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf")
+    format("truetype"); /* Adjust the path and format accordingly */
+  font-weight: bold; /* Specify the font weight for the bold version */
+}
+body {
+  font-family: "Brandon_Grotesque", sans-serif;
+}
+#primary-menu li.menu-item a {
+  transition: 0.4s ease;
+}
+#primary-menu li.current-menu-item a,
+#primary-menu li.menu-item:hover a {
+  color: #fae20a !important;
+}
+.btn:hover {
+  color: white !important;
+  background-color: #ac0f53 !important;
+  border-color: #ac0f53 !important;
+}
+.container {
+  max-width: 1440px !important;
+  padding-inline: 40px;
+}
+.w-1440 {
+  max-width: 1440px !important;
+  margin-inline: auto !important;
+}
+.px-40 {
+  padding-inline: 40px;
+}
+.bg-sky {
+  background-color: #36bac7;
+}
+.bg-light-white {
+  background-color: #ede3db;
+}
+.bg-pink {
+  background-color: #e05b8b;
+}
+.bg-yellow {
+  background-color: #f4e55b;
+}
+.bg-dark-yellow {
+  background-color: #fae20a;
+}
+.bg-light-purple {
+  background-color: #f0e5df;
+}
+.bg-light-gray {
+  background-color: #f0f5f9;
+}
+.font-bourton {
+  font-family: "Bourton", sans-serif;
+}
+.font-brandon-black {
+  font-family: "Brandon_Grotesque_black", sans-serif;
+}
+.font-brandon-normal {
+  font-family: "Brandon_Grotesque", sans-serif;
+}
+.font-brandon-bold {
+  font-family: "Brandon_Grotesque-Bold", sans-serif;
+}
+.w-160 {
+  width: 160px;
+}
+.w-113 {
+  width: 113px;
+}
+.selectBox {
+  border: 2px solid #d5dce6;
+  transition: 0.4s ease;
+}
+.border-gray {
+  border-color: #d5dce6;
+  border-width: 2px;
+}
+.selectBox:hover,
+.selectBox.active {
+  border: 2px solid #36bac7;
+  background-color: #d2eff1;
+}
+.py-97 {
+  padding-top: 97px;
+  padding-bottom: 97px;
+}
+.header ul.navbar-nav li {
+  padding-inline: 25px;
+}
+.header ul.navbar-nav li a {
+  font-size: 20px;
+  font-family: "Bourton", sans-serif;
+  color: white;
+}
+
+.header ul.navbar-nav li ul li a {
+  color: black;
+}
+.header .dropdown-toggle::after {
+  display: none;
+}
+.text-purpleL {
+  color: #e05b8b;
+}
+.text-sky {
+  color: #36bac7;
+}
+.fs-66 {
+  font-size: 66px;
+  color: #e05b8b;
+  line-height: 1;
+}
+.fs-60 {
+  font-size: 60px !important;
+}
+.fs-50 {
+  font-size: 50px !important;
+}
+.fs-72 {
+  font-size: 72px;
+}
+.fs-44 {
+  font-size: 44px;
+  color: #584340;
+}
+.fs-48 {
+  font-size: 48px;
+}
+.fs-40 {
+  font-size: 40px;
+}
+.fs-30 {
+  font-size: 30px;
+}
+.fs-35 {
+  font-size: 35px;
+  color: #363535;
+}
+.fs-18 {
+  font-size: 18px;
+}
+.fs-25 {
+  font-size: 25px;
+  color: #b4a4a4;
+}
+.fs-28 {
+  font-size: 28px;
+}
+.rounded-48 {
+  border-radius: 48px !important;
+}
+.fs-20 {
+  font-size: 20px;
+}
+.fs-24 {
+  font-size: 24px;
+}
+.fs-16 {
+  font-size: 16px;
+}
+.text-brown-50 {
+  color: #b4a4a4;
+}
+
+.text-white-gary {
+  color: #ede3db;
+}
+
+.bg-brown-50 {
+  background-color: #b4a4a4;
+}
+.product-card {
+  background: #d5dce6;
+  border-radius: 24px !important;
+}
+.text-Lgary {
+  color: #d5dce6;
+}
+.text-brown {
+  color: #584340 !important;
+}
+.bg-brown {
+  background-color: #584340 !important;
+}
+.border-brown {
+  border-color: #584340 !important;
+}
+.location-select select.form-select {
+  filter: brightness(19.5);
+}
+.location-select select.form-select:focus {
+  box-shadow: none !important;
+}
+.location-select select.form-select option {
+  color: rgb(12, 12, 12);
+}
+.hero-btn {
+  /* background-color: #e05b8b; */
+  color: white;
+  font-size: 20px;
+}
+.best-seller-card {
+  transition: 0.6s ease;
+}
+
+.best-seller-card:hover {
+  background: #d2eff1;
+}
+
+.addToCart-btn {
+  /* position: absolute;
+  bottom: -50%; */
+  visibility: hidden;
+  z-index: -1;
+}
+.child-div {
+  transition: 0.6s ease;
+  margin-inline: 83px;
+}
+.child-div:hover {
+  background: #e45b8f;
+}
+.child-div img {
+  transition: 0.6s ease;
+}
+.child-div:hover img {
+  transform: scale(1.2);
+}
+
+.child-div .text-div {
+  transition: 0.4s ease;
+}
+.child-div:hover .text-div {
+  color: white;
+}
+.child-div button {
+  transition: 0.1s ease;
+}
+.best-seller-card:hover .hero-btn {
+  position: relative;
+  bottom: 0;
+  visibility: visible;
+  z-index: 1;
+  background-color: #e45b8f;
+}
+.child-div:hover .hero-btn {
+  position: relative;
+  bottom: 0;
+  visibility: visible;
+  z-index: 1;
+  background-color: #36bac7;
+}
+.btn-hamburger:hover {
+  background-color: transparent !important;
+  border: none !important;
+}
+section.moreGift-sec {
+  background: #fbe20b;
+}
+
+.occasions-card img {
+  object-fit: contain !important;
+  height: 140px;
+  width: 140px;
+}
+.keepTxt {
+  font-size: 20px;
+  color: #36bac7;
+  font-weight: bold;
+}
+.footerlink {
+  font-size: 20px;
+  color: #b4a4a4;
+}
+.best-seller-card img {
+  width: 216px;
+  height: 216px;
+  margin-inline: auto;
+  object-fit: cover;
+}
+
+.product-card a img {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+}
+#navbarSupportedContent ul#primary-menu li a,
+a {
+  text-decoration: none;
+}
+.product-cat a {
+  color: #b4a4a4;
+  font-size: 18px;
+}
+.product-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.paginations * {
+  background: #eaeaea;
+  padding: 4px 10px 4px 10px;
+  border-radius: 5px;
+  color: #6a6a6a;
+}
+.paginations .current,
+.paginations *:hover {
+  background: #e05b8b;
+  color: white;
+}
+
+/* Add custom arrow images */
+.slick-prev:before {
+  content: url("./assets/images/arrow-left.png") !important;
+  opacity: 1 !important;
+}
+
+.slick-next:before {
+  content: url("./assets//images/arrow-right.png") !important;
+  opacity: 1 !important;
+}
+
+.relatedProduct-slider .slick-prev:before {
+  content: url("./assets/images/relatedarrowPrev.png") !important;
+  /* opacity: 1 !important; */
+}
+
+.relatedProduct-slider .slick-next:before {
+  content: url("./assets//images/relatedarrowNext.png") !important;
+  /* opacity: 1 !important; */
+}
+
+.best-seller .slick-prev,
+.best-seller .slick-next,
+.relatedProduct-slider .slick-prev,
+.relatedProduct-slider .slick-next {
+  width: auto !important;
+  height: auto !important;
+}
+
+.best-seller .slick-dots li.slick-active button::before {
+  color: #e45b8f !important;
+  opacity: 1 !important;
+}
+.best-seller .slick-dots li button::before {
+  font-size: 8px !important;
+}
+.best-seller .slick-dots li {
+  width: 12px;
+}
+.form-col p {
+  margin: 0 !important;
+}
+.productImg .woocommerce-product-gallery img {
+  width: 390px;
+  height: 390px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.productImg .woocommerce-product-gallery a {
+  text-align: center;
+  margin-inline: auto;
+  display: block;
+}
+.productImg {
+  border: 2px solid #ede3db;
+  border-radius: 24px;
+  padding: 16px;
+}
+.woocommerce-breadcrumb {
+  font-family: "Brandon_Grotesque", sans-serif !important;
+  color: #b4a4a4;
+}
+.woocommerce-breadcrumb a {
+  color: #584340;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "Brandon_Grotesque", sans-serif !important;
+}
+.woocommerce-product-details__short-description p {
+  font-family: "Brandon_Grotesque", sans-serif !important;
+  color: #b4a4a4;
+}
+.price {
+  color: #e05b8b;
+}
+.price #regular_price {
+  font-size: 48px;
+}
+.quantity-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.quantity {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+/* Hide the input arrow */
+.quantity input[type="number"]::-webkit-inner-spin-button,
+.quantity input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity input[type="number"] {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+.quantity-button {
+  border: 2px solid #584340;
+  border-radius: 50px;
+  padding: 8px 9px;
+}
+.quantity {
+  margin: 0;
+}
+.quantity input {
+  border: none !important;
+  width: 2.2rem;
+  font-size: 20px;
+}
+.addText-form input,
+.addText-form textarea {
+  border: 1px solid #d5dce6;
+  border-radius: 32px;
+  padding: 8px 19px;
+  width: 100%;
+  margin: 5px 0;
+  background: #f4f9ff;
+  resize: none;
+}
+.desTab .nav-tabs .nav-link {
+  border-bottom: 2px solid transparent !important;
+}
+.desTab .nav-tabs .nav-link.active,
+.desTab .nav-tabs .nav-link:hover {
+  border: none;
+  color: #584340;
+  border-bottom: 2px solid #584340 !important;
+}
+.mainContainer .woocommerce-breadcrumb {
+  max-width: 1440px !important;
+  padding-inline: 40px;
+}
+.wpcf7-form-control.wpcf7-textarea {
+  resize: none;
+}
+
+.selectnum {
+  width: 32px;
+  height: 32px;
+  line-height: 1.3;
+}
+
+@media screen and (min-width: 600px) {
+  .relatedProduct-slider .slick-prev,
+  .relatedProduct-slider .slick-next {
+    top: -55px;
+    left: auto;
+    right: 0;
+  }
+  .relatedProduct-slider .slick-prev {
+    right: 56px;
+  }
+}
+
