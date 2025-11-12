@@ -13,21 +13,27 @@ body {
   padding-inline: 25px;
 }
 .header ul.navbar-nav li a {
-  font-size: 18px;
   font-family: "Bourton", sans-serif;
   color: white;
-  font-weight: bold;
   gap: 3px;
 }
 .header ul.navbar-nav li a:hover,
 .header ul.navbar-nav li a:focus {
   color: yellow;
 }
-.fs-17{
-  font-size: 17px !important;
+.card{
+  width: 100px;
 }
-.color-purple{
- color: rgb(224, 91, 139);
+.card:hover {
+    background-color: #36bbc727;
+}
+.fs-18 {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  line-height: 30px;
+}
+.color-purple {
+  color: rgb(224, 91, 139);
 }
 .bg-light-white {
   background-color: #ede3db;
@@ -37,4 +43,20 @@ body {
 }
 .bg-yellow {
   background-color: #f4e55b;
+}
+.image-fluid {
+  height: 50px;
+  width: 50px;
+}
+.fs-25 {
+  font-size: 25px !important;
+}
+.color-brown{
+  color: rgb(88, 67, 64);
+}
+.text-blue{
+  color: #36bac7 !important;
+}
+.bg-secondary{
+  color: rgb(33, 37, 41);
 }
