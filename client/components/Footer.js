@@ -5,11 +5,11 @@ function Footer() {
     <footer className='footer bg-brown py-5 pb-3'>
       <div className='container'>
         <div className='row justify-content-between'>
-      <div className='col-md-3 '>
-        <a>
-          <img id="siteLogoFT" src="http://localhost/marble/wp-content/themes/marble-store/assets/images/slabfooterlogo.svg"      className="img-fluid" alt="Logo"/>
-        </a>
-       </div>
+        <div className='col-md-3 '>
+          <a>
+            <img src="./assets/images/slabfooterlogo.svg"      className="img-fluid" alt="Logo"/>
+          </a>
+        </div>
 
         <div className='col-md-9 d-flex justify-content-between'>
           <div className='col-md-3 col-6 '>
@@ -38,25 +38,25 @@ function Footer() {
               <h6 className='keepTxt'>Contact us</h6>
               <div>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/phoni.svg" className="me-2" alt="img"/>
+                <img src="./assets/images/phoni.svg" className="me-2" alt="img"/>
                 </a>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/whatsappi.svg" className="me-2" alt="img"/>
+                <img src="./assets/images/whatsappi.svg" className="me-2" alt="img"/>
                 </a>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/maili.svg" className="me-2" alt="img"/>
+                <img src="./assets/images/maili.svg" className="me-2" alt="img"/>
                 </a>
               </div>
               <div className='mt-4 '>
                 <h6 className='keepTxt followustxt'>Follow us</h6>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/insta.png" className="me-2" alt="img"/>
+                <img src="./assets/images/insta.png" className="me-2" alt="img"/>
                 </a>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/faceb.png" className="me-2" alt="img"/>
+                <img src="./assets/images/faceb.png" className="me-2" alt="img"/>
                 </a>
                 <a>
-                <img src="http://localhost/marble/wp-content/themes/marble-store/assets/images/tiktok.png" className="me-2" alt="img"/>
+                <img src="./assets/images/tiktok.png" className="me-2" alt="img"/>
                 </a>
               </div>
             </div>
@@ -65,12 +65,12 @@ function Footer() {
         </div>
         {/* <hr/> */}
         <div className='container mt-5'>
-          <div className='copyright-footer border-light-brown-80 border-top d-flex justify-content-between'>
-            <p class="m-0  footerlink fs-6 text-brown-80 mt-3" id="footercopytext"> 
+          <div className='d-flex justify-content-between'>
+            <p className="m-0  footerlink fs-6 text-brown mt-3"> 
               <span id="Cicon">©</span> 
               <span id="copyright">2025</span> Marble Slab. All Rights Reserved.
             </p>
-            <a href="http://localhost/marble/privacy-policy" class="mt-3 text-decoration-none footerlink mb-2 d-block text-brown-80">Privacy Policy</a>
+            <a href="#" class="mt-3 text-decoration-none footerlink mb-2 d-block text-brown">Privacy Policy</a>
           </div>
         </div>
       </div>
