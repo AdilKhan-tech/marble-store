@@ -93,34 +93,4 @@ body {
 .bg-secondary{
   color: rgb(33, 37, 41);
 }
-.arrow-btn{
-  margin-top: 180px !important;
-}
-.occassion-text{
-  font-size: 44px;
-  color: #584340;
-  font-weight: 700;
-}
-.bg-pink-lite {
-  background-color: #ff005d1e;
-}
-.image-fluid{
-  width: auto;
-  height: 140px;
-  margin-left: 80px;
-}
-.img-text{
-  font-size: 20px;
-  color: rgb(88, 67, 64);
-  font-weight: 700;
-  margin-left: 105px;
-  margin-top: 15px;
-}
-.product-card {
-  background: #d5dce6;
-  border-radius: 24px !important;
-  height: 300px;
-  width: 300px;
-  margin-inline-start: 30px;
-  margin-top: 20px;
-}
+
