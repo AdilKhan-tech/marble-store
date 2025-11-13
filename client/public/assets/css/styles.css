@@ -9,6 +9,14 @@ body {
   background-color: #36bac7;
   padding: 20px;
 }
+#header {
+  z-index: 100;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  transform: translateY(-80px);
+}
 .header ul.navbar-nav li {
   padding-inline: 25px;
 }
@@ -22,13 +30,26 @@ body {
   color: yellow;
 }
 .card{
-  width: 300px;
+  width: 250px;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0,0.2);
   transition: 0.3s;
 }
 .card:hover {
-    background-color: #36bbc727;
+    background-color: #36bbc713;
+}
+.card button {
+  visibility: hidden;
+  z-index: -1;
+}
+.card:hover button {
+  position: relative;
+  bottom: 0;
+  visibility: visible;
+  align-items: center;
+  z-index: 1;
+  color: white;
+  background-color: #e45b8f;
 }
 .fs-18 {
   font-size: 18px !important;
@@ -71,4 +92,35 @@ body {
 }
 .bg-secondary{
   color: rgb(33, 37, 41);
+}
+.arrow-btn{
+  margin-top: 180px !important;
+}
+.occassion-text{
+  font-size: 44px;
+  color: #584340;
+  font-weight: 700;
+}
+.bg-pink-lite {
+  background-color: #ff005d1e;
+}
+.image-fluid{
+  width: auto;
+  height: 140px;
+  margin-left: 80px;
+}
+.img-text{
+  font-size: 20px;
+  color: rgb(88, 67, 64);
+  font-weight: 700;
+  margin-left: 105px;
+  margin-top: 15px;
+}
+.product-card {
+  background: #d5dce6;
+  border-radius: 24px !important;
+  height: 300px;
+  width: 300px;
+  margin-inline-start: 30px;
+  margin-top: 20px;
 }
