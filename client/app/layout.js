@@ -1,4 +1,4 @@
-import "../public/assets/css/custom-admin.css";
+import "../public/assets/css/styles.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
