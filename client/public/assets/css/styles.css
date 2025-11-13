@@ -9,6 +9,14 @@ body {
   background-color: #36bac7;
   padding: 20px;
 }
+#header {
+  z-index: 100;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  transform: translateY(-80px);
+}
 .header ul.navbar-nav li {
   padding-inline: 25px;
 }
@@ -22,13 +30,26 @@ body {
   color: yellow;
 }
 .card{
-  width: 300px;
+  width: 250px;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0,0.2);
   transition: 0.3s;
 }
 .card:hover {
-    background-color: #36bbc727;
+    background-color: #36bbc713;
+}
+.card button {
+  visibility: hidden;
+  z-index: -1;
+}
+.card:hover button {
+  position: relative;
+  bottom: 0;
+  visibility: visible;
+  align-items: center;
+  z-index: 1;
+  color: white;
+  background-color: #e45b8f;
 }
 .fs-18 {
   font-size: 18px !important;
@@ -72,15 +93,4 @@ body {
 .bg-secondary{
   color: rgb(33, 37, 41);
 }
-.bg-brown{
-  background-color: #584340 !important;
-}
-.keepTxt {
-  font-size: 20px;
-  color: #36bac7;
-  font-weight: bold;
-}
-.footerlink {
-  font-size: 20px;
-  color: #b4a4a4;
-}
+

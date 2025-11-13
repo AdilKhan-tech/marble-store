@@ -25,7 +25,7 @@ function Header() {
           </div>
           <div className="row align-items-center">
             <div className="col-md-2">
-            <a href="#">
+            <a href="./Landing">
               <img src="./assets/images/Logo.png" className="img-fluid ms-3" alt="Logo"/>
             </a>
             </div>
@@ -34,7 +34,7 @@ function Header() {
                 <div className="container-fluid">
                   <div>
                     <ul className="navbar-nav mx-auto">
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">HOME</a></li>
+                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">OCCASIONS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">CAKES</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">ICE CREAMS</a></li>
