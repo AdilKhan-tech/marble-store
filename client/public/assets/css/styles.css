@@ -72,3 +72,15 @@ body {
 .bg-secondary{
   color: rgb(33, 37, 41);
 }
+.bg-brown{
+  background-color: #584340 !important;
+}
+.keepTxt {
+  font-size: 20px;
+  color: #36bac7;
+  font-weight: bold;
+}
+.footerlink {
+  font-size: 20px;
+  color: #b4a4a4;
+}
