@@ -53,7 +53,7 @@ function Occasions() {
         className="container text-center py-5 bg-light"
         style={{ backgroundImage: "url('./assets/images/Group.svg')",backgroundPosition: "right",
           backgroundRepeat: "no-repeat",backgroundPositionY: "12px",backgroundSize: "62px",}}>
-        <h2 className="fw-bold fs-44 font-brandon-bold f-30ar">By Categories</h2>
+        <h2 className="fw-bold fs-44 font-brandon-bold">By Categories</h2>
         <div className="d-flex">
           <div className="product-card py-3 border-0 rounded-4">
             <h4 className="text-center fs-35 fw-bold font-brandon-bold">Cakes</h4>

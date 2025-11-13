@@ -70,7 +70,7 @@ function Footer() {
               <span id="Cicon">©</span> 
               <span id="copyright">2025</span> Marble Slab. All Rights Reserved.
             </p>
-            <a href="#" class="mt-3 text-decoration-none footerlink mb-2 d-block text-brown">Privacy Policy</a>
+            <a href="#" className="mt-3 text-decoration-none footerlink mb-2 d-block text-brown">Privacy Policy</a>
           </div>
         </div>
       </div>
