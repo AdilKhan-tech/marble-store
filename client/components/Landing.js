@@ -38,65 +38,85 @@ function Landing() {
         </div>
         </div>
       </div>
-      <div className="">
-        <h1 className="color-brown text-center mt-4">Best-Sellers</h1>
-        <div className="mt-3 d-flex overflow-auto pb-4">
-          <div className="card border-0" style={{width:"300px"}}>
+      <div className="bg-light py-5">
+        <h1 className="color-brown text-center mb-3 fs-38 fw-bold">Best-Sellers</h1>
+        <div className="mt-3 d-flex overflow-auto pb-4 ms-5">
+          <div><img src="./assets/images/arrow-left.png" alt="Left Arrow"/></div>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/salah.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center"> HBD 7th Salah</h4>
-              <p className="text-center">Cookie-hbd-022</p>
-              <p className="text-center text-blue">SR 173.8999</p>
+              <h4 className="text-center color-brown fs-5 fw-bold"> HBD 7th Salah</h4>
+              <p className="text-center fs-15">Cookie-hbd-022</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173.8999</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/turtle.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">Turtle Cake</h4>
-              <p className="text-center">ICC14-1</p>
-              <p className="text-center text-blue">SR 235</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">Turtle Cake</h4>
+              <p className="text-center fs-15">ICC14-1</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 235</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/cookie-cake.jpg" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">We dream and achieve cookie cake</h4>
-              <p className="text-center">ND-001</p>
-              <p className="text-center text-blue">SR 173</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">We dream and achieve cookie cake</h4>
+              <p className="text-center fs-15">ND-001</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/HBD-pink-white.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">HBD pink white</h4>
-              <p className="text-center">Cookie-hbd-099</p>
-              <p className="text-center text-blue">SR-173.00</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">HBD pink white</h4>
+              <p className="text-center fs-15">Cookie-hbd-099</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR-173.00</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          </div>
+          <div className="mt-3 d-flex overflow-auto pb-4">
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/Bye-bye-single-life-Tarfa-1.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">Congratulations</h4>
-              <p className="text-center">Cookie-gen-011</p>
-              <p className="text-center text-blue">SR 173</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">Congratulations</h4>
+              <p className="text-center fs-15">Cookie-gen-011</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/Cute-cake-HBD-Baby-1.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">HBD Baby</h4>
-              <p className="text-center">Cute-HBD-010</p>
-              <p className="text-center text-blue">SR 62</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">HBD Baby</h4>
+              <p className="text-center fs-15">Cute-HBD-010</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
-          <div className="card border-0" style={{width:"300px"}}>
+          <div className="card border-0">
             <img className="ms-4 mt-3" src="./assets/images/Cute-cake-congratulation-finally-pass.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body">
-              <h4 className="text-center">Finally pass</h4>
-              <p className="text-center">Cute-GRAD-001</p>
-              <p className="text-center text-blue">SR 62</p>
+              <h4 className="text-center color-brown fs-5 fw-bold">Finally pass</h4>
+              <p className="text-center fs-15">Cute-GRAD-001</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
             </div>
           </div>
+          <div className="card border-0">
+            <img className="ms-4 mt-3" src="./assets/images/Cute-cake-congratulation-finally-pass.png" alt="Card image" style={{width:"75%"}}/>
+            <div className="card-body">
+              <h4 className="text-center color-brown fs-5 fw-bold">Finally pass</h4>
+              <p className="text-center fs-15">Cute-GRAD-001</p>
+              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
+              <button className="btn bg-primary rounded-5 px-3 py-0 ms-5 fs-5" type="submit"> Add to cart </button>
+            </div>
+          </div>
+          <div><img src="./assets/images/arrow-right.png" alt="Right Arrow"/></div>
       </div>
       </div>
     </section>

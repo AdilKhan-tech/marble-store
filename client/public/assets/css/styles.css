@@ -1,5 +1,5 @@
 body {
-  font-family: "Brandon_Grotesque", sans-serif;
+  font-family: "Brandon_Grotesque-Bold", sans-serif;
 }
 .container {
   max-width: 1440px !important;
@@ -22,7 +22,10 @@ body {
   color: yellow;
 }
 .card{
-  width: 100px;
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0,0.2);
+  transition: 0.3s;
 }
 .card:hover {
     background-color: #36bbc727;
@@ -31,6 +34,15 @@ body {
   font-size: 18px !important;
   font-weight: bold !important;
   line-height: 30px;
+}
+.fs-15{
+  font-size: 15px !important;
+}
+.fs-20{
+  font-size: 20px !important;
+}
+.fs-38{
+  font-size: 38px !important;
 }
 .color-purple {
   color: rgb(224, 91, 139);
