@@ -72,14 +72,21 @@ body {
   background-color: #ede3db;
 }
 .bg-pink {
-  background-color: #e05b8b;
+  background-color: #e05b8c33;
 }
 .bg-yellow {
   background-color: #f4e55b;
 }
 .image-fluid {
-  height: 50px;
-  width: 50px;
+  height: 150px;
+  width: 150px;
+  margin-inline-start: 90px;
+}
+.img-text{
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-inline-start: 60px;
 }
 .fs-25 {
   font-size: 25px !important;
@@ -93,4 +100,20 @@ body {
 .bg-secondary{
   color: rgb(33, 37, 41);
 }
-
+.product-card{
+  height: 300px;
+  width: 300px;
+  background-color: silver;
+  margin-inline-start: 20px;
+  margin-top: 20px;
+}
+.bg-brown{
+  background-color: rgb(88, 67, 64)
+}
+.footer-text{
+  color: rgb(54, 186, 199);
+  font-size: 18px;
+}
+.footerlink{
+  color: rgb(180, 164, 164);
+}
