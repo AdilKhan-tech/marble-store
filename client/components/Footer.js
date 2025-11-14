@@ -7,27 +7,27 @@ function Footer() {
         <div className='row justify-content-between'>
         <div className='col-md-3 '>
           <a>
-            <img src="./assets/images/slabfooterlogo.svg"      className="img-fluid" alt="Logo"/>
+            <img src="./assets/images/slabfooterlogo.svg" className="img-fluid" alt="Logo"/>
           </a>
         </div>
 
         <div className='col-md-9 d-flex justify-content-between'>
           <div className='col-md-3 col-6 '>
-            <h6 className='keepTxt'>Collection</h6>
+            <h6 className='footer-text'>Collection</h6>
             <a className='text-decoration-none footerlink mb-2 d-block'>Ready Cakes</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>Ice Creams</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>Cookie Box</a>
           </div>
 
           <div className='col-md-3 col-6 '>
-            <h6 className='keepTxt'>Services</h6>
+            <h6 className='footer-text'>Services</h6>
             <a className='text-decoration-none footerlink mb-2 d-block'>Custom Cake</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>Custom Ice Cream</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>Marble Van</a>
           </div>
 
           <div className='col-md-3 col-6 '>
-            <h6 className='keepTxt'>Company</h6>
+            <h6 className='footer-text'>Company</h6>
             <a className='text-decoration-none footerlink mb-2 d-block'>About</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>Contact</a>
             <a className='text-decoration-none footerlink mb-2 d-block'>FAQ</a>

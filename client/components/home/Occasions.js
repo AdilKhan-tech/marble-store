@@ -3,7 +3,7 @@ import React from "react";
 function Occasions() {
   return (
     <main>
-      <div className="bg-pink-lite">
+      <div className="bg-pink">
         <div className="container">
           <h1 className="text-center occassion-text py-4">By Occassions</h1>
           <div className="d-flex overflow-auto pb-4 mt-4 ms-3">
@@ -53,25 +53,25 @@ function Occasions() {
         className="container text-center py-5 bg-light"
         style={{ backgroundImage: "url('./assets/images/Group.svg')",backgroundPosition: "right",
           backgroundRepeat: "no-repeat",backgroundPositionY: "12px",backgroundSize: "62px",}}>
-        <h2 className="fw-bold fs-44 font-brandon-bold">By Categories</h2>
+        <h2 className="fw-bold fs-44">By Categories</h2>
         <div className="d-flex">
           <div className="product-card py-3 border-0 rounded-4">
-            <h4 className="text-center fs-35 fw-bold font-brandon-bold">Cakes</h4>
+            <h4 className="text-center fs-35 fw-bold">Cakes</h4>
             <img className="mt-3" src="./assets/images/Mermaid-cake-1.webp" alt="image-fluid" style={{ width: "75%" }}/>
             <div className="card-body align-items-center"></div>
           </div>
           <div className="product-card py-3 border-0 rounded-4">
-            <h4 className="text-center fs-35 fw-bold font-brandon-bold">Tasty Creation</h4>
+            <h4 className="text-center fs-35 fw-bold">Tasty Creation</h4>
             <img className="mt-3" src="./assets/images/77.webp" alt="image-fluid" style={{ width: "75%" }}/>
             <div className="card-body align-items-center"></div>
           </div>
           <div className="product-card py-3 border-0 rounded-4">
-            <h4 className="text-center fs-35 fw-bold font-brandon-bold">Cookies</h4>
+            <h4 className="text-center fs-35 fw-bold">Cookies</h4>
             <img className="mt-3" src="./assets/images/cookiespg1.png" alt="image-fluid" style={{ width: "75%" }}/>
             <div className="card-body align-items-center"></div>
           </div>
           <div className="product-card py-3 border-0 rounded-4">
-            <h4 className="text-center fs-35 fw-bold font-brandon-bold">Marble Van</h4>
+            <h4 className="text-center fs-35 fw-bold">Marble Van</h4>
             <img className="mt-3" src="./assets/images/mvan.png" alt="image-fluid" style={{ width: "75%" }}/>
             <div className="card-body align-items-center"></div>
           </div>
@@ -81,7 +81,7 @@ function Occasions() {
         <div className="row w-100 mx-auto align-items-center" style={{backgroundColor:"#ffc107d0"}}>
           <div className="col-md-5 px-40 pe-0 arpe">
             <div>
-              <h2 className="font-brandon-black fs-72 text-brown more-gift-mob">More gift options</h2>
+              <h2 className="fs-72 text-brown">More gift options</h2>
               <p className="fs-3 fw-medium text-brown py-4">Explore more ice cream creations & surprise your belovedwith personalized messages</p>
               <a href="#">
                 <button className="btn btn-primary rounded-5 px-md-4 px-2 py-1 pt-2" type="submit">VIEW ICE CREAM COLLECTIONS</button>
