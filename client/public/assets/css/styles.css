@@ -84,9 +84,10 @@ body {
 }
 .img-text{
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  margin-inline-start: 60px;
+  margin-inline-start: 80px;
+  margin-top: 10px;
 }
 .fs-25 {
   font-size: 25px !important;
@@ -101,10 +102,10 @@ body {
   color: rgb(33, 37, 41);
 }
 .product-card{
-  height: 300px;
+  height: 350px;
   width: 300px;
   background-color: silver;
-  margin-inline-start: 20px;
+  margin-inline-start: 30px;
   margin-top: 20px;
 }
 .bg-brown{
@@ -116,4 +117,15 @@ body {
 }
 .footerlink{
   color: rgb(180, 164, 164);
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.order-img{
+  height: 50px;
+  width: 50px;
+  margin-inline-start: 90px;
+}
+.arrow-btn{
+  margin-top: 150px;
 }
