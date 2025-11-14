@@ -117,3 +117,7 @@ body {
 .footerlink{
   color: rgb(180, 164, 164);
 }
+.cakes-card{
+  height: 150px;
+  width: 320px;
+}
