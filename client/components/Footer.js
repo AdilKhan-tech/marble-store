@@ -6,7 +6,7 @@ function Footer() {
       <div className='container'>
         <div className='row justify-content-between'>
         <div className='col-md-3 '>
-          <a href="#"><img src="./assets/images/slabfooterlogo.svg" className="img-fluid" alt="Logo"/></a>
+          <a href="./Landing"><img src="./assets/images/slabfooterlogo.svg" className="img-fluid" alt="Logo"/></a>
         </div>
 
         <div className='col-md-9 d-flex justify-content-between'>
@@ -26,8 +26,8 @@ function Footer() {
 
           <div className='col-md-3 col-6 '>
             <h6 className='footer-text'>Company</h6>
-            <a className='text-decoration-none footerlink mb-2 d-block' href='#'>About</a>
-            <a className='text-decoration-none footerlink mb-2 d-block' href='#'>Contact</a>
+            <a className='text-decoration-none footerlink mb-2 d-block' href='./about'>About</a>
+            <a className='text-decoration-none footerlink mb-2 d-block' href='./contact'>Contact</a>
             <a className='text-decoration-none footerlink mb-2 d-block' href='#'>FAQ</a>
           </div>
 

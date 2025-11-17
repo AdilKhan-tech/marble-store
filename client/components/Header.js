@@ -10,7 +10,7 @@ function Header() {
             <div className="d-flex align-items-center">
             </div>
             <div>
-              <a href="#" className="text-decoration-none text-white ms-4">About Us</a>
+              <a href="./about" className="text-decoration-none text-white ms-4">About Us</a>
               <a href="#" className="text-decoration-none text-white ms-4">Contact</a>
               <a href="#" className="text-decoration-none text-white ms-4">FAQ</a>
               <a href="#" className="text-decoration-none text-white ms-4" data-bs-toggle="dropdown">
@@ -37,7 +37,7 @@ function Header() {
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">OCCASIONS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">CAKES</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">ICE CREAMS</a></li>
+                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./icecreams" role="button">ICE CREAMS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">COOKIES</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">DIY</a></li>
                     </ul>
