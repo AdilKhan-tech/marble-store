@@ -48,8 +48,10 @@ function Header() {
             <div className="col-2 text-end">
               <div className="d-flex justify-content-end align-items-center">
                 <div className="d-flex justify-content-end align-items-center mt-3" role="button">
+                <a href="./login" className="text-decoration-none d-flex justify-content-end align-items-center">
                   <img src="./assets/images/user.png" alt="user" />
                   <p className="fs-18 text-white m-0 ms-1">Login</p>
+                  </a>
                 </div>
                 <div className="d-flex justify-content-end align-items-center ms-3 mt-3" role="button">
                   <img src="./assets/images/cart.png" alt="cart" />
