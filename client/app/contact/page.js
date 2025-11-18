@@ -1,9 +1,9 @@
 import React from 'react'
-import Login from '../../components/Login'
+import Contact from '../../components/contact/Contact'
 
 function page() {
   return (
-    <Login />
+    <div><Contact /></div>
   )
 }
 

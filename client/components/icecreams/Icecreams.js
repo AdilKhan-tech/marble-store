@@ -56,7 +56,9 @@ function Icecreams() {
             </div>
           </div>
           <div className="card border-0 align-items-center rounded-4 mx-1" role="button">
+          <a href="#">
             <img className="mt-3" src="./assets/images/custom-icecream-img.png" alt="Card image" style={{width:"100%"}}/>
+          </a>
           </div>
            <div className="card border-0 rounded-4 align-items-center mx-1" role="button">
             <img className="mt-3" src="./assets/images/55.png" alt="Card image" style={{width:"75%"}}/>
