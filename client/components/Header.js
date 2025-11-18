@@ -36,7 +36,7 @@ function Header() {
                     <ul className="navbar-nav mx-auto">
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">OCCASIONS</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">CAKES</a></li>
+                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./cakes" role="button">CAKES</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./icecreams" role="button">ICE CREAMS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">COOKIES</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="#" role="button">DIY</a></li>
