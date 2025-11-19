@@ -1,5 +1,5 @@
 import React from 'react'
-import Diy from '../../components/diy/Diy'
+import Diy from '../../components/frontend/diy/Diy'
 
 function page() {
   return (
