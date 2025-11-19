@@ -6,7 +6,7 @@ body {
   padding-inline: 40px;
 }
 .bg-sky {
-  background-color: #36bac7;
+  background-color: #36c79b;
   padding: 20px;
 }
 #header {
@@ -27,7 +27,7 @@ body {
 }
 .header ul.navbar-nav li a:hover,
 .header ul.navbar-nav li a:focus {
-  color: yellow;
+  color: #a3a3a3;
 }
 .card{
   width: 250px;
@@ -71,14 +71,17 @@ body {
 .color-purple {
   color: rgb(224, 91, 139);
 }
+.bg-purple {
+  background-color: rgb(224, 91, 139);
+}
 .bg-light-white {
   background-color: #ede3db;
 }
 .bg-pink {
-  background-color: #e05b8c33;
+  background-color: #ff679f33;
 }
-.bg-yellow {
-  background-color: #f4e55b;
+.bg-green {
+  background-color: #43f88fa2;
 }
 .image-fluid {
   height: 150px;
@@ -124,4 +127,12 @@ body {
 .modal-content{
   height: 400px;
   width: 100px;
+}
+.form-control {
+  background: rgba(167, 163, 163, 0.05) !important;
+  border-radius: 12px !important;
+  padding: 12px 20px !important;
+  font-size: 16px !important;
+  line-height: 1.25;
+  padding-bottom: 14px !important;
 }

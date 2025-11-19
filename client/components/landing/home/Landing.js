@@ -4,7 +4,7 @@ function Landing() {
   return (
     <section className="section bg-light">
       <img src="./assets/images/Home Banner_arabic.png" alt="Cookies Images" className="img-fluid mx-auto d-block" style={{marginTop:"134px", position:"relative"}}/>
-      <div className="ms-auto py-5 text-center bg-yellow">
+      <div className="ms-auto py-5 text-center bg-green">
         <p className="fs-4 fw-bold color-purple">Why You Should Order Online With Us?</p>
         <div className="">
         <div className="row mt-3">
@@ -45,14 +45,15 @@ function Landing() {
             <img src="./assets/images/arrow-left.png" alt="Left Arrow" className="bg-primary arrow-btn rounded-5"/>
           </div>
           <div className="card border-0 rounded-4 align-items-center mx-1" role="button">
-            <img className="mt-3" src="./assets/images/salah.png" alt="Card image" style={{width:"75%",}}/>
-            <div className="card-body align-items-center">
-              <h4 className="text-center color-brown fs-5 fw-bold"> HBD 7th Salah</h4>
-              <p className="text-center fs-15">Cookie-hbd-022</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173.8999</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to cart </button>
-            </div>
-          </div>
+  <img className="mt-3" src="./assets/images/salah.png" alt="Card image" style={{width:"75%"}}/>
+  <div className="card-body align-items-center">
+    <h4 className="text-center color-brown fs-5 fw-bold">HBD 7th Salah</h4>
+    <p className="text-center fs-15">Cookie-hbd-022</p>
+    <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173.8999</p>
+    <button className="btn rounded-5 px-3 py-0 fs-5">Add to cart</button>
+  </div>
+</div>
+
           <div className="card border-0 align-items-center rounded-4 mx-1" role="button">
             <img className="mt-3 rounded-4" src="./assets/images/turtle.png" alt="Card image" style={{width:"75%"}}/>
             <div className="card-body align-items-center">

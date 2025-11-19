@@ -1,5 +1,4 @@
 import React from "react";
-import "../public/assets/css/styles.css";
 
 function Header() {
   return (
@@ -12,7 +11,7 @@ function Header() {
             <div>
               <a href="./about" className="text-decoration-none text-white ms-4">About Us</a>
               <a href="./contact" className="text-decoration-none text-white ms-4">Contact</a>
-              <a href="#" className="text-decoration-none text-white ms-4">FAQ</a>
+              <a href="./contact" className="text-decoration-none text-white ms-4">FAQ</a>
               <a href="#" className="text-decoration-none text-white ms-4" data-bs-toggle="dropdown">
                 English <i className="bi bi-chevron-down ms-2"></i>
                 </a>
