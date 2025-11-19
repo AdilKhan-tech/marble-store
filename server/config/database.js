@@ -5,12 +5,4 @@ const sequelize = new Sequelize("wp_marble", "root", "root", {
     dialect: "mysql",
 });
 
-sequelize.authenticate()
-    .then(() => {
-        console.log("✅ Database Connected Successfully!");
-    })
-    .catch((error) => {
-        console.error("❌ Database Connection Failed:", error);
-    });
-
 module.exports = sequelize
