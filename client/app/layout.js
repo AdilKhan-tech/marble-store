@@ -1,4 +1,5 @@
-import "../public/assets/css/styles.css";
+import "../public/assets/css/Frontend.css";
+import "../public/assets/css/Dashboard.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 

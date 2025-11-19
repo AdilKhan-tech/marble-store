@@ -1,5 +1,5 @@
 import React from 'react'
-import Icecreams from '../../components/landing/icecreams/Icecreams'
+import Icecreams from '../../components/frontend/icecreams/Icecreams'
 
 function Page() {
   return (
