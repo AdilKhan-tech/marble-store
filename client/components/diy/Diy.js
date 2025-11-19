@@ -1,5 +1,5 @@
 import React from 'react'
-import Moregift from '../home/Moregift'
+import Moregift from '../landing/home/Moregift'
 
 function Diy() {
   return (

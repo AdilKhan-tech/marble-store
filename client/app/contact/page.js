@@ -1,10 +1,9 @@
 import React from 'react'
 import Contact from '../../components/landing/contact/Contact'
-
-function page() {
+function Page() {
   return (
     <div><Contact /></div>
   )
 }
 
-export default page
+export default Page

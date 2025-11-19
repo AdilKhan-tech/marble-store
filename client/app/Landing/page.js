@@ -1,8 +1,7 @@
 import React from 'react'
-import Landing from '../../components/landing/home/Landing'
-import Occasion from '../../components/landing/home/Occasions'
-
-function page() {
+import Landing from "@/components/landing/home/Landing";
+import Occasion from "@/components/landing/home/Occasions";
+function Page() {
   return (
     <main>
         <Landing />
@@ -12,4 +11,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

@@ -1,5 +1,5 @@
 "use client"
-import Layout  from "../app/Landing/page";
+import Layout  from "@/app/Landing/page";
 
 
 

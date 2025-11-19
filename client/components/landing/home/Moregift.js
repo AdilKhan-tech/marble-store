@@ -4,7 +4,7 @@ function Moregift() {
   return (
     <section>
         <div>
-        <div className="row w-100 mx-auto align-items-center px-5" style={{backgroundColor:"#ffc107d0"}}>
+        <div className="row w-100 mx-auto align-items-center px-5" style={{backgroundColor:"#5af5fa50"}}>
           <div className="col-md-5">
             <div>
               <h2 className="fs-38 fw-bold text-brown">More gift options</h2>
@@ -18,7 +18,7 @@ function Moregift() {
             <img src="./assets/images/ice2.webp" className="w-100" alt="cookies box"/>
           </div>
         </div>
-        <div className="row w-100 mx-auto align-items-center" style={{backgroundColor:"#ff008898"}}>
+        <div className="row w-100 mx-auto align-items-center" style={{backgroundColor:"#ff008846"}}>
           <div className="col-md-5 ">
             <div className="px-5">
               <h2 className="fs-38 fw-bold text-brown"> Make your own <br/> cookies box! </h2>
