@@ -36,7 +36,7 @@ body {
   transition: 0.3s;
 }
 .card:hover {
-    background-color: #36bbc713;
+    background-color: #36bbc750;
 }
 .card button {
   visibility: hidden;
@@ -120,4 +120,8 @@ body {
 }
 .footerlink{
   color: rgb(180, 164, 164);
+}
+.modal-content{
+  height: 400px;
+  width: 100px;
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Cakes from '../../components/cakes/Cakes'
+import Cakes from '../../components/landing/cakes/Cakes'
 
 function page() {
   return (
