@@ -3,6 +3,7 @@ import React from "react";
 function Page() {
   return (
     <section>
+    <div>
       <div className="p-4" style={{marginTop: "134px",position: "relative", backgroundColor: "#6d5794"}}>
         <div className="row mt-3">
           <div className="col-md-4">
@@ -34,6 +35,10 @@ function Page() {
             </div>
         </div>
       </div>
+      <div className="mt-5">
+        <h1 className="fw-bold">Contact Us</h1>
+      </div>
+     </div>
     </section>
   );
 }
