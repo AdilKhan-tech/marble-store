@@ -11,7 +11,7 @@ function Header() {
             </div>
             <div>
               <a href="./about" className="text-decoration-none text-white ms-4">About Us</a>
-              <a href="#" className="text-decoration-none text-white ms-4">Contact</a>
+              <a href="./contact" className="text-decoration-none text-white ms-4">Contact</a>
               <a href="#" className="text-decoration-none text-white ms-4">FAQ</a>
               <a href="#" className="text-decoration-none text-white ms-4" data-bs-toggle="dropdown">
                 English <i className="bi bi-chevron-down ms-2"></i>
@@ -67,19 +67,19 @@ function Header() {
 
       <section>
         <div className="modal" id="myModal">
-         <div className="modal-dialog modal-lg">
+         <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
 
               <div className="modal-header border-0 d-flex justify-content-center">
               <img src="./assets/images/Logo-login.png" className="img-fluid" alt="Logo" style={{width: "150px"}}/>
               <button
                 type="button"
-                className="btn-close position-absolute end-0 me-3 mb-5"
+                className="btn-close end-0 me-3 mb-5"
                 data-bs-dismiss="modal">
               </button>
             </div>
             <p className="text-center fw-bold">Let's get started</p>
-             <div className="mb-3 d-flex p-0 justify-content-center gap-4 bg-primary w-50 rounded-5 mx-auto">
+             <div className="mb-3 d-flex p-0 justify-content-center gap-4 bg-sky w-75 rounded-5 mx-auto">
                 <button className="btn btn-primary fs-18 d-flex btn-lg" type="button">
                     <span className="">Log in</span>
                 </button>
@@ -87,7 +87,13 @@ function Header() {
                     <span className="">Sign up</span>
                 </button>
             </div>
-                <button type="button" className="btn btn-primary mx-auto w-50">Continue</button>
+            <div className="d-flex justify-content-between gap-0 ">
+            <select className="form-select form-select-lg mb-3 w-25 mx-auto fs-18 rounded-5">
+                <option>+922</option>
+            </select>
+            <input type="tel" className="form-control form-control-lg mb-3 w-75 mx-auto fs-18 rounded-5" placeholder="Enter Your Phone Number" />
+            </div>
+                <button type="button" className="btn btn-lg btn-primary mx-auto rounded-5 w-75">Continue</button>
 
             </div>
           </div>

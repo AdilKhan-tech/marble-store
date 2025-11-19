@@ -1,6 +1,6 @@
 import React from 'react'
-import Landing from '../../components/home/Landing'
-import Occasion from '../../components/home/Occasions'
+import Landing from '../../components/landing/home/Landing'
+import Occasion from '../../components/landing/home/Occasions'
 
 function page() {
   return (
