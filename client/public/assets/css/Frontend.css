@@ -158,5 +158,20 @@ body {
 }
 .bg-brown-light{
   background-color: rgba(78, 69, 68, 0.473);
-  
+}
+.summary-box {
+  background: #eee1d8;
+  height: 270px;
+  width: 400px;
+}
+.line-row {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+.dots {
+  flex: 1;
+  border-bottom: 4px dotted #c3bebe;
+  margin: 0 5px;
 }
