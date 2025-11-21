@@ -34,7 +34,7 @@ function Header() {
                   <div>
                     <ul className="navbar-nav mx-auto">
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./occasions" role="button">OCCASIONS</a></li>
+                      <li className="nav-item"><a className="nav-link mt-3 fs-18" data-bs-toggle="modal" data-bs-target="#occasionModal" role="button">OCCASIONS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./cakes" role="button">CAKES</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./icecreams" role="button">ICE CREAMS</a></li>
                       <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./cookies" role="button">COOKIES</a></li>
@@ -98,6 +98,12 @@ function Header() {
           </div>
         </div>
         </section>
+
+        <div className="modal" id="occasionModal">
+         <div className="modal-dialog modal-dialog-centered">
+        
+          </div>
+        </div>
     </header>
   );
 }
