@@ -136,3 +136,27 @@ body {
   line-height: 1.25;
   padding-bottom: 14px !important;
 }
+.cookies-card{
+  height: 170px;
+  width: 190px;
+  background-color: silver;
+  margin-inline-start: 30px;
+  margin-top: 20px;
+}
+.cookies-card:hover {
+  background-color: #1d889250;
+}
+.cookies-img {
+  height: 100px;
+  width: 100px;
+  margin-inline-start: 90px;
+}
+.new-badge{
+  height: 34px;
+  width: 34px;
+  background-color: rgba(88, 67, 64, 0.651);
+}
+.bg-brown-light{
+  background-color: rgba(78, 69, 68, 0.473);
+  
+}
