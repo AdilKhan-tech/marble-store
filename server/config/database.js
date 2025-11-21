@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("wp_marble", "root", "root", {
+const sequelize = new Sequelize("marble_store", "root", "root", {
     host: "localhost",
     dialect: "mysql",
 });
