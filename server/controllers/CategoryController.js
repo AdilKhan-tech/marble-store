@@ -31,7 +31,7 @@ class CategoryController {
         }
     }
 
-    static async updateRoomType(req, res) {
+    static async updateCategoryById(req, res) {
         const { id } = req.params;
         const { name, description, slug } = req.body;
         try {
@@ -50,20 +50,20 @@ class CategoryController {
         }
     }
 
-static async deleteCategory(req, res) {
-    try {
-      const { id } = req.params;
-      const category = await Category.findByPk(id);
-      if (!category) {
-        return res.status(404).json({ message: "Category not found" });
-      }
-      await category.destroy();
-      return res.status(200).json({ message: "Category deleted successfully" });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: err.message });
+    static async deleteCategoryById(req, res) {
+        try {
+            const { id } = req.params;
+            const category = await Category.findByPk(id);
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+        await category.destroy();
+            return res.status(200).json({ message: "Category deleted successfully" });
+        } catch (err) {
+        console.error(err);
+            return res.status(500).json({ message: err.message });
+        }
     }
-  }
 
 }
 
