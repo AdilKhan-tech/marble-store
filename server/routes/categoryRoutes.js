@@ -5,8 +5,8 @@ const CategoryController = require('../controllers/CategoryController');
 
 router.post('/create', CategoryController.createCategory);
 router.get('/getAll', CategoryController.getAllCategories);
-router.put('/update/:id', CategoryController.updateRoomType);
-router.delete('/delete/:id', CategoryController.deleteCategory);
+router.put('/update/:id', CategoryController.updateCategoryById);
+router.delete('/delete/:id', CategoryController.deleteCategoryById);
 
 
 
