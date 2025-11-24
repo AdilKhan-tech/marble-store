@@ -7,10 +7,18 @@ const User = sequelize.define("User", {
         primaryKey: true,
         autoIncrement: true
     },
+    user_name:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     created_at: {
         type: DataTypes.DATE,
@@ -21,12 +29,10 @@ const User = sequelize.define("User", {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
-    onUpdate: DataTypes.NOW,
     },
 }, {
     timestamps: false,
     tableName: "users",
-  }
-);
+});
 
 module.exports = User;
