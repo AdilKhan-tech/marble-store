@@ -42,7 +42,9 @@ function Cakes() {
               </div>
             </div>
             <div className="cakes-card card border-0 w-25 align-items-center rounded-4 mx-4">
+              <a href="/makecake">
               <img className="w-75 mt-3" src="./assets/images/custom-cake-design.png" alt="Card image"/>
+              </a>
             </div>
         </div>
 
