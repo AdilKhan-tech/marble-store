@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
-const authRoutes = require('./routes/userRoutes');
 const sequelize = require("./config/database");
+
+const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 
 
@@ -14,8 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api', authRoutes);
-app.use('/api', categoryRoutes);
+app.use('/users', userRoutes);
+app.use('/categories', categoryRoutes);
 
 // Test route
 app.get('/', (req, res) => {
