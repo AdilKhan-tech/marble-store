@@ -3,9 +3,11 @@ const router = express.Router();
 const CategoryController = require('../controllers/CategoryController');
 const authenticateToken = require("../middlewares/authenticateToken");
 
+const upload = require("../middlewares/upload");
+
 router.use(authenticateToken);
 
-router.post('/create', CategoryController.createCategory);
+router.post('/create', upload.any(), CategoryController.createCategory);
 router.get('/getAll', CategoryController.getAllCategories);
 router.put('/update/:id', CategoryController.updateCategoryById);
 router.delete('/delete/:id', CategoryController.deleteCategoryById);

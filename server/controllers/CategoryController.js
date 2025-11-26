@@ -7,11 +7,14 @@ class CategoryController {
         try {
             const { name_en, name_ar, slug, description } = req.body;
 
+            const image_url = req.files?.[0]?.path || null;
+
             const category = await Category.create({
                 name_en,
                 name_ar,
                 slug,
-                description
+                description,
+                image_url
             });
 
             return res.status(201).json({ message: "Category created successfully", category });
