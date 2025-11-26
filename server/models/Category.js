@@ -7,15 +7,23 @@ const Category = sequelize.define("Category",{
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  name_en: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  name_ar: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  slug: {
+  image_url: {
     type: DataTypes.STRING,
     allowNull: true,
   },
