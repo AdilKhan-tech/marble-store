@@ -125,7 +125,7 @@ body {
   color: rgb(180, 164, 164);
 }
 .modal-content{
-  height: 400px;
+  height: 480px;
   width: 100px;
 }
 .form-control {
@@ -135,6 +135,10 @@ body {
   font-size: 16px !important;
   line-height: 1.25;
   padding-bottom: 14px !important;
+}
+.bg-outline-primary {
+  background-color: #36bbc71a;
+  border: 2px solid #36bac7;
 }
 .cookies-card{
   height: 170px;
@@ -174,4 +178,50 @@ body {
   flex: 1;
   border-bottom: 4px dotted #c3bebe;
   margin: 0 5px;
+}
+.bg-blue {
+  background-color: #36bac7;
+}
+.bg-blue:hover {
+  background-color: #30d3e2;
+}
+.occassion-content{
+  height: 540px;
+  width: 100px;
+}
+.occassion-card{
+  height: 100px;
+  width: 120px;
+  background-color: #ff679f1f;
+}
+.occassion-card:hover {
+  background-color: #ff679f62;
+}
+.occassion-img {
+  height: 50px;
+  width: 50px;
+  margin-inline-start: 90px;
+}
+.bg-purple-two:hover{
+  background-color: #ff679ff8;
+}
+.cake-card{
+  height: 120px;
+  width: 120px;
+  background-color: #36bbc71a;
+  border: 2px solid #36bac7;
+  margin-inline-start: 30px;
+  margin-top: 20px;
+}
+.cake-card:hover {
+  background-color: #1d889250;
+}
+.cake-img {
+  height: 50px;
+  width: 50px;
+}
+.cake-box {
+  background: #eee1d8;
+  height: 330px;
+  width: 400px;
 }
