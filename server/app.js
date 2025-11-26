@@ -6,7 +6,7 @@ const sequelize = require("./config/database");
 const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const occasionRoutes = require('./routes/occasionRoutes');
-
+const genderRoutes = require('./routes/genderRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +19,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/occasions', occasionRoutes);
+app.use('/genders', genderRoutes);
 
 
 // Test route
