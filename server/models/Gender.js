@@ -19,7 +19,7 @@ const Gender = sequelize.define('Gender', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  img_url: {
+  image_url: {
     type: DataTypes.TEXT,
     allowNull: true
   },
