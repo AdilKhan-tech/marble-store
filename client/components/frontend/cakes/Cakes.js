@@ -8,10 +8,12 @@ function Cakes() {
     <div className='container' style={{marginInlineStart:"35px"}}>
       <div className="bg-white py-5">
 
-        <div className="col-4 d-flex justify-content-end" style={{marginInlineStart:"55%"}}> 
+        <div className="col-5 d-flex justify-content-end" style={{marginInlineStart:"55%"}}> 
             <input type="text" className="form-control rounded-5 border px-3 py-2 fs-bold text-brown rounded-end-0 border-end-0" placeholder="Search here..." style={{height:"43px", width:"300px"}}/>
-            <i className='bi bi-x bg-light rounded-5 border px-3 py-2 rounded-start-0 border-start-0 rounded-end-0 border-end-0'></i>
+            <i className='bi bi-x-lg bg-light rounded-5 border px-3 py-2 rounded-start-0 border-start-0 rounded-end-0 border-end-0'></i>
             <button className='btn btn-primary rounded-5 border px-3 py-1 rounded-start-0 border-start-0' type="submit"><i className="bi bi-search"></i></button> 
+            <button className="rounded-5 border px-3 ms-2 color-brown py-1 fs-18 bg-transparent" type="button">
+            <i className='bi bi-funnel'></i>Filters</button>
         </div> 
         <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
             <div className="cakes-card card border-0 w-25 rounded-4 align-items-center ">
@@ -41,7 +43,7 @@ function Cakes() {
                 <button className="btn rounded-5 px-3 ms-5 py-0 fs-5" type="submit"> Add to Cart </button>
               </div>
             </div>
-            <div className="cakes-card card border-0 w-25 align-items-center rounded-4 mx-4">
+            <div className="border-0 w-25 align-items-center rounded-4 mx-4">
               <a href="/makecake">
               <img className="w-75 mt-3" src="./assets/images/custom-cake-design.png" alt="Card image"/>
               </a>
