@@ -1,6 +1,63 @@
+"use client"
 import React from "react";
+import { useEffect, useState } from 'react';
+import { signIn } from "next-auth/react";
+import { useSearchParams, useRouter } from "next/navigation";
+import getApiKeyByDomain from "@/configs/getApiKey";
 
 function Header() {
+
+  const searchParams = useSearchParams();
+  const apiKey = getApiKeyByDomain();
+
+  const [phoneNnumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors("");
+
+    if (!phoneNnumber || !password) {
+        setErrors(["Please fill in all fields"]);
+        setLoading(false);
+        return;
+    }
+    try {
+          const result = await signIn("credentials", {
+            phone_number: phoneNnumber,
+            password,
+            apiKey,
+            redirect: false,
+          });
+     
+          if (result?.error) {
+            setErrors(
+              result.error === "CredentialsSignin"
+                ? "Invalid phone number or password"
+                : "Login failed. Please try again."
+            );
+          } else {
+            // router.push(callbackUrl);
+            window.location.href = callbackUrl
+          }
+        } catch (err) {
+            setErrors("An unexpected error occurred. Please try again.");
+          console.error("Login error:", err);
+        } finally {
+            setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      setLoading(false);
+    }
+  }, [errors]);
+
   return (
     <header>
       <section className="bg-sky header" id="header">
@@ -83,10 +140,24 @@ function Header() {
                 </div>
             </div>
             <div className="d-flex justify-content-between gap-0 mt-3">
-            <input type="tel" className="form-control form-control-lg mb-2 w-75 mx-auto fs-18 rounded-5" placeholder="Enter Your Phone Number" />
+            <input 
+              type="tel" 
+              className="form-control form-control-lg mb-2 w-75 mx-auto fs-18 rounded-5" 
+              placeholder="Enter Your Phone Number"
+              value={phoneNnumber}
+              onChange={(e) => setPhoneNumber(e.target.value)} 
+            />
             </div>
-            <input type="password" className="form-control form-control-lg mb-3 w-75 mx-auto fs-18 rounded-5" placeholder="Enter Your Password" />
-                <div role="button" className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold">Continue</div>
+            <input 
+              type="password" 
+              className="form-control form-control-lg mb-3 w-75 mx-auto fs-18 rounded-5" 
+              placeholder="Enter Your Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+                <div role="button" className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold" disabled={loading} onSubmit={handleSubmit}>
+                  Continue
+                </div>
 
             </div>
           </div>
