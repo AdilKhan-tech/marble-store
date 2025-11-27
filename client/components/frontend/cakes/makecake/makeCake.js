@@ -81,9 +81,13 @@ function makecake() {
               <div className="line-row mb-3">
                 <span className="fs-14 text-secondary fw-bold">Product Cake Note</span><span className="dots"></span>
               </div>
-              <button className="btn btn-secondary rounded-5 mt-3 w-100 p-1 fs-5">Add to cart</button>
+              <button className="btn btn-primary rounded-5 mt-3 w-100 p-1 fs-5 fs-18">Get a Quote</button>
             </div>
           </div>
+        </div>
+
+        <div>
+          
         </div>
     </section>
   );
