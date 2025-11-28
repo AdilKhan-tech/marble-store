@@ -1,12 +1,12 @@
-const CakeFlavors = require('../models/CakeFlavors');
+const CakeFlavor = require('../models/CakeFlavor');
 
-class CakeFlavorsController {
+class CakeFlavorController {
 
     // Create a  new cake flavor
     static async createCakeFlavor(req, res) {
        try {
         const { category_id, name_en, name_ar, slug, additional_price, symbol, status, image_url } = req.body
-        const cakeflavors = await CakeFlavors.create({
+        const cakeflavors = await CakeFlavor.create({
             category_id,
             name_en,
             name_ar,
@@ -25,7 +25,7 @@ class CakeFlavorsController {
     }
   static async getAllCakeFlavors(req,res) {
      try {
-        const cakeflavors = await CakeFlavors.findAll();
+        const cakeflavors = await CakeFlavor.findAll();
         return res.status(200).json(cakeflavors);
 }
         catch (err) {
@@ -38,7 +38,7 @@ static async updateCakeFlavorById(req, res) {
     const { id } = req.params;
     const { category_id, name_en, name_ar, slug, additional_price, symbol, status, image_url } = req.body;
     try {
-        const cakeflavors = await CakeFlavors.findByPk(id);
+        const cakeflavors = await CakeFlavor.findByPk(id);
         if (!cakeflavors) {
             return res.status(404).json({ message: "Cake flavor not found" });
         }
@@ -62,7 +62,7 @@ static async updateCakeFlavorById(req, res) {
  static async deleteCakeFlavorById(req,res) {
     const { id } = req.params; 
     try {
-        const cakeflavors = await CakeFlavors.findByPk(id);
+        const cakeflavors = await CakeFlavor.findByPk(id);
         if (!cakeflavors) {
             return res.status(404).json({ message: "Cake flavor not found" });
         }
@@ -75,4 +75,4 @@ static async updateCakeFlavorById(req, res) {
     }
  }
 }
-module.exports = CakeFlavorsController;
+module.exports = CakeFlavorController;

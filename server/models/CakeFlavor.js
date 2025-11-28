@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const CakeFlavors = sequelize.define('CakeFlavors', {
+const CakeFlavor = sequelize.define('CakeFlavor', {
 
 id: {
     type: DataTypes.INTEGER,
@@ -56,5 +56,5 @@ updated_at: {
     tableName: 'cake_flavors',
     timestamps: false,
 });
- module.exports = CakeFlavors;
+ module.exports = CakeFlavor;
 
