@@ -1,5 +1,5 @@
 import React from 'react'
-import Cookies from '../../components/frontend/cookies/Cookies'
+import Cookies from '../../../components/frontend/cookies/Cookies'
 
 function Page() {
   return (

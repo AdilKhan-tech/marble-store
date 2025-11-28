@@ -1,5 +1,5 @@
 import React from 'react'
-import MakeCake from '../../components/frontend/cakes/makecake/makeCake'
+import MakeCake from '../../../components/frontend/cakes/makecake/makeCake'
 
 function page() {
   return (
