@@ -1,6 +1,6 @@
-const CakeSizes = require("../models/CakeSizes");
+const CakeSize = require("../models/CakeSize");
 
-class CakeSizesController {
+class CakeSizeController {
 
 // Create a new Cake Size
 
@@ -8,7 +8,7 @@ class CakeSizesController {
         try {
     const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url  } = req.body
      
-    const cakesizes = await CakeSizes.create({
+    const cakesizes = await CakeSize.create({
         category_id,
         name_en,
         name_ar,
@@ -30,7 +30,7 @@ class CakeSizesController {
 
  static async getAllCakeSizes (req, res) {
     try {
-        const cakesizes = await CakeSizes.findAll();
+        const cakesizes = await CakeSize.findAll();
         return res.status(200).json(cakesizes);
     } catch (err) {
 
@@ -42,7 +42,7 @@ class CakeSizesController {
         const { id } = req.params;
         const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url } = req.body;
         try {
-            const cakesizes = await CakeSizes.findByPk(id);
+            const cakesizes = await CakeSize.findByPk(id);
             if(!cakesizes) {
                 return res.status(404).json({ message: "Cake size not found" });
 
@@ -68,7 +68,7 @@ class CakeSizesController {
 static async deleteCakeSizesById(req, res) {
     try {
         const { id } = req.params;
-        const cakesizes = await CakeSizes.findByPk(id);
+        const cakesizes = await CakeSize.findByPk(id);
         if(!cakesizes) {
             return res.status(404).json({ message: "Cake size not found" });
         }
@@ -81,4 +81,4 @@ static async deleteCakeSizesById(req, res) {
     }
   }
 }
-module.exports = CakeSizesController;
+module.exports = CakeSizeController;

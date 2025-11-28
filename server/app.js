@@ -7,8 +7,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const occasionRoutes = require('./routes/occasionRoutes');
 const branchRoutes = require('./routes/branchRoutes');
 const genderRoutes = require('./routes/genderRoutes');
-const cakesizesRoutes = require('./routes/cakesizesRoutes');
-const cakeflavorsRoutes = require('./routes/cakeflavorsRoutes');
+const cakeRoutes = require('./routes/cakeRoutes');
 
 
 const app = express();
@@ -37,9 +36,7 @@ app.use('/categories', categoryRoutes);
 app.use('/occasions', occasionRoutes);
 app.use('/braches', branchRoutes);
 app.use('/genders', genderRoutes);
-app.use('/cakesizes', cakesizesRoutes);
-app.use('/cakeflavors', cakeflavorsRoutes);
-
+app.use('/cakes', cakeRoutes);
 
 // Database and server setup
 const sequelize = require("./config/database");
