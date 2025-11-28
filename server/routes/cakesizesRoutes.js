@@ -9,4 +9,5 @@ router.use(authenticateToken);
 router.post('/create', CakeSizesController.createCakeSizes);
 router.get('/getall', CakeSizesController.getAllCakeSizes);
 router.put('/update/:id', CakeSizesController.updateCakeSizesById);
+router.delete('/delete/:id', CakeSizesController.deleteCakeSizesById);
 module.exports = router;

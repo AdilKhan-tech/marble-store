@@ -8,6 +8,7 @@ const occasionRoutes = require('./routes/occasionRoutes');
 const branchRoutes = require('./routes/branchRoutes');
 const genderRoutes = require('./routes/genderRoutes');
 const cakesizesRoutes = require('./routes/cakesizesRoutes');
+const cakeflavorsRoutes = require('./routes/cakeflavors');
 
 
 const app = express();
@@ -37,6 +38,7 @@ app.use('/occasions', occasionRoutes);
 app.use('/braches', branchRoutes);
 app.use('/genders', genderRoutes);
 app.use('/cakesizes', cakesizesRoutes);
+app.use('/cakeflavors', cakeflavorsRoutes);
 
 
 // Database and server setup

@@ -1,0 +1,60 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+
+const CakeFlavors = sequelize.define('CakeFlavors', {
+
+id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+},
+category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+},
+name_en: {
+    type: DataTypes.STRING,
+    allowNull: false,
+},
+name_ar: {
+    type: DataTypes.STRING,
+    allowNull: false
+},
+slug: {
+    type: DataTypes.STRING,
+    allowNull: true,
+},
+additional_price: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+},
+symbol: {
+    type: DataTypes.STRING,
+    allowNull: true,
+},
+status: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+},
+image_url: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+},
+created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+},
+updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false, 
+    defaultValue: DataTypes.NOW,
+},
+}, {
+    tableName: 'cake_flavors',
+    timestamps: false,
+});
+ module.exports = CakeFlavors;
+
