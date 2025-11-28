@@ -5,6 +5,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const occasionRoutes = require('./routes/occasionRoutes');
+const branchRoutes = require('./routes/branchRoutes');
 const genderRoutes = require('./routes/genderRoutes');
 const cakesizesRoutes = require('./routes/cakesizesRoutes');
 
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/occasions', occasionRoutes);
+app.use('/braches', branchRoutes);
 app.use('/genders', genderRoutes);
 app.use('/cakesizes', cakesizesRoutes);
 
