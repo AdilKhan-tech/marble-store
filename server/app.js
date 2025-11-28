@@ -7,7 +7,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const occasionRoutes = require('./routes/occasionRoutes');
 const genderRoutes = require('./routes/genderRoutes');
 const cakesizesRoutes = require('./routes/cakesizesRoutes');
-const cakeflavorsRoutes = require('./routes/cakeflavors');
+const cakeflavorsRoutes = require('./routes/cakeflavorsRoutes');
 
 
 const app = express();
