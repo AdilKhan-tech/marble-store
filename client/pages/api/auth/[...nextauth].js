@@ -22,8 +22,8 @@ export default NextAuth({
           if (response.status === 200) {
             return {
               token: response.data.token,
-              ...response.data.employee,
-              id: response.data.employee.id
+              ...response.data.user,
+              id: response.data.user.id
             };
           }
           return null;
