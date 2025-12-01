@@ -1,295 +1,227 @@
-"use client"
-import React from "react";
-import { useEffect, useState } from 'react';
-import { signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
-import getApiKeyByDomain from "@/configs/getApiKey";
+"use client";
+import React, { useState } from "react";
 
 function Header() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const searchParams = useSearchParams();
-  const apiKey = getApiKeyByDomain();
-
-  const [phoneNnumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors("");
-
-    if (!phoneNnumber || !password) {
-        setErrors(["Please fill in all fields"]);
-        setLoading(false);
-        return;
-    }
-    try {
-          const result = await signIn("credentials", {
-            phone_number: phoneNnumber,
-            password,
-            apiKey,
-            redirect: false,
-          });
-     
-          if (result?.error) {
-            setErrors(
-              result.error === "CredentialsSignin"
-                ? "Invalid phone number or password"
-                : "Login failed. Please try again."
-            );
-          } else {
-            // router.push(callbackUrl);
-            window.location.href = callbackUrl
-          }
-        } catch (err) {
-            setErrors("An unexpected error occurred. Please try again.");
-          console.error("Login error:", err);
-        } finally {
-            setLoading(false);
-    }
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
   };
 
-  useEffect(() => {
-    if (errors.length > 0) {
-      setLoading(false);
-    }
-  }, [errors]);
-
   return (
-    <header>
-      <section className="bg-sky header" id="header">
-        <div className="container py-1 ps-2">
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center">
-            </div>
-            <div>
-              <a href="./about" className="text-decoration-none text-white ms-4">About Us</a>
-              <a href="./contact" className="text-decoration-none text-white ms-4">Contact</a>
-              <a href="./contact" className="text-decoration-none text-white ms-4">FAQ</a>
-              <a href="#" className="text-decoration-none text-white ms-4" data-bs-toggle="dropdown">
-                English <i className="bi bi-chevron-down ms-2"></i>
-                </a>
-                <ul className="dropdown-menu">
-                <li className="dropdown-item">English</li>
-                <li className="dropdown-item">Arabic</li>
-                </ul>
-
+    <header className="header p-2 rounded-3" id="header">
+      <div className="container-fluid">
+        <div className="row align-items-center">
+          <div className="col-md-6">
+            <div className="left-header-content">
+              <ul className="d-flex align-items-center ps-0 mb-0 list-unstyled justify-content-center justify-content-md-start">
+                <li className="w-50">
+                  <form className="d-flex align-items-center position-relative w-100">
+                    <i className="bi bi-search position-absolute ms-3 text-muted"></i>
+                    <input  type="search" className="form-control ps-5 mt-2 bg-light border-0 rounded-pill shadow-sm" 
+                      placeholder="Search here..."/>
+                  </form>
+                </li>
+              </ul>
             </div>
           </div>
-          <div className="row align-items-center">
-            <div className="col-md-2">
-            <a href="./Landing">
-              <img src="./assets/images/Logo.png" className="img-fluid ms-3" alt="Logo"/>
-            </a>
-            </div>
-            <div className="col-md-8 text-center">
-              <nav className="navbar navbar-expand-lg py-0">
-                <div className="container-fluid">
-                  <div>
-                    <ul className="navbar-nav mx-auto">
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" data-bs-toggle="modal" data-bs-target="#occassionModal" role="button">OCCASIONS</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./cakes" role="button">CAKES</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./icecreams" role="button">ICE CREAMS</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./cookies" role="button">Cookies</a></li>
-                      <li className="nav-item"><a className="nav-link mt-3 fs-18" href="./diy" role="button">DIY</a></li>
-                    </ul>
+          <div className="col-md-6">
+            <div className="mt-3 mt-md-0">
+              <ul className="d-flex align-items-center justify-content-center justify-content-md-end ps-0 mb-0 list-unstyled gap-3 gap-md-4"> 
+                <li className="language-item">
+                  <div className="notifications language">
+                    <button className="border-0 p-0 position-relative bg-transparent d-flex align-items-center"
+                      type="button"  data-bs-toggle="dropdown" aria-label="Language Selector">
+                      <i className="bi bi-translate fs-20"></i>
+                      <i className="bi bi-chevron-down ms-1 small"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-end p-2 border shadow mt-2">
+                      <span className="fw-medium fs-16 text-secondary d-block p-2 border-bottom">Choose Language</span>
+                      <div className="">
+                        <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                          <img src="./assets/images/Dashboard/america.png" className="img-fluid rounded-circle me-2" alt="English" width="24" height="24"/>
+                          <span className="ms-2 fs-16">English</span>
+                        </a>
+                        <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                          <img src="./assets/images/Dashboard/australia.png" className="img-fluid rounded-circle me-2" alt="Australia" width="24" height="24"/>
+                          <span className="ms-2 fs-16">Australia</span>
+                        </a>
+                        <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                          <img src="./assets/images/Dashboard/flag.png" className="img-fluid rounded-circle me-2" alt="Spanish" width="24" height="24"/>
+                          <span className="ms-2 fs-16">Spanish</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <button className="p-0 bg-transparent border-0" onClick={toggleDarkMode}
+                    aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}>
+                    <i className={`bi ${isDarkMode ? 'bi-sun' : 'bi-moon'} fs-20`}></i></button>
+                </li>
+
+                <li>
+                  <a className="border-0 text-dark p-0" href="#" aria-label="Calendar"><i className="bi bi-calendar fs-20"></i></a>
+                </li>
+
+                <div className="notifications language">
+                  <button  className="border-0 p-0 position-relative bg-transparent" type="button" data-bs-toggle="dropdown" aria-label="Messages">
+                    <i className="bi bi-envelope fs-20"></i>
+                    <span className="badge bg-primary position-absolute top-0 start-100 translate-middle rounded-5">5</span>
+                  </button>
+                  <div className="dropdown-menu dropdown-menu-end p-2 border shadow mt-2" style={{width: '320px', maxHeight: '420px', overflowY: 'auto'}}>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className="fw-medium fs-16 text-secondary d-block p-2">Messages</span>
+                      <span className="mt-2 text-primary d-block p-2 fs-14" role="button">Mark All As Read</span>
+                    </div>
+                    <div className="mt-2">
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <img src="./assets/images/Dashboard/adil.png" className="img-fluid rounded-circle me-3" alt="Adil"/>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">Adil</span>
+                            <small className="text-muted fs-14">35 min ago</small>
+                          </div>
+                          <p className="text-secondary mb-0 fs-14 mt-1">Hey Adil Khan! How are you bro?</p>
+                        </div>
+                      </a>
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <img src="./assets/images/Dashboard/islam.png" className="img-fluid rounded-circle me-3"/>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">Islam</span>
+                            <small className="text-muted fs-14">35 min ago</small>
+                          </div>
+                          <p className="text-secondary mb-0 fs-14 mt-1">Hey Adil Khan! How are you bro?</p>
+                        </div>
+                      </a>
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <img src="./assets/images/Dashboard/waheed.png" className="img-fluid rounded-circle me-3" alt="Waheed"/>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">Waheed</span>
+                            <small className="text-muted fs-14">35 min ago</small>
+                          </div>
+                          <p className="text-secondary mb-0 fs-14 mt-1">Hey Adil Khan! How are you bro?</p>
+                        </div>
+                      </a>
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <img src="./assets/images/Dashboard/nasir.png" className="img-fluid rounded-circle me-3" alt="Nasir"/>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">Nasir</span>
+                            <small className="text-muted fs-14">35 min ago</small>
+                          </div>
+                          <p className="text-secondary mb-0 fs-14 mt-1">Hey Adil Khan! How are you bro?</p>
+                        </div>
+                      </a>
+                    </div>
+                    <div className="text-center pt-2 border-top">
+                      <a href="#" className="text-primary text-decoration-none fw-medium fs-16 d-block py-2">See All Messages</a>
+                    </div>
                   </div>
                 </div>
-              </nav>
-            </div>
-            <div className="col-2 text-end">
-              <div className="d-flex justify-content-end align-items-center">
-                <div className="d-flex justify-content-end align-items-center mt-3" role="button">
-                <a className="text-decoration-none d-flex justify-content-end align-items-center"
-                  data-bs-toggle="modal" data-bs-target="#myModal" role="button">
-                  <img src="./assets/images/user.png" alt="user" />
-                  <p className="fs-15 text-white m-0 ms-1">Login</p>
-                </a>
 
-                </div>
-                <div className="d-flex justify-content-end align-items-center ms-3 mt-3" role="button">
-                  <img src="./assets/images/cart.png" alt="cart" />
-                  <p className="fs-15 text-white m-0 ms-1">Cart<span className="badge bg-primary rounded-5 ms-1">0</span></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="modal" id="myModal">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header border-0 d-flex justify-content-center">
-                <img src="./assets/images/Logo-login.png" className="img-fluid" alt="Logo" style={{width: "150px", marginInlineStart:"160px"}}/>
-                <button type="button" className="btn-close end-0 me-3 mb-5" data-bs-dismiss="modal"></button>
-              </div>
-              <p className="text-center fw-bold">Let's get started</p>
-              <div className="mb-3 d-flex btn-group p-0 justify-content-center gap-4 bg-outline-primary w-75 rounded-5 mx-auto">
-                  <div className="bg-blue m-1 mx-auto rounded-5 w-75 text-center p-3" role="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                      <span className="text-white fw-bold">Log in</span>
+                <div className="notifications language">
+                  <button 
+                    className="border-0 p-0 position-relative bg-transparent" type="button" data-bs-toggle="dropdown" aria-label="Notifications">
+                    <i className="bi bi-bell fs-20"></i>
+                    <span className="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-5">5</span>
+                  </button>
+                  <div className="dropdown-menu dropdown-menu-end p-2 border shadow mt-2" style={{width: '320px', maxHeight: '420px', overflowY: 'auto'}}>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className="fw-medium fs-16 text-secondary d-block p-2">Notifications</span>
+                      <span className="mt-2 text-primary d-block p-2 fs-14" role="button">Clear All</span>
+                    </div>
+                    <div className="mt-2">
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <div className="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                          <i className="bi bi-chat-left-dots text-primary"></i>
+                        </div>
+                        <div className="flex-grow-1">
+                          <div className="">
+                            <span className="fw-medium fs-16">You Have Request To Withdrawal</span>
+                          </div>
+                          <small className="text-muted fs-14">35 min ago</small>
+                        </div>
+                      </a>
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <div className="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                          <i className="bi bi-person-plus text-primary"></i>
+                        </div>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">A new user added to bakery</span>
+                          </div>
+                          <small className="text-muted fs-14">35 min ago</small>
+                        </div>
+                      </a>
+                      <a className="dropdown-item p-2 rounded-2 mb-2 d-flex align-items-start" href="#">
+                        <div className="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                          <i className="bi bi-bell text-primary"></i>
+                        </div>
+                        <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between">
+                            <span className="fw-medium fs-16">Marble is Owned by CodEnterprise</span>
+                          </div>
+                          <small className="text-muted fs-14">35 min ago</small>
+                        </div>
+                      </a>
+                    </div>
+                    <div className="text-center pt-2 border-top">
+                      <a href="#" className="text-primary text-decoration-none fw-medium fs-16 d-block py-2">See All Notifications</a>
+                    </div>
                   </div>
-                  <div className="bg-blue m-1 mx-auto rounded-5 w-75 text-center p-3" role="button" data-bs-toggle="modal" data-bs-target="#signinModal">
-                      <span className="text-white fw-bold" >Sign up</span>
+                </div>
+
+                <li className="">
+                  <div className="dropdown">
+                    <button  className="d-flex align-items-center border-0 bg-transparent p-0" type="button"
+                      data-bs-toggle="dropdown" aria-label="User Profile">
+                      <div className="position-relative">
+                        <img  src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid" alt="Admin Profile" />
+                        <span className="bg-success border border-2 border-white rounded-circle position-absolute end-0 bottom-0"
+                          style={{ width: "10px", height: "10px" }}></span>
+                      </div>
+                      <i className="bi bi-chevron-down ms-1 text-muted"></i>
+                    </button>
+
+                    <div className="dropdown-menu dropdown-menu-end mt-2 p-0">
+                      <div className="d-flex align-items-center info p-3 border-bottom">
+                        <img src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid me-3" alt="Admin Profile"/>
+                        <div className="">
+                          <h6 className="fs-18 mb-0">Adil Khan</h6>
+                          <span className="text-muted small">Admin</span>
+                        </div>
+                      </div>
+                      <ul className="admin-link list-unstyled mb-0 py-2">
+                        <li>
+                          <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                            <i className="bi bi-person me-2"></i><span className="fs-14">My Profile</span></a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                            <i className="bi bi-gear me-2"></i><span className="fs-14">Settings</span></a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#">
+                            <i className="bi bi-info-circle me-2"></i><span className="fs-14">Support</span></a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-flex align-items-center py-2 px-3" href="#"><i className="bi bi-box-arrow-right me-2 fw-bold"></i>
+                            <span className="fs-14">Logout</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-              </div>
-              <div className="d-flex justify-content-between gap-0 mt-3">
-                <input 
-                  type="tel" 
-                  className="form-control form-control-lg mb-2 w-75 mx-auto fs-18 rounded-5" 
-                  placeholder="Enter Your Phone Number"
-                  value={phoneNnumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)} 
-                />
-              </div>
-              <input 
-                type="password" 
-                className="form-control form-control-lg mb-3 w-75 mx-auto fs-18 rounded-5" 
-                placeholder="Enter Your Password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                onClick={handleSubmit}
-                className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold"
-              >
-                Continue
-              </button>
+                </li>
+              </ul>
             </div>
-          </div>
-        </div>
-      </section>
-      
-      <section>
-      <div className="modal" id="signinModal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="occassion-content modal-content">
-
-            <div className="modal-header border-0 d-flex justify-content-center">
-            <img src="./assets/images/Logo-login.png" className="img-fluid" alt="Logo" style={{width: "150px", marginInlineStart:"160px"}}/>
-            <button type="button" className="btn-close end-0 me-3 mb-5" data-bs-dismiss="modal"></button>
-          </div>
-          <p className="text-center fw-bold">Let's get started</p>
-            <div className="mb-3 d-flex btn-group p-0 justify-content-center gap-4 bg-outline-primary w-75 rounded-5 mx-auto">
-              <div className="bg-blue m-1 mx-auto rounded-5 w-75 text-center p-3" role="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                  <span className="text-white fw-bold">Log in</span>
-              </div>
-              <div className="bg-blue m-1 mx-auto rounded-5 w-75 text-center p-3" role="button" data-bs-toggle="modal" data-bs-target="#signinModal">
-                  <span className="text-white fw-bold" >Sign up</span>
-              </div>
-          </div>
-          <input type="text" className="form-control form-control-lg w-75 mx-auto fs-18 rounded-5 mt-3" placeholder="Enter Your Name" />
-          <div className="d-flex justify-content-between gap-0 mt-2">
-          <input type="tel" className="form-control form-control-lg mb-2 w-75 mx-auto fs-18 rounded-5" placeholder="Enter Your Phone Number" />
-          </div>
-          <input type="password" className="form-control form-control-lg mb-3 w-75 mx-auto fs-18 rounded-5" placeholder="Enter Your Password" />
-              <div role="button" className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold">Continue</div>
-
           </div>
         </div>
       </div>
-      </section>
-      <section>
-      <div className="modal" id="occassionModal">
-        <div className="modal-dialog modal-lg modal-dialog-centered">
-          <div className="modal-content p-1">
-              <div className="modal-header border-0 d-flex justify-content-center">
-            <h1 className="color-brown fw-bold mt-4" style={{marginInlineStart:"290px"}}>Occasions</h1>
-            <button type="button" className="btn-close end-0 me-3 mb-3" data-bs-dismiss="modal"></button>
-          </div>
-          <p className="text-center fw-bold color-brown">Choose your special case</p>
-          <div className="d-flex justify-content-between gap-0">
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/anniv.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Achievement</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/birthday.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Birthday</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/eidM.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Congratulation</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/getwell.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Get well Soon</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/gradu.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Graduation</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/welcome.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Holidays</h6>
-              </div>
-            </div>
-          </div>
-          </div>
-          <div className="d-flex mt-4 gap-3">
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/welcome.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Holidays</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/welcome.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Holidays</h6>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="occassion-card border-0 rounded-4">
-              <img className="mt-3 occassion-img" src="./assets/images/welcome.png" alt="Card image" style={{ marginInline: "40px" }}/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown mt-2 fs-24 fw-bold">Holidays</h6>
-              </div>
-            </div>
-          </div>
-          </div>
-          <div>
-            <hr />
-            <div className="d-flex justify-content-between mb-3">
-              <div role="button" className="mx-2 p-2 rounded-3 bg-purple-two fw-bold text-dark">Clear Section</div>
-              <div role="button" className="mx-2 p-2 rounded-5 bg-blue fw-bold bg-purple-two text-white">Apply</div>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-      </section>
     </header>
   );
 }

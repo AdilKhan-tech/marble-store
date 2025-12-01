@@ -5,9 +5,11 @@ import Footer from "@/components/dashboard/Footer";
 
 const Dashboard = ({children}) => {
     return <>
+    <div className="bg-light">
     <Header />
     {children}
      <Footer />
+     </div>
     </>
 };
 
