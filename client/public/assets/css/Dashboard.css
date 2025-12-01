@@ -1,6 +1,53 @@
-.sky-btn{
-    background-color: #36c79b;
-    height: 50px;
-    width: 270px;
-    color: white;
+* {
+  font-family: "Brandon_Grotesque-Bold", sans-serif;
+}
+.header {
+  margin: 20px;
+  margin-bottom: 0;
+  z-index: 100;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  transition: all 0.3s ease 0s;
+  transform: translateY(-80px);
+  background-color: rgb(252, 235, 235);
+}
+.form-control {
+  background: rgba(167, 163, 163, 0.05) !important;
+  border-radius: 12px !important;
+  padding: 8px 15px !important;
+  font-size: 16px !important;
+  line-height: 1.25;
+  padding-bottom: 14px !important;
+}
+.img-fluid{
+  height: 35px;
+  width: 35px;
+}
+.fs-14{
+  font-size: 14px;
+  font-weight: 500;
+}
+.fs-16{
+  font-size: 16px;
+  font-weight: 500;
+}
+.fs-20{
+  font-size: 20px;
+  font-weight: bold;
+}
+.bg-brown-light{
+  background-color: rgba(78, 69, 68, 0.473);
+}
+.footer{
+    margin-top: 100px;
+}
+.home{
+    margin-top: 120px;
+}
+.card{
+  background-color: silver;
+  margin-inline-start: 30px;
+  margin-top: 20px;
 }
