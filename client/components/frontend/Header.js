@@ -155,8 +155,8 @@ function Header() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-                <div role="button" className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold" disabled={loading} onSubmit={handleSubmit}>
-                  Continue
+                <div role="button" className="bg-blue mt-3 mx-auto rounded-5 w-75 text-center p-3 text-white fw-bold" onClick={handleSubmit}>
+                {loading ? "Loading..." : "Continue"}
                 </div>
 
             </div>

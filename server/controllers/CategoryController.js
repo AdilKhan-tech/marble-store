@@ -2,7 +2,6 @@ const Category = require("../models/Category");
 
 class CategoryController {
 
-    // CREATE category
     static async createCategory(req, res) {
         try {
             const { name_en, name_ar, slug, description } = req.body;
@@ -24,7 +23,6 @@ class CategoryController {
         }
     }
 
-    // GET all categories
     static async getAllCategories(req, res) {
         try {
             const categories = await Category.findAll();

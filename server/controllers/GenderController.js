@@ -1,7 +1,7 @@
 const Gender = require("../models/Gender");
 
 class GenderController {
-    // CREATE gender
+
     static async createGender(req, res) {
         try {
             const { name_en, name_ar, slug } = req.body;

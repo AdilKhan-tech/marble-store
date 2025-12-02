@@ -2,42 +2,39 @@ const CakeSize = require("../models/CakeSize");
 
 class CakeSizeController {
 
-// Create a new Cake Size
-
     static async createCakeSizes(req, res) {
         try {
-    const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url  } = req.body
-     
-    const cakesizes = await CakeSize.create({
-        category_id,
-        name_en,
-        name_ar,
-        slug,
-        scoop_size,
-        additional_price,
-        symbol,
-        calories,
-        status,
-        image_url,
-});
-     return res.status(201).json({ message : "Cake size created successfully", cakesizes });
+            const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url  } = req.body
+            
+            const cakesizes = await CakeSize.create({
+                category_id,
+                name_en,
+                name_ar,
+                slug,
+                scoop_size,
+                additional_price,
+                symbol,
+                calories,
+                status,
+                image_url,
+        });
+        return res.status(201).json({ message : "Cake size created successfully", cakesizes });
         } catch (err) {
             console.error(err);
             return res.status(500).json({ message: "Failed to create cake size", error: err.message });
-        
-}
- }
+        }
+    }
 
- static async getAllCakeSizes (req, res) {
-    try {
-        const cakesizes = await CakeSize.findAll();
-        return res.status(200).json(cakesizes);
-    } catch (err) {
-
-        console.error(err);
+    static async getAllCakeSizes (req, res) {
+        try {
+            const cakesizes = await CakeSize.findAll();
+            return res.status(200).json(cakesizes);
+        } catch (err) {
+            console.error(err);
             return res.status(500).json({ message: "Failedto retrieve cake sizes", error: err.message });   
+        }
     }
-    }
+
     static async updateCakeSizesById(req, res) {
         const { id } = req.params;
         const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url } = req.body;
@@ -46,7 +43,7 @@ class CakeSizeController {
             if(!cakesizes) {
                 return res.status(404).json({ message: "Cake size not found" });
 
-}
+            }
             cakesizes.category_id = category_id;
             cakesizes.name_en = name_en;
             cakesizes.name_ar = name_ar;
@@ -64,21 +61,22 @@ class CakeSizeController {
             console.error(error);
             return res.status(500).json({ message: error.message });
         }
-  }
-static async deleteCakeSizesById(req, res) {
-    try {
-        const { id } = req.params;
-        const cakesizes = await CakeSize.findByPk(id);
-        if(!cakesizes) {
-            return res.status(404).json({ message: "Cake size not found" });
+    }
+
+    static async deleteCakeSizesById(req, res) {
+        try {
+            const { id } = req.params;
+            const cakesizes = await CakeSize.findByPk(id);
+            if(!cakesizes) {
+                return res.status(404).json({ message: "Cake size not found" });
+            }
+            await cakesizes.destroy();
+            return res.status(200).json({ message: "Cake size deleted successfully" });     
         }
-        await cakesizes.destroy();
-        return res.status(200).json({ message: "Cake size deleted successfully" });     
+        catch (err) {
+            console.error(err);
+            return res.status(500).json({ message: err.message });
+        }
     }
-    catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: err.message });
-    }
-  }
 }
 module.exports = CakeSizeController;
