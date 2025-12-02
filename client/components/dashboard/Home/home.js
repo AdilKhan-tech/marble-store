@@ -1,24 +1,15 @@
 import React from "react";
+import PieChart from "../stats/Piechart";
+import Profitchart from "../stats/Profitchart";
+import RangeChart from "@/components/dashboard/stats/RangeChart";
 
 function Home() {
   return (
     <section className="p-3 home">
       <div className="row g-3">
         <div className="col-lg-6">
-          <div className="card p-4 shadow-sm rounded-4">
-            <div className="d-flex justify-content-between align-items-center">
-              <h6 className="m-0">Total Sales</h6>
-              <div className="dropdown">
-                <button className="border-0 bg-transparent d-flex align-items-center" data-bs-toggle="dropdown">
-                  <span>Year 2025</span><i className="bi bi-chevron-down ms-1 small"></i>
-                  </button>
-                <ul className="dropdown-menu">
-                  <li className="dropdown-item">Year 2025</li>
-                  <li className="dropdown-item">Year 2024</li>
-                  <li className="dropdown-item">Year 2023</li>
-                </ul>
-              </div>
-            </div>
+          <div className="card p-4 shadow-sm rounded-4 h-100">
+            <RangeChart />
           </div>
         </div>
 
@@ -38,7 +29,7 @@ function Home() {
 
             <div className="d-flex justify-content-between align-items-center mt-3">
               <small className="text-muted">4.75% Increase in orders last week</small>
-              <span className="d-flex align-items-center px-2 py-1 bg-success bg-opacity-10 border border-success rounded">
+              <span className="d-flex align-items-center px-2 py-1 bg-success bg-opacity-10 border border-success">
                 <img src="./assets/images/Dashboard/moving-arrow.png" />
                 <span className="text-success ms-1">4.75%</span></span>
             </div>
@@ -63,7 +54,7 @@ function Home() {
 
             <div className="d-flex justify-content-between align-items-center mt-3">
               <small className="text-muted">Total visitors decreased by 1.25%</small>
-              <span className="d-flex align-items-center px-2 py-1 bg-danger bg-opacity-10 border border-danger rounded">
+              <span className="d-flex align-items-center px-2 py-1 bg-danger bg-opacity-10 border border-danger">
                 <img src="./assets/images/Dashboard/moving-arrow.png" />
                 <span className="text-danger ms-1">1.25%</span></span>
             </div>
@@ -86,7 +77,7 @@ function Home() {
 
             <div className="d-flex justify-content-between align-items-center mt-3">
               <small className="text-muted">Revenue increases this month</small>
-              <span className="d-flex align-items-center px-2 py-1 bg-success bg-opacity-10 border border-success rounded">
+              <span className="d-flex align-items-center px-2 py-1 bg-success bg-opacity-10 border border-success">
                 <img src="./assets/images/Dashboard/moving-arrow.png" />
                 <span className="text-success ms-1">3.15%</span></span>
             </div>
@@ -116,6 +107,8 @@ function Home() {
           </div>
         </div>
       </div>
+      <Profitchart />
+      {/* <PieChart /> */}
     </section>
   );
 }
