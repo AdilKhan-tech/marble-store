@@ -1,6 +1,6 @@
 import React from "react";
-import PieChart from "../stats/Piechart";
-import Profitchart from "../stats/Profitchart";
+// import PieChart from "../stats/Piechart";
+import Profitchart from "@/components/dashboard/profitchart/Profitchart";
 import RangeChart from "@/components/dashboard/stats/RangeChart";
 
 function Home() {
