@@ -17,6 +17,8 @@ router.delete('/buckets/:id', IceCreamBucketController.deleteIceCreamBucketById)
 
 router.post("/portions", IceCreamPortionSizeController.createIceCreamPortionSize);
 router.get("/portions", IceCreamPortionSizeController.getAllIceCreamPortionSize);
+router.put("/portion/:id", IceCreamPortionSizeController.updateIceCreamPortionSize);
+router.delete("/portion/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
 
 
 module.exports = router;
