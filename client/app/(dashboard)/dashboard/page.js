@@ -2,7 +2,7 @@ import React from 'react'
 import Home from "@/components/dashboard/Home/home"
 function page() {
   return (
-    <section>
+    <section style={{marginInlineStart:"250px"}}>
     <Home />
     </section>
   )

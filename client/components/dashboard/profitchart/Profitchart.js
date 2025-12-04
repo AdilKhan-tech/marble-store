@@ -224,7 +224,11 @@ function Profitchart() {
 
           <div className="col-lg-6">
             <div className="card p-4 shadow-sm rounded-4">
-              {/* <ApexChart /> */}
+             <div className="d-flex justify-content-between">
+              <div>
+                <p>Top Sellers</p>
+              </div>
+             </div>
             </div>
           </div>
         </div>

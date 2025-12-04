@@ -62,3 +62,31 @@
 .nav-link{
   margin-right: -20px;
 }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: #ffffff;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+.sidebar.open {
+  left: 0;
+}
+.list-item.active {
+  background-color: #003cff8a;
+  color: #FF6E21 !important;
+}
+.list-item.active:hover {
+  background-color: #dce4ff8a;
+  color: #FF6E21 !important;
+}
+.sidebar-submenu-header.active {
+  color: #FF6E21;
+}
+.org-btn{
+  background-color: #FF6E21;
+}
