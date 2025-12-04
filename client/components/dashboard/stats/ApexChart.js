@@ -6,7 +6,7 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function InflationChart() {
   const series = [{
     name: 'Inflation',
-    data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+    data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.9, 8.4, 7.8, 6.5, 2.2]
   }];
 
   const options = {
