@@ -1,33 +1,29 @@
+'use client';
+
+import useAxiosConfig from "../../../hooks/useAxiosConfig";
 import React from 'react'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { getCakesSizes } from '../../../utils/apiRoutes';
 
-function ListCakes() {
+export default function ListCakes() {
+  const {token} = useAxiosConfig();
+  const [cakes, setCakes] = useState([]);
 
-      const businessUnits = [
-    {
-      id: 1,
-      customer: "Finance",
-      created: "10/10/2025",
-      total: "$9,095",
-      profit: "$1,254",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      customer: "Finance",
-      created: "10/10/2025",
-      total: "$9,095",
-      profit: "$1,254",
-      status: "Rejected",
-    },
-    {
-      id: 3,
-      customer: "Finance",
-      created: "10/10/2025",
-      total: "$9,095",
-      profit: "$1,254",
-      status: "Confirmed",
-    },
-  ];
+  const fetchCakeSizes = async () => {
+    try {
+      const response = await axios.get(getCakesSizes);
+      console.log("responsesssssss", response.data);
+      setCakes(response.data)
+    } catch (error) {
+      console.error("Error fetching cakes", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!token) return;
+    fetchCakeSizes();
+  }, [token]);
 
   return (
     <>
@@ -51,29 +47,31 @@ function ListCakes() {
               <thead>
                 <tr>
                   <th className="bg-secondary fw-20">#</th>
-                  <th className="bg-secondary fw-20">Category</th>
                   <th className="bg-secondary fw-20">Name</th>
+                  <th className="bg-secondary fw-20">Category</th>
                   <th className="bg-secondary fw-20">Slug</th>
                   <th className="bg-secondary fw-20">Scope/Size</th>
                   <th className="bg-secondary fw-20">Additional Price</th>
                   <th className="bg-secondary fw-20">Symbol</th>
                   <th className="bg-secondary fw-20">Calories</th>
                   <th className="bg-secondary fw-20">Status</th>
+                  <th className="bg-secondary fw-20">Action</th>
                 </tr>
               </thead>
 
               <tbody>
-                {businessUnits.map((item) => (
-                  <tr key={item.id}>
+                {cakes.map((cake) => (
+                  <tr key={cake.id}>
 
-                    <td className="text-secondary fs-16">{item.id}</td>
-                    <td>Adil Khan</td>
-                    <td className="text-secondary fs-16">{item.created}</td>
-                    <td className="text-secondary fs-16">{item.total}</td>
-                    <td className="text-secondary fs-16">{item.profit}</td>
-                    <td className="text-secondary fs-16">{item.profit}</td>
-                    <td className="text-secondary fs-16">{item.profit}</td>
-                    <td className=""><span className="bg-danger bg-opacity-10 rounded-2 border border-danger fs-16">{item.status}</span></td>
+                    <td className="text-secondary fs-16">{cake.id}</td>
+                    <td className="text-secondary fs-16">{cake.name_en}</td>
+                    <td className="text-secondary fs-16">{cake.category_id}</td>
+                    <td className="text-secondary fs-16">{cake.slug}</td>
+                    <td className="text-secondary fs-16">{cake.scoop_size}</td>
+                    <td className="text-secondary fs-16">{cake.additional_price}</td>
+                    <td className="text-secondary fs-16">{cake.symbol}</td>
+                    <td className="text-secondary fs-16">{cake.calories}</td>
+                    <td className="text-secondary fs-16">{cake.status}</td>
 
                     <td>
                       <div className="d-flex gap-1">
@@ -101,5 +99,3 @@ function ListCakes() {
     
   )
 }
-
-export default ListCakes
