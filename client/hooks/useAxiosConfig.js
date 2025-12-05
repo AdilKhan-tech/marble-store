@@ -1,26 +1,3 @@
-// 'use client';
-
-// import { useSession } from "next-auth/react";
-// import { useState , useEffect } from "react";
-// import axios from "axios";
-
- 
-// const useAxiosConfig = () => {
-//     const {data: session} = useSession();
-//     const [token, setToken] = useState(null);
- 
-//     useEffect(() => {
-//         if(session?.accessToken){
-//             const userToken = session.accessToken;
-//             setToken (userToken);
-//             axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
-//         }
-//     }, [session]);
-//     return {token};
-// }
-// export default useAxiosConfig;
-
-
 'use client';
 
 import { useSession } from "next-auth/react";

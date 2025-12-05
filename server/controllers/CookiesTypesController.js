@@ -1,0 +1,125 @@
+const CookiesTypes = require('../models/CookiesTypes');
+
+class CookiesTypesController {
+
+    static async createCookiesTypes (req, res){
+        try {
+            const {name_en, name_ar, slug, sort, status} = req.body;
+
+            const image_url = req.file?.path || null;
+
+            const cookiesTypes = await CookiesTypes.create({
+                name_en,
+                name_ar,
+                slug,
+                sort,
+                status,
+                image_url,
+            });
+            return res.status(201).json({ 
+                message: "Ice Cookies Types created successfully", 
+                cookiesTypes
+            });
+
+        } catch(error) {
+            return res.status(500).json({
+                message: "Failed to create Cookies Types",
+                error: error.message
+            });
+        }
+    }
+
+    static async getAllCookiesTypes (req, res) {
+        try {
+            const cookiesTypes = await CookiesTypes.findAll();
+            return res.status(200).json({cookiesTypes});
+
+        } catch(error) {
+            res.status(500).json({message: "Failed to get Cookies Types", error: error.message});
+        }
+    }
+
+    static async updateCookiesTypesById(req, res) {
+        const { id } = req.params;
+        try {
+            const cookiesTypes = await CookiesTypes.findByPk(id);
+            if (!cookiesTypes) {
+                return res.status(404).json({ message: "Cookies Types not found" });
+            }
+    
+            const {
+                name_en,
+                name_ar,
+                slug,
+                sort,
+                status
+            } = req.body;
+
+            const image_url = req.file?.path || cookiesTypes.image_url;
+    
+            let parsedStatus = cookiesTypes.status;
+    
+            if (status !== undefined) {
+                if (status === 'true' || status === true || status === '1' || status === 1) {
+                    parsedStatus = true;
+                }
+                else if (status === 'false' || status === false || status === '0' || status === 0) {
+                    parsedStatus = false;
+                }
+            }
+    
+            await cookiesTypes.update({
+                name_en: name_en ?? cookiesTypes.name_en,
+                name_ar: name_ar ?? cookiesTypes.name_ar,
+                slug: slug ?? cookiesTypes.slug,
+                sort: sort ?? cookiesTypes.sort,
+                status: parsedStatus,
+                image_url: image_url
+            });
+
+            return res.status(200).json({message: "Cookies Types updated successfully",cookiesTypes});
+    
+        } catch (error) {
+            console.error("UPDATE ERROR:", error);
+            return res.status(500).json({message: "Failed to update Cookies Types",error: error.message});
+        }
+    }
+
+    static async deleteCookiesTypesById(req, res) {
+        try {
+            const { id } = req.params;
+    
+            const cookiesTypes = await CookiesTypes.findByPk(id);
+    
+            if (!cookiesTypes) {
+                return res.status(404).json({
+                    message: "Cookies Types not found"
+                });
+            }
+    
+            // Agar image folder se remove karna hai (optional)
+            if (cookiesTypes.image_url) {
+                const fs = require("fs");
+                const path = require("path");
+    
+                const filePath = path.join(__dirname, "..", cookiesTypes.image_url);
+    
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+            }
+
+            await cookiesTypes.destroy();
+    
+            return res.status(200).json({message: "Cookies Types deleted successfully"});
+    
+        } catch (error) {
+            return res.status(500).json({
+                message: "Failed to delete Cookies Types",
+                error: error.message
+            });
+        }
+    }
+    
+}
+module.exports = CookiesTypesController;    

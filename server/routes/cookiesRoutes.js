@@ -1,17 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const CookiesController = require('../controllers/CookiesController');
+const CookiesTypesController = require('../controllers/CookiesTypesController');
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
 
 router.use(authenticateToken);
 
-
+// Cookies
 router.post('/create', upload.single('image_url'), CookiesController.createCookies);
 router.get('/getAll', CookiesController.getAllCookies);
 router.put('/update/:id', upload.single('image_url'), CookiesController.updateCookiesById);
 router.delete('/delete/:id', CookiesController.deleteCookiesById);
 
+// Cookise Types
+router.post('/types', upload.single('image_url'), CookiesTypesController.createCookiesTypes);
+router.get('/types', CookiesTypesController.getAllCookiesTypes);
+router.put('/types/:id', upload.single('image_url'), CookiesTypesController.updateCookiesTypesById);
+router.delete('/types/:id', CookiesTypesController.deleteCookiesTypesById);
 
 module.exports = router;

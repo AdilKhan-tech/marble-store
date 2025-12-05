@@ -13,7 +13,6 @@ export default function ListCakes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getCakesSizes);
-      console.log("responsesssssss", response.data);
       setCakes(response.data)
     } catch (error) {
       console.error("Error fetching cakes", error);
