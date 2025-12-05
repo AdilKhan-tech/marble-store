@@ -7,7 +7,7 @@ const upload = require("../middlewares/upload");
 
 router.use(authenticateToken);
 
-router.post('/create', upload.any(), CategoryController.createCategory);
+router.post('/create', upload.single(), CategoryController.createCategory);
 router.get('/getAll', CategoryController.getAllCategories);
 router.put('/update/:id', CategoryController.updateCategoryById);
 router.delete('/delete/:id', CategoryController.deleteCategoryById);

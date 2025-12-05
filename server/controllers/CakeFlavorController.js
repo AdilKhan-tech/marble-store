@@ -4,11 +4,14 @@ class CakeFlavorController {
 
     static async createCakeFlavor(req, res) {
        try {
-        const { category_id, name_en, name_ar, slug, additional_price, symbol, status, image_url } = req.body
+        const { name_en, category_id, name_ar, slug, additional_price, symbol, status } = req.body
+
+        const image_url = req.file?.path || null;
+
         const cakeflavors = await CakeFlavor.create({
-            category_id,
             name_en,
             name_ar,
+            category_id,
             slug,
             additional_price,
             symbol,

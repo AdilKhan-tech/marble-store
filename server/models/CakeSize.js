@@ -8,20 +8,18 @@ const CakeSize = sequelize.define("CakeSize", {
     autoIncrement: true,
     allowNull: false,
   },
-  category_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
   name_en: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
   name_ar: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
+  category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   slug: {
     type: DataTypes.STRING,
     allowNull: true,

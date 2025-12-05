@@ -75,7 +75,7 @@ class IceCreamBucketController {
           console.error(error);
           return res.status(500).json({message: "Failed to update Ice Cream Bucket",error: error.message});
         }
-      }
+    }
       
 
     static async deleteIceCreamBucketById(req, res) {

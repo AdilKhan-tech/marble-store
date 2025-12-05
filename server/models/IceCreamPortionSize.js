@@ -10,16 +10,16 @@ const IceCreamPortionSize = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    icecream_bucket_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     name_en: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     name_ar: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    icecream_bucket_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     slug: {
@@ -51,7 +51,7 @@ const IceCreamPortionSize = sequelize.define(
     },
   },
   {
-    tableName: "ice_cream_portion_sizes",
+    tableName: "icecream_portion_sizes",
     timestamps: false,
   }
 );
