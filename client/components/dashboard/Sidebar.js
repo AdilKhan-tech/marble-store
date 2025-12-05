@@ -29,7 +29,7 @@ export default function SidebarLayout() {
             <h4 className="text-orange">Dashboard</h4>
           </Link>
           <button className="btn btn-light">
-            <i className="bi bi-x-lg"></i>
+            <i className="bi bi-x-lg" onClick={() => setOpen(false)}></i>
           </button>
         </div>
         <nav className="sidebar-nav">
