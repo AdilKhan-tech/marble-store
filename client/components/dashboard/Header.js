@@ -9,7 +9,7 @@ function Header() {
   };
 
   return (
-    <header className="header p-2 rounded-3" id="header">
+    <header className="header p-2 rounded-3" id="header" style={{marginInlineStart:"270px"}}>
       <div className="container-fluid">
         <div className="row align-items-center">
           <div className="col-md-6">
