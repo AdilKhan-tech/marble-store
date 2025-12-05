@@ -42,6 +42,9 @@
   font-size: 18px;
   font-weight: 600;
 }
+.fs-12{
+  font-size: 12px;
+}
 .fs-20{
   font-size: 20px;
   font-weight: bold;
@@ -68,8 +71,14 @@
   margin-right: -20px;
 }
 .org-btn{
-  background-color: #FF6E21;
+  background-color: #f86414;
   color: white;
+}
+.org-btn:hover{
+  background-color: #925d40;
+}
+.cancle-btn:hover{
+  background-color: #ffffff1f;
 }
 .sidebar-overlay {
   position: fixed;
@@ -201,4 +210,18 @@
 }
 .text-orange{
   color: #FF6E21;
+}
+.offcanvas.offcanvas-end {
+  width: 500px !important;
+}
+/* .form-switch{
+  padding-right: 5px !important;
+  width: 173px;
+} */
+.form-select {
+  border-radius: 12px !important;
+  padding: 8px 15px !important;
+  font-size: 16px !important;
+  line-height: 1.25;
+  padding-bottom: 14px !important;
 }

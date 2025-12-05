@@ -14,15 +14,7 @@ function Header() {
         <div className="row align-items-center">
           <div className="col-md-6">
             <div className="left-header-content">
-              <ul className="d-flex align-items-center ps-0 mb-0 list-unstyled justify-content-center justify-content-md-start">
-                <li className="w-50">
-                  <form className="d-flex align-items-center position-relative w-100">
-                    <i className="bi bi-search position-absolute ms-3 text-muted"></i>
-                    <input  type="search" className="form-control ps-5 mt-2 bg-light border-0 rounded-pill shadow-sm" 
-                      placeholder="Search here..."/>
-                  </form>
-                </li>
-              </ul>
+              <h2 className="fs-20">Welcome back, Ikmal HRM!</h2>
             </div>
           </div>
           <div className="col-md-6">
