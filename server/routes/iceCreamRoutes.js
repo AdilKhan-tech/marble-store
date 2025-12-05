@@ -11,9 +11,9 @@ const upload = require("../middlewares/upload");
 router.use(authenticateToken);
 
 
-router.post('/buckets', upload.any(), IceCreamBucketController.createIceCreamBucket);
+router.post('/buckets', upload.single(), IceCreamBucketController.createIceCreamBucket);
 router.get('/buckets', IceCreamBucketController.getAllIceCreamBucket);
-router.put('/buckets/:id', upload.any(), IceCreamBucketController.updateIceCreamBucketById);
+router.put('/buckets/:id', upload.single(), IceCreamBucketController.updateIceCreamBucketById);
 router.delete('/buckets/:id', IceCreamBucketController.deleteIceCreamBucketById);
 
 

@@ -7,7 +7,7 @@ router.use(authenticateToken);
 
 
 router.post('/create', GenderController.createGender);
-router.get('/getall', GenderController.getAllGenders);
+router.get('/getAll', GenderController.getAllGenders);
 router.put('/update/:id', GenderController.updateGender);
 router.delete('/delete/:id', GenderController.deleteGenderById);
 

@@ -4,12 +4,14 @@ class CakeSizeController {
 
     static async createCakeSizes(req, res) {
         try {
-            const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url  } = req.body
+            const { name_en,name_ar,category_id,slug,scoop_size,additional_price,symbol,calories,status } = req.body
+
+            const image_url = req.file?.path || null;
             
             const cakesizes = await CakeSize.create({
-                category_id,
                 name_en,
                 name_ar,
+                category_id,
                 slug,
                 scoop_size,
                 additional_price,
@@ -37,29 +39,58 @@ class CakeSizeController {
 
     static async updateCakeSizesById(req, res) {
         const { id } = req.params;
-        const { category_id,name_en,name_ar,slug,scoop_size,additional_price,symbol,calories,status,image_url } = req.body;
+    
         try {
             const cakesizes = await CakeSize.findByPk(id);
-            if(!cakesizes) {
+            if (!cakesizes) {
                 return res.status(404).json({ message: "Cake size not found" });
-
             }
-            cakesizes.category_id = category_id;
-            cakesizes.name_en = name_en;
-            cakesizes.name_ar = name_ar;
-            cakesizes.slug = slug;
-            cakesizes.scoop_size = scoop_size;
-            cakesizes.additional_price = additional_price;
-            cakesizes.symbol = symbol;
-            cakesizes.calories = calories;
-            cakesizes.status = status;
-            cakesizes.image_url = image_url;
-     
-            await cakesizes.save();
-            return res.status(200).json({ message: "Cake size updated successfully", cakesizes });
-        }  catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: error.message });
+    
+            const {
+                category_id,
+                name_en,
+                name_ar,
+                slug,
+                scoop_size,
+                additional_price,
+                symbol,
+                calories,
+                status
+            } = req.body;
+
+            const image_url = req.file?.path || cakesizes.image_url;
+
+            let parsedStatus = cakesizes.status;
+    
+            if (status !== undefined) {
+                if (status === 'true' || status === true || status === '1' || status === 1) {
+                    parsedStatus = true;
+                } else if (status === 'false' || status === false || status === '0' || status === 0) {
+                    parsedStatus = false;
+                }
+            }
+
+            await cakesizes.update({
+                name_en: name_en ?? cakesizes.name_en,
+                name_ar: name_ar ?? cakesizes.name_ar,
+                category_id: category_id ?? cakesizes.category_id,
+                slug: slug ?? cakesizes.slug,
+                scoop_size: scoop_size ?? cakesizes.scoop_size,
+                additional_price: additional_price ?? cakesizes.additional_price,
+                symbol: symbol ?? cakesizes.symbol,
+                calories: calories ?? cakesizes.calories,
+                status: parsedStatus,
+                image_url: image_url
+            });
+    
+            return res.status(200).json({
+                message: "Cake size updated successfully",
+                cakesizes
+            });
+    
+        } catch (error) {
+            console.error("UPDATE ERROR:", error);
+            return res.status(500).json({ message: "Failed to update cake size", error: error.message });
         }
     }
 

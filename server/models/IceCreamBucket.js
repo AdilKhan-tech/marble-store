@@ -68,7 +68,7 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
   },
 
 }, {
-  tableName: "ice_cream_buckets",
+  tableName: "icecream_buckets",
   timestamps: false,
 });
 

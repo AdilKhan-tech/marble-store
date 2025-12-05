@@ -7,6 +7,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const occasionRoutes = require('./routes/occasionRoutes');
 const branchRoutes = require('./routes/branchRoutes');
 const genderRoutes = require('./routes/genderRoutes');
+const cookiesRoutes = require('./routes/cookiesRoutes');
 const iceCreamRoutes = require('./routes/iceCreamRoutes');
 const cakeRoutes = require('./routes/cakeRoutes');
 
@@ -37,6 +38,7 @@ app.use('/categories', categoryRoutes);
 app.use('/occasions', occasionRoutes);
 app.use('/braches', branchRoutes);
 app.use('/genders', genderRoutes);
+app.use('/cookies', cookiesRoutes);
 app.use('/icecreams', iceCreamRoutes);
 app.use('/cakes', cakeRoutes);
 
