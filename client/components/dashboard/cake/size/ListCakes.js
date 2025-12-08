@@ -1,13 +1,12 @@
 'use client';
 import React from 'react'
-import useAxiosConfig from "../../../hooks/useAxiosConfig";
+import useAxiosConfig from "../../../../hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
+import AddCakes from "@/components/dashboard/cake/size/add/AddCakes";
 import { useEffect, useState } from 'react';
-import AddCakes from "../cake/add/AddCakes"
-import { getCakesSizes, deleteCakesSizes } from '../../../utils/apiRoutes';
+import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '../../../../utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
 export default function ListCakes() {
   const {token} = useAxiosConfig();
   const [cakes, setCakes] = useState([]);
@@ -30,6 +29,10 @@ export default function ListCakes() {
 
   const showOffcanvasOnAddCakesSize = () => {
         setCakeData(null);
+        setShowOffcanvas(true);
+     }
+     const showOffcanvasOnEditCakesSize = (cake) => {
+        setCakeData(cake);
         setShowOffcanvas(true);
      }
      const closePopup = () => {
@@ -55,14 +58,15 @@ export default function ListCakes() {
           }
       }
     const addCakeToState = (newCake) => {
-    setCakes(prev => [newCake, ...prev]); // prepend or append as needed
+    setCakes(prev => [newCake, ...prev]);
     setShowOffcanvas(false);
     };
 
 
+
   return (
     <>
-    <section className='' style={{marginInlineStart:"270px", marginTop:"100px"}}>
+    <section className='' style={{ marginTop:"100px"}}>
       <div className=""> 
       <p className="fs-20">Cakes Sizes</p>
       <div className='d-flex justify-content-between'>
@@ -119,7 +123,7 @@ export default function ListCakes() {
 
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="btn btn-sm btn-light p-2">
+                        <button className="btn btn-sm btn-light p-2" onClick={() => showOffcanvasOnEditCakesSize(cake)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
                         <button className="btn btn-sm btn-light p-2" onClick={() => showDeleteConfirmation(cake.id)}>
@@ -142,7 +146,9 @@ export default function ListCakes() {
                 placement="end">
                 <Offcanvas.Header closeButton>
                 <Offcanvas.Title>
-                   {cakeData ? "Update Size" : "Add Size"}
+                   <div className='fs-24'>
+                     {cakeData ? "Update Size" : "Add Size"}
+                   </div>
                 </Offcanvas.Title>
                 </Offcanvas.Header>
                 <hr  className="mt-0"/>

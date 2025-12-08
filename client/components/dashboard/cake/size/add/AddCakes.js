@@ -151,9 +151,11 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         <select name="category_id" className="form-select"
           value={formData.category_id} onChange={handleChange}>
           <option value="">Select Category</option>
-          <option value="1">Cakes</option>
-          <option value="2">Ice Cream</option>
-          <option value="3">Bakery</option>
+          <option value="1">12 Inch</option>
+          <option value="2">16 Inch</option>
+          <option value="3">Large</option>
+          <option value="4">Medium</option>
+          <option value="5">Small</option>
         </select>
       </div>
 

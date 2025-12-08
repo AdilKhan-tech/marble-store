@@ -1,5 +1,5 @@
 import React from 'react'
-import ListCakes from '../../../../components/dashboard/cake/ListCakes'
+import ListCakes from '@/components/dashboard/cake/size/ListCakes';
 
 function Page() {
   return (
