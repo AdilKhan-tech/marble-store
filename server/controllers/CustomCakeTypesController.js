@@ -12,18 +12,18 @@ class CustomCakeTypesController {
         image_url,
       });
       return res.status(201).json({message: "Custom cake type created successfully",customcaketypes,});
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({message: "Failed to create custom cake type",error: err.message,});
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({message: "Failed to create custom cake type",error: error.message,});
     }
   }
   static async getAllCustomCakeTypes(req, res) {
     try {
       const customcaketypes = await CustomCakeTypes.findAll();
       return res.status(200).json(customcaketypes);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({message: "Failed to retrieve custom cake types",error: err.message,});
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({message: "Failed to retrieve custom cake types",error: error.message,});
     }
   }
   static async updateCustomCakeTypesById(req, res) {
