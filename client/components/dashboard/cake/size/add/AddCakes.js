@@ -105,69 +105,69 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
   }, [errors]);
 
   return (
-    <form className="component-form" onSubmit={handleSubmit}>
+    <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name English</label>
-        <input name="name_en" type="text" className="form-control"
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
+        <input name="name_en" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
         value={formData.name_en} onChange={handleChange}/>
       </div>
 
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name Arabic</label>
-        <input name="name_ar" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
+        <input name="name_ar" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.name_ar} onChange={handleChange}/>
       </div>
 
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Slug</label>
-        <input name="slug" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
+        <input name="slug" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.slug} onChange={handleChange}/>
       </div>
 
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Scoop Size</label>
-        <input name="scoop_size" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Scoop Size</label>
+        <input name="scoop_size" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.scoop_size} onChange={handleChange}/>
       </div>
 
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Additional Price</label>
-        <input name="additional_price" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Additional Price</label>
+        <input name="additional_price" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.additional_price} onChange={handleChange}/>
       </div>
 
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Symbol</label>
-        <input name="symbol" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
+        <input name="symbol" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.symbol} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Calories</label>
-        <input name="calories" type="text" className="form-control"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
+        <input name="calories" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.calories} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Category</label>
-        <select name="category_id" className="form-select"
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Category</label>
+        <select name="category_id" className="form-select textarea-hover-dark text-secondary"
           value={formData.category_id} onChange={handleChange}>
-          <option value="">Select Category</option>
-          <option value="1">12 Inch</option>
-          <option value="2">16 Inch</option>
-          <option value="3">Large</option>
-          <option value="4">Medium</option>
-          <option value="5">Small</option>
+          <option value="" className="fs-14 fw-normal text-secondary">Select Category</option>
+          <option value="12 Inch" className="fs-14 fw-normal text-secondary">12 Inch</option>
+          <option value="16 Inch" className="fs-14 fw-normal text-secondary">16 Inch</option>
+          <option value="Large" className="fs-14 fw-normal text-secondary">Large</option>
+          <option value="Medium" className="fs-14 fw-normal text-secondary">Medium</option>
+          <option value="Small" className="fs-14 fw-normal text-secondary">Small</option>
         </select>
       </div>
 
-      <label className="fs-14 fw-bold fnt-color opacity-75 mt-2 mb-1">Status</label>
+      <label className="fs-14 fw-bold fnt-color opacity-75 mt-2">Status</label>
       <div className="form-check form-switch ms-4">
         <input className="form-check-input fs-4" type="checkbox" role="switch"
           name="status" checked={formData.status} onChange={handleChange}/>
       </div>
-      <div className="col-md-12 px-1 mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">File Attachment</label>
+      <div className="col-md-12 px-1 mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
         <div className="">
-          <input type="file" className="form-control bg-light" id="fileInput"
+          <input type="file" className="form-control form-control-lg textarea-hover-dark text-secondary" id="fileInput"
             multiple onChange={handleFileChange}/>
         </div>
         <ul className="mt-2">
@@ -177,14 +177,15 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         </ul>
         <div className="text-danger">
         <i className="bi bi-info-circle me-2"></i>
-        <span className="fs-12 fw-bold">Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX</span>
+        <span className="fs-14 fw-normal">Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX</span>
         </div>
       </div>
 
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
-        <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-100">Save</button>
-        <button type="button" className="cancle-btn rounded-3 border-1 fs-16 py-2 fw-bold w-100" onClick={closePopup}>Cancel</button>
-      </div>
+        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>Cancel</button>
+        <button type="submit" className="org-btn py-2 d-flex justify-content-center rounded-3 fs-16 fw-normal border-0 w-100">Save</button>
+       </div>
+
     </form>
   );
 };
