@@ -172,7 +172,7 @@ function Header() {
                     <button  className="d-flex align-items-center border-0 bg-transparent p-0" type="button"
                       data-bs-toggle="dropdown" aria-label="User Profile">
                       <div className="position-relative">
-                        <img  src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid" alt="Admin Profile" />
+                        <img  src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid"/>
                         <span className="bg-success border border-2 border-white rounded-circle position-absolute end-0 bottom-0"
                           style={{ width: "10px", height: "10px" }}></span>
                       </div>
@@ -181,7 +181,7 @@ function Header() {
 
                     <div className="dropdown-menu dropdown-menu-end mt-2 p-0">
                       <div className="d-flex align-items-center info p-3 border-bottom">
-                        <img src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid me-3" alt="Admin Profile"/>
+                        <img src="./assets/images/Dashboard/adil.png" className="rounded-5 img-fluid me-3"/>
                         <div className="">
                           <h6 className="fs-18 mb-0">Adil Khan</h6>
                           <span className="text-muted small">Admin</span>

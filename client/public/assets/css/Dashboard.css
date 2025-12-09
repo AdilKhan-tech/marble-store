@@ -4,7 +4,7 @@
   --radius-md: 12px;
 }
 * {
-  font-family: "Brandon_Grotesque-Bold", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .header {
   margin: 20px;
@@ -28,6 +28,10 @@
   font-size: 16px !important;
   line-height: 1.25;
   padding-bottom: 14px !important;
+}
+.form-control:focus {
+  box-shadow: none !important;
+  border-color: black !important;
 }
 .img-fluid{
   height: 35px;
@@ -82,15 +86,25 @@
 .nav-link{
   margin-right: -20px;
 }
-.org-btn{
-  background-color: #f86414;
-  color: white;
+.org-btn {
+  background: #ff7900 !important;
+  color: white !important;
+  height: 43px;
 }
-.org-btn:hover{
-  background-color: #925d40;
+.org-btn:hover {
+  background: #fad1ac !important;
+  color: #ff7900 !important;
+  transition: all 0.5s ease;
+  height: 43px;
+}
+.cancle-btn{
+  background-color: #ffffff;
 }
 .cancle-btn:hover{
-  background-color: #ffffff1f;
+  background-color: #ff6e21 opacity(0.8);
+  border-color: #ff6e21 !important;
+  color: #ff6e21 !important;
+  transition: all 0.5s ease;
 }
 .sidebar-overlay {
   position: fixed;
@@ -198,7 +212,7 @@
   color: #FF6E21;
 }
 .offcanvas.offcanvas-end {
-  width: 500px !important;
+  width: 530px !important;
 }
 .form-select {
   border-radius: 12px !important;
@@ -295,4 +309,45 @@
   outline: none;
   box-shadow: none;
   background: #fff; 
+}
+.fnt-color {
+  color: #494949 !important;
+}
+.table thead tr th {
+  position: sticky;
+  top: 0;
+  left: 0px;
+  z-index: 3;
+}
+.pagetitle {
+  margin-top: 24px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.datatable-search::before {
+  content: "\F52A";
+  font-family: "Bootstrap-icons";
+  position: absolute;
+font-size: 16px;
+  top: 0;
+  color: #aaa;
+  z-index: 1;
+  bottom: 0;
+  height: fit-content;
+  margin-block: auto;
+}
+.text-dark-custom {
+  color: var(--Color, rgba(73, 73, 73, 1)) !important;
+}
+.fw-medium{
+  font-weight: 500 !important;
+}
+.action-btn {
+  font-size: 14px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }

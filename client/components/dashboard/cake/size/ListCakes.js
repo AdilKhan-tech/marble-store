@@ -1,11 +1,11 @@
 'use client';
 import React from 'react'
-import useAxiosConfig from "../../../../hooks/useAxiosConfig";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddCakes from "@/components/dashboard/cake/size/add/AddCakes";
 import { useEffect, useState } from 'react';
-import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '../../../../utils/apiRoutes';
+import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 export default function ListCakes() {
   const {token} = useAxiosConfig();
@@ -68,33 +68,34 @@ export default function ListCakes() {
     <>
     <section className='' style={{ marginTop:"100px"}}>
       <div className=""> 
-      <p className="fs-20">Cakes Sizes</p>
-      <div className='d-flex justify-content-between'>
+      <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
+      <div className='d-flex justify-content-between mt-4'>
         <div className='d-flex'>
-            <input type="text" className="form-control rounded-2 border px-3 py-2" placeholder="Search here..." style={{height:"43px", width:"300px"}}/>
+        <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+            <input type="text" className="form-control border rounded-start-0 border-start-0" placeholder="Search here..." style={{height:"46px", width:"300px"}}/>
             </div>
             <div style={{marginInlineEnd:"20px"}}>
               <div className='org-btn py-2 px-4 rounded-3' onClick={showOffcanvasOnAddCakesSize} role='button'><i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span></div>
             </div>
         </div>
         </div>
-      <div className="px-0 pt-0 rounded-2 p-0 mt-5">
+      <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
         <div className="datatable-wrapper">
           <div className="data-table p-2 rounded-4">
-            <table className="table datatable datatable-table schedulerTable">
-              <thead>
+            <table className="table datatable datatable-table">
+              <thead className=''>
                 <tr className=''>
-                  <th className="fw-20">#</th>
-                  <th className="fw-20">Name</th>
-                  <th className="fw-20">Category</th>
-                  <th className="fw-20">Slug</th>
-                  <th className="fw-20">Scope/Size</th>
-                  <th className="fw-20">Additional Price</th>
-                  <th className="fw-20">Symbol</th>
-                  <th className="fw-20">Calories</th>
-                  <th className="fw-20">Status</th>
-                  <th className="fw-20">Action</th>
+                  <th className="fw-16 fnt-color">ID</th>
+                  <th className="fw-16 fnt-color">Name</th>
+                  <th className="fw-16 fnt-color">Category</th>
+                  <th className="fw-16 fnt-color">Slug</th>
+                  <th className="fw-16 fnt-color">Scope/Size</th>
+                  <th className="fw-16 fnt-color">Additional Price</th>
+                  <th className="fw-16 fnt-color">Symbol</th>
+                  <th className="fw-16 fnt-color">Calories</th>
+                  <th className="fw-16 fnt-color">Status</th>
+                  <th className="fw-16 fnt-color">Action</th>
                 </tr>
               </thead>
 
@@ -102,15 +103,15 @@ export default function ListCakes() {
                 {cakes.map((cake, index) => (
                   <tr key={`${cake.id}-${index}`}>
 
-                    <td className="text-secondary fs-16">{cake.id}</td>
-                    <td className="text-secondary fs-16">{cake.name_en}</td>
-                    <td className="text-secondary fs-16">{cake.category_id}</td>
-                    <td className="text-secondary fs-16">{cake.slug}</td>
-                    <td className="text-secondary fs-16">{cake.scoop_size}</td>
-                    <td className="text-secondary fs-16">{cake.additional_price}</td>
-                    <td className="text-secondary fs-16">{cake.symbol}</td>
-                    <td className="text-secondary fs-16">{cake.calories}</td>
-                    <td className="text-secondary fs-16">
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.id}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.name_en}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.category_id}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.slug}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.scoop_size}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.additional_price}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.symbol}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.calories}</span></td>
+                    <td className="fs-16">
                     <div className="form-check form-switch ms-4">
                       <input
                         className="form-check-input fs-4"
@@ -146,7 +147,7 @@ export default function ListCakes() {
                 placement="end">
                 <Offcanvas.Header closeButton>
                 <Offcanvas.Title>
-                   <div className='fs-24'>
+                   <div className='fs-24 fnt-color'>
                      {cakeData ? "Update Size" : "Add Size"}
                    </div>
                 </Offcanvas.Title>
