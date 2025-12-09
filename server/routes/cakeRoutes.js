@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const CakeSizeController = require('../controllers/CakeSizeController');
 const CakeFlavorController = require('../controllers/CakeFlavorController');
+const CustomCakeTypesController = require('../controllers/CustomCakeTypesController');
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
@@ -18,5 +19,11 @@ router.post('/flavors', upload.single('image_url'), CakeFlavorController.createC
 router.get('/flavors', CakeFlavorController.getAllCakeFlavors);
 router.put('/flavors/:id', CakeFlavorController.updateCakeFlavorById);
 router.delete('/flavors/:id', CakeFlavorController.deleteCakeFlavorById);
+
+
+router.post('/customtype', upload.single('image_url'), CustomCakeTypesController.createCustomCakeTypes);
+router.get('/customtype', CustomCakeTypesController.getAllCustomCakeTypes);
+router.put('/customtype/:id', CustomCakeTypesController.updateCustomCakeTypesById);
+router.delete('/customtype/:id', CustomCakeTypesController.deleteCustomCakeTypesById);
 
 module.exports = router;
