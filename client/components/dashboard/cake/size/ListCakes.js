@@ -12,6 +12,8 @@ export default function ListCakes() {
   const [cakes, setCakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeData, setCakeData] = useState(null);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchCakeSizes = async () => {
     try {
@@ -61,8 +63,33 @@ export default function ListCakes() {
     setCakes(prev => [newCake, ...prev]);
     setShowOffcanvas(false);
     };
-
-
+  const handleSort = (field) => {
+    const newOrder =
+      sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+  const toggleLetterStatus = async (cake) => {
+    const currentStatus = String(cake.status || "").toLowerCase();
+    const newStatus = currentStatus === "active" ? "in-active" : "active";
+    try {
+      const response = await axios.put(updateCakesSizes(cake.id), {
+        status: newStatus,
+      });
+      if (response.status === 200) {
+        setCakes((prev) =>
+          prev.map((c) => (c.id === cake.id ? { ...c, status: newStatus } : c))
+        );
+        toast.success(`Status updated to ${newStatus}`, { autoClose: 1000 });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating status!", { autoClose: 3000 });
+    }
+  };
 
   return (
     <>
@@ -81,64 +108,73 @@ export default function ListCakes() {
         </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
-        <div className="datatable-wrapper">
-          <div className="data-table p-2 rounded-4">
-            <table className="table datatable datatable-table">
-              <thead className=''>
-                <tr className=''>
-                  <th className="fw-16 fnt-color">ID</th>
-                  <th className="fw-16 fnt-color">Name</th>
-                  <th className="fw-16 fnt-color">Category</th>
-                  <th className="fw-16 fnt-color">Slug</th>
-                  <th className="fw-16 fnt-color">Scope/Size</th>
-                  <th className="fw-16 fnt-color">Additional Price</th>
-                  <th className="fw-16 fnt-color">Symbol</th>
-                  <th className="fw-16 fnt-color">Calories</th>
-                  <th className="fw-16 fnt-color">Status</th>
-                  <th className="fw-16 fnt-color">Action</th>
-                </tr>
-              </thead>
+        <div className="border-0 shadow-sm">
+          <div className="card-body p-0">
+            <div className="table-responsive datatable announcement-modal-scroll">
+              <table className="table table-hover align-middle mb-0">
+                <thead className="">
+                  <tr className=''>
+                    <th onClick={() => handleSort("id")} className="nowrap fs-16 fw-medium">
+                      ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
 
-              <tbody>
-                {cakes.map((cake, index) => (
-                  <tr key={`${cake.id}-${index}`}>
+                    <th onClick={() => handleSort("name_en")} className="nowrap fs-16 fw-medium">
+                      Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
 
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.name_en}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.category_id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.slug}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.scoop_size}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.additional_price}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.symbol}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cake.calories}</span></td>
-                    <td className="fs-16">
-                    <div className="form-check form-switch ms-4">
-                      <input
-                        className="form-check-input fs-4"
-                        type="checkbox"
-                        role="switch"
-                        name="status"
-                      />
-                    </div>
-                    </td>
+                    <th onClick={() => handleSort("category_id")} className="nowrap fs-16 fw-medium">
+                      Category <span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
 
-                    <td>
-                      <div className="d-flex gap-1">
-                        <button className="btn btn-sm btn-light p-2" onClick={() => showOffcanvasOnEditCakesSize(cake)}>
-                          <i className="bi bi-pencil text-primary"></i>
-                        </button>
-                        <button className="btn btn-sm btn-light p-2" onClick={() => showDeleteConfirmation(cake.id)}>
-                          <i className="bi bi-trash3 text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
+                    <th onClick={() => handleSort("slug")} className="nowrap fs-16 fw-medium">
+                      Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
 
+                    <th onClick={() => handleSort("scoop_size")} className="nowrap fs-16 fw-medium">
+                      Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span></th>
+
+                    <th onClick={() => handleSort("additional_price")} className="nowrap fs-16 fw-medium">
+                      Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
+
+                    <th onClick={() => handleSort("symbol")} className="nowrap fs-16 fw-medium">
+                      Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
+
+                    <th onClick={() => handleSort("calories")} className="nowrap fs-16 fw-medium">
+                      Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span></th>
+
+                    <th onClick={() => handleSort("status")} className="nowrap fs-16 fw-medium">
+                      Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
+
+                    <th className="fs-16 fw-medium">Action</th>
                   </tr>
-                ))}
-              </tbody>
+                </thead>
 
-            </table>
-
+                <tbody>
+                  {cakes.map((cake) => (
+                    <tr key={cake.id}>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.id}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.name_en}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake.category_id || "N/A"}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.slug}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.scoop_size}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-5">{cake.additional_price}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-3">{cake.symbol}</span></td>
+                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake.calories}</span></td>
+                      <td>
+                        <div className="form-check form-switch ms-3">
+                          <input className="form-check-input fs-5" type="checkbox" role="switch"
+                            id={`flexSwitchCheck-${cake?.id || ''}`}
+                            checked={String(cake?.status || "").toLowerCase() === "active"}
+                            onChange={() => toggleLetterStatus(cake)}/>
+                        </div>
+                      </td>
+                      <td className='d-flex gap-2'>
+                        <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cake)}>
+                          <i className="bi bi-pencil text-primary fs-16"></i></div>
+                        <div className='action-btn' onClick={() => showDeleteConfirmation(cake.id)}>
+                          <i className="bi bi-trash text-danger fs-16"></i></div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <Offcanvas

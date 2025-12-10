@@ -159,11 +159,16 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         </select>
       </div>
 
-      <label className="fs-14 fw-bold fnt-color opacity-75 mt-2">Status</label>
-      <div className="form-check form-switch ms-4">
-        <input className="form-check-input fs-4" type="checkbox" role="switch"
-          name="status" checked={formData.status} onChange={handleChange}/>
-      </div>
+      <div className="col-md-12 mt-3">
+              <div className="form-check form-switch">
+                <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
+                  role="switch" checked={formData.status === "Active"} onChange={(e) => setFormData((prev) => ({
+                      ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+                <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
+                  {formData.status === "Active"? "Active": "Inactive"}
+                </label>
+              </div>
+            </div>
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
         <div className="">

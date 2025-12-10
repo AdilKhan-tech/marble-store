@@ -12,6 +12,8 @@ export default function ListFlavours() {
   const [cakes, setCakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeData, setCakeData] = useState(null);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchCakeFlavors = async () => {
     try {
