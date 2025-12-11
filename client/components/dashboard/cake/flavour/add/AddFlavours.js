@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createCakesFlavour, updateCakesFlavour } from "@/utils/apiRoutes";
 
-const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
+const FlavorData = ({ closePopup, flavorData = null,onAddFlavor }) => {
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -17,20 +17,19 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
     status: false,
   });
 
-  // Load existing data
   useEffect(() => {
-    if (cakeData) {
+    if (flavorData) {
       setFormData({
-        category_id: cakeData.category_id || "",
-        name_en: cakeData.name_en || "",
-        name_ar: cakeData.name_ar || "",
-        slug: cakeData.slug || "",
-        additional_price: cakeData.additional_price || "",
-        symbol: cakeData.symbol || "",
-        status: cakeData.status || false,
+        category_id: flavorData.category_id || "",
+        name_en: flavorData.name_en || "",
+        name_ar: flavorData.name_ar || "",
+        slug: flavorData.slug || "",
+        additional_price: flavorData.additional_price || "",
+        symbol: flavorData.symbol || "",
+        status: flavorData.status || false,
       });
     }
-  }, [cakeData]);
+  }, [flavorData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -63,8 +62,8 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
     if (validationErrors.length > 0) return;
 
     try {
-      if (cakeData) {
-        const res = await axios.put(updateCakesFlavour(cakeData.id), formData);
+      if (flavorData) {
+        const res = await axios.put(updateCakesFlavour(flavorData.id), formData);
 
         if (res.status === 200) {
           toast.success("Cake flavour updated successfully!", {
@@ -76,13 +75,13 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         const res = await axios.post(createCakesFlavour, formData);
 
         if (res.status === 201 || res.status === 200) {
-          const createdCake = res.data.cakesflavour;
+          const createdFlavor = res.data.cakesflavour;
           toast.success("Cake Flavour added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCake) onAddCake(createdCake); // update parent state
-        return; // exit so closePopup is not called
+           if (onAddFlavor) onAddFlavor(createdFlavor);
+        return;
         }
       }
     } catch (error) {
@@ -145,10 +144,15 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         </select>
       </div>
 
-      <label className="fs-14 fw-bold fnt-color opacity-75 mt-2 mb-1">Status</label>
-      <div className="form-check form-switch ms-4">
-        <input className="form-check-input fs-4" type="checkbox" role="switch"
-          name="status" checked={formData.status} onChange={handleChange}/>
+      <div className="col-md-12 mt-3">
+        <div className="form-check form-switch">
+          <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
+            role="switch" checked={formData.status === "Active"} onChange={(e) => setFormData((prev) => ({
+                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
+            {formData.status === "Active"? "Active": "Inactive"}
+          </label>
+        </div>
       </div>
       <div className="col-md-12 px-1 mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">File Attachment</label>
@@ -175,4 +179,4 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
   );
 };
 
-export default CakeData;
+export default FlavorData;

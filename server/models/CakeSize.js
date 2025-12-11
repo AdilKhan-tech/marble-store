@@ -9,11 +9,11 @@ const CakeSize = sequelize.define("CakeSize", {
     allowNull: false,
   },
   name_en: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
   },
   name_ar: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
   },
   category_id: {
@@ -21,12 +21,12 @@ const CakeSize = sequelize.define("CakeSize", {
     allowNull: false
   },
   slug: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: true,
   },
 
   scoop_size: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
   },
 
@@ -37,19 +37,19 @@ const CakeSize = sequelize.define("CakeSize", {
   },
 
   symbol: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: true,
   },
 
   calories: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: true,
   },
 
 
   status: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
+    type: DataTypes.STRING,
+    defaultValue: "inactive",
   },
 
   image_url: {
