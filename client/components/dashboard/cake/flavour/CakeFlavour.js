@@ -59,8 +59,8 @@ export default function ListFlavours() {
               handleDelete(flavorId)
           }
       }
-    const addFlavorToState = (newFlavor) => {
-    setFlavor(prev => [newFlavor, ...prev]);
+    const addFlavorToState = () => {
+     fetchCakeFlavors(); 
     setShowOffcanvas(false);
     };
 
@@ -109,37 +109,37 @@ export default function ListFlavours() {
         </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
-        <div className="datatable-wrapper">
-          <div className="data-table p-2">
-            <table className="table datatable datatable-table">
+        <div className="">
+          <div className="data-table">
+            <table className="table datatable-wrapper">
               <thead>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("id")} className="nowrap">
                   ID<span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
-                  <th onClick={() => handleSort("name_en")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("name_en")} className="nowrap">
                   Name<span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
-                  <th onClick={() => handleSort("category_id")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("category_id")} className="nowrap">
                   Category<span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
-                  <th onClick={() => handleSort("slug")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("slug")} className="nowrap">
                   Slug<span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
-                  <th onClick={() => handleSort("additional_price")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("additional_price")} className="nowrap">
                   Additional Price<span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
-                  <th onClick={() => handleSort("symbol")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("symbol")} className="nowrap">
                   Symbol<span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
-                  <th onClick={() => handleSort("status")} className="nowrap fs-16 fw-medium">
+                  <th onClick={() => handleSort("status")} className="nowrap">
                   Status<span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
-                  <th className="nowrap fs-16 fw-medium">Action</th>
+                  <th className="nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {flavor.map((flavor, index) => (
                   <tr key={index}>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.id}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.name_en}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.category_id}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.slug}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.additional_price}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.symbol}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.id}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.name_en}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-3'>{flavor?.category_id}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.slug}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-5'>{flavor?.additional_price}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-4'>{flavor?.symbol}</span></td>
                     <td className="text-secondary fs-16">
                     <div className="form-check form-switch ms-3">
                       <input className="form-check-input fs-5" type="checkbox" role="switch"

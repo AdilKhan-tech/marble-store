@@ -108,40 +108,30 @@ export default function ListCakes() {
         </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
-        <div className="border-0 shadow-sm">
-          <div className="card-body p-0">
-            <div className="table-responsive datatable announcement-modal-scroll">
-              <table className="table table-hover align-middle mb-0">
+          <div className=" ">
+            <div className="data-table">
+              <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className=''>
-                    <th onClick={() => handleSort("id")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("id")} className="nowrap">
                       ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
-
-                    <th onClick={() => handleSort("name_en")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("name_en")} className="nowrap">
                       Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
-
-                    <th onClick={() => handleSort("category_id")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("category_id")} className="nowrap">
                       Category <span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
-
-                    <th onClick={() => handleSort("slug")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("slug")} className="nowrap">
                       Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
-
-                    <th onClick={() => handleSort("scoop_size")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("scoop_size")} className="nowrap">
                       Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span></th>
-
-                    <th onClick={() => handleSort("additional_price")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("additional_price")} className="nowrap">
                       Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
-
-                    <th onClick={() => handleSort("symbol")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("symbol")} className="nowrap">
                       Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
-
-                    <th onClick={() => handleSort("calories")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("calories")} className="nowrap">
                       Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span></th>
-
-                    <th onClick={() => handleSort("status")} className="nowrap fs-16 fw-medium">
+                    <th onClick={() => handleSort("status")} className="nowrap">
                       Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
-
-                    <th className="fs-16 fw-medium">Action</th>
+                    <th className="">Action</th>
                   </tr>
                 </thead>
 
@@ -175,7 +165,6 @@ export default function ListCakes() {
                 </tbody>
               </table>
             </div>
-          </div>
         </div>
         <Offcanvas
                 show={showOffcanvas}
