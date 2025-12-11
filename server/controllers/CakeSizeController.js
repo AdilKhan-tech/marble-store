@@ -1,4 +1,5 @@
 const CakeSize = require("../models/CakeSize");
+const CakeSizeValidator = require("../validators/CakeSizeValidator");
 
 class CakeSizeController {
 
@@ -7,6 +8,19 @@ class CakeSizeController {
             const { name_en,name_ar,category_id,slug,scoop_size,additional_price,symbol,calories,status } = req.body
 
             const image_url = req.file?.path || null;
+
+            const validationErrors = CakeSizeValidator.validateCreate({
+                name_en,
+                name_ar,
+                category_id,
+                scoop_size,
+                additional_price,
+                status,
+            });
+
+            if (validationErrors.length > 0) {
+                return res.status(400).json({errors: validationErrors});
+            }
             
             const cakesizes = await CakeSize.create({
                 name_en,
@@ -20,7 +34,7 @@ class CakeSizeController {
                 status,
                 image_url,
         });
-        return res.status(201).json({ message : "Cake size created successfully", cakesizes });
+        return res.status(201).json(cakesizes);
         } catch (err) {
             console.error(err);
             return res.status(500).json({ message: "Failed to create cake size", error: err.message });
