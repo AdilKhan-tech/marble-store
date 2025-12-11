@@ -91,7 +91,7 @@ export default function SidebarLayout() {
               </div>
               {activeSubMenu === "icecream" && (
                 <div className="sidebar-submenu ms-3">
-                  <Link href="/dashboard/icecream" className={`sidebar-submenu-link ${isActive("/dashboard/icecream") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link href="/dashboard/icecream/size" className={`sidebar-submenu-link ${isActive("/dashboard/icecream") ? "active" : ""}`} onClick={() => setOpen(false)}>
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
