@@ -3,8 +3,8 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --radius-md: 12px;
 }
-* {
-  font-family: "Poppins", sans-serif;
+body * {
+  font-family: "Poppins", sans-serif !important;
 }
 .header {
   margin: 20px;
@@ -18,8 +18,8 @@
   transform: translateY(-80px);
   background-color: rgb(252, 235, 235);
 }
-.sidebar-closed .header {
-  margin-left: 0;
+.sidebar-open .header {
+  margin-left: 270px;
 }
 .form-control {
   background: rgba(167, 163, 163, 0.05) !important;
@@ -301,7 +301,6 @@
   padding: 8px 12px;
   transition: border-color 0.2s ease;
 }
-
 .textarea-hover-dark:hover,
 .textarea-hover-dark:focus {
   border-color: #343a40;
@@ -313,28 +312,11 @@
 .fnt-color {
   color: #494949 !important;
 }
-.table thead tr th {
-  position: sticky;
-  top: 0;
-  left: 0px;
-  z-index: 3;
-}
+
 .pagetitle {
   margin-top: 24px;
   font-size: 24px;
   font-weight: 600;
-}
-.datatable-search::before {
-  content: "\F52A";
-  font-family: "Bootstrap-icons";
-  position: absolute;
-font-size: 16px;
-  top: 0;
-  color: #aaa;
-  z-index: 1;
-  bottom: 0;
-  height: fit-content;
-  margin-block: auto;
 }
 .text-dark-custom {
   color: var(--Color, rgba(73, 73, 73, 1)) !important;
@@ -350,4 +332,8 @@ font-size: 16px;
   border: 1px solid;
   cursor: pointer;
   transition: background-color 0.2s ease;
+}
+.form-check-input:checked {
+  border-color: #ff7900 !important;
+  background-color: #ff7900 !important;
 }
