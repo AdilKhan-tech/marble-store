@@ -5,23 +5,22 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddFlavour from "@/components/dashboard/cake/flavour/add/AddFlavours";
 import { useEffect, useState } from 'react';
-import { getCakesFlavour, deleteCakesFlavour } from '@/utils/apiRoutes';
+import { getCakesFlavour, deleteCakesFlavour, updateCakesFlavour } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 export default function ListFlavours() {
   const {token} = useAxiosConfig();
-  const [cakes, setCakes] = useState([]);
+  const [flavor, setFlavor] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [cakeData, setCakeData] = useState(null);
+  const [flavorData, setFlavorData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchCakeFlavors = async () => {
     try {
       const response = await axios.get(getCakesFlavour);
-      setCakes(response.data)
-      console.log(response.data)
-    } catch (error) {
-      console.error("Error fetching cakes", error);
+      setFlavor(response.data)
+        } catch (error) {
+      console.error("Error fetching cake Flavors", error);
     }
   };
 
@@ -31,20 +30,20 @@ export default function ListFlavours() {
   }, [token]);
 
   const showOffcanvasOnAddCakesFlavour = () => {
-        setCakeData(null);
+        setFlavorData(null);
         setShowOffcanvas(true);
      }
-     const showOffcanvasOnEditCakesFlavour = (flavors) => {
-        setCakeData(flavors);
+     const showOffcanvasOnEditCakesFlavour = (flavor) => {
+        setFlavorData(flavor);
         setShowOffcanvas(true);
      }
      const closePopup = () => {
         setShowOffcanvas(false);
     };
 
-      const handleDelete = async (cakesId) => {
+      const handleDelete = async (flavorId) => {
       try {
-          const response = await axios.delete(deleteCakesFlavour(cakesId));
+          const response = await axios.delete(deleteCakesFlavour(flavorId));
           if(response.status === 200) {
               toast.success("Cake flavour deleted successfully!", {autoClose: 1000});
               fetchCakeFlavors();
@@ -54,18 +53,44 @@ export default function ListFlavours() {
           toast.error("Failed to delete Cake flavour.");
           }
       }
-      const showDeleteConfirmation = (cakesId) => {
+      const showDeleteConfirmation = (flavorId) => {
           const confirmed = window.confirm("Are you sure you want to delete this Cake flavour?");
           if(confirmed){
-              handleDelete(cakesId)
+              handleDelete(flavorId)
           }
       }
-    const addCakeToState = (newCake) => {
-    setCakes(prev => [newCake, ...prev]);
+    const addFlavorToState = (newFlavor) => {
+    setFlavor(prev => [newFlavor, ...prev]);
     setShowOffcanvas(false);
     };
 
-
+      const handleSort = (field) => {
+    const newOrder =
+      sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+  const toggleLetterStatus = async (flavor) => {
+    const currentStatus = String(flavor.status || "").toLowerCase();
+    const newStatus = currentStatus === "active" ? "in-active" : "active";
+    try {
+      const response = await axios.put(updateCakesFlavour(flavor.id), {
+        status: newStatus,
+      });
+      if (response.status === 200) {
+        setFlavor((prev) =>
+          prev.map((f) => (f.id === flavor.id ? { ...f, status: newStatus } : f))
+        );
+        toast.success(`Status updated to ${newStatus}`, { autoClose: 1000 });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating status!", { autoClose: 3000 });
+    }
+  };
 
   return (
     <>
@@ -89,36 +114,45 @@ export default function ListFlavours() {
             <table className="table datatable datatable-table">
               <thead>
                 <tr className=''>
-                  <th className="fw-16 fnt-color">ID</th>
-                  <th className="fw-16 fnt-color">Name</th>
-                  <th className="fw-16 fnt-color">Category</th>
-                  <th className="fw-16 fnt-color">Slug</th>
-                  <th className="fw-16 fnt-color">Additional Price</th>
-                  <th className="fw-16 fnt-color">Symbol</th>
-                  <th className="fw-16 fnt-color">Status</th>
-                  <th className="fw-16 fnt-color">Action</th>
+                  <th onClick={() => handleSort("id")} className="nowrap fs-16 fw-medium">
+                  ID<span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
+                  <th onClick={() => handleSort("name_en")} className="nowrap fs-16 fw-medium">
+                  Name<span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
+                  <th onClick={() => handleSort("category_id")} className="nowrap fs-16 fw-medium">
+                  Category<span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
+                  <th onClick={() => handleSort("slug")} className="nowrap fs-16 fw-medium">
+                  Slug<span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
+                  <th onClick={() => handleSort("additional_price")} className="nowrap fs-16 fw-medium">
+                  Additional Price<span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
+                  <th onClick={() => handleSort("symbol")} className="nowrap fs-16 fw-medium">
+                  Symbol<span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
+                  <th onClick={() => handleSort("status")} className="nowrap fs-16 fw-medium">
+                  Status<span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
+                  <th className="nowrap fs-16 fw-medium">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {cakes.map((cakes, index) => (
-                  <tr key={`${cakes.id}-${index}`}>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.id}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.name_en}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.category_id}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.slug}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.additional_price}</span></td>
-                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{cakes.symbol}</span></td>
+                {flavor.map((flavor, index) => (
+                  <tr key={index}>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.id}</span></td>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.name_en}</span></td>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.category_id}</span></td>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.slug}</span></td>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.additional_price}</span></td>
+                    <td className="fw-normal fnt-color fs-14"><span className='ms-1'>{flavor?.symbol}</span></td>
                     <td className="text-secondary fs-16">
-                    <div className="form-check form-switch ms-4">
-                      <input className="form-check-input fs-4" type="checkbox" role="switch" name="status"/>
+                    <div className="form-check form-switch ms-3">
+                      <input className="form-check-input fs-5" type="checkbox" role="switch"
+                        checked={String(flavor?.status || "").toLowerCase() === "active"}
+                        onChange={() => toggleLetterStatus(flavor)}/>
                     </div>
                     </td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn border-secondary" onClick={() => showOffcanvasOnEditCakesFlavour(cakes)}>
+                        <button className="action-btn border-secondary" onClick={() => showOffcanvasOnEditCakesFlavour(flavor)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
-                        <button className="action-btn border-secondary" onClick={() => showDeleteConfirmation(cakes.id)}>
+                        <button className="action-btn border-secondary" onClick={() => showDeleteConfirmation(flavor.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -139,16 +173,16 @@ export default function ListFlavours() {
                 <Offcanvas.Header closeButton>
                 <Offcanvas.Title>
                    <div className='fs-24'>
-                     {cakeData ? "Update Flavour" : "Add Flavour"}
+                     {flavorData ? "Update Flavour" : "Add Flavour"}
                    </div>
                 </Offcanvas.Title>
                 </Offcanvas.Header>
                 <hr  className="mt-0"/>
                 <Offcanvas.Body>
                  <AddFlavour
-                    cakeData={cakeData}
+                    flavorData={flavorData}
                     closePopup={closePopup}
-                    onAddCake={addCakeToState}
+                    onAddFlavor={addFlavorToState}
                 />
                 </Offcanvas.Body>
             </Offcanvas>
