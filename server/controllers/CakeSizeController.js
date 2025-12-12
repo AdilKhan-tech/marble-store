@@ -1,5 +1,4 @@
 const CakeSize = require("../models/CakeSize");
-const CakeSizeValidator = require("../validators/CakeSizeValidator");
 
 class CakeSizeController {
 
