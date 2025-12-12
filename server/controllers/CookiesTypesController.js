@@ -16,10 +16,7 @@ class CookiesTypesController {
                 status,
                 image_url,
             });
-            return res.status(201).json({ 
-                message: "Ice Cookies Types created successfully", 
-                cookiesTypes
-            });
+            return res.status(201).json(cookiesTypes);
 
         } catch(error) {
             return res.status(500).json({

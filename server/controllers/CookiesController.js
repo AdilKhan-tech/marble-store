@@ -17,10 +17,7 @@ class CookiesController {
                 status,
                 image_url,
             });
-            return res.status(201).json({ 
-                message: "Ice Cookies created successfully", 
-                cookies
-            });
+            return res.status(201).json(cookies);
 
         } catch(error) {
             return res.status(500).json({

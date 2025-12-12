@@ -20,7 +20,7 @@ class CakeSizeController {
                 status,
                 image_url,
         });
-        return res.status(201).json({ message : "Cake size created successfully", cakesizes });
+        return res.status(201).json(cakesizes);
         } catch (err) {
             console.error(err);
             return res.status(500).json({ message: "Failed to create cake size", error: err.message });
