@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const CookiesController = require('../controllers/CookiesController');
 const CookiesTypesController = require('../controllers/CookiesTypesController');
+const CookiesBoxSizesController = require('../controllers/CookiesBoxSizesController');
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
@@ -19,5 +20,8 @@ router.post('/types', upload.single('image_url'), CookiesTypesController.createC
 router.get('/types', CookiesTypesController.getAllCookiesTypes);
 router.put('/types/:id', upload.single('image_url'), CookiesTypesController.updateCookiesTypesById);
 router.delete('/types/:id', CookiesTypesController.deleteCookiesTypesById);
+
+// Cookise Size
+router.post('/size', upload.single('image_url'), CookiesBoxSizesController.createCookiesBoxSizes);
 
 module.exports = router;
