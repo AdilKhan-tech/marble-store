@@ -1,4 +1,4 @@
-const CookiesBoxSizes = require ("../models/ CookiesBoxSizes")
+const CookiesBoxSizes = require ("../models/CookiesBoxSizes")
 
 class CookiesBoxSizesController {
     
@@ -6,7 +6,7 @@ class CookiesBoxSizesController {
         try {
             const {name_en, name_ar, cookies_types_id, slug, portion_size, price, symbol, calories, status} = req.body;
 
-            const image_url = req.files?.[0]?.path || null;
+            const image_url = req.file?.path || null;
 
             const cookiesBoxSize = await CookiesBoxSizes.create({
                 name_en,
@@ -17,7 +17,8 @@ class CookiesBoxSizesController {
                 price,
                 symbol,
                 calories,
-                status
+                status,
+                image_url,
             })
 
             return res.status(201).json({message: "Cookies Box Size created successfully", cookiesBoxSize});

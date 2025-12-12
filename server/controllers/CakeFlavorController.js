@@ -4,7 +4,7 @@ class CakeFlavorController {
 
     static async createCakeFlavor(req, res) {
        try {
-        const { name_en, category_id, name_ar, slug, additional_price, symbol, status } = req.body
+        const { name_en, name_ar, category_id, slug, additional_price, symbol, status } = req.body
 
         const image_url = req.file?.path || null;
 
@@ -39,15 +39,15 @@ class CakeFlavorController {
 
     static async updateCakeFlavorById(req, res) {
         const { id } = req.params;
-        const { category_id, name_en, name_ar, slug, additional_price, symbol, status, image_url } = req.body;
+        const { name_en, name_ar, category_id, slug, additional_price, symbol, status, image_url } = req.body;
         try {
             const cakeflavors = await CakeFlavor.findByPk(id);
             if (!cakeflavors) {
                 return res.status(404).json({ message: "Cake flavor not found" });
             }
-            cakeflavors.category_id = category_id;
             cakeflavors.name_en = name_en;
             cakeflavors.name_ar = name_ar;
+            cakeflavors.category_id = category_id;
             cakeflavors.slug = slug;
             cakeflavors.additional_price = additional_price;
             cakeflavors.symbol = symbol;

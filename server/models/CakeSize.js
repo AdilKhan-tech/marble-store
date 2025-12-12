@@ -103,7 +103,7 @@ const CakeSize = sequelize.define("CakeSize", {
 
   status: {
     type: DataTypes.ENUM("active", "inactive"),
-    defaultValue: "inactive",
+    defaultValue: "active",
     validate: {
       isIn: {
         args: [["active", "inactive"]],
