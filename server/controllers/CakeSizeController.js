@@ -8,19 +8,6 @@ class CakeSizeController {
             const { name_en,name_ar,category_id,slug,scoop_size,additional_price,symbol,calories,status } = req.body
 
             const image_url = req.file?.path || null;
-
-            const validationErrors = CakeSizeValidator.validateCreate({
-                name_en,
-                name_ar,
-                category_id,
-                scoop_size,
-                additional_price,
-                status,
-            });
-
-            if (validationErrors.length > 0) {
-                return res.status(400).json({errors: validationErrors});
-            }
             
             const cakesizes = await CakeSize.create({
                 name_en,
