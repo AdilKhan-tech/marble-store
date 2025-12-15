@@ -7,9 +7,9 @@ const upload = require("../middlewares/upload");
 
 router.use(authenticateToken);
 
-router.post('/create', upload.single(), OccasionController.createOccasion);
+router.post('/create', upload.single('image_url'), OccasionController.createOccasion);
 router.get('/getall', OccasionController.getAllOccasions);
-router.put('/update/:id', OccasionController.updateOccasionById);
+router.put('/update/:id', upload.single('image_url'), OccasionController.updateOccasionById);
 router.delete('/delete/:id', OccasionController.deleteOccasionById);
 
 

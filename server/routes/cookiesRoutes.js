@@ -23,5 +23,8 @@ router.delete('/types/:id', CookiesTypesController.deleteCookiesTypesById);
 
 // Cookise Size
 router.post('/size', upload.single('image_url'), CookiesBoxSizesController.createCookiesBoxSizes);
+router.get('/size', CookiesBoxSizesController.getAllCookiesBoxSizes)
+router.put('/size/:id', upload.single('image_url'), CookiesBoxSizesController.updateCookiesBoxSizesById);
+router.delete('/size/:id', CookiesBoxSizesController.deleteCookiesBoxSizesById)
 
 module.exports = router;

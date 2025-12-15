@@ -11,33 +11,86 @@ const IceCreamPortionSize = sequelize.define(
       allowNull: false,
     },
     name_en: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
+      validate: {
+        notNull: { msg: "English name is required" },
+        notEmpty: { msg: "English name cannot be empty" },
+        len: {
+          args: [2, 100],
+          msg: "English name must be between 2 and 100 characters",
+        },
+      },
     },
     name_ar: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
+      validate: {
+        notNull: { msg: "Arabic name is required" },
+        notEmpty: { msg: "Arabic name cannot be empty" },
+        len: {
+          args: [2, 100],
+          msg: "Arabic name must be between 2 and 100 characters",
+        },
+      },
     },
     icecream_bucket_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notNull: { msg: "Ice cream bucket ID is required" },
+        isInt: { msg: "Ice cream bucket ID must be an integer" },
+      },
     },
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: { msg: "Slug is required" },
+        notEmpty: { msg: "Slug cannot be empty" },
+        is: {
+          args: /^[a-z0-9-]+$/i,
+          msg: "Slug must contain only letters, numbers and hyphens",
+        },
+      },
     },
     additional_price: {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0,
+      validate: {
+        notNull: { msg: "Additional price is required" },
+        min: {
+          args: [0],
+          msg: "Additional price must be greater than or equal to 0",
+        },
+      },
     },
     calorie: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: true,
+      validate: {
+        len: {
+          args: [0, 50],
+          msg: "Calories value must not exceed 50 characters",
+        },
+      },
     },
     image_url: {
       type: DataTypes.TEXT,
       allowNull: true,
+      validate: {
+        isValid(value) {
+          if (!value) return;
+    
+          const isUrl = /^https?:\/\/.+/.test(value);
+          const isLocalPath = /^uploads\/.+/.test(value);
+    
+          if (!isUrl && !isLocalPath) {
+            throw new Error("Image must be a valid URL or a local upload path");
+          }
+        },
+      },
     },
     created_at: {
       type: DataTypes.DATE,
