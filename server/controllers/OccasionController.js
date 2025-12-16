@@ -1,4 +1,3 @@
-const { json } = require("sequelize");
 const Occasion = require ("../models/Occasion");
 
 class OccasionController {
@@ -7,19 +6,19 @@ class OccasionController {
         try{
             const { name_en, name_ar,slug} = req.body;
 
-            const image_url = req.files?.[0]?.path || null;
-    
+            const image_url = req.file?.path || null;    
+
             const occasion = await Occasion.create({
                 name_en,
                 name_ar,
                 slug,
                 image_url,
             });
-            return res.status(201).json({ message: "Occasion created successfully", occasion });
+            return res.status(201).json(occasion);
         }
-        catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to create occasion", error: err.message });
+        catch (error) {
+            console.error(error);
+            res.status(500).json({message: "Failed to create occasion", error: error.message});
         }
     }
 
@@ -33,25 +32,32 @@ class OccasionController {
             return res.status(500).json({ message: "Failed to fetch occasions", error: err.message });
         }
     }
-    static async  updateOccasionById (req, res) {
+
+    static async updateOccasionById(req, res) {
         const { id } = req.params;
-        const { name_en, name_ar, slug, image_url } = req.body;
         try {
-            const occasion = await Occasion.findByPk(id);
-            if (!occasion) {
-                return res.status(404).json({ message: "Occasion not found" });
-            }
-            occasion.name_en = name_en;
-            occasion.name_ar = name_ar;
-            occasion.slug= slug;
-            occasion.image_url = image_url;
-            await occasion.save();
-            return res.status(200).json({message: "Occasion updated successfully", occasion});
+          const occasion = await Occasion.findByPk(id);
+          if (!occasion) {
+              return res.status(404).json({ message: "Occasion not found" });
+          }
+    
+          const {name_en, name_ar, slug} = req.body;
+    
+          const image_url = req.file?.path || occasion.image_url;
+    
+          await occasion.update({
+              name_en: name_en ?? occasion.name_en,
+              name_ar: name_ar ?? occasion.name_ar,
+              slug: slug ?? iceCreamPortionSize.slug,
+              image_url: image_url
+          });
+    
+          return res.status(200).json(occasion);
+    
         } catch (error) {
             console.error(error )
             return res.status(500).json({ message: error.message });
         }
-
     }
 
     static async deleteOccasionById (req, res) {

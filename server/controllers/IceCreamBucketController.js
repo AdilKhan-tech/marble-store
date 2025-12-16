@@ -6,7 +6,7 @@ class IceCreamBucketController {
         try {
             const {name_en,name_ar,slug,size,price,symbol,calories,status} = req.body;
 
-            const image_url = req.files?.[0]?.path || null;
+            const image_url = req.file?.path || null;
     
             const iceCreamBucket = await IceCreamBucket.create({
                 name_en,
@@ -19,10 +19,7 @@ class IceCreamBucketController {
                 status,
                 image_url
             });
-            return res.status(201).json({
-                message: "Ice Cream Bucket created successfully",
-                iceCreamBucket
-            });
+            return res.status(201).json(iceCreamBucket);
     
         } catch (error) {
             return res.status(500).json({
@@ -42,19 +39,37 @@ class IceCreamBucketController {
     }
 
     static async updateIceCreamBucketById(req, res) {
-        const { id } = req.params; 
+        const { id } = req.params;
         try {
             const iceCreamBucket = await IceCreamBucket.findByPk(id);
             if (!iceCreamBucket) {
                 return res.status(404).json({ message: "Ice Cream Bucket not found" });
             }
-        
-            const {name_en,name_ar,slug,size,price,symbol,calories,status} = req.body;
+    
+            const {
+                name_en,
+                name_ar,
+                slug,
+                size,
+                price,
+                symbol,
+                calories,
+                status,
+            } = req.body;
 
-            const image_url = req.files?.[0]?.path || iceCreamBucket.image_url;
-
-            const parsedStatus = status === 'true' || status === true || status === '1';
-        
+            const image_url = req.file?.path || iceCreamBucket.image_url;
+    
+            let parsedStatus = iceCreamBucket.status;
+    
+            if (status !== undefined) {
+                if (status === 'true' || status === true || status === '1' || status === 1) {
+                    parsedStatus = true;
+                }
+                else if (status === 'false' || status === false || status === '0' || status === 0) {
+                    parsedStatus = false;
+                }
+            }
+    
             await iceCreamBucket.update({
                 name_en: name_en ?? iceCreamBucket.name_en,
                 name_ar: name_ar ?? iceCreamBucket.name_ar,
@@ -63,20 +78,17 @@ class IceCreamBucketController {
                 price: price ?? iceCreamBucket.price,
                 symbol: symbol ?? iceCreamBucket.symbol,
                 calories: calories ?? iceCreamBucket.calories,
-                status: status !== undefined ? parsedStatus : iceCreamBucket.status,
-                image_url
+                status: parsedStatus,
+                image_url: image_url
             });
-        
-            return res.status(200).json({
-                message: "Ice Cream Bucket updated successfully",
-                iceCreamBucket
-            });
+
+            return res.status(200).json(iceCreamBucket);
+    
         } catch (error) {
-          console.error(error);
-          return res.status(500).json({message: "Failed to update Ice Cream Bucket",error: error.message});
+            console.error(error);
+            return res.status(500).json({message: "Failed to update Ice Cream Bucket",error: error.message});
         }
     }
-      
 
     static async deleteIceCreamBucketById(req, res) {
         try {

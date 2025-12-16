@@ -11,15 +11,15 @@ const upload = require("../middlewares/upload");
 router.use(authenticateToken);
 
 
-router.post('/buckets', upload.single(), IceCreamBucketController.createIceCreamBucket);
+router.post('/buckets', upload.single('image_url'), IceCreamBucketController.createIceCreamBucket);
 router.get('/buckets', IceCreamBucketController.getAllIceCreamBucket);
-router.put('/buckets/:id', upload.single(), IceCreamBucketController.updateIceCreamBucketById);
+router.put('/buckets/:id', upload.single('image_url'), IceCreamBucketController.updateIceCreamBucketById);
 router.delete('/buckets/:id', IceCreamBucketController.deleteIceCreamBucketById);
 
 
-router.post("/portions", IceCreamPortionSizeController.createIceCreamPortionSize);
+router.post("/portions", upload.single('image_url'), IceCreamPortionSizeController.createIceCreamPortionSize);
 router.get("/portions", IceCreamPortionSizeController.getAllIceCreamPortionSize);
-router.put("/portion/:id", IceCreamPortionSizeController.updateIceCreamPortionSize);
+router.put("/portion/:id", upload.single('image_url'), IceCreamPortionSizeController.updateIceCreamPortionSize);
 router.delete("/portion/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
 
 
