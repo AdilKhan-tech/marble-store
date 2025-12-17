@@ -5,9 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddType from '@/components/dashboard/cake/customType/add/AddType';
 import { useEffect, useState } from 'react';
-import { getCakeTypes, updateCakeTypes, deleteCakeTypes } from '@/utils/apiRoutes';
+import { getAllCustomCakeTypes, updateCustomCakeTypes, deleteCustomCakeTypes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-export default function Listcakes() {
+export default function ListCustomCakes() {
   const {token} = useAxiosConfig();
   const [cakes, setcakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -15,9 +15,9 @@ export default function Listcakes() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const fetchcaketype = async () => {
+  const fetchCakeType = async () => {
     try {
-      const response = await axios.get(getCakeTypes);
+      const response = await axios.get(getAllCustomCakeTypes);
       console.log("cakes data:", response.data);
       setcakes(response.data)
     } catch (error) {
@@ -27,58 +27,63 @@ export default function Listcakes() {
 
   useEffect(() => {
     if (!token) return;
-    fetchcaketype();
+    fetchCakeType();
   }, [token]);
 
   const showOffcanvasAddType = () => {
         setCakeTypeData(null);
         setShowOffcanvas(true);
-     }
-     const showOffcanvasEditType = (cakeType) => {
-        setCakeTypeData(cakeType);
-        setShowOffcanvas(true);
-     }
-     const closePopup = () => {
-        setShowOffcanvas(false);
-    };
+  }
 
-      const handleDelete = async (cakeTypeId) => {
-      try {
-          const response = await axios.delete(deleteCakeTypes(cakeTypeId));
-          if(response.status === 200) {
-              toast.success("cakeType size deleted successfully!", {autoClose: 1000});
-              fetchcaketype();
-          }
-      }catch (error){
-          console.error("Error deleting cakeType size:", error);
-          toast.error("Failed to delete cakeType size.");
-          }
+  const showOffcanvasEditType = (cakeType) => {
+    setCakeTypeData(cakeType);
+    setShowOffcanvas(true);
+  }
+
+  const closePopup = () => {
+    setShowOffcanvas(false);
+  };
+
+  const handleDelete = async (cakeTypeId) => {
+    try {
+      const response = await axios.delete(deleteCustomCakeTypes(cakeTypeId));
+      if(response.status === 200) {
+          toast.success("cakeType size deleted successfully!", {autoClose: 1000});
+          fetchcaketype();
       }
-      const showDeleteConfirmation = (cakeTypeId) => {
-          const confirmed = window.confirm("Are you sure you want to delete this cakeType size?");
-          if(confirmed){
-              handleDelete(cakeTypeId)
-          }
-      }
-    const addTypeToState = (newcakeType) => {
+    }catch (error){
+      console.error("Error deleting cakeType size:", error);
+      toast.error("Failed to delete cakeType size.");
+    }
+  }
+
+  const showDeleteConfirmation = (cakeTypeId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this cakeType size?");
+    if(confirmed){
+        handleDelete(cakeTypeId)
+    }
+  }
+  const addTypeToState = (newcakeType) => {
     setcakes(prev => [newcakeType, ...prev]);
     setShowOffcanvas(false);
-    };
+  };
 
-      const handleSort = (field) => {
+  const handleSort = (field) => {
     const newOrder =
       sortField === field && sortOrder === "asc" ? "desc" : "asc";
     setSortField(field);
     setSortOrder(newOrder);
   };
+
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
+
   const toggleLetterStatus = async (cakeType) => {
     const currentStatus = String(cakeType.status || "").toLowerCase();
     const newStatus = currentStatus === "active" ? "in-active" : "active";
     try {
-      const response = await axios.put(updateCakeTypes(cakeType.id), {
+      const response = await axios.put(updateCustomCakeTypes(cakeType.id), {
         status: newStatus,
       });
       if (response.status === 200) {
@@ -93,24 +98,32 @@ export default function Listcakes() {
     }
   };
 
-
-
-
   return (
     <>
     <section className='' style={{ marginTop:"100px"}}>
-      <div className=""> 
-      <p className="pagetitle mb-0 fnt-color">Cake Type</p>
-      <div className='d-flex justify-content-between mt-4'>
-        <div className='d-flex'>
-        <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
-            <input type="text" className="form-control border rounded-start-0 border-start-0" placeholder="Search here..." style={{height:"46px", width:"300px"}}/>
+      <div className="">
+        <p className="pagetitle mb-0 fnt-color">Cake Type</p>
+        <div className='d-flex justify-content-between mt-4'>
+          <div className='d-flex'>
+            <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+            <input 
+              type="text" 
+              className="form-control border rounded-start-0 border-start-0" 
+              placeholder="Search here..." 
+              style={{height:"46px", width:"300px"}}
+            />
+          </div>
+          <div style={{marginInlineEnd:"20px"}}>
+            <div 
+              className='org-btn py-2 px-4 rounded-3' 
+              onClick={showOffcanvasAddType} 
+              role='button'
+            >
+              <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
             </div>
-            <div style={{marginInlineEnd:"20px"}}>
-              <div className='org-btn py-2 px-4 rounded-3' onClick={showOffcanvasAddType} role='button'><i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span></div>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
         <div className="datatable-wrapper">
@@ -119,13 +132,17 @@ export default function Listcakes() {
               <thead className=''>
                 <tr className=''>
                   <th onClick={() => handleSort("id")} className="nowrap">
-                  ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
+                    ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
+                  </th>
                   <th onClick={() => handleSort("name_en")} className="nowrap">
-                    Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
+                    Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
+                  </th>
                   <th onClick={() => handleSort("slug")} className="nowrap">
-                    Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
+                    Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
+                  </th>
                   <th onClick={() => handleSort("status")} className="nowrap">
-                    Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
+                    Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
+                  </th>
                   <th className="fw-16 fnt-color">Action</th>
                 </tr>
               </thead>
@@ -147,48 +164,50 @@ export default function Listcakes() {
 
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="btn btn-sm btn-light p-2" onClick={() => showOffcanvasEditType(cakeType)}>
+                        <button 
+                          className="btn btn-sm btn-light p-2" 
+                          onClick={() => showOffcanvasEditType(cakeType)}
+                        >
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
-                        <button className="btn btn-sm btn-light p-2" onClick={() => showDeleteConfirmation(cakeType.id)}>
+                        <button 
+                          className="btn btn-sm btn-light p-2" 
+                          onClick={() => showDeleteConfirmation(cakeType.id)}
+                        >
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
                     </td>
-
                   </tr>
                 ))}
               </tbody>
-
             </table>
-
           </div>
         </div>
-        <Offcanvas
-                show={showOffcanvas}
-                onHide={() => setShowOffcanvas(false)}
-                placement="end">
-                <Offcanvas.Header closeButton>
-                <Offcanvas.Title>
-                   <div className='fs-24 fnt-color'>
-                     {cakeTypeData ? "Update Size" : "Add Size"}
-                   </div>
-                </Offcanvas.Title>
-                </Offcanvas.Header>
-                <hr  className="mt-0"/>
-                <Offcanvas.Body>
-                 <AddType
-                    cakeTypeData={cakeTypeData}
-                    closePopup={closePopup}
-                    onAddType={addTypeToState}
-                />
-                </Offcanvas.Body>
-            </Offcanvas>
-            <ToastContainer />
 
+        <Offcanvas
+            show={showOffcanvas}
+            onHide={() => setShowOffcanvas(false)}
+            placement="end">
+            <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className='fs-24 fnt-color'>
+                {cakeTypeData ? "Update Type" : "Add Type"}
+              </div>
+            </Offcanvas.Title>
+            </Offcanvas.Header>
+            <hr  className="mt-0"/>
+            <Offcanvas.Body>
+              <AddType
+                cakeTypeData={cakeTypeData}
+                closePopup={closePopup}
+                onAddType={addTypeToState}
+              />
+            </Offcanvas.Body>
+        </Offcanvas>
+        <ToastContainer />
       </div>
     </section>
     </>
-    
   )
 }
