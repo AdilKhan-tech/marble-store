@@ -77,16 +77,16 @@ function CookieBoxSize() {
             <table className='table datatable datatable-table'>
               <thead className=''>
                 <tr className=''>
-                  <th className='nowrap'>ID</th>
-                  <th className='nowrap'>Name</th>
-                  <th className='nowrap'>Cookies Type</th>
-                  <th className='nowrap'>Slug</th>
-                  <th className='fw-16 fnt-color'>Portion Size</th>
-                  <th className='fw-16 fnt-color'>Price</th>
-                  <th className='fw-16 fnt-color'>Symbol</th>
-                  <th className='fw-16 fnt-color'>Calories</th>
-                  <th className='fw-16 fnt-color'>Status</th>
-                  <th className='fw-16 fnt-color'>Action</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Cookies Type</th>
+                  <th>Slug</th>
+                  <th>Portion Size</th>
+                  <th>Price</th>
+                  <th>Symbol</th>
+                  <th>Calories</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
 
@@ -94,15 +94,15 @@ function CookieBoxSize() {
                 {boxSizes.map((boxSize, index) => (
                   <tr key={`${boxSize.id}-${index}`}>
 
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.name_en}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.cookies_types_id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.slug}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.portion_size}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.price}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.symbol}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{boxSize.calories}</span></td>
-                    <td className="fs-16">
+                    <td>{boxSize.id}</td>
+                    <td>{boxSize.name_en}</td>
+                    <td>{boxSize.cookies_types_id}</td>
+                    <td>{boxSize.slug}</td>
+                    <td>{boxSize.portion_size}</td>
+                    <td>{boxSize.price}</td>
+                    <td>{boxSize.symbol}</td>
+                    <td>{boxSize.calories}</td>
+                    <td>
                     <div className="form-check form-switch ms-4">
                       <input className="form-check-input fs-4" type="checkbox" role="switch" name="status"
                         />

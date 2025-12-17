@@ -367,6 +367,11 @@ body * {
     font-size: 14px;
     vertical-align: middle;
 }
+.datatable-wrapper.data-table.datatable-table{
+  color: #495057;
+  font-weight: 400;
+  font-size: 14px;
+}
 .action-btn {
     width: 36px;
     height: 36px;
