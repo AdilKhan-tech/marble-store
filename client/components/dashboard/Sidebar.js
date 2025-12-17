@@ -79,6 +79,10 @@ export default function SidebarLayout() {
                     <span className=""></span>
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
+                  <Link  href="/dashboard/cakes/customType" className={`sidebar-submenu-link ${isActive("/dashboard/cakes/customType") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                    <span className=""></span>
+                    <span className="sidebar-label">Cake Type</span>
+                  </Link>
                 </div>
               )}
             </li>
@@ -95,9 +99,9 @@ export default function SidebarLayout() {
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
-                  <Link href="/dashboard/icecream/flavour" className={`sidebar-submenu-link ${isActive("/dashboard/icecream/flavour") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link href="/dashboard/icecream/addons" className={`sidebar-submenu-link ${isActive("/dashboard/icecream/addons") ? "active" : ""}`} onClick={() => setOpen(false)}>
                     <span className=""></span>
-                    <span className="sidebar-label">Ice Cream Flavour</span>
+                    <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
                 </div>
               )}
