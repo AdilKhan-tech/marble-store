@@ -18,7 +18,7 @@ export default function ListCakeSizes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getCakesSizes);
-      setCakes(response.data)
+      setCakes(response.data.data)
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
@@ -131,31 +131,31 @@ export default function ListCakeSizes() {
               <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className=''>
-                    <th onClick={() => handleSort("id")} className="nowrap">
+                    <th onClick={() => handleSort("id")}>
                       ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
                     </th>
-                    <th onClick={() => handleSort("name_en")} className="nowrap">
+                    <th onClick={() => handleSort("name_en")}>
                       Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
                     </th>
-                    <th onClick={() => handleSort("custom_cake_type_id")} className="nowrap">
+                    <th onClick={() => handleSort("custom_cake_type_id")}>
                       Category <span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
                     </th>
-                    <th onClick={() => handleSort("slug")} className="nowrap">
+                    <th onClick={() => handleSort("slug")}>
                       Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
                     </th>
-                    <th onClick={() => handleSort("scoop_size")} className="nowrap">
+                    <th onClick={() => handleSort("scoop_size")}>
                       Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span>
                     </th>
-                    <th onClick={() => handleSort("additional_price")} className="nowrap">
+                    <th onClick={() => handleSort("additional_price")}>
                       Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span>
                     </th>
-                    <th onClick={() => handleSort("symbol")} className="nowrap">
+                    <th onClick={() => handleSort("symbol")}>
                       Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span>
                     </th>
-                    <th onClick={() => handleSort("calories")} className="nowrap">
+                    <th onClick={() => handleSort("calories")}>
                       Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span>
                     </th>
-                    <th onClick={() => handleSort("status")} className="nowrap">
+                    <th onClick={() => handleSort("status")}>
                       Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
                     </th>
                     <th className="">Action</th>
@@ -164,15 +164,15 @@ export default function ListCakeSizes() {
 
                 <tbody>
                   {cakes.map((cake, index) => (
-                    <tr key={cake?.id ?? `cake-${index}`}>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake?.id}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake?.name_en}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake?.customCakeType?.name_en || "N/A"}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake?.slug}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake?.scoop_size}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-5">{cake?.additional_price}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-3">{cake?.symbol}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake?.calories}</span></td>
+                    <tr key={cake?.id}>
+                      <td>{cake?.id}</td>
+                      <td>{cake?.name_en}</td>
+                      <td>{cake?.customCakeType?.name_en}</td>
+                      <td>{cake?.slug}</td>
+                      <td>{cake?.scoop_size}</td>
+                      <td>{cake?.additional_price}</td>
+                      <td>{cake?.symbol}</td>
+                      <td>{cake?.calories}</td>
                       <td>
                         <div className="form-check form-switch ms-3">
                           <input className="form-check-input fs-5" type="checkbox" role="switch"
@@ -183,9 +183,9 @@ export default function ListCakeSizes() {
                       </td>
                       <td className='d-flex gap-2'>
                         <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cake)}>
-                          <i className="bi bi-pencil text-primary fs-16"></i></div>
+                          <i className="bi bi-pencil text-primary"></i></div>
                         <div className='action-btn' onClick={() => showDeleteConfirmation(cake.id)}>
-                          <i className="bi bi-trash text-danger fs-16"></i></div>
+                          <i className="bi bi-trash text-danger"></i></div>
                       </td>
                     </tr>
                   ))}

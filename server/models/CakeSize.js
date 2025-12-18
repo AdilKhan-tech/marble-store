@@ -147,9 +147,4 @@ const CakeSize = sequelize.define("CakeSize", {
   timestamps: false,
 });
 
-CakeSize.belongsTo(CustomCakeTypes, {
-  foreignKey: "custom_cake_type_id",
-  as: "customCakeType",
-});
-
 module.exports = CakeSize;
