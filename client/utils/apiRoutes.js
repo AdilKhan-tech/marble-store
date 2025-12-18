@@ -27,3 +27,7 @@ export const getIcecreamAddons = `${host}/icecreams/addons`
 export const updateIcecreamAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
 export const deleteIceCreamsAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
 export const deletecakesAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
+
+
+
+export const getaddons = `${host}/icecreams/addons`
