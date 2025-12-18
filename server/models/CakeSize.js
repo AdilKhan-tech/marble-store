@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const CustomCakeTypes = require("./CustomCakeTypes");
 
 const CakeSize = sequelize.define("CakeSize", {
 
@@ -34,12 +35,12 @@ const CakeSize = sequelize.define("CakeSize", {
     },
   },
 
-  category_id: {
+  custom_cake_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
-      isInt: {msg: "Category ID must be an integer"},
-      notNull: {msg: "Category ID is required"},
+      isInt: {msg: "Cake Type ID must be an integer"},
+      notNull: {msg: "Cake Type ID is required"},
     },
   },
 
@@ -144,6 +145,11 @@ const CakeSize = sequelize.define("CakeSize", {
 }, {
   tableName: "cake_sizes",
   timestamps: false,
+});
+
+CakeSize.belongsTo(CustomCakeTypes, {
+  foreignKey: "custom_cake_type_id",
+  as: "customCakeType",
 });
 
 module.exports = CakeSize;
