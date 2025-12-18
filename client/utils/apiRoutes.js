@@ -8,10 +8,10 @@ export const createCakesSizes = `${host}/cakes/sizes`
 export const deleteCakesSizes =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
 export const updateCakesSizes =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
 
-export const getCakeTypes = `${host}/cakes/customtype`
-export const deleteCakeTypes =(cakeId)=> `${host}/cakes/customtype/${cakeId}`;
-export const createCakeTypes = `${host}/cakes/customtype`;
-export const updateCakeTypes =(cakeId)=> `${host}/cakes/customtype/${cakeId}`;
+export const getAllCustomCakeTypes = `${host}/cakes/customTypes`
+export const deleteCustomCakeTypes =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
+export const createCustomCakeTypes = `${host}/cakes/customTypes`;
+export const updateCustomCakeTypes =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 
 // Other API routes can be added here similarly
 
@@ -30,4 +30,3 @@ export const deletecakesAddons =(icecreamId)=> `${host}/icecreams/addons/${icecr
 
 
 
-export const getaddons = `${host}/icecreams/addons`

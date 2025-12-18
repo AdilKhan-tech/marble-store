@@ -21,9 +21,9 @@ router.put('/flavors/:id', CakeFlavorController.updateCakeFlavorById);
 router.delete('/flavors/:id', CakeFlavorController.deleteCakeFlavorById);
 
 
-router.post('/customtype', upload.single('image_url'), CustomCakeTypesController.createCustomCakeTypes);
-router.get('/customtype', CustomCakeTypesController.getAllCustomCakeTypes);
-router.put('/customtype/:id', CustomCakeTypesController.updateCustomCakeTypesById);
-router.delete('/customtype/:id', CustomCakeTypesController.deleteCustomCakeTypesById);
+router.post('/customTypes', upload.single('image_url'), CustomCakeTypesController.createCustomCakeTypes);
+router.get('/customTypes', CustomCakeTypesController.getAllCustomCakeTypes);
+router.put('/customTypes/:id', CustomCakeTypesController.updateCustomCakeTypesById);
+router.delete('/customTypes/:id', CustomCakeTypesController.deleteCustomCakeTypesById);
 
 module.exports = router;

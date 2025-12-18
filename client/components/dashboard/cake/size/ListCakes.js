@@ -7,7 +7,7 @@ import AddCakes from "@/components/dashboard/cake/size/add/AddCakes";
 import { useEffect, useState } from 'react';
 import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-export default function ListCakes() {
+export default function ListCakeSizes() {
   const {token} = useAxiosConfig();
   const [cakes, setCakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -18,7 +18,7 @@ export default function ListCakes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getCakesSizes);
-      setCakes(response.data)
+      setCakes(response.data.data)
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
@@ -30,48 +30,55 @@ export default function ListCakes() {
   }, [token]);
 
   const showOffcanvasOnAddCakesSize = () => {
-        setCakeData(null);
-        setShowOffcanvas(true);
-     }
-     const showOffcanvasOnEditCakesSize = (cake) => {
-        setCakeData(cake);
-        setShowOffcanvas(true);
-     }
-     const closePopup = () => {
-        setShowOffcanvas(false);
-    };
+    setCakeData(null);
+    setShowOffcanvas(true);
+  }
 
-      const handleDelete = async (cakeId) => {
-      try {
-          const response = await axios.delete(deleteCakesSizes(cakeId));
-          if(response.status === 200) {
-              toast.success("Cake size deleted successfully!", {autoClose: 1000});
-              fetchCakeSizes();
-          }
-      }catch (error){
-          console.error("Error deleting Cake size:", error);
-          toast.error("Failed to delete Cake size.");
-          }
+  const showOffcanvasOnEditCakesSize = (cake) => {
+    setCakeData(cake);
+    setShowOffcanvas(true);
+  }
+
+  const closePopup = () => {
+    setShowOffcanvas(false);
+  };
+
+  const handleDelete = async (cakeId) => {
+    try {
+      const response = await axios.delete(deleteCakesSizes(cakeId));
+      if(response.status === 200) {
+        toast.success("Cake size deleted successfully!", {autoClose: 1000});
+        fetchCakeSizes();
       }
-      const showDeleteConfirmation = (cakeId) => {
-          const confirmed = window.confirm("Are you sure you want to delete this Cake size?");
-          if(confirmed){
-              handleDelete(cakeId)
-          }
-      }
-    const addCakeToState = (newCake) => {
+    }catch (error){
+      console.error("Error deleting Cake size:", error);
+      toast.error("Failed to delete Cake size.");
+    }
+  }
+
+  const showDeleteConfirmation = (cakeId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this Cake size?");
+    if(confirmed){
+      handleDelete(cakeId)
+    }
+  }
+  
+  const addCakeToState = (newCake) => {
     setCakes(prev => [newCake, ...prev]);
     setShowOffcanvas(false);
-    };
+  };
+
   const handleSort = (field) => {
     const newOrder =
       sortField === field && sortOrder === "asc" ? "desc" : "asc";
     setSortField(field);
     setSortOrder(newOrder);
   };
+
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
+
   const toggleLetterStatus = async (cake) => {
     const currentStatus = String(cake.status || "").toLowerCase();
     const newStatus = currentStatus === "active" ? "in-active" : "active";
@@ -85,7 +92,7 @@ export default function ListCakes() {
         );
         toast.success(`Status updated to ${newStatus}`, { autoClose: 1000 });
       }
-    } catch (error) {
+    }catch (error) {
       console.error(error);
       toast.error("Error updating status!", { autoClose: 3000 });
     }
@@ -95,17 +102,28 @@ export default function ListCakes() {
     <>
     <section className='' style={{ marginTop:"100px"}}>
       <div className=""> 
-      <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
-      <div className='d-flex justify-content-between mt-4'>
-        <div className='d-flex'>
-        <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
-            <input type="text" className="form-control border rounded-start-0 border-start-0" placeholder="Search here..." style={{height:"46px", width:"300px"}}/>
+        <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
+        <div className='d-flex justify-content-between mt-4'>
+          <div className='d-flex'>
+            <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+            <input 
+              type="text" 
+              className="form-control border rounded-start-0 border-start-0" 
+              placeholder="Search here..." 
+              style={{height:"46px", width:"300px"}}
+            />
+          </div>
+          <div style={{marginInlineEnd:"20px"}}>
+            <div 
+              className='org-btn py-2 px-4 rounded-3' 
+              onClick={showOffcanvasOnAddCakesSize} 
+              role='button'
+            >
+              <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
             </div>
-            <div style={{marginInlineEnd:"20px"}}>
-              <div className='org-btn py-2 px-4 rounded-3' onClick={showOffcanvasOnAddCakesSize} role='button'><i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span></div>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
           <div className=" ">
@@ -113,39 +131,48 @@ export default function ListCakes() {
               <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className=''>
-                    <th onClick={() => handleSort("id")} className="nowrap">
-                      ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
-                    <th onClick={() => handleSort("name_en")} className="nowrap">
-                      Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
-                    <th onClick={() => handleSort("category_id")} className="nowrap">
-                      Category <span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
-                    <th onClick={() => handleSort("slug")} className="nowrap">
-                      Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
-                    <th onClick={() => handleSort("scoop_size")} className="nowrap">
-                      Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span></th>
-                    <th onClick={() => handleSort("additional_price")} className="nowrap">
-                      Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
-                    <th onClick={() => handleSort("symbol")} className="nowrap">
-                      Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
-                    <th onClick={() => handleSort("calories")} className="nowrap">
-                      Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span></th>
-                    <th onClick={() => handleSort("status")} className="nowrap">
-                      Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
+                    <th onClick={() => handleSort("id")}>
+                      ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
+                    </th>
+                    <th onClick={() => handleSort("name_en")}>
+                      Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
+                    </th>
+                    <th onClick={() => handleSort("custom_cake_type_id")}>
+                      Category <span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
+                    </th>
+                    <th onClick={() => handleSort("slug")}>
+                      Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
+                    </th>
+                    <th onClick={() => handleSort("scoop_size")}>
+                      Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span>
+                    </th>
+                    <th onClick={() => handleSort("additional_price")}>
+                      Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span>
+                    </th>
+                    <th onClick={() => handleSort("symbol")}>
+                      Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span>
+                    </th>
+                    <th onClick={() => handleSort("calories")}>
+                      Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span>
+                    </th>
+                    <th onClick={() => handleSort("status")}>
+                      Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
+                    </th>
                     <th className="">Action</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {cakes.map((cake) => (
-                    <tr key={cake.id}>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.id}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.name_en}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake.category_id || "N/A"}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.slug}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-1">{cake.scoop_size}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-5">{cake.additional_price}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-3">{cake.symbol}</span></td>
-                      <td className="fs-16 fw-normal text-muted nowrap"><span className="ms-4">{cake.calories}</span></td>
+                  {cakes.map((cake, index) => (
+                    <tr key={cake?.id}>
+                      <td>{cake?.id}</td>
+                      <td>{cake?.name_en}</td>
+                      <td>{cake?.customCakeType?.name_en}</td>
+                      <td>{cake?.slug}</td>
+                      <td>{cake?.scoop_size}</td>
+                      <td>{cake?.additional_price}</td>
+                      <td>{cake?.symbol}</td>
+                      <td>{cake?.calories}</td>
                       <td>
                         <div className="form-check form-switch ms-3">
                           <input className="form-check-input fs-5" type="checkbox" role="switch"
@@ -156,9 +183,9 @@ export default function ListCakes() {
                       </td>
                       <td className='d-flex gap-2'>
                         <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cake)}>
-                          <i className="bi bi-pencil text-primary fs-16"></i></div>
+                          <i className="bi bi-pencil text-primary"></i></div>
                         <div className='action-btn' onClick={() => showDeleteConfirmation(cake.id)}>
-                          <i className="bi bi-trash text-danger fs-16"></i></div>
+                          <i className="bi bi-trash text-danger"></i></div>
                       </td>
                     </tr>
                   ))}
@@ -167,30 +194,29 @@ export default function ListCakes() {
             </div>
         </div>
         <Offcanvas
-                show={showOffcanvas}
-                onHide={() => setShowOffcanvas(false)}
-                placement="end">
-                <Offcanvas.Header closeButton>
-                <Offcanvas.Title>
-                   <div className='fs-24 fnt-color'>
-                     {cakeData ? "Update Size" : "Add Size"}
-                   </div>
-                </Offcanvas.Title>
-                </Offcanvas.Header>
-                <hr  className="mt-0"/>
-                <Offcanvas.Body>
-                 <AddCakes
-                    cakeData={cakeData}
-                    closePopup={closePopup}
-                    onAddCake={addCakeToState}
-                />
-                </Offcanvas.Body>
-            </Offcanvas>
-            <ToastContainer />
+          show={showOffcanvas}
+          onHide={() => setShowOffcanvas(false)}
+          placement="end">
+          <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
+            <div className='fs-24 fnt-color'>
+              {cakeData ? "Update Size" : "Add Size"}
+            </div>
+          </Offcanvas.Title>
+          </Offcanvas.Header>
+          <hr  className="mt-0"/>
+          <Offcanvas.Body>
+            <AddCakes
+              cakeData={cakeData}
+              closePopup={closePopup}
+              onAddCake={addCakeToState}
+            />
+          </Offcanvas.Body>
+        </Offcanvas>
+        <ToastContainer />
 
       </div>
     </section>
-    </>
-    
+    </>    
   )
 }

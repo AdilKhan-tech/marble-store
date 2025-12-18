@@ -37,9 +37,9 @@ export default function SidebarLayout() {
 
       {/* Overlay */}
       {open && (
-        <div 
-          className="sidebar-overlay fade-in" 
-          onClick={() => setOpen(false)} 
+        <div
+          className="sidebar-overlay fade-in"
+          onClick={() => setOpen(false)}
         />
       )}
 
@@ -49,14 +49,20 @@ export default function SidebarLayout() {
           <Link href="/dashboard" className="text-decoration-none">
             <h4 className="text-orange">Dashboard</h4>
           </Link>
-          <button className="btn btn-light" onClick={() => setOpen(false)}>
+          <button className="btn btn-light me-2" onClick={() => setOpen(false)}>
             <i className="bi bi-x-lg"></i>
           </button>
         </div>
         <nav className="sidebar-nav">
           <ul className="sidebar-menu">
             <li className="sidebar-menu-item">
-              <Link  href="/dashboard"  className={`sidebar-link ${isActive("/dashboard") ? "active" : ""}`}  onClick={() => setOpen(false)}>
+              <Link
+                href="/dashboard"
+                className={`sidebar-link ${
+                  isActive("/dashboard") ? "active" : ""
+                }`}
+                onClick={() => setOpen(false)}
+              >
                 <span className="fs-16">
                   <i className="bi bi-building-dash me-1 fs-5"></i>Dashboard
                 </span>
@@ -64,22 +70,50 @@ export default function SidebarLayout() {
             </li>
 
             <li className="sidebar-menu-item">
-              <div className={`sidebar-submenu-header ${isActiveParent("/dashboard/cakes") ? "active" : ""}`} onClick={() => toggleSubMenu("cakes")}>
+              <div
+                className={`sidebar-submenu-header ${
+                  isActiveParent("/dashboard/cakes") ? "active" : ""
+                }`}
+                onClick={() => toggleSubMenu("cakes")}
+              >
                 <span className="">
-                  <i className="bi bi-cake2 me-1 fs-5"></i>Cakes</span>
-                <i className={`bi bi-chevron-${activeSubMenu === "cakes" ? "up" : "down"}`}></i>
+                  <i className="bi bi-cake2 me-1 fs-5"></i>Cakes
+                </span>
+                <i
+                  className={`bi bi-chevron-${
+                    activeSubMenu === "cakes" ? "up" : "down"
+                  }`}
+                ></i>
               </div>
               {activeSubMenu === "cakes" && (
                 <div className="sidebar-submenu ms-3">
-                  <Link  href="/dashboard/cakes/size" className={`sidebar-submenu-link ${isActive("/dashboard/cakes/size") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/cakes/size"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cakes/size") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Cake Size</span>
                   </Link>
-                  <Link  href="/dashboard/cakes/flavour" className={`sidebar-submenu-link ${isActive("/dashboard/cakes/flavour") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/cakes/flavour"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cakes/flavour") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
-                  <Link  href="/dashboard/cakes/customType" className={`sidebar-submenu-link ${isActive("/dashboard/cakes/customType") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/cakes/customType"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cakes/customType") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Cake Type</span>
                   </Link>
@@ -88,58 +122,133 @@ export default function SidebarLayout() {
             </li>
 
             <li className="sidebar-menu-item">
-              <div className={`sidebar-submenu-header ${isActiveParent("/dashboard/icecream") ? "active" : ""}`} onClick={() => toggleSubMenu("icecream")}>
+              <div
+                className={`sidebar-submenu-header ${
+                  isActiveParent("/dashboard/icecream") ? "active" : ""
+                }`}
+                onClick={() => toggleSubMenu("icecream")}
+              >
                 <span className="">
-                  <i className="fa fa-ice-cream me-1 fs-5"></i>Ice Cream</span>
-                <i className={`bi bi-chevron-${activeSubMenu === "icecream" ? "up" : "down"}`}></i>
+                  <i className="fa fa-ice-cream me-1 fs-5"></i>Ice Cream
+                </span>
+                <i
+                  className={`bi bi-chevron-${
+                    activeSubMenu === "icecream" ? "up" : "down"
+                  }`}
+                ></i>
               </div>
               {activeSubMenu === "icecream" && (
                 <div className="sidebar-submenu ms-3">
-                  <Link href="/dashboard/icecream/size" className={`sidebar-submenu-link ${isActive("/dashboard/icecream") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/icecream/size"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/icecream") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
-                  <Link href="/dashboard/icecream/addons" className={`sidebar-submenu-link ${isActive("/dashboard/icecream/addons") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/icecream/addons"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/icecream/addons") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
                 </div>
               )}
             </li>
-            
+
             <li className="sidebar-menu-item">
-              <div className={`sidebar-submenu-header ${isActiveParent("/dashboard/icecream") ? "active" : ""}`} onClick={() => toggleSubMenu("cookie")}>
+              <div
+                className={`sidebar-submenu-header ${
+                  isActiveParent("/dashboard/icecream") ? "active" : ""
+                }`}
+                onClick={() => toggleSubMenu("cookie")}
+              >
                 <span className="">
-                  <i className="bi bi-cookie me-1 fs-5"></i>Cookies</span>
-                <i className={`bi bi-chevron-${activeSubMenu === "cookie" ? "up" : "down"}`}></i>
+                  <i className="bi bi-cookie me-1 fs-5"></i>Cookies
+                </span>
+                <i
+                  className={`bi bi-chevron-${
+                    activeSubMenu === "cookie" ? "up" : "down"
+                  }`}
+                ></i>
               </div>
               {activeSubMenu === "cookie" && (
                 <div className="sidebar-submenu ms-3">
-                  <Link href="/dashboard/cookie" className={`sidebar-submenu-link ${isActive("/dashboard/cookie") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/cookies/cookie"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cookies/cookie") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className=""></span>
+                    <span className="sidebar-label">Cookies</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/cookies/size"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cookies/size") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
-                  <Link href="/dashboard/cookie/flavour" className={`sidebar-submenu-link ${isActive("/dashboard/cookie/flavour") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/cookies/flavour"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cookies/flavour") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Cookies Flavour</span>
                   </Link>
                 </div>
               )}
             </li>
-            
+
             <li className="sidebar-menu-item">
-              <div className={`sidebar-submenu-header ${isActiveParent("/dashboard/icecream") ? "active" : ""}`} onClick={() => toggleSubMenu("diy")}>
+              <div
+                className={`sidebar-submenu-header
+               ${isActiveParent("/dashboard/icecream") ? "active" : ""}`}
+                onClick={() => toggleSubMenu("diy")}
+              >
                 <span className="">
-                  <i className="fa fa-ice-cream me-1 fs-5"></i>Diy</span>
-                <i className={`bi bi-chevron-${activeSubMenu === "diy" ? "up" : "down"}`}></i>
+                  <i className="fa fa-ice-cream me-1 fs-5"></i>Diy
+                </span>
+                <i
+                  className={`bi bi-chevron-${
+                    activeSubMenu === "diy" ? "up" : "down"
+                  }`}
+                ></i>
               </div>
               {activeSubMenu === "diy" && (
                 <div className="sidebar-submenu ms-3">
-                  <Link href="/dashboard/diy" className={`sidebar-submenu-link ${isActive("/dashboard/diy") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/diy"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/diy") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
-                  <Link href="/dashboard/diy/flavour" className={`sidebar-submenu-link ${isActive("/dashboard/diy/flavour") ? "active" : ""}`} onClick={() => setOpen(false)}>
+                  <Link
+                    href="/dashboard/diy/flavour"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/diy/flavour") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className=""></span>
                     <span className="sidebar-label">Ice Cream Flavour</span>
                   </Link>

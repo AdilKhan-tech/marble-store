@@ -1,22 +1,29 @@
 const CustomCakeTypes = require("../models/CustomCakeTypes");
 
 class CustomCakeTypesController {
-  static async createCustomCakeTypes(req, res) {
+
+  static async createCustomCakeTypes (req, res){
     try {
-      const { name_en, name_ar, slug, status, image_url } = req.body;
-      const customcaketypes = await CustomCakeTypes.create({
-        name_en,
-        name_ar,
-        slug,
-        status,
-        image_url,
-      });
-      return res.status(201).json({message: "Custom cake type created successfully",customcaketypes,});
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({message: "Failed to create custom cake type",error: error.message,});
+        const {name_en, name_ar, status} = req.body;
+
+        const image_url = req.file?.path || null;
+
+        const customCakeTypes = await CustomCakeTypes.create({
+            name_en,
+            name_ar,
+            status,
+            image_url,
+        });
+        return res.status(201).json(customCakeTypes);
+
+    } catch(error) {
+        return res.status(500).json({
+            message: "Failed to create Cookies",
+            error: error.message
+        });
     }
   }
+
   static async getAllCustomCakeTypes(req, res) {
     try {
       const customcaketypes = await CustomCakeTypes.findAll();
@@ -26,6 +33,7 @@ class CustomCakeTypesController {
       return res.status(500).json({message: "Failed to retrieve custom cake types",error: error.message,});
     }
   }
+
   static async updateCustomCakeTypesById(req, res) {
     try {
       const { id } = req.params;
@@ -47,6 +55,7 @@ class CustomCakeTypesController {
       return res.status(500).json({ message: error.message });
     }
   }
+
   static async deleteCustomCakeTypesById(req, res) {
     const { id } = req.params;
     try {

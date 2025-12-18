@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakesSizes, updateCakesSizes } from "@/utils/apiRoutes";
+import { createCakesSizes, updateCakesSizes, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
 const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
+  const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
   const [formData, setFormData] = useState({
-    category_id: "",
+    custom_cake_type_id: "",
     name_en: "",
     name_ar: "",
     slug: "",
@@ -16,14 +19,14 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
     additional_price: "",
     symbol: "",
     calories: "",
-    status: false,
+    status: "active",
   });
 
   // Load existing data
   useEffect(() => {
     if (cakeData) {
       setFormData({
-        category_id: cakeData.category_id || "",
+        custom_cake_type_id: cakeData.custom_cake_type_id || "",
         name_en: cakeData.name_en || "",
         name_ar: cakeData.name_ar || "",
         slug: cakeData.slug || "",
@@ -31,10 +34,24 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
         additional_price: cakeData.additional_price || "",
         symbol: cakeData.symbol || "",
         calories: cakeData.calories || "",
-        status: cakeData.status || false,
+        status: cakeData.status || "active",
       });
     }
   }, [cakeData]);
+
+  const fetchCustomCakeTypes = async () => {
+    try {
+      const response = await axios.get(getAllCustomCakeTypes);
+      setCustomCakeTypes(response.data)
+    } catch (error) {
+      console.error("Error fetching custom cake types", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!token) return;
+    fetchCustomCakeTypes();
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,7 +67,7 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.category_id) errors.push("Category id is required.");
+    if (!formData.custom_cake_type_id) errors.push("Category id is required.");
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
@@ -119,61 +136,98 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
       </div>
 
       <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          Cake Type
+        </label>
+
+        <select
+          name="custom_cake_type_id"
+          className="form-select textarea-hover-dark text-secondary"
+          value={formData.custom_cake_type_id}
+          onChange={handleChange}
+        >
+          <option value="">Select Cake Type</option>
+
+          {customCakeTypes.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.name_en}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
-        <input name="slug" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} onChange={handleChange}/>
+        <input 
+          name="slug" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.slug} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Scoop Size</label>
-        <input name="scoop_size" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.scoop_size} onChange={handleChange}/>
+        <input 
+          name="scoop_size" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.scoop_size} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Additional Price</label>
-        <input name="additional_price" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.additional_price} onChange={handleChange}/>
+        <input 
+          name="additional_price" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.additional_price} onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
-        <input name="symbol" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.symbol} onChange={handleChange}/>
+        <input 
+          name="symbol" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.symbol} 
+          onChange={handleChange}
+        />
       </div>
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
-        <input name="calories" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calories} onChange={handleChange}/>
-      </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Category</label>
-        <select name="category_id" className="form-select textarea-hover-dark text-secondary"
-          value={formData.category_id} onChange={handleChange}>
-          <option value="" className="fs-14 fw-normal text-secondary">Select Category</option>
-          <option value="12 Inch" className="fs-14 fw-normal text-secondary">12 Inch</option>
-          <option value="16 Inch" className="fs-14 fw-normal text-secondary">16 Inch</option>
-          <option value="Large" className="fs-14 fw-normal text-secondary">Large</option>
-          <option value="Medium" className="fs-14 fw-normal text-secondary">Medium</option>
-          <option value="Small" className="fs-14 fw-normal text-secondary">Small</option>
-        </select>
+        <input 
+          name="calories" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.calories} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="col-md-12 mt-3">
-              <div className="form-check form-switch">
-                <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
-                  role="switch" checked={formData.status === "Active"} onChange={(e) => setFormData((prev) => ({
-                      ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
-                <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-                  {formData.status === "Active"? "Active": "Inactive"}
-                </label>
-              </div>
-            </div>
+        <div className="form-check form-switch">
+          <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
+            role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
+                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
+            {formData.status === "Active"? "Active": "Inactive"}
+          </label>
+        </div>
+      </div>
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
         <div className="">
-          <input type="file" className="form-control form-control-lg textarea-hover-dark text-secondary" id="fileInput"
-            multiple onChange={handleFileChange}/>
+          <input 
+            type="file" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary" 
+            id="fileInput"
+            multiple onChange={handleFileChange}
+          />
         </div>
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
