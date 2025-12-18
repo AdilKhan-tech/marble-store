@@ -1,10 +1,12 @@
+"use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createCakesSizes, updateCakesSizes, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
+const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -249,4 +251,4 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
   );
 };
 
-export default CakeData;
+export default AddCakeSize;
