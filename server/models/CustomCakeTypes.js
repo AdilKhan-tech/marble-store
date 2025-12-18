@@ -45,10 +45,4 @@ const CustomCakeTypes = sequelize.define("CustomCakeTypes",{
 }
 );
 
-CustomCakeTypes.hasMany(CakeSize, {
-  foreignKey: "custom_cake_type_id",
-  as: "sizes",
-});
-
-
 module.exports = CustomCakeTypes;

@@ -158,48 +158,76 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
-        <input name="slug" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} onChange={handleChange}/>
+        <input 
+          name="slug" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.slug} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Scoop Size</label>
-        <input name="scoop_size" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.scoop_size} onChange={handleChange}/>
+        <input 
+          name="scoop_size" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.scoop_size} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Additional Price</label>
-        <input name="additional_price" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.additional_price} onChange={handleChange}/>
+        <input 
+          name="additional_price" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.additional_price} onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
-        <input name="symbol" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.symbol} onChange={handleChange}/>
+        <input 
+          name="symbol" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.symbol} 
+          onChange={handleChange}
+        />
       </div>
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
-        <input name="calories" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calories} onChange={handleChange}/>
+        <input 
+          name="calories" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.calories} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="col-md-12 mt-3">
-              <div className="form-check form-switch">
-                <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
-                  role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
-                      ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
-                <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-                  {formData.status === "Active"? "Active": "Inactive"}
-                </label>
-              </div>
-            </div>
+        <div className="form-check form-switch">
+          <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
+            role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
+                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
+            {formData.status === "Active"? "Active": "Inactive"}
+          </label>
+        </div>
+      </div>
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
         <div className="">
-          <input type="file" className="form-control form-control-lg textarea-hover-dark text-secondary" id="fileInput"
-            multiple onChange={handleFileChange}/>
+          <input 
+            type="file" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary" 
+            id="fileInput"
+            multiple onChange={handleFileChange}
+          />
         </div>
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
