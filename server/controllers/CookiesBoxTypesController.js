@@ -1,4 +1,4 @@
-const CookiesTypes = require('../models/CookiesTypes');
+const CookiesTypes = require('../models/CookiesBoxTypes');
 
 class CookiesTypesController {
 

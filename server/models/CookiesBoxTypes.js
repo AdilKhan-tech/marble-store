@@ -91,7 +91,7 @@ const CookiesTypes = sequelize.define("CookiesTypes", {
     },
 },
 {
-    tableName: "cookies_types",
+    tableName: "cookies_box_types",
     timestamps: false,
 });
 

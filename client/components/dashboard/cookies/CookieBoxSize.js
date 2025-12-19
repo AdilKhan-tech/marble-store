@@ -29,12 +29,12 @@ function CookieBoxSize() {
     fetchBoxSizes();
   }, [token]);
 
-  const showOffcanvasOnEditBoxSize = () => {
-    setBoxSizeData(null);
+  const showOffcanvasOnEditBoxSize = (boxSize) => {
+    setBoxSizeData(boxSize);
     setShowOffcanvas(true);
   }
-  const showOffcanvasOnAddBoxSize = (boxSize) => {
-    setBoxSizeData(boxSize);
+  const showOffcanvasOnAddBoxSize = () => {
+    setBoxSizeData();
     setShowOffcanvas(true);
   }
 
@@ -123,9 +123,15 @@ function CookieBoxSize() {
                     <td>{boxSize.calories}</td>
                     <td>
                     <div className="form-check form-switch ms-4">
-                      <input className="form-check-input fs-4" type="checkbox" role="switch" name="status"
+                        <input
+                          className="form-check-input fs-24"
+                          type="checkbox"
+                          role="switch"
+                          id={`flexSwitchCheck-${boxSize?.id || ''}`}
+                          checked={boxSize?.status?.toLowerCase() === "active"}
+                          readOnly
                         />
-                    </div>
+                      </div>
                     </td>
 
                     <td>

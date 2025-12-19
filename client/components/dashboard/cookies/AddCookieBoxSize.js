@@ -1,40 +1,70 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookiesSizes, updateCookiesSizes } from "@/utils/apiRoutes";
+import { createCookiesSizes, updateCookiesSizes ,getCookieBoxTypes } from "@/utils/apiRoutes";
 
-const AddCookieBoxSize = ({ closePopup, flavorData = null,onAddFlavor }) => {
+const AddCookieBoxSize = ({ closePopup, boxSizeData = null,onAddFlavor }) => {
+  const [errors, setErrors] = useState([]);
   const {token} = useAxiosConfig();
+  const [cookiesBoxTypes, setCookiesBoxTypes] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [customCookiesTypes, setCustomCookiesTypes] = useState([]);
+
   const [formData, setFormData] = useState({
+    cookies_types_id: "",
     name_en: "",
     name_ar: "",
-    cookies_type_id: "",
     slug: "",
     portion_size: "",
     price: "",
     symbol: "",
     calories: "",
-    calories:"",
     status: "active",
   });
 
-  const handleFileChange = (e) => {
-    setSelectedFiles(Array.from(e.target.files));
-  }
+  useEffect(() => {
+    if (boxSizeData) {
+      setFormData({
+        cookies_types_id: boxSizeData.cookies_types_id || "",
+        name_en: boxSizeData.name_en || "",
+        name_ar: boxSizeData.name_ar || "",
+        slug: boxSizeData.slug || "",
+        price: boxSizeData.price || "",
+        portion_size: boxSizeData.portion_size || "",
+        symbol: boxSizeData.symbol || "",
+        calories: boxSizeData.calories || "",
+        status: boxSizeData.status || "active",
+      });
+    }
+  }, [boxSizeData]);
 
   const handleChange = (e) => {
-  const { name, value, type, checked } = e.target;
-  setFormData((prev) => ({
-    ...prev,
-    [name]: type === "checkbox" ? checked : value,
-  }));
-};
-  
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFiles(Array.from(e.target.files));
+  };
+
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.cookies_types_id) errors.push("Cookies types id is required.");
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.price) errors.push("Price is required.");
+    if (!formData.portion_size)errors.push("Additional price is required.");
+    if (!formData.symbol) errors.push("Symbol is required.");
+    if (!formData.calories) errors.push("Calories is required.");
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,11 +73,11 @@ const AddCookieBoxSize = ({ closePopup, flavorData = null,onAddFlavor }) => {
     if (validationErrors.length > 0) return;
 
     try {
-      if (cookieData) {
-        const res = await axios.put(updateCookiesSizes(cookieData.id), formData);
+      if (boxSizeData) {
+        const res = await axios.put(updateCookiesSizes(boxSizeData.id), formData);
 
         if (res.status === 200) {
-          toast.success("Cookie Box Size updated successfully!", {
+          toast.success("Cake flavour updated successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
@@ -56,13 +86,13 @@ const AddCookieBoxSize = ({ closePopup, flavorData = null,onAddFlavor }) => {
         const res = await axios.post(createCookiesSizes, formData);
 
         if (res.status === 201 || res.status === 200) {
-          const createdCookies = res.data.cookiesizes;
-          toast.success("Cookie Box Size added successfully!", {
+          const createdFlavor = res.data.cakesflavour;
+          toast.success("Cake Flavour added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCookies) onAddCookies(createdCookies); // update parent state
-        return; // exit so closePopup is not called
+           if (onAddFlavor) onAddFlavor(createdFlavor);
+        return;
         }
       }
     } catch (error) {
@@ -70,127 +100,127 @@ const AddCookieBoxSize = ({ closePopup, flavorData = null,onAddFlavor }) => {
       setErrors([msg]);
     }
   };
-  useEffect(() => {
-      if (flavorData) {
-        setFormData({
-          category_id: flavorData.category_id || "",
-          name_en: flavorData.name_en || "",
-          name_ar: flavorData.name_ar || "",
-          slug: flavorData.slug || "",
-          portion_size: flavorData.portion_size || "",
-          symbol: flavorData.symbol || "",
-          status: flavorData.status || false,
-        });
-      }
-    }, [flavorData]);
-  
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
-        <input 
-         name="name_en" type="text"
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_en} 
-          onChange={handleChange}
-         />
-      </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
-        <input
-         name="name_ar" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_ar}
-          onChange={handleChange}
-         />
-      </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Cookies Type</label>
-        <select name="cookies_type_id" className="form-select textarea-hover-dark text-secondary">
-          <option value="" className="fs-14 fw-normal text-secondary">Select Category</option>
-          <option value="Original" className="fs-14 fw-normal text-secondary">Original</option>
-          <option value="big_bite" className="fs-14 fw-normal text-secondary">Big Bite</option>
 
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
+
+  const fetchCookieBoxTypes = async () => {
+    try {
+      const response = await axios.get(getCookieBoxTypes);
+      setCookiesBoxTypes(response?.data);
+    } catch (error) {
+      console.error("Error fetching cookie box types", error);
+    }
+  };
+
+  useEffect(() => {
+    if(!token) return;
+    fetchCookieBoxTypes();
+  }, [token]);
+
+  return (
+    <form className="component-form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name English</label>
+        <input name="name_en" type="text" className="form-control textarea-hover-dark"
+        value={formData.name_en} onChange={handleChange}/>
+      </div>
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name Arabic</label>
+        <input name="name_ar" type="text" className="form-control textarea-hover-dark"
+          value={formData.name_ar} onChange={handleChange}/>
+      </div>
+
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          Cookies Type
+        </label>
+
+        <select
+          name="cookies_types_id"
+          className="form-select textarea-hover-dark text-secondary"
+          value={formData.cookies_types_id}
+          onChange={handleChange}
+        >
+          <option value="">Select Cake Type</option>
+
+          {cookiesBoxTypes.map((cookiestype) => (
+            <option key={cookiestype?.id} value={cookiestype?.id}>
+              {cookiestype?.name_en}
+            </option>
+          ))}
         </select>
       </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
-        <input
-         name="slug" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} 
-          onChange={handleChange}
-         />
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Slug</label>
+        <input name="slug" type="text" className="form-control textarea-hover-dark"
+          value={formData.slug} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Portion Size</label>
-        <input
-         name="portion_size" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.portion_size} 
-          onChange={handleChange}
-         />
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Price</label>
+        <input name="price" type="number" step="0.01" className="form-control textarea-hover-dark"
+          value={formData.price} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Price</label>
-        <input
-         name="price" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.price} 
-          onChange={handleChange}
-         />
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Portion Size</label>
+        <input name="portion_size" type="text" className="form-control textarea-hover-dark"
+          value={formData.portion_size} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
-        <input
-         name="symbol" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.symbol} 
-          onChange={handleChange}
-         />
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Symbol</label>
+        <input name="symbol" type="text" className="form-control textarea-hover-dark"
+          value={formData.symbol} onChange={handleChange}/>
       </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
-        <input
-         name="calories" type="text" 
-         className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calories}
-          onChange={handleChange}
-         />
+
+      <div className="form-group mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Calories</label>
+        <input name="calories" type="number" className="form-control textarea-hover-dark"
+          value={formData.calories} onChange={handleChange}/>
       </div>
+
+
       <div className="col-md-12 mt-3">
         <div className="form-check form-switch">
           <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
             role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
-                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+                ...prev,status: e.target.checked ? "active" : "inactive",}))}/>
           <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-            {formData.status === "Active"? "Active": "Inactive"}
+            {formData.status === "active"? "active": "inactive"}
           </label>
         </div>
       </div>
-      <div className="col-md-12 mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
-        <input
-          type="file"
-          className="form-control form-control-lg textarea-hover-dark text-secondary" id="fileInput"
-          multiple onChange={handleFileChange}/>
+      <div className="col-md-12 px-1 mt-3">
+        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">File Attachment</label>
+        <div className="">
+          <input type="file" className="form-control textarea-hover-dark bg-light" id="fileInput"
+            multiple onChange={handleFileChange}/>
+        </div>
+        <ul className="mt-2">
+          {selectedFiles.map((file, index) => (
+            <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File flavour: {file.flavour} KB</span></li>
+          ))}
+        </ul>
+        <div className="text-danger">
+        <i className="bi bi-info-circle me-2"></i>
+        <span className="fs-12 fw-bold">Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX</span>
+        </div>
       </div>
-      <ul className="mt-2">
-        {selectedFiles.map((file, index) => (
-          <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File Size: {file.size} KB</span></li>
-        ))}
-      </ul>
-      <div className="text-danger">
-        <i className="bi bi-info-circle m-1"></i>
-        <span className="fs-14 fw-normal">Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX</span>
-      </div>
-      <div className="btn-group mt-5 d-flex justify-content-between gap-2">
-        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100">Cancel</button>
-        <button type="button" className="org-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100">Save</button>
+
+      <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
+        <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-100">Save</button>
+        <button type="button" className="cancle-btn rounded-3 border-1 fs-16 py-2 fw-bold w-100" onClick={closePopup}>Cancel</button>
       </div>
     </form>
   );
 };
 
 export default AddCookieBoxSize;
-
