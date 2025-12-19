@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCakesSizes, updateCakesSizes } from "@/utils/apiRoutes";
+import { createCakesSize, updateCakesSizeById } from "@/utils/apiRoutes";
 
 const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
   const [errors, setErrors] = useState([]);
@@ -70,7 +70,7 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
 
     try {
       if (cakeData) {
-        const res = await axios.put(updateCakesSizes(cakeData.id), formData);
+        const res = await axios.put(updateCakesSizeById(cakeData.id), formData);
 
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
@@ -79,7 +79,7 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
           });
         }
       } else {
-        const res = await axios.post(createCakesSizes, formData);
+        const res = await axios.post(createCakesSize, formData);
 
         if (res.status === 201 || res.status === 200) {
           const createdCake = res.data.cakesizes;

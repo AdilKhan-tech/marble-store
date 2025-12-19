@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const CustomCakeTypes = require("./CustomCakeTypes");
 
 const CakeSize = sequelize.define("CakeSize", {
 

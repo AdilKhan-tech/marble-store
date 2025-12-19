@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakesSizes, updateCakesSizes, getAllCustomCakeTypes } from "@/utils/apiRoutes";
+import { createCakesSize, updateCakesSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
+const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -82,32 +82,63 @@ const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-
+  
     try {
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        selectedFiles.forEach((file) => {
+          payload.append("image_url", selectedFiles[0]);
+        });
+      }
+  
       if (cakeData) {
-        const res = await axios.put(updateCakesSizes(cakeData.id), formData);
-
+        const res = await axios.put(updateCakesSizeById(cakeData.id), payload);
+  
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
             autoClose: 1000,
-            onClose: closePopup,
           });
-        }
-      } else {
-        const res = await axios.post(createCakesSizes, formData);
+          
+          if (onUpdateCake) {
+            onUpdateCake({
+              ...cakeData,
+              ...formData,
+              id: cakeData.id,
+            });
+          }
 
+          closePopup();
+        }
+      }
+      //  CREATE
+      else {
+        const res = await axios.post(createCakesSize, payload);
+  
         if (res.status === 201 || res.status === 200) {
-          const createdCake = res.data.cakesizes;
+          const selectedType = customCakeTypes.find(
+            (t) => String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
+          const createdCake = {
+            ...res.data,
+            customCakeType: selectedType || null,
+          };
+  
           toast.success("Cake Size added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCake) onAddCake(createdCake); // update parent state
-        return; // exit so closePopup is not called
+  
+          if (onAddCake) onAddCake(createdCake);
         }
       }
     } catch (error) {
@@ -127,21 +158,30 @@ const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
-        <input name="name_en" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-        value={formData.name_en} onChange={handleChange}/>
+        <input 
+          name="name_en" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.name_en} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
-        <input name="name_ar" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_ar} onChange={handleChange}/>
+        <input 
+          name="name_ar" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.name_ar} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Cake Type
         </label>
-
         <select
           name="custom_cake_type_id"
           className="form-select textarea-hover-dark text-secondary"
@@ -200,6 +240,7 @@ const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
           onChange={handleChange}
         />
       </div>
+
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
         <input 
@@ -212,15 +253,24 @@ const AddCakeSize = ({ closePopup, cakeData = null,onAddCake }) => {
       </div>
 
       <div className="col-md-12 mt-3">
-        <div className="form-check form-switch">
-          <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
-            role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
-                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
+        <div className="form-check form-switch m-2">
+          <input 
+            className="form-check-input fs-5" 
+            type="checkbox"
+            role="switch" 
+            checked={formData.status === "active"} 
+            onChange={(e) => setFormData((prev) => ({
+              ...prev,
+              status: e.target.checked ? "active" : "inactive",
+            }))
+            }
+          />
           <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-            {formData.status === "Active"? "Active": "Inactive"}
+            {formData.status === "active"? "Active": "Inactive"}
           </label>
         </div>
       </div>
+      
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
         <div className="">

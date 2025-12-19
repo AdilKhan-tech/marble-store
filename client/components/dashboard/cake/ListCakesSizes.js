@@ -5,11 +5,10 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddCakes from "@/components/dashboard/cake/AddCakesSize";
 import { useEffect, useState } from 'react';
-import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '@/utils/apiRoutes';
+import { getCakesSizes, deleteCakesSizeById ,updateCakesSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function ListCakeSizes() {
-  
   const {token} = useAxiosConfig();
   const [cakes, setCakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -20,6 +19,7 @@ export default function ListCakeSizes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getCakesSizes);
+    console.log("responsee", response.data.data)
       setCakes(response.data.data);
     } catch (error) {
       console.error("Error fetching cakes", error);
@@ -43,11 +43,12 @@ export default function ListCakeSizes() {
 
   const closePopup = () => {
     setShowOffcanvas(false);
+    
   };
 
   const handleDelete = async (cakeId) => {
     try {
-      const response = await axios.delete(deleteCakesSizes(cakeId));
+      const response = await axios.delete(deleteCakesSizeById(cakeId));
       if(response.status === 200) {
         toast.success("Cake size deleted successfully!", {autoClose: 1000});
         fetchCakeSizes();
@@ -70,6 +71,15 @@ export default function ListCakeSizes() {
     setShowOffcanvas(false);
   };
 
+  const updateCakeInState = (updatedCake) => {
+    setCakes((prev) =>
+      prev.map((cake) =>
+        cake.id === updatedCake.id ? { ...cake, ...updatedCake } : cake
+      )
+    );
+    setShowOffcanvas(false);
+  };
+
   const handleSort = (field) => {
     const newOrder =
       sortField === field && sortOrder === "asc" ? "desc" : "asc";
@@ -85,7 +95,7 @@ export default function ListCakeSizes() {
     const currentStatus = String(cake.status || "").toLowerCase();
     const newStatus = currentStatus === "active" ? "in-active" : "active";
     try {
-      const response = await axios.put(updateCakesSizes(cake.id), {
+      const response = await axios.put(updateCakesSizeById(cake.id), {
         status: newStatus,
       });
       if (response.status === 200) {
@@ -127,7 +137,6 @@ export default function ListCakeSizes() {
         </div>
       </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
-
           <div className=" ">
             <div className="data-table">
               <table className="table datatable-wrapper">
@@ -212,11 +221,11 @@ export default function ListCakeSizes() {
               cakeData={cakeData}
               closePopup={closePopup}
               onAddCake={addCakeToState}
+              onUpdateCake={updateCakeInState}
             />
           </Offcanvas.Body>
         </Offcanvas>
         <ToastContainer />
-
       </div>
     </section>
     </>    
