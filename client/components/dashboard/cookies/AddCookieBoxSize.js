@@ -111,7 +111,7 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null,onAddFlavor }) => {
   const fetchCookieBoxTypes = async () => {
     try {
       const response = await axios.get(getCookieBoxTypes);
-      setCookiesBoxTypes(response?.data);
+      setCookiesBoxTypes(response?.data?.cookiesTypes);
     } catch (error) {
       console.error("Error fetching cookie box types", error);
     }
