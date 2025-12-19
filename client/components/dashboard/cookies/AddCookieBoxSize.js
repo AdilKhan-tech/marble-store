@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createCookiesSizes, updateCookiesSizes } from "@/utils/apiRoutes";
 
-const AddCookieBoxSize = (closePopup) => {
+const AddCookieBoxSize = ({ closePopup, flavorData = null,onAddFlavor }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [customCookiesTypes, setCustomCookiesTypes] = useState([]);
   const [formData, setFormData] = useState({
-    name_ar: "",
     name_en: "",
+    name_ar: "",
     cookies_type_id: "",
     slug: "",
     portion_size: "",
@@ -33,15 +34,6 @@ const AddCookieBoxSize = (closePopup) => {
     [name]: type === "checkbox" ? checked : value,
   }));
 };
-
-  const fetchCustomCakeTypes = async () => {
-    try {
-      const response = await axios.get(getAllCustomCakeTypes);
-      setCustomCakeTypes(response.data)
-    } catch (error) {
-      console.error("Error fetching custom cake types", error);
-    }
-  };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,12 +56,12 @@ const AddCookieBoxSize = (closePopup) => {
         const res = await axios.post(createCookiesSizes, formData);
 
         if (res.status === 201 || res.status === 200) {
-          const createdCake = res.data.cookiesizes;
+          const createdCookies = res.data.cookiesizes;
           toast.success("Cookie Box Size added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCake) onAddCake(createdCake); // update parent state
+           if (onAddCookies) onAddCookies(createdCookies); // update parent state
         return; // exit so closePopup is not called
         }
       }
@@ -78,8 +70,22 @@ const AddCookieBoxSize = (closePopup) => {
       setErrors([msg]);
     }
   };
+  useEffect(() => {
+      if (flavorData) {
+        setFormData({
+          category_id: flavorData.category_id || "",
+          name_en: flavorData.name_en || "",
+          name_ar: flavorData.name_ar || "",
+          slug: flavorData.slug || "",
+          portion_size: flavorData.portion_size || "",
+          symbol: flavorData.symbol || "",
+          status: flavorData.status || false,
+        });
+      }
+    }, [flavorData]);
+  
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
         <input 
@@ -179,7 +185,7 @@ const AddCookieBoxSize = (closePopup) => {
         <span className="fs-14 fw-normal">Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX</span>
       </div>
       <div className="btn-group mt-5 d-flex justify-content-between gap-2">
-        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" >Cancel</button>
+        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100">Cancel</button>
         <button type="button" className="org-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100">Save</button>
       </div>
     </form>
@@ -187,3 +193,4 @@ const AddCookieBoxSize = (closePopup) => {
 };
 
 export default AddCookieBoxSize;
+
