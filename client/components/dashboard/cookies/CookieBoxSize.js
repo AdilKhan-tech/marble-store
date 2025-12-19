@@ -2,9 +2,9 @@
 import React from 'react'
 import { useState , useEffect } from 'react'
 import axios from 'axios';
-import { getCookieBoxSizes } from '@/utils/apiRoutes';
+import { getCookieBoxSizes ,deleteCookieBoxSizes } from '@/utils/apiRoutes';
 import {ToastContainer} from "react-toastify";
-import AddBoxSize from "@/components/dashboard/cookies/AddBoxSize";
+import AddBoxSize from "@/components/dashboard/cookies/AddCookieBoxSize";
 import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
@@ -46,6 +46,25 @@ function CookieBoxSize() {
     setBoxSizes(prev => [newBoxSize, ...prev]);
     setShowOffcanvas(false);
     };
+
+    const showDeleteConfirmation = (boxSizeId) => {
+      const confirmed = window.confirm("Are you sure you want to delete this box size?");
+      if(confirmed){
+        handleDelete(boxSizeId)
+      }
+    };
+
+    const handleDelete = async (boxSizeId) => {
+      try {
+          const response = await axios.delete(deleteCookieBoxSizes(boxSizeId));
+          if(response.status === 200){
+              fetchBoxSizes();
+          }
+    }catch (error){
+        console.error("Error deleting box size:", error);
+        toast.error("Failed to delete icecream size.");
+      }
+    }
   return (
     <section className='' style={{marginTop:"100px"}}>
       <div className=''>

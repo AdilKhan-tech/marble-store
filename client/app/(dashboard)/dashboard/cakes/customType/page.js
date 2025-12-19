@@ -1,10 +1,10 @@
 import React from 'react'
-import CustiomType from '@/components/dashboard/cake/customType/CustomType';
+import CustomCakeType from '@/components/dashboard/cake/CustomCakeType';
 
 function page() {
   return (
     <section>
-        <CustiomType />
+        <CustomCakeType />
     </section>
   )
 }

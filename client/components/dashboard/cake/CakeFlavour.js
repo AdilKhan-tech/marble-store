@@ -3,11 +3,13 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddFlavour from "@/components/dashboard/cake/flavour/add/AddFlavours";
+import AddFlavour from "@/components/dashboard/cake/AddCakeFlavours";
 import { useEffect, useState } from 'react';
 import { getCakesFlavour, deleteCakesFlavour, updateCakesFlavour } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-export default function ListFlavours() {
+
+export default function CakeFlavour() {
+
   const {token} = useAxiosConfig();
   const [flavor, setFlavor] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -114,32 +116,32 @@ export default function ListFlavours() {
             <table className="table datatable-wrapper">
               <thead>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")} className="nowrap">
+                  <th onClick={() => handleSort("id")}>
                   ID<span className="fs-12 text-secondary">{renderSortIcon("id")}</span></th>
-                  <th onClick={() => handleSort("name_en")} className="nowrap">
+                  <th onClick={() => handleSort("name_en")}>
                   Name<span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
-                  <th onClick={() => handleSort("category_id")} className="nowrap">
+                  <th onClick={() => handleSort("category_id")}>
                   Category<span className="fs-12 text-secondary">{renderSortIcon("category_id")}</span></th>
-                  <th onClick={() => handleSort("slug")} className="nowrap">
+                  <th onClick={() => handleSort("slug")}>
                   Slug<span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
-                  <th onClick={() => handleSort("additional_price")} className="nowrap">
+                  <th onClick={() => handleSort("additional_price")}>
                   Additional Price<span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span></th>
-                  <th onClick={() => handleSort("symbol")} className="nowrap">
+                  <th onClick={() => handleSort("symbol")}>
                   Symbol<span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span></th>
-                  <th onClick={() => handleSort("status")} className="nowrap">
+                  <th onClick={() => handleSort("status")}>
                   Status<span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
-                  <th className="nowrap">Action</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {flavor.map((flavor, index) => (
                   <tr key={index}>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.name_en}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-3'>{flavor?.category_id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{flavor?.slug}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-5'>{flavor?.additional_price}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-4'>{flavor?.symbol}</span></td>
+                    <td>{flavor?.id}</td>
+                    <td>{flavor?.name_en}</td>
+                    <td>{flavor?.category_id}</td>
+                    <td>{flavor?.slug}</td>
+                    <td>{flavor?.additional_price}</td>
+                    <td>{flavor?.symbol}</td>
                     <td className="text-secondary fs-16">
                     <div className="form-check form-switch ms-3">
                       <input className="form-check-input fs-5" type="checkbox" role="switch"

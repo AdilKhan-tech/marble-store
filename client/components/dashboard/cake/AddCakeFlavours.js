@@ -1,9 +1,11 @@
+"use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { createCakesFlavour, updateCakesFlavour } from "@/utils/apiRoutes";
 
-const FlavorData = ({ closePopup, flavorData = null,onAddFlavor }) => {
+const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -179,4 +181,4 @@ const FlavorData = ({ closePopup, flavorData = null,onAddFlavor }) => {
   );
 };
 
-export default FlavorData;
+export default AddCakeFlavours;

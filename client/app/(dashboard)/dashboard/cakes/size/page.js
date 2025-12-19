@@ -1,10 +1,10 @@
 import React from 'react'
-import ListCakes from '@/components/dashboard/cake/size/ListCakes';
+import ListCakeSizes from '../../../../../components/dashboard/cake/ListCakesSizes';
 
 function Page() {
   return (
     <div>
-    <ListCakes />
+    <ListCakeSizes />
     </div>
   )
 }

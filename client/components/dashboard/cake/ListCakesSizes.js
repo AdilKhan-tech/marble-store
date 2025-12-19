@@ -3,11 +3,13 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddCakes from "@/components/dashboard/cake/size/add/AddCakes";
+import AddCakes from "@/components/dashboard/cake/AddCakesSize";
 import { useEffect, useState } from 'react';
 import { getCakesSizes, deleteCakesSizes ,updateCakesSizes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+
 export default function ListCakeSizes() {
+  
   const {token} = useAxiosConfig();
   const [cakes, setCakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -18,7 +20,7 @@ export default function ListCakeSizes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getCakesSizes);
-      setCakes(response.data.data)
+      setCakes(response.data.data);
     } catch (error) {
       console.error("Error fetching cakes", error);
     }

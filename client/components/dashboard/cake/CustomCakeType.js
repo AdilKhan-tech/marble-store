@@ -3,11 +3,13 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddType from '@/components/dashboard/cake/customType/add/AddType';
+import AddType from '@/components/dashboard/cake/AddCustomCakeType';
 import { useEffect, useState } from 'react';
 import { getAllCustomCakeTypes, updateCustomCakeTypes, deleteCustomCakeTypes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-export default function ListCustomCakes() {
+
+export default function CustomCakeTypes() {
+  
   const {token} = useAxiosConfig();
   const [cakes, setcakes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -15,11 +17,11 @@ export default function ListCustomCakes() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const fetchCakeType = async () => {
+  const fetchCustomCakeTypes = async () => {
     try {
       const response = await axios.get(getAllCustomCakeTypes);
       console.log("cakes data:", response.data);
-      setcakes(response.data)
+      setcakes(response.data);
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
@@ -27,7 +29,7 @@ export default function ListCustomCakes() {
 
   useEffect(() => {
     if (!token) return;
-    fetchCakeType();
+    fetchCustomCakeTypes();
   }, [token]);
 
   const showOffcanvasAddType = () => {
@@ -131,16 +133,16 @@ export default function ListCustomCakes() {
             <table className="table datatable datatable-table">
               <thead className=''>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")} className="nowrap">
+                  <th onClick={() => handleSort("id")}>
                     ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
                   </th>
-                  <th onClick={() => handleSort("name_en")} className="nowrap">
+                  <th onClick={() => handleSort("name_en")}>
                     Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("slug")} className="nowrap">
+                  <th onClick={() => handleSort("slug")}>
                     Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")} className="nowrap">
+                  <th onClick={() => handleSort("status")}>
                     Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
                   </th>
                   <th className="fw-16 fnt-color">Action</th>
@@ -151,9 +153,9 @@ export default function ListCustomCakes() {
                 {cakes.map((cakeType, index) => (
                   <tr key={`${cakeType.id}-${index}`}>
 
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cakeType.id}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cakeType.name_en}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{cakeType.slug}</span></td>
+                    <td >{cakeType.id}</td>
+                    <td >{cakeType.name_en}</td>
+                    <td >{cakeType.slug}</td>
                     <td className="fs-16">
                     <div className="form-check form-switch ms-4">
                       <input className="form-check-input fs-4" type="checkbox" role="switch" name="status"
