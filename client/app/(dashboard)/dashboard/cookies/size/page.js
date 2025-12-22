@@ -58,10 +58,8 @@ function CookieBoxSize() {
       try {
           const response = await axios.delete(deleteCookieBoxSizes(boxSizeId));
           if(response.status === 200){
-              fetchBoxSizes();
           }
     }catch (error){
-        console.error("Error deleting box size:", error);
         toast.error("Failed to delete icecream size.");
       }
     }
