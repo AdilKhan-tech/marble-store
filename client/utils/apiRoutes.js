@@ -4,14 +4,14 @@ export const loginRoute = `${host}/users/login`
 
 export const getCategory = `${host}/categories/getAll`;
 export const getCakesSizes = `${host}/cakes/sizes`
-export const createCakesSizes = `${host}/cakes/sizes`
-export const deleteCakesSizes =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
-export const updateCakesSizes =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
+export const createCakesSize = `${host}/cakes/sizes`
+export const deleteCakesSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
+export const updateCakesSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
 
-export const getAllCustomCakeTypes = `${host}/cakes/customTypes`
-export const deleteCustomCakeTypes =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
-export const createCustomCakeTypes = `${host}/cakes/customTypes`;
-export const updateCustomCakeTypes =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
+export const getAllCustomCakeTypes = `${host}/cakes/customTypes`;
+export const createCustomCakeType = `${host}/cakes/customTypes`;
+export const deleteCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
+export const updateCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 
 // Other API routes can be added here similarly
 

@@ -43,7 +43,7 @@ export default function ListCakes() {
 
       const handleDelete = async (cakeId) => {
       try {
-          const response = await axios.delete(deleteCakesSizes(cakeId));
+          const response = await axios.delete(deleteCakesSizeByID(cakeId));
           if(response.status === 200) {
               toast.success("Cake size deleted successfully!", {autoClose: 1000});
               fetchCakeSizes();

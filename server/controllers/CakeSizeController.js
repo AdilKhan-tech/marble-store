@@ -27,24 +27,6 @@ class CakeSizeController {
         }
     }
 
-    // static async getAllCakeSizes (req, res) {
-    //     try {
-    //         const cakesizes = await CakeSize.findAll({
-    //             include: [
-    //               {
-    //                 model: CustomCakeTypes,
-    //                 as: "customCakeType",
-    //                 attributes: ["id", "name_en", "name_ar"],
-    //               },
-    //             ],
-    //           });
-    //         return res.status(200).json(cakesizes);
-    //     } catch (err) {
-    //         console.error(err);
-    //         return res.status(500).json({ message: "Failedto retrieve cake sizes", error: err.message });   
-    //     }
-    // }
-
     static async getAllCakeSizes(req, res) {
         try {
           const cakeSizes = await CakeSize.findAll({

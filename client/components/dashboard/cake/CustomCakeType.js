@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddType from '@/components/dashboard/cake/AddCustomCakeType';
 import { useEffect, useState } from 'react';
-import { getAllCustomCakeTypes, updateCustomCakeTypes, deleteCustomCakeTypes } from '@/utils/apiRoutes';
+import { getAllCustomCakeTypes, updateCustomCakeTypeById, deleteCustomCakeTypeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function CustomCakeTypes() {
@@ -48,7 +48,7 @@ export default function CustomCakeTypes() {
 
   const handleDelete = async (cakeTypeId) => {
     try {
-      const response = await axios.delete(deleteCustomCakeTypes(cakeTypeId));
+      const response = await axios.delete(deleteCustomCakeTypeById(cakeTypeId));
       if(response.status === 200) {
           toast.success("cakeType size deleted successfully!", {autoClose: 1000});
           fetchcaketype();
@@ -85,7 +85,7 @@ export default function CustomCakeTypes() {
     const currentStatus = String(cakeType.status || "").toLowerCase();
     const newStatus = currentStatus === "active" ? "in-active" : "active";
     try {
-      const response = await axios.put(updateCustomCakeTypes(cakeType.id), {
+      const response = await axios.put(updateCustomCakeTypeById(cakeType.id), {
         status: newStatus,
       });
       if (response.status === 200) {
