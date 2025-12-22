@@ -1,4 +1,4 @@
-const CookiesBoxSizes = require ("../models/CookiesBoxSizes")
+const {CookiesBoxSizes, CookiesBoxTypes } = require ("../models")
 
 class CookiesBoxSizesController {
     
@@ -32,7 +32,15 @@ class CookiesBoxSizesController {
 
     static async getAllCookiesBoxSizes (req, res) {
         try {
-            const cookiesBoxSize = await CookiesBoxSizes.findAll();
+            const cookiesBoxSize = await CookiesBoxSizes.findAll({
+            include: [
+              {
+                model: CookiesBoxTypes,
+                as: "type",
+                attributes: ["id", "name_en", "name_ar"],
+              },
+            ],
+          });
             return res.status(200).json(cookiesBoxSize);
 
         }catch(error) {

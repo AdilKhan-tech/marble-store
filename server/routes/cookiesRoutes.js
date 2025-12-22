@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CookiesController = require('../controllers/CookiesController');
-const CookiesTypesController = require('../controllers/CookiesTypesController');
+const CookiesTypesController = require('../controllers/CookiesBoxTypesController');
 const CookiesBoxSizesController = require('../controllers/CookiesBoxSizesController');
 const authenticateToken = require("../middlewares/authenticateToken");
 

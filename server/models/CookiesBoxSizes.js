@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
+
 const CookiesBoxSizes = sequelize.define("CookiesBoxSizes",{
     id: {
       type: DataTypes.INTEGER,

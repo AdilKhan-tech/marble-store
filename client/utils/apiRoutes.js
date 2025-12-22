@@ -29,4 +29,9 @@ export const deleteIceCreamsAddons =(icecreamId)=> `${host}/icecreams/addons/${i
 export const deletecakesAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
 
 
+export const getCookieBoxSizes = `${host}/cookies/size`;
+export const deleteCookieBoxSizes =(boxSizeId)=> `${host}/cookies/size/${boxSizeId}`;
+export const createCookiesSizes = `${host}/cookies/size`;
+export const updateCookiesSizes =(boxSizeId)=> `${host}/cookies/size/${boxSizeId}`;
 
+export const getCookieBoxTypes = `${host}/cookies/types`;
