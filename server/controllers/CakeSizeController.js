@@ -55,13 +55,11 @@ class CakeSizeController {
 
     static async updateCakeSizesById(req, res) {
         const { id } = req.params;
-    
         try {
             const cakesizes = await CakeSize.findByPk(id);
             if (!cakesizes) {
                 return res.status(404).json({ message: "Cake size not found" });
             }
-    
             const {
                 custom_cake_type_id,
                 name_en,
@@ -76,16 +74,6 @@ class CakeSizeController {
 
             const image_url = req.file?.path || cakesizes.image_url;
 
-            let parsedStatus = cakesizes.status;
-    
-            if (status !== undefined) {
-                if (status === 'true' || status === true || status === '1' || status === 1) {
-                    parsedStatus = true;
-                } else if (status === 'false' || status === false || status === '0' || status === 0) {
-                    parsedStatus = false;
-                }
-            }
-
             await cakesizes.update({
                 name_en: name_en ?? cakesizes.name_en,
                 name_ar: name_ar ?? cakesizes.name_ar,
@@ -95,7 +83,7 @@ class CakeSizeController {
                 additional_price: additional_price ?? cakesizes.additional_price,
                 symbol: symbol ?? cakesizes.symbol,
                 calories: calories ?? cakesizes.calories,
-                status: parsedStatus,
+                status: status ?? cakesizes.status,
                 image_url: image_url
             });
     

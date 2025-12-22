@@ -17,13 +17,13 @@ router.delete('/sizes/:id', CakeSizeController.deleteCakeSizesById);
 
 router.post('/flavors', upload.single('image_url'), CakeFlavorController.createCakeFlavor);
 router.get('/flavors', CakeFlavorController.getAllCakeFlavors);
-router.put('/flavors/:id', CakeFlavorController.updateCakeFlavorById);
+router.put('/flavors/:id', upload.single('image_url'), CakeFlavorController.updateCakeFlavorById);
 router.delete('/flavors/:id', CakeFlavorController.deleteCakeFlavorById);
 
 
 router.post('/customTypes', upload.single('image_url'), CustomCakeTypesController.createCustomCakeTypes);
 router.get('/customTypes', CustomCakeTypesController.getAllCustomCakeTypes);
-router.put('/customTypes/:id', CustomCakeTypesController.updateCustomCakeTypesById);
+router.put('/customTypes/:id', upload.single('image_url'), CustomCakeTypesController.updateCustomCakeTypesById);
 router.delete('/customTypes/:id', CustomCakeTypesController.deleteCustomCakeTypesById);
 
 module.exports = router;

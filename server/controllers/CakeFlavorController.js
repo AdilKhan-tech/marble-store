@@ -1,17 +1,17 @@
 const CakeFlavor = require('../models/CakeFlavor');
 
 class CakeFlavorController {
-
+    
     static async createCakeFlavor(req, res) {
        try {
-        const { name_en, name_ar, category_id, slug, additional_price, symbol, status } = req.body
+        const { name_en, name_ar, custom_cake_type_id, slug, additional_price, symbol, status } = req.body
 
         const image_url = req.file?.path || null;
 
         const cakeflavors = await CakeFlavor.create({
             name_en,
             name_ar,
-            category_id,
+            custom_cake_type_id,
             slug,
             additional_price,
             symbol,
@@ -39,27 +39,34 @@ class CakeFlavorController {
 
     static async updateCakeFlavorById(req, res) {
         const { id } = req.params;
-        const { name_en, name_ar, category_id, slug, additional_price, symbol, status, image_url } = req.body;
         try {
             const cakeflavors = await CakeFlavor.findByPk(id);
             if (!cakeflavors) {
                 return res.status(404).json({ message: "Cake flavor not found" });
             }
-            cakeflavors.name_en = name_en;
-            cakeflavors.name_ar = name_ar;
-            cakeflavors.category_id = category_id;
-            cakeflavors.slug = slug;
-            cakeflavors.additional_price = additional_price;
-            cakeflavors.symbol = symbol;
-            cakeflavors.status = status;
-            cakeflavors.image_url = image_url;
+            const {name_en,name_ar,custom_cake_type_id,slug,additional_price,symbol,status} = req.body;
+
+            const image_url = req.file?.path || cakeflavors.image_url;
+
+            await cakeflavors.update({
+                name_en: name_en ?? cakeflavors.name_en,
+                name_ar: name_ar ?? cakeflavors.name_ar,
+                custom_cake_type_id: custom_cake_type_id ?? cakeflavors.custom_cake_type_id,
+                slug: slug ?? cakeflavors.slug,
+                additional_price: additional_price ?? cakeflavors.additional_price,
+                symbol: symbol ?? cakeflavors.symbol,
+                status: status ?? cakeflavors.status,
+                image_url: image_url
+            });
     
-            await cakeflavors.save();
-            return res.status(200).json({ message: "Cake flavor updated successfully", cakeflavors });
-        }
-        catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: error.message });
+            return res.status(200).json({
+                message: "Cake flavor updated successfully",
+                cakeflavors
+            });
+    
+        } catch (error) {
+            console.error("UPDATE ERROR:", error);
+            return res.status(500).json({ message: "Failed to update cake flavor", error: error.message });
         }
     }
 
