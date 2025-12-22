@@ -20,8 +20,11 @@
 # production
 /build
 
-# server uploads
-server/uploads
+# Server build and runtime data
+.nuxt/
+dist/
+.cache/
+uploads/
 
 # misc
 .DS_Store
