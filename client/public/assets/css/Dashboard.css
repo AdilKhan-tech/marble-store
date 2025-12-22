@@ -371,6 +371,7 @@ body * {
   color: #495057;
   font-weight: 400;
   font-size: 14px;
+  color: var(--Color, rgba(82, 82, 82, 0.438)) !important;
 }
 .action-btn {
     width: 36px;
@@ -394,4 +395,16 @@ table tr:nth-child(even) td {
   background-color: #f5f5f4;
   border: transparent;
   /* 2nd, 4th, 6th rows get background */
+}
+.sidebar-closed .sidebar-icon {
+  margin-inline-start: 170px;
+  transition: 0.5s ease;
+  font-size: 24px;
+}
+.sidebar-open .sidebar-icon {
+  font-size: 22px;
+}
+.sidebar-closed .sidebar-chevron {
+  margin-inline-start: 170px;
+  transition: 0.5s ease;
 }

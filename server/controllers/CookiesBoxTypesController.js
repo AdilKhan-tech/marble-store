@@ -54,23 +54,12 @@ class CookiesTypesController {
 
             const image_url = req.file?.path || cookiesTypes.image_url;
     
-            let parsedStatus = cookiesTypes.status;
-    
-            if (status !== undefined) {
-                if (status === 'true' || status === true || status === '1' || status === 1) {
-                    parsedStatus = true;
-                }
-                else if (status === 'false' || status === false || status === '0' || status === 0) {
-                    parsedStatus = false;
-                }
-            }
-    
             await cookiesTypes.update({
                 name_en: name_en ?? cookiesTypes.name_en,
                 name_ar: name_ar ?? cookiesTypes.name_ar,
                 slug: slug ?? cookiesTypes.slug,
                 sort: sort ?? cookiesTypes.sort,
-                status: parsedStatus,
+                status: status ?? cookiesTypes.status,
                 image_url: image_url
             });
 

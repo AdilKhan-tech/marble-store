@@ -77,7 +77,7 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null,onAddFlavor }) => {
         const res = await axios.put(updateCookiesSizes(boxSizeData.id), formData);
 
         if (res.status === 200) {
-          toast.success("Cake flavour updated successfully!", {
+          toast.success("Cookie box size updated successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
@@ -87,7 +87,7 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null,onAddFlavor }) => {
 
         if (res.status === 201 || res.status === 200) {
           const createdFlavor = res.data.cakesflavour;
-          toast.success("Cake Flavour added successfully!", {
+          toast.success("Cookie box size added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
