@@ -35,3 +35,6 @@ export const createCookiesSizes = `${host}/cookies/size`;
 export const updateCookiesSizes =(boxSizeId)=> `${host}/cookies/size/${boxSizeId}`;
 
 export const getCookieBoxTypes = `${host}/cookies/types`;
+export const deleteCookieBoxTypesById =(boxTypeId)=> `${host}/cookies/types/${boxTypeId}`;
+export const createCookiesTypes = `${host}/cookies/types`;
+export const updateCookiesTypesById =(boxTypeId)=> `${host}/cookies/types/${boxTypeId}`;

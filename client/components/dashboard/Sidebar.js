@@ -63,8 +63,8 @@ export default function SidebarLayout() {
                 }`}
                 onClick={() => setOpen(false)}
               >
-                <span className="fs-16">
-                  <i className="bi bi-building-dash me-1 fs-5"></i>Dashboard
+                <span className="">
+                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Dashboard
                 </span>
               </Link>
             </li>
@@ -77,10 +77,10 @@ export default function SidebarLayout() {
                 onClick={() => toggleSubMenu("cakes")}
               >
                 <span className="">
-                  <i className="bi bi-cake2 me-1 fs-5"></i>Cakes
+                  <i className="bi bi-cake2 me-1  sidebar-icon"></i>Cakes
                 </span>
                 <i
-                  className={`bi bi-chevron-${
+                  className={`sidebar-chevron bi bi-chevron-${
                     activeSubMenu === "cakes" ? "up" : "down"
                   }`}
                 ></i>
@@ -129,10 +129,10 @@ export default function SidebarLayout() {
                 onClick={() => toggleSubMenu("icecream")}
               >
                 <span className="">
-                  <i className="fa fa-ice-cream me-1 fs-5"></i>Ice Cream
+                  <i className="fa fa-ice-cream me-1  sidebar-icon"></i>Ice Cream
                 </span>
                 <i
-                  className={`bi bi-chevron-${
+                  className={`sidebar-chevron bi bi-chevron-${
                     activeSubMenu === "icecream" ? "up" : "down"
                   }`}
                 ></i>
@@ -171,10 +171,10 @@ export default function SidebarLayout() {
                 onClick={() => toggleSubMenu("cookie")}
               >
                 <span className="">
-                  <i className="bi bi-cookie me-1 fs-5"></i>Cookies
+                  <i className="bi bi-cookie me-1  sidebar-icon"></i>Cookies
                 </span>
                 <i
-                  className={`bi bi-chevron-${
+                  className={`sidebar-chevron bi bi-chevron-${
                     activeSubMenu === "cookie" ? "up" : "down"
                   }`}
                 ></i>
@@ -202,14 +202,14 @@ export default function SidebarLayout() {
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
-                    href="/dashboard/cookies/flavour"
+                    href="/dashboard/cookies/type"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/flavour") ? "active" : ""
+                      isActive("/dashboard/cookies/type") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className=""></span>
-                    <span className="sidebar-label">Cookies Flavour</span>
+                    <span className="sidebar-label">Cookies Type</span>
                   </Link>
                 </div>
               )}
@@ -222,10 +222,10 @@ export default function SidebarLayout() {
                 onClick={() => toggleSubMenu("diy")}
               >
                 <span className="">
-                  <i className="fa fa-ice-cream me-1 fs-5"></i>Diy
+                  <i className="fa fa-ice-cream me-1 sidebar-icon"></i>Diy
                 </span>
                 <i
-                  className={`bi bi-chevron-${
+                  className={`sidebar-chevron bi bi-chevron-${
                     activeSubMenu === "diy" ? "up" : "down"
                   }`}
                 ></i>
