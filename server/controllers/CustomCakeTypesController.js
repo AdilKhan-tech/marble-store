@@ -4,13 +4,14 @@ class CustomCakeTypesController {
 
   static async createCustomCakeTypes (req, res){
     try {
-        const {name_en, name_ar, status} = req.body;
+        const {name_en, name_ar, slug, status} = req.body;
 
         const image_url = req.file?.path || null;
 
         const customCakeTypes = await CustomCakeTypes.create({
             name_en,
             name_ar,
+            slug,
             status,
             image_url,
         });
@@ -35,26 +36,40 @@ class CustomCakeTypesController {
   }
 
   static async updateCustomCakeTypesById(req, res) {
+    const { id } = req.params;
+  
     try {
-      const { id } = req.params;
-      const { name_en, name_ar, slug, status, image_url } = req.body;
-      const customcaketypes = await CustomCakeTypes.findByPk(id);
-      if (!customcaketypes) {
-        return res.status(404).json({ message: "Custom cake type not found" });
+      const customCakeTypes = await CustomCakeTypes.findByPk(id);
+  
+      if (!customCakeTypes) {
+        return res.status(404).json({ message: "Custom Cake Type not found" });
       }
-      customcaketypes.name_en = name_en;
-      customcaketypes.name_ar = name_ar;
-      customcaketypes.slug = slug;
-      customcaketypes.status = status;
-      customcaketypes.image_url = image_url;
-
-      await customcaketypes.save();
-      return res.status(200).json({message: "Custom cake type updated successfully",customcaketypes,});
+  
+      const { name_en, name_ar, slug, status } = req.body;
+  
+      const image_url = req.file?.path || customCakeTypes.image_url;
+  
+      await customCakeTypes.update({
+        name_en: name_en ?? customCakeTypes.name_en,
+        name_ar: name_ar ?? customCakeTypes.name_ar,
+        slug: slug ?? customCakeTypes.slug,
+        status: status ?? customCakeTypes.status,
+        image_url,
+      });
+  
+      return res.status(200).json({
+        message: "Custom Cake Type updated successfully",
+        customCakeTypes,
+      });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: error.message });
+      console.error("UPDATE ERROR:", error);
+      return res.status(500).json({
+        message: "Failed to update Custom Cake Type",
+        error: error.message,
+      });
     }
   }
+  
 
   static async deleteCustomCakeTypesById(req, res) {
     const { id } = req.params;

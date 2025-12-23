@@ -3,10 +3,11 @@ import { host } from "./apiHost"
 export const loginRoute = `${host}/users/login`
 
 export const getCategory = `${host}/categories/getAll`;
-export const getCakesSizes = `${host}/cakes/sizes`
+
+export const getAllCakesSizes = `${host}/cakes/sizes`
 export const createCakesSize = `${host}/cakes/sizes`
-export const deleteCakesSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
-export const updateCakesSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
+export const deleteCakeSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
+export const updateCakeSizeById =(cakeId)=> `${host}/cakes/sizes/${cakeId}`;
 
 export const getAllCustomCakeTypes = `${host}/cakes/customTypes`;
 export const createCustomCakeType = `${host}/cakes/customTypes`;
@@ -15,10 +16,10 @@ export const updateCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${c
 
 // Other API routes can be added here similarly
 
-export const getCakesFlavour = `${host}/cakes/flavors`
-export const createCakesFlavour = `${host}/cakes/flavors`
-export const deleteCakesFlavour =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
-export const updateCakesFlavour =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
+export const getAllCakeFlavours = `${host}/cakes/flavors`
+export const createCakeFlavour = `${host}/cakes/flavors`
+export const deleteCakeFlavourById =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
+export const updateCakeFlavourById =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
 
 export const getIcecreamSizes = `${host}/icecreams/portions`
 export const deleteIcecreamSizes =(icecreamId)=> `${host}/icecreams/portion/${icecreamId}`;

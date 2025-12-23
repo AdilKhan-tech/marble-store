@@ -33,13 +33,13 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
             }
         }
     },
-    category_id: {
+    custom_cake_type_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            notNull: { msg: "Category Id is required" },
-            isInt: { msg: "Category Id must be a number" },
-        }
+            isInt: {msg: "Cake Type ID must be an integer"},
+            notNull: {msg: "Cake Type ID is required"},
+        },
     },
     slug: {
         type: DataTypes.STRING,

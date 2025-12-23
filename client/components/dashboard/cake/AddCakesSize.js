@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakesSize, updateCakesSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
+import { createCakesSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
 const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) => {
   const {token} = useAxiosConfig();
@@ -101,7 +101,7 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) =
       }
   
       if (cakeData) {
-        const res = await axios.put(updateCakesSizeById(cakeData.id), payload);
+        const res = await axios.put(updateCakeSizeById(cakeData.id), payload);
   
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
@@ -265,7 +265,7 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) =
             }))
             }
           />
-          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
+          <label className="form-check-label mt-1 fs-14 fw-normal text-secondary">
             {formData.status === "active"? "Active": "Inactive"}
           </label>
         </div>

@@ -2,36 +2,52 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakesFlavour, updateCakesFlavour } from "@/utils/apiRoutes";
+import { createCakeFlavour, updateCakeFlavourById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
+const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor }) => {
+  const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
   const [formData, setFormData] = useState({
-    category_id: "",
     name_en: "",
     name_ar: "",
+    custom_cake_type_id: "",
     slug: "",
     additional_price: "",
     symbol: "",
-    status: false,
+    status: "active",
   });
 
   useEffect(() => {
     if (flavorData) {
       setFormData({
-        category_id: flavorData.category_id || "",
         name_en: flavorData.name_en || "",
         name_ar: flavorData.name_ar || "",
+        custom_cake_type_id: flavorData.custom_cake_type_id || "",
         slug: flavorData.slug || "",
         additional_price: flavorData.additional_price || "",
         symbol: flavorData.symbol || "",
-        status: flavorData.status || false,
+        status: flavorData.status || "active",
       });
     }
   }, [flavorData]);
+
+  const fetchCustomCakeTypes = async () => {
+    try {
+      const response = await axios.get(getAllCustomCakeTypes);
+        setCustomCakeTypes(response.data)
+    } catch (error) {
+      console.error("Error fetching custom cake types", error);
+    }
+  };
+  useEffect(() => {
+      if (!token) return;
+      fetchCustomCakeTypes();
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -47,9 +63,9 @@ const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.category_id) errors.push("Category id is required.");
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.custom_cake_type_id) errors.push("Custom cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.additional_price)errors.push("Additional price is required.");
     if (!formData.symbol) errors.push("Symbol is required.");
@@ -65,7 +81,7 @@ const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
 
     try {
       if (flavorData) {
-        const res = await axios.put(updateCakesFlavour(flavorData.id), formData);
+        const res = await axios.put(updateCakeFlavourById(flavorData.id), formData);
 
         if (res.status === 200) {
           toast.success("Cake flavour updated successfully!", {
@@ -74,7 +90,7 @@ const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
           });
         }
       } else {
-        const res = await axios.post(createCakesFlavour, formData);
+        const res = await axios.post(createCakeFlavour, formData);
 
         if (res.status === 201 || res.status === 200) {
           const createdFlavor = res.data.cakesflavour;
@@ -82,7 +98,7 @@ const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddFlavor) onAddFlavor(createdFlavor);
+           if (onAddCakeFlavor) onAddCakeFlavor(createdFlavor);
         return;
         }
       }
@@ -103,65 +119,109 @@ const AddCakeFlavours = ({ closePopup, flavorData = null,onAddFlavor }) => {
     <form className="component-form" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name English</label>
-        <input name="name_en" type="text" className="form-control textarea-hover-dark"
-        value={formData.name_en} onChange={handleChange}/>
+        <input 
+          name="name_en" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.name_en} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name Arabic</label>
-        <input name="name_ar" type="text" className="form-control textarea-hover-dark"
-          value={formData.name_ar} onChange={handleChange}/>
+        <input 
+          name="name_ar" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.name_ar} 
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className="form-group mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          Cake Type
+        </label>
+        <select
+          name="custom_cake_type_id"
+          className="form-select textarea-hover-dark text-secondary"
+          value={formData.custom_cake_type_id}
+          onChange={handleChange}
+        >
+          <option value="">Select Cake Type</option>
+
+          {customCakeTypes.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.name_en}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="form-group mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Slug</label>
-        <input name="slug" type="text" className="form-control textarea-hover-dark"
-          value={formData.slug} onChange={handleChange}/>
+        <input 
+          name="slug" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.slug} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Additional Price</label>
-        <input name="additional_price" type="text" className="form-control textarea-hover-dark"
-          value={formData.additional_price} onChange={handleChange}/>
+        <input 
+          name="additional_price" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.additional_price} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Symbol</label>
-        <input name="symbol" type="text" className="form-control textarea-hover-dark"
-          value={formData.symbol} onChange={handleChange}/>
-      </div>
-
-      <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Category</label>
-        <select name="category_id" className="form-select"
-          value={formData.category_id} onChange={handleChange}>
-          <option value="" className="fs-14 fw-normal">Select Category</option>
-          <option value="1" className="fs-14 fw-normal">Cake N Cup</option>
-          <option value="2" className="fs-14 fw-normal">Cookies Cakes</option>
-          <option value="3" className="fs-14 fw-normal">Rectangle Cakes</option>
-          <option value="4" className="fs-14 fw-normal">Round Cakes</option>
-          <option value="5" className="fs-14 fw-normal">Cute Cakes</option>
-          <option value="6" className="fs-14 fw-normal">Ice Cream Cakes</option>
-          <option value="7" className="fs-14 fw-normal">Sponge Cakes</option>
-        </select>
+        <input 
+          name="symbol" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.symbol} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="col-md-12 mt-3">
-        <div className="form-check form-switch">
-          <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
-            role="switch" checked={formData.status === "Active"} onChange={(e) => setFormData((prev) => ({
-                ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
-          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-            {formData.status === "Active"? "Active": "Inactive"}
+        <div className="form-check form-switch m-2">
+          <input 
+            className="form-check-input fs-5" 
+            type="checkbox"
+            role="switch" 
+            checked={formData.status === "active"} 
+            onChange={(e) => setFormData((prev) => ({
+              ...prev,status: e.target.checked ? "active" : "inactive"
+            }))
+            }
+          />
+          <label className="form-check-label mt-1 fs-14 fw-normal text-secondary">
+            {formData.status === "active"? "Active": "Inactive"}
           </label>
         </div>
       </div>
+
       <div className="col-md-12 px-1 mt-3">
         <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">File Attachment</label>
         <div className="">
-          <input type="file" className="form-control textarea-hover-dark bg-light" id="fileInput"
-            multiple onChange={handleFileChange}/>
+          <input 
+            type="file" 
+            className="form-control textarea-hover-dark bg-light" 
+            id="fileInput"
+            multiple 
+            onChange={handleFileChange}
+          />
         </div>
+
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
             <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File flavour: {file.flavour} KB</span></li>

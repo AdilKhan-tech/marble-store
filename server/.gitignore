@@ -20,6 +20,12 @@
 # production
 /build
 
+# Server build and runtime data
+.nuxt/
+dist/
+.cache/
+uploads/
+
 # misc
 .DS_Store
 *.pem
