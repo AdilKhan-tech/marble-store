@@ -62,7 +62,7 @@ class CookiesBoxSizesController {
             const {
                 name_en,
                 name_ar,
-                cookies_type_id,
+                cookies_types_id,
                 slug,
                 portion_size,
                 price,
@@ -73,27 +73,16 @@ class CookiesBoxSizesController {
 
             const image_url = req.file?.path || cookiesBoxSize.image_url;
     
-            let parsedStatus = cookiesBoxSize.status;
-    
-            if (status !== undefined) {
-                if (status === 'true' || status === true || status === '1' || status === 1) {
-                    parsedStatus = true;
-                }
-                else if (status === 'false' || status === false || status === '0' || status === 0) {
-                    parsedStatus = false;
-                }
-            }
-    
             await cookiesBoxSize.update({
                 name_en: name_en ?? cookiesBoxSize.name_en,
                 name_ar: name_ar ?? cookiesBoxSize.name_ar,
-                cookies_type_id: cookiesBoxSize ?? cookiesBoxSize.cookies_type_id,
+                cookies_types_id: cookies_types_id ?? cookiesBoxSize.cookies_types_id,
                 slug: slug ?? cookiesBoxSize.slug,
                 portion_size: portion_size ?? cookiesBoxSize.portion_size,
                 price: price ?? cookiesBoxSize.price,
                 symbol: symbol ?? cookiesBoxSize.symbol,
                 calories: calories ?? cookiesBoxSize.calories,
-                status: parsedStatus,
+                status: status ?? cookiesBoxSize.status,
                 image_url: image_url
             });
 
