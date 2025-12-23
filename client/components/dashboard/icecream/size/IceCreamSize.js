@@ -6,9 +6,11 @@ import axios from 'axios';
 import AddIceCream from "@/components/dashboard/icecream/size/add/AddIceCream";
 import { useEffect, useState } from 'react';
 // import { getIcecreamSizes } from '@/utils/apiRoutes';
-import { getIcecreamSizes } from '@/utils/apiRoutes';
+import { getIcecreamSizes ,deleteIcecreamSizes } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+
 export default function ListCakes() {
+
   const {token} = useAxiosConfig();
   const [icecreams, setIcecreams] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -17,7 +19,6 @@ export default function ListCakes() {
   const fetchIceCreamSizes = async () => {
     try {
       const response = await axios.get(getIcecreamSizes);
-      console.log("Icecreams data:", response.data);
       setIcecreams(response.data)
     } catch (error) {
       console.error("Error fetching icecreams", error);
@@ -41,22 +42,22 @@ export default function ListCakes() {
         setShowOffcanvas(false);
     };
 
-      const handleDelete = async (cakeId) => {
+      const handleDelete = async (iceCreamId) => {
       try {
-          const response = await axios.delete(deleteCakesSizeByID(cakeId));
+          const response = await axios.delete(deleteIcecreamSizes(iceCreamId));
           if(response.status === 200) {
-              toast.success("Cake size deleted successfully!", {autoClose: 1000});
-              fetchCakeSizes();
+              toast.success("Ice Cream size deleted successfully!", {autoClose: 1000});
+              fetchIceCreamSizes();
           }
       }catch (error){
-          console.error("Error deleting Cake size:", error);
-          toast.error("Failed to delete Cake size.");
+          console.error("Error deleting Ice Cream size:", error);
+          toast.error("Failed to delete Ice Cream size.");
           }
       }
-      const showDeleteConfirmation = (cakeId) => {
-          const confirmed = window.confirm("Are you sure you want to delete this Cake size?");
+      const showDeleteConfirmation = (iceCreamId) => {
+          const confirmed = window.confirm("Are you sure you want to delete this Ice Cream size?");
           if(confirmed){
-              handleDelete(cakeId)
+              handleDelete(iceCreamId)
           }
       }
     const addCakeToState = (newCake) => {
@@ -70,7 +71,7 @@ export default function ListCakes() {
     <>
     <section className='' style={{ marginTop:"100px"}}>
       <div className=""> 
-      <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
+      <p className="pagetitle mb-0 fnt-color">IceCream Sizes</p>
       <div className='d-flex justify-content-between mt-4'>
         <div className='d-flex'>
         <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
@@ -90,12 +91,10 @@ export default function ListCakes() {
                 <tr className=''>
                   <th className="fw-16 fnt-color">ID</th>
                   <th className="fw-16 fnt-color">Name</th>
-                  <th className="fw-16 fnt-color">Category</th>
+                  <th className="fw-16 fnt-color">Icecream Bucket ID</th>
                   <th className="fw-16 fnt-color">Slug</th>
-                  <th className="fw-16 fnt-color">Scope/Size</th>
                   <th className="fw-16 fnt-color">Additional Price</th>
-                  <th className="fw-16 fnt-color">Symbol</th>
-                  <th className="fw-16 fnt-color">Calories</th>
+                  <th className="fw-16 fnt-color">Calorie</th>
                   <th className="fw-16 fnt-color">Status</th>
                   <th className="fw-16 fnt-color">Action</th>
                 </tr>
@@ -104,15 +103,12 @@ export default function ListCakes() {
               <tbody>
                 {icecreams.map((icecream, index) => (
                   <tr key={`${icecream.id}-${index}`}>
-
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.id}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.name_en}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.category_id}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.icecream_bucket_id}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.slug}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.scoop_size}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.additional_price}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.symbol}</span></td>
-                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.calories}</span></td>
+                    <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.calorie}</span></td>
                     <td className="fs-16">
                     <div className="form-check form-switch ms-4">
                       <input
