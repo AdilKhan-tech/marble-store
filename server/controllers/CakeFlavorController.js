@@ -1,4 +1,4 @@
-const CakeFlavor = require('../models/CakeFlavor');
+const {CakeFlavor, CustomCakeTypes} = require('../models');
 
 class CakeFlavorController {
     
@@ -18,7 +18,7 @@ class CakeFlavorController {
             status,
             image_url,
         });
-        return res.status(201).json({ message: "Cake flavor created successfully", cakeflavors});
+        return res.status(201).json(cakeflavors);
         } 
         catch (err) {
             console.error(err);
@@ -26,14 +26,28 @@ class CakeFlavorController {
         }
     }
 
-    static async getAllCakeFlavors(req,res) {
+    static async getAllCakeFlavors(req, res) {
         try {
-            const cakeflavors = await CakeFlavor.findAll();
-            return res.status(200).json(cakeflavors);
-        }
-        catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to retrieve cake flavors", error: err.message});
+          const cakeFlavors = await CakeFlavor.findAll({
+            include: [
+              {
+                model: CustomCakeTypes,
+                as: "customCakeType",
+                attributes: ["id", "name_en", "name_ar"],
+              },
+            ],
+          });
+      
+          return res.status(200).json({
+            success: true,
+            data: cakeFlavors,
+          });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({
+            success: false,
+            message: "Failed to retrieve cake flavors",
+          });
         }
     }
 

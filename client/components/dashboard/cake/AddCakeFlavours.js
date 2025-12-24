@@ -6,7 +6,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createCakeFlavour, updateCakeFlavourById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor }) => {
+const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -74,32 +74,63 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor }) => 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-
+  
     try {
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        selectedFiles.forEach((file) => {
+          payload.append("image_url", selectedFiles[0]);
+        });
+      }
+  
       if (flavorData) {
-        const res = await axios.put(updateCakeFlavourById(flavorData.id), formData);
-
+        const res = await axios.put(updateCakeFlavourById(flavorData.id), payload);
+  
         if (res.status === 200) {
-          toast.success("Cake flavour updated successfully!", {
+          toast.success("Cake Flavour  updated successfully!", {
             autoClose: 1000,
-            onClose: closePopup,
           });
-        }
-      } else {
-        const res = await axios.post(createCakeFlavour, formData);
+          
+          if (onUpdateCakeFlavor) {
+            onUpdateCakeFlavor({
+              ...flavorData,
+              ...formData,
+              id: flavorData.id,
+            });
+          }
 
+          closePopup();
+        }
+      }
+      //  CREATE
+      else {
+        const res = await axios.post(createCakeFlavour, payload);
+  
         if (res.status === 201 || res.status === 200) {
-          const createdFlavor = res.data.cakesflavour;
+          const selectedType = customCakeTypes.find(
+            (t) => String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
+          const createdCake = {
+            ...res.data,
+            customCakeType: selectedType || null,
+          };
+  
           toast.success("Cake Flavour added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCakeFlavor) onAddCakeFlavor(createdFlavor);
-        return;
+  
+          if (onAddCakeFlavor) onAddCakeFlavor(createdCake);
         }
       }
     } catch (error) {
@@ -224,7 +255,7 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor }) => 
 
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
-            <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File flavour: {file.flavour} KB</span></li>
+            <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File flavour: {file.size} KB</span></li>
           ))}
         </ul>
         <div className="text-danger">

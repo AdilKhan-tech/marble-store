@@ -12,7 +12,7 @@ export default function ListCakeSizes() {
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [cakeData, setCakeData] = useState(null);
+  const [cakeData, setCakeSizeData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
@@ -31,12 +31,12 @@ export default function ListCakeSizes() {
   }, [token]);
 
   const showOffcanvasOnAddCakesSize = () => {
-    setCakeData(null);
+    setCakeSizeData(null);
     setShowOffcanvas(true);
   }
 
-  const showOffcanvasOnEditCakesSize = (cake) => {
-    setCakeData(cake);
+  const showOffcanvasOnEditCakesSize = (cakeSize) => {
+    setCakeSizeData(cakeSize);
     setShowOffcanvas(true);
   }
 
@@ -67,7 +67,7 @@ export default function ListCakeSizes() {
     }
   }
   
-  const addCakeToState = (newCakeSize) => {
+  const addCakeSize = (newCakeSize) => {
     setCakeSizes(prev => [newCakeSize, ...prev]);
     setShowOffcanvas(false);
   };
@@ -166,7 +166,11 @@ export default function ListCakeSizes() {
                       <td>{cakeSize?.additional_price}</td>
                       <td>{cakeSize?.symbol}</td>
                       <td>{cakeSize?.calories}</td>
-                      <td>{cakeSize?.status}</td>
+                      <td>
+                        <div className={cakeSize?.status === "active" ? "blue-status" : "red-status"}>
+                          {cakeSize?.status === "active" ? "Active" : "Inactive"}
+                        </div>
+                      </td>
                       <td className='d-flex gap-2'>
                         <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cakeSize)}>
                           <i className="bi bi-pencil text-primary"></i></div>
@@ -195,8 +199,8 @@ export default function ListCakeSizes() {
             <AddCakes
               cakeData={cakeData}
               closePopup={closePopup}
-              onAddCake={addCakeToState}
-              onUpdateCake={updateCakeSize}
+              onAddCakeSize={addCakeSize}
+              onUpdateCakeSize={updateCakeSize}
             />
           </Offcanvas.Body>
         </Offcanvas>
