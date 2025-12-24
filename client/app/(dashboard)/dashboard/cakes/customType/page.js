@@ -50,7 +50,9 @@ export default function CustomCakeTypes() {
       const response = await axios.delete(deleteCustomCakeTypeById(cakeTypeId));
       if(response.status === 200) {
           toast.success("Custom Cake Type deleted successfully!", {autoClose: 1000});
-          fetchCustomCakeTypes();
+          setCakeTypes((prev) =>
+            prev.filter((cakeType) => cakeType.id !== cakeTypeId)
+          );
       }
     }catch (error){
       console.error("Error deleting Custom Cake Typeb", error);
@@ -64,6 +66,7 @@ export default function CustomCakeTypes() {
         handleDelete(cakeTypeId)
     }
   }
+
   const addCakeTypes = (newCakeType) => {
     setCakeTypes(prev => [newCakeType, ...prev]);
     setShowOffcanvas(false);

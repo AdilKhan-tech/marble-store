@@ -50,7 +50,9 @@ export default function CakeFlavour() {
       const response = await axios.delete(deleteCakeFlavourById(flavorId));
       if(response.status === 200) {
         toast.success("Cake flavour deleted successfully!", {autoClose: 1000});
-        fetchCakeFlavors();
+        setCakeFlavors((prev) =>
+          prev.filter((cakeFlavor) => cakeFlavor.id !== flavorId)
+        );
       }
     }catch (error){
       console.error("Error deleting Cake flavour:", error);

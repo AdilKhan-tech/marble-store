@@ -45,12 +45,14 @@ export default function ListCakeSizes() {
     
   };
 
-  const handleDelete = async (cakeId) => {
+  const handleDelete = async (cakeSizeId) => {
     try {
-      const response = await axios.delete(deleteCakeSizeById(cakeId));
+      const response = await axios.delete(deleteCakeSizeById(cakeSizeId));
       if(response.status === 200) {
         toast.success("Cake size deleted successfully!", {autoClose: 1000});
-        fetchCakeSizes();
+        setCakeSizes((prev) =>
+          prev.filter((cakeSize) => cakeSize.id !== cakeSizeId)
+        );
       }
     }catch (error){
       console.error("Error deleting Cake size:", error);
@@ -58,10 +60,10 @@ export default function ListCakeSizes() {
     }
   }
 
-  const showDeleteConfirmation = (cakeId) => {
+  const showDeleteConfirmation = (cakeSizeId) => {
     const confirmed = window.confirm("Are you sure you want to delete this Cake size?");
     if(confirmed){
-      handleDelete(cakeId)
+      handleDelete(cakeSizeId)
     }
   }
   
