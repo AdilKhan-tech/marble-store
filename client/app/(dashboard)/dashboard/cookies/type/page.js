@@ -19,6 +19,7 @@ const fetchCookieBoxTypes = async () => {
   try {
     const response = await axios.get(getCookieBoxTypes)
     setCookieBoxType(response?.data.cookiesTypes);
+    console.log("Cookie Box Types:", response?.data.cookiesTypes);
   }catch (error){
     console.error("Error fetching Cookie Box Types", error);
   }
@@ -89,16 +90,14 @@ const fetchCookieBoxTypes = async () => {
           <input
             type='text'
             className='form-control form-control-lg px-5 text-dark-custom'
-            placeholder='Search here...'
-            style={{height:"46px", width:"300px"}}
-          />
+            placeholder='Search here...'/>
         </div>
         <div style={{marginInlineEnd:"20px"}}>
-          <div className='btn org-btn rounded-3'
+          <button className='btn org-btn w-100 py-2 px-4 rounded-3'
             role='button' onClick={showOffcanvasOnAddCookieType}>
-            <i className='bi bi-plus-circle'></i>
+            <i className='bi bi-plus-circle ms-1'></i>
             <span className='ms-2'>Create</span>
-          </div>
+          </button>
         </div>
       </div>
       </div>
@@ -119,20 +118,14 @@ const fetchCookieBoxTypes = async () => {
               </thead>
               <tbody>
                 {cookieBoxType.map((type, index) => (
-                  <tr key={type?.id}>
+                  <tr key={type._id || type.id || index}>
                     <td>{type?.id}</td>
                     <td>{type?.name_en}</td>
                     <td>{type?.slug}</td>
                     <td>{type?.sort}</td>
                     <td>
-                      <div className="form-check form-switch ms-3">
-                      <input 
-                        className="form-check-input fs-5" 
-                        type="checkbox"
-                        role="switch" 
-                        checked={type?.status === "active"} 
-                        readOnly
-                      />
+                      <div className={type?.status === "active" ? "blue-status" : "red-status"}>
+                        {type?.status === "active" ? "Active" : "Inactive"}
                       </div>
                     </td>
                     <td className='d-flex gap-2'>

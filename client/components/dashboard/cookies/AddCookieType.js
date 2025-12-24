@@ -122,8 +122,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Name English</label>
+        <label className="form-label text-secondary">Name English</label>
         <input
           name="name_en" type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
@@ -131,8 +130,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Name Arabic</label>
+        <label className="form-label text-secondary">Name Arabic</label>
         <input
           name="name_ar" type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
@@ -140,8 +138,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Slug</label>
+        <label className="form-label text-dark-custom text-secondary">Slug</label>
         <input
           name="slug" type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
@@ -149,8 +146,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Sort</label>
+        <label className="form-label text-dark-custom text-secondary">Sort</label>
         <input
           name="sort" type="number"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
@@ -158,8 +154,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       </div>
 
       <div className="col-md-12 mt-3">
-      <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-        Status</label>
+      <label className="form-label text-dark-custom text-secondary">Status</label>
         <div className="form-check form-switch m-3">
           <input 
             className="form-check-input fs-4" 
@@ -178,7 +173,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       </div>
       
       <div className="col-md-12 px-1 mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
+        <label className="form-label text-dark-custom text-secondary">File Attachment</label>
         <div className="">
           <input 
             type="file" 
