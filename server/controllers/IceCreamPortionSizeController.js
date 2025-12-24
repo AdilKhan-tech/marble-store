@@ -3,7 +3,7 @@ const IceCreamPortionSize = require("../models/IceCreamPortionSize");
 class IceCreamPortionSizeController {
   static async createIceCreamPortionSize(req, res) {
     try {
-      const {icecream_bucket_id, name_en, name_ar,slug, additional_price, calorie,} = req.body;
+      const {icecream_bucket_id, name_en, name_ar,slug, additional_price, calorie,status} = req.body;
 
       const image_url = req.file?.path || null;
 
@@ -14,6 +14,7 @@ class IceCreamPortionSizeController {
         slug,
         additional_price,
         calorie,
+        status,
         image_url,
       });
       return res.status(201).json(icecreamportionsizes);
@@ -45,7 +46,7 @@ class IceCreamPortionSizeController {
           return res.status(404).json({ message: "Ice Cream Portion Size not found" });
       }
 
-      const {name_en, name_ar, icecream_bucket_id, slug, additional_price, calories} = req.body;
+      const {name_en, name_ar, icecream_bucket_id, slug, additional_price, calories,status} = req.body;
 
       const image_url = req.file?.path || iceCreamPortionSize.image_url;
 
@@ -56,6 +57,7 @@ class IceCreamPortionSizeController {
           slug: slug ?? iceCreamPortionSize.slug,
           additional_price: additional_price ?? iceCreamPortionSize.additional_price,
           calories: calories ?? iceCreamPortionSize.calories,
+          status: status ?? iceCreamPortionSize.status,
           image_url: image_url
       });
 

@@ -76,6 +76,19 @@ const IceCreamPortionSize = sequelize.define(
         },
       },
     },
+
+    status: {
+    type: DataTypes.ENUM("active", "inactive"),
+    defaultValue: "active",
+    validate: {
+      isIn: {
+        args: [["active", "inactive"]],
+        msg: "Status must be either active or inactive",
+      }
+    }
+
+  },
+
     image_url: {
       type: DataTypes.TEXT,
       allowNull: true,
