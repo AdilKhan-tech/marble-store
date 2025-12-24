@@ -182,7 +182,7 @@ export default function SidebarLayout() {
               {activeSubMenu === "cookie" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/cookies/cookie"
+                    href="/dashboard/cookies/"
                     className={`sidebar-submenu-link ${
                       isActive("/dashboard/cookies/cookie") ? "active" : ""
                     }`}

@@ -14,12 +14,13 @@ export default function CookieBoxTypes() {
   const [cookieBoxType, setCookieBoxType] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cookieData, setCookieData] = useState(null);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
 const fetchCookieBoxTypes = async () => {
   try {
     const response = await axios.get(getCookieBoxTypes)
     setCookieBoxType(response?.data.cookiesTypes);
-    console.log("Cookie Box Types:", response?.data.cookiesTypes);
   }catch (error){
     console.error("Error fetching Cookie Box Types", error);
   }
@@ -50,11 +51,10 @@ const fetchCookieBoxTypes = async () => {
     try {
       const response = await axios.delete(deleteCookieBoxTypesById(typeId));
       if(response.status === 200) {
-        toast.success("Cookie box type deleted successfully!", {autoClose: 1000});
-        fetchCookieBoxTypes();
+        toast.success("Cookie box Type deleted successfully!", { autoClose: 1000 });
+        setCookieBoxType((prev) => prev.filter((type) => type.id !== typeId));
       }
     }catch (error){
-      console.error("Error deleting Cookie box type:", error);
       toast.error("Failed to delete Cookie box type.");
     }
   }
@@ -78,6 +78,17 @@ const fetchCookieBoxTypes = async () => {
       )
     );
     setShowOffcanvas(false);
+  };
+
+    const handleSort = (field) => {
+    const newOrder =
+    sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
 
   return (
@@ -108,11 +119,21 @@ const fetchCookieBoxTypes = async () => {
             <table className='table datatable datatable-table'>
               <thead className=''>
                 <tr className=''>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Slug</th>
-                  <th>Sort</th>
-                  <th>Status</th>
+                  <th onClick={() => handleSort("id")}>
+                  ID<span>{renderSortIcon("id")}</span>
+                  </th>
+                  <th onClick={() => handleSort("name_en")}>
+                  Name<span>{renderSortIcon("name_en")}</span>
+                  </th>
+                  <th onClick={() => handleSort("slug")}>
+                  Slug<span>{renderSortIcon("slug")}</span>
+                  </th>
+                  <th onClick={() => handleSort("sort")}>
+                  Sort<span>{renderSortIcon("sort")}</span>
+                  </th>
+                  <th onClick={() => handleSort("status")}>
+                  Status<span>{renderSortIcon("status")}</span>
+                  </th>
                   <th>Action</th>
                 </tr>
               </thead>

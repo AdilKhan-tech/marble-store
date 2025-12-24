@@ -1,4 +1,4 @@
-const CookiesTypes = require('../models/CookiesBoxTypes');
+const CookiesBoxTypes = require('../models/CookiesBoxTypes');
 
 class CookiesTypesController {
 
@@ -8,7 +8,7 @@ class CookiesTypesController {
 
             const image_url = req.file?.path || null;
 
-            const cookiesTypes = await CookiesTypes.create({
+            const cookiesTypes = await CookiesBoxTypes.create({
                 name_en,
                 name_ar,
                 slug,
@@ -28,7 +28,7 @@ class CookiesTypesController {
 
     static async getAllCookiesTypes (req, res) {
         try {
-            const cookiesTypes = await CookiesTypes.findAll();
+            const cookiesTypes = await CookiesBoxTypes.findAll();
             return res.status(200).json({cookiesTypes});
 
         } catch(error) {
@@ -39,7 +39,7 @@ class CookiesTypesController {
     static async updateCookiesTypesById(req, res) {
         const { id } = req.params;
         try {
-            const cookiesTypes = await CookiesTypes.findByPk(id);
+            const cookiesTypes = await CookiesBoxTypes.findByPk(id);
             if (!cookiesTypes) {
                 return res.status(404).json({ message: "Cookies Types not found" });
             }
@@ -75,7 +75,7 @@ class CookiesTypesController {
         try {
             const { id } = req.params;
     
-            const cookiesTypes = await CookiesTypes.findByPk(id);
+            const cookiesTypes = await CookiesBoxTypes.findByPk(id);
     
             if (!cookiesTypes) {
                 return res.status(404).json({

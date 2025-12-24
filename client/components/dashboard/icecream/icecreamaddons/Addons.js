@@ -3,7 +3,7 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-// import AddIceCream from "@/components/dashboard/icecream/size/add/AddIceCream";
+import AddIceCream from "@/components/dashboard/icecream/size/add/AddIceCream";
 import { useEffect, useState } from 'react';
 // import { getIcecreamSizes } from '@/utils/apiRoutes';
 import { getIcecreamAddons, updateIcecreamAddons, deleteIceCreamsAddons } from '@/utils/apiRoutes';

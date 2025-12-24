@@ -368,6 +368,12 @@ body * {
     user-select: none;
     transition: background-color 0.2s ease;
 }
+.data-table th span {
+    color: #495057;
+    font-size: 12px;
+    margin-inline-start: 4px;
+
+}
 .data-table td {
     padding: 18px 14px;
     color: #495057;
@@ -394,10 +400,9 @@ body * {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-table tr:first-child td {
+table tbody tr:nth-child(odd) td {
   background-color: transparent;
   border: transparent;
-  /* First row (header) stays transparent */
 }
 table tr:nth-child(even) td {
   background-color: #f5f5f4;

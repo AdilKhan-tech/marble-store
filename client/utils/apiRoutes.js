@@ -40,3 +40,7 @@ export const getCookieBoxTypes = `${host}/cookies/types`;
 export const deleteCookieBoxTypesById =(boxTypeId)=> `${host}/cookies/types/${boxTypeId}`;
 export const createCookiesTypes = `${host}/cookies/types`;
 export const updateCookiesTypesById =(boxTypeId)=> `${host}/cookies/types/${boxTypeId}`;
+
+export const getAllCookies = `${host}/cookies/getAll`;
+export const deleteCookiesById = (boxTypeId)=> `${host}/cookies/delete/${boxTypeId}`;
+export const createCookies = `${host}/cookies/create`
