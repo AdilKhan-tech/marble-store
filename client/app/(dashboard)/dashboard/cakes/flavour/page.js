@@ -11,7 +11,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 export default function CakeFlavour() {
 
   const {token} = useAxiosConfig();
-  const [flavor, setCakeFlavors] = useState([]);
+  const [flavors, setCakeFlavors] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [flavorData, setFlavorData] = useState(null);
   const [sortField, setSortField] = useState("");
@@ -20,7 +20,8 @@ export default function CakeFlavour() {
   const fetchCakeFlavors = async () => {
     try {
       const response = await axios.get(getAllCakeFlavours);
-      setCakeFlavors(response.data)
+      console.log("ddddddddddd", response.data.data)
+      setCakeFlavors(response.data.data)
     } catch (error) {
       console.error("Error fetching cake Flavors", error);
     }
@@ -69,6 +70,15 @@ export default function CakeFlavour() {
 
   const addCakeFlavor = (newCakeFlavor) => {
     setCakeFlavors(prev => [newCakeFlavor, ...prev]); 
+    setShowOffcanvas(false);
+  };
+
+  const updateCakeFlavor = (updatedCakeFlavor) => {
+    setCakeFlavors((prev) =>
+      prev.map((cakeFlavor) =>
+        cakeFlavor.id === updatedCakeFlavor.id ? { ...cakeFlavor, ...updatedCakeFlavor } : cakeFlavor
+      )
+    );
     setShowOffcanvas(false);
   };
 
@@ -135,15 +145,19 @@ export default function CakeFlavour() {
                 </tr>
               </thead>
               <tbody>
-                {flavor.map((flavor, index) => (
-                  <tr key={index}>
+                {flavors.map((flavor, index) => (
+                  <tr key={flavor?.id}>
                     <td>{flavor?.id}</td>
                     <td>{flavor?.name_en}</td>
-                    <td>{flavor?.custom_cake_type_id}</td>
+                    <td>{flavor?.customCakeType?.name_en}</td>
                     <td>{flavor?.slug}</td>
                     <td>{flavor?.additional_price}</td>
                     <td>{flavor?.symbol}</td>
-                    <td>{flavor?.status}</td>
+                    <td>
+                      <div className={flavor?.status === "active" ? "blue-status" : "red-status"}>
+                        {flavor?.status === "active" ? "Active" : "Inactive"}
+                      </div>
+                    </td>
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn border-secondary" onClick={() => showOffcanvasOnEditCakesFlavour(flavor)}>
@@ -154,7 +168,6 @@ export default function CakeFlavour() {
                         </button>
                       </div>
                     </td>
-
                   </tr>
                 ))}
               </tbody>
@@ -178,6 +191,7 @@ export default function CakeFlavour() {
               flavorData={flavorData}
               closePopup={closePopup}
               onAddCakeFlavor={addCakeFlavor}
+              onUpdateCakeFlavor={updateCakeFlavor}
             />
           </Offcanvas.Body>
         </Offcanvas>

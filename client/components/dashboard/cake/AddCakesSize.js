@@ -6,7 +6,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createCakesSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) => {
+const AddCakeSize = ({ closePopup, cakeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -108,8 +108,8 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) =
             autoClose: 1000,
           });
           
-          if (onUpdateCake) {
-            onUpdateCake({
+          if (onUpdateCakeSize) {
+            onUpdateCakeSize({
               ...cakeData,
               ...formData,
               id: cakeData.id,
@@ -138,7 +138,7 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCake, onUpdateCake }) =
             onClose: closePopup,
           });
   
-          if (onAddCake) onAddCake(createdCake);
+          if (onAddCakeSize) onAddCakeSize(createdCake);
         }
       }
     } catch (error) {
