@@ -19,8 +19,8 @@ router.delete('/buckets/:id', IceCreamBucketController.deleteIceCreamBucketById)
 
 router.post("/portions", upload.single('image_url'), IceCreamPortionSizeController.createIceCreamPortionSize);
 router.get("/portions", IceCreamPortionSizeController.getAllIceCreamPortionSize);
-router.put("/portion/:id", upload.single('image_url'), IceCreamPortionSizeController.updateIceCreamPortionSize);
-router.delete("/portion/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
+router.put("/portions/:id", upload.single('image_url'), IceCreamPortionSizeController.updateIceCreamPortionSize);
+router.delete("/portions/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
 
 
 router.post("/addons", IceCreamAddOnsController.createIceCreamAddOns);
