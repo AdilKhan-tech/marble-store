@@ -3,7 +3,7 @@ import React from 'react'
 import { useState , useEffect } from 'react'
 import axios from 'axios';
 import { getCookieBoxSizes ,deleteCookieBoxSizes } from '@/utils/apiRoutes';
-import {ToastContainer} from "react-toastify";
+import {ToastContainer, toast} from "react-toastify";
 import AddBoxSize from "@/components/dashboard/cookies/AddCookieBoxSize";
 import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -11,6 +11,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 function CookieBoxSize() {
   const [boxSizes, setBoxSizes] = useState([]);
   const {token} = useAxiosConfig();
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [boxSizeData, setBoxSizeData] = useState(null);
 
@@ -67,11 +69,26 @@ function CookieBoxSize() {
       try {
           const response = await axios.delete(deleteCookieBoxSizes(boxSizeId));
           if(response.status === 200){
+            toast.success("Cookie box Size deleted successfully!", { autoClose: 1000 });
+            setBoxSizes((prev) => prev.filter((boxSize) => boxSize.id !== boxSizeId));
           }
     }catch (error){
-        toast.error("Failed to delete icecream size.");
+        toast.error("Failed to delete Cookie Box Size.");
       }
     }
+
+  const handleSort = (field) => {
+    const newOrder =
+    sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+
+
   return (
     <section className='' style={{marginTop:"100px"}}>
       <div className=''>
@@ -101,16 +118,36 @@ function CookieBoxSize() {
             <table className='table datatable datatable-table'>
               <thead className=''>
                 <tr className=''>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Cookies Type</th>
-                  <th>Slug</th>
-                  <th>Portion Size</th>
-                  <th>Price</th>
-                  <th>Symbol</th>
-                  <th>Calories</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th onClick={() => handleSort("id")}>
+                    ID<span>{renderSortIcon("id")}</span>
+                  </th>
+                  <th onClick={() => handleSort("name_en")}>
+                    Name<span>{renderSortIcon("name_en")}</span>
+                  </th>
+                  <th onClick={() => handleSort("cookies_types_id")}>
+                    Cookies Type<span>{renderSortIcon("cookies_types_id")}</span>
+                  </th>
+                  <th onClick={() => handleSort("slug")}>
+                    Slug<span>{renderSortIcon("slug")}</span>
+                  </th>
+                  <th onClick={() => handleSort("portion_size")}>
+                    Portion Size<span>{renderSortIcon("portion_size")}</span>
+                  </th>
+                  <th onClick={() => handleSort("price")}>
+                    Price<span>{renderSortIcon("price")}</span>
+                  </th>
+                  <th onClick={() => handleSort("symbol")}>
+                    Symbol<span>{renderSortIcon("symbol")}</span>
+                  </th>
+                  <th onClick={() => handleSort("calories")}>
+                    Calories<span>{renderSortIcon("calories")}</span>
+                  </th>
+                  <th onClick={() => handleSort("status")}>
+                    Status<span>{renderSortIcon("status")}</span>
+                  </th>
+                  <th>
+                    Action
+                  </th>
                 </tr>
               </thead>
 
