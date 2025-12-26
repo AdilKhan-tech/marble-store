@@ -4,19 +4,20 @@ class BranchController {
     
     static async createBranch(req, res) {
         try {
-            const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, branch_status} = req.body;
+            const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, status} = req.body;
 
             const branch = await Branch.create({
                 name_en,
                 name_ar,
-                slug,city,
+                slug,
+                city,
                 address,
                 latitude,
                 longitude,
                 number,
                 timing,
                 branch_store_id,
-                branch_status
+                status
             });
 
             return res.status(201).json({ message: "Branch created successfully", branch })
@@ -36,7 +37,7 @@ class BranchController {
 
     static async updateBranchById (req, res) {
         const { id } = req.params;
-        const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, branch_status} = req.body;
+        const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, status} = req.body;
         try {
             const branch = await Branch.findByPk(id);
             if (!branch) {
@@ -52,7 +53,7 @@ class BranchController {
             branch.number = number;
             branch.timing = timing;
             branch.branch_store_id = branch_store_id;
-            branch.branch_status = branch_status;
+            branch.status = status;
             await branch.save();
             return res.status(200).json({message: "Branch updated successfully", branch});
         } catch (error) {

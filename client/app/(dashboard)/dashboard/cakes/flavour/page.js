@@ -122,19 +122,11 @@ export default function CakeFlavour() {
                   </th>
 
                   <th onClick={() => handleSort("custom_cake_type_id")}>
-                    Category<span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
+                    Cake Type<span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
                   </th>
 
                   <th onClick={() => handleSort("slug")}>
                     Slug<span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
-                  </th>
-
-                  <th onClick={() => handleSort("additional_price")}>
-                    Additional Price<span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span>
-                  </th>
-
-                  <th onClick={() => handleSort("symbol")}>
-                    Symbol<span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span>
                   </th>
 
                   <th onClick={() => handleSort("status")}>
@@ -151,8 +143,6 @@ export default function CakeFlavour() {
                     <td>{flavor?.name_en}</td>
                     <td>{flavor?.customCakeType?.name_en}</td>
                     <td>{flavor?.slug}</td>
-                    <td>{flavor?.additional_price}</td>
-                    <td>{flavor?.symbol}</td>
                     <td>
                       <div className={flavor?.status === "active" ? "blue-status" : "red-status"}>
                         {flavor?.status === "active" ? "Active" : "Inactive"}
