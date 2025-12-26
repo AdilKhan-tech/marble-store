@@ -115,7 +115,7 @@ export default function SidebarLayout() {
                     onClick={() => setOpen(false)}
                   >
                     <span className=""></span>
-                    <span className="sidebar-label">Cake Type</span>
+                    <span className="sidebar-label">Custom Cake Type</span>
                   </Link>
                 </div>
               )}
@@ -219,38 +219,28 @@ export default function SidebarLayout() {
               <div
                 className={`sidebar-submenu-header
                ${isActiveParent("/dashboard/icecream") ? "active" : ""}`}
-                onClick={() => toggleSubMenu("diy")}
+                onClick={() => toggleSubMenu("setting")}
               >
                 <span className="">
-                  <i className="fa fa-ice-cream me-1 sidebar-icon"></i>Diy
+                  <i className="bi bi-gear me-1 sidebar-icon"></i>Settings
                 </span>
                 <i
                   className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "diy" ? "up" : "down"
+                    activeSubMenu === "setting" ? "up" : "down"
                   }`}
                 ></i>
               </div>
-              {activeSubMenu === "diy" && (
+              {activeSubMenu === "setting" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/diy"
+                    href="/dashboard/branch"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/diy") ? "active" : ""
+                      isActive("/dashboard/branch") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className=""></span>
-                    <span className="sidebar-label">Ice Cream Size</span>
-                  </Link>
-                  <Link
-                    href="/dashboard/diy/flavour"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/diy/flavour") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className=""></span>
-                    <span className="sidebar-label">Ice Cream Flavour</span>
+                    <span className="sidebar-label">Branches</span>
                   </Link>
                 </div>
               )}

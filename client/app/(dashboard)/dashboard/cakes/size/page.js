@@ -131,22 +131,13 @@ export default function ListCakeSizes() {
                       Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
                     </th>
                     <th onClick={() => handleSort("custom_cake_type_id")}>
-                      Category <span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
-                    </th>
-                    <th onClick={() => handleSort("slug")}>
-                      Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
+                      Cake Type <span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
                     </th>
                     <th onClick={() => handleSort("scoop_size")}>
                       Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span>
                     </th>
                     <th onClick={() => handleSort("additional_price")}>
                       Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span>
-                    </th>
-                    <th onClick={() => handleSort("symbol")}>
-                      Symbol <span className="fs-12 text-secondary">{renderSortIcon("symbol")}</span>
-                    </th>
-                    <th onClick={() => handleSort("calories")}>
-                      Calories <span className="fs-12 text-secondary">{renderSortIcon("calories")}</span>
                     </th>
                     <th onClick={() => handleSort("status")}>
                       Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
@@ -161,11 +152,8 @@ export default function ListCakeSizes() {
                       <td>{cakeSize?.id}</td>
                       <td>{cakeSize?.name_en}</td>
                       <td>{cakeSize?.customCakeType?.name_en}</td>
-                      <td>{cakeSize?.slug}</td>
                       <td>{cakeSize?.scoop_size}</td>
                       <td>{cakeSize?.additional_price}</td>
-                      <td>{cakeSize?.symbol}</td>
-                      <td>{cakeSize?.calories}</td>
                       <td>
                         <div className={cakeSize?.status === "active" ? "blue-status" : "red-status"}>
                           {cakeSize?.status === "active" ? "Active" : "Inactive"}

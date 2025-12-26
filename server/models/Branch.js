@@ -121,14 +121,14 @@ const Branch = sequelize.define("Branch", {
     },
   },
 
-  branch_status: {
+  status: {
     type: DataTypes.ENUM("active", "inactive"),
     allowNull: false,
     defaultValue: "active",
     validate: {
       isIn: {
         args: [["active", "inactive"]],
-        msg: "Branch status must be active or inactive",
+        msg: "Status must be active or inactive",
       },
     },
   },
