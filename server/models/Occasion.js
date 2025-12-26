@@ -32,6 +32,7 @@ const Occasion = sequelize.define("Occasion",{
             },
           },
     },
+    parent_ocassion:{},
     slug:{
         type: DataTypes.STRING,
         allowNull: true,

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookies, updateCookiesTypesById } from "@/utils/apiRoutes";
+import { createCookies, updateCookieById } from "@/utils/apiRoutes";
 
 const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
 
@@ -47,11 +47,11 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
     setSelectedFiles(files);
  };
 
-      const validateForm = () => {
+    const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    // if (!formData.cookies_type_id) errors.push("Cookie type is required.");
+    if (!formData.cookies_type_id) errors.push("Cookie type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.sort) errors.push("Sort is required.");
     if (!formData.status) errors.push("Status is required.");
@@ -79,7 +79,7 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
       }
 
       if (cookieData) {
-        const res = await axios.put(updateCookiesTypesById(cookieData.id), payload);
+        const res = await axios.put(updateCookieById(cookieData.id), payload);
 
         if (res.status === 200) {
           toast.success("Cookie updated successfully!", {
