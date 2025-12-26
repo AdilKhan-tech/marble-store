@@ -20,20 +20,35 @@ class BranchController {
                 status
             });
 
-            return res.status(201).json({ message: "Branch created successfully", branch })
+            return res.status(200).json({
+                success: true,
+                data: branch,
+              });
         } catch (error) {
-            res.status(500).json({message: "Failed to create user", error: error.message});
+            console.error(error);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to create branches",
+            });
         }
     }
 
     static async getAllBranches(req, res) {
         try {
-            const branches = await Branch.findAll();
-            res.status(200).json({branches})
-        } catch(error) {
-            res.status(500).json({message: "Failed to get branches", error: error.message});
-        } 
-    }
+          const branches = await Branch.findAll();
+      
+          return res.status(200).json({
+            success: true,
+            data: branches,
+          });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({
+            success: false,
+            message: "Failed to get branches",
+          });
+        }
+      }
 
     static async updateBranchById (req, res) {
         const { id } = req.params;
@@ -55,7 +70,10 @@ class BranchController {
             branch.branch_store_id = branch_store_id;
             branch.status = status;
             await branch.save();
-            return res.status(200).json({message: "Branch updated successfully", branch});
+            return res.status(200).json({
+                success: true,
+                data: branch,
+            });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: error.message });

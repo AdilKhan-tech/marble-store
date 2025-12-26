@@ -233,9 +233,9 @@ export default function SidebarLayout() {
               {activeSubMenu === "setting" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/branch"
+                    href="/dashboard/branches"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/branch") ? "active" : ""
+                      isActive("/dashboard/branches") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >

@@ -25,8 +25,8 @@ const Branch = sequelize.define("Branch", {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      notNull: { msg: "Arabic name is required" },
-      notEmpty: {msg: "Arabic name cannot be empty" },
+      notNull: { msg: "Name arabic is required" },
+      notEmpty: {msg: "Name arabic cannot be empty" },
     },
   },
 
@@ -122,13 +122,13 @@ const Branch = sequelize.define("Branch", {
   },
 
   status: {
-    type: DataTypes.ENUM("active", "inactive"),
+    type: DataTypes.ENUM("Active for Pickup Only", "Active for Both", "Inactive for Both"),
     allowNull: false,
-    defaultValue: "active",
+    defaultValue: "Active for Both",
     validate: {
       isIn: {
-        args: [["active", "inactive"]],
-        msg: "Status must be active or inactive",
+        args: [["Active for Pickup Only", "Active for Both", "Inactive for Both"]],
+        msg: "Status must be one of the allowed values",
       },
     },
   },
