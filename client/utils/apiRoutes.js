@@ -44,3 +44,7 @@ export const updateCookiesTypesById =(boxTypeId)=> `${host}/cookies/types/${boxT
 export const getAllCookies = `${host}/cookies/getAll`;
 export const deleteCookiesById = (boxTypeId)=> `${host}/cookies/delete/${boxTypeId}`;
 export const createCookies = `${host}/cookies/create`
+export const updateCookieById = (cookieId) => `${host}/cookies/update/${cookieId}`
+
+export const getAllOcassions = `${host}/occasions/getAll`
+export const createOccasion = `${host}/occasions/create`

@@ -9,7 +9,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function CookieBoxSize() {
-  const [boxSizes, setBoxSizes] = useState([]);
+  const [cookieBoxSizes, setCookieBoxSizes] = useState([]);
   const {token} = useAxiosConfig();
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -17,25 +17,25 @@ function CookieBoxSize() {
   const [boxSizeData, setBoxSizeData] = useState(null);
 
 
-  const fetchBoxSizes = async () => {
+  const fetchCookieBoxSizes = async () => {
     try {
     const response = await axios.get(getCookieBoxSizes);
-    setBoxSizes(response.data);
+    setCookieBoxSizes(response.data);
     } catch (error) {
-      console.error("Error fetching box sizes", error);
+      console.error("Error fetching Cookie box sizes", error);
     }
   }
 
   useEffect(() => {
     if(!token) return;
-    fetchBoxSizes();
+    fetchCookieBoxSizes();
   }, [token]);
 
-  const showOffcanvasOnEditBoxSize = (boxSize) => {
+  const showOffcanvasOnEditCookieBoxSize = (boxSize) => {
     setBoxSizeData(boxSize);
     setShowOffcanvas(true);
   }
-  const showOffcanvasOnAddBoxSize = () => {
+  const showOffcanvasOnAddCookieBoxSize = () => {
     setBoxSizeData();
     setShowOffcanvas(true);
   }
@@ -45,12 +45,12 @@ function CookieBoxSize() {
   };
 
   const addCookieToState = (newCookieSize) => {
-    setCakeSizes(prev => [newCookieSize, ...prev]);
+    setCookieBoxSizes(prev => [newCookieSize, ...prev]);
     setShowOffcanvas(false);
   };
 
   const updateCookieSize = (updatedCookieSize) => {
-    setCakeSizes((prev) =>
+    setCookieBoxSizes((prev) =>
       prev.map((cookieSize) =>
         cakeSize.id === updatedCookieSize.id ? { ...cookieSize, ...updatedCookieSize } : cookieSize
       )
@@ -59,7 +59,7 @@ function CookieBoxSize() {
   };
 
     const showDeleteConfirmation = (boxSizeId) => {
-      const confirmed = window.confirm("Are you sure you want to delete this box size?");
+      const confirmed = window.confirm("Are you sure you want to delete this cookie box size?");
       if(confirmed){
         handleDelete(boxSizeId)
       }
@@ -70,7 +70,7 @@ function CookieBoxSize() {
           const response = await axios.delete(deleteCookieBoxSizes(boxSizeId));
           if(response.status === 200){
             toast.success("Cookie box Size deleted successfully!", { autoClose: 1000 });
-            setBoxSizes((prev) => prev.filter((boxSize) => boxSize.id !== boxSizeId));
+            setCookieBoxSizes((prev) => prev.filter((boxSize) => boxSize.id !== boxSizeId));
           }
     }catch (error){
         toast.error("Failed to delete Cookie Box Size.");
@@ -103,7 +103,7 @@ function CookieBoxSize() {
           </div>
           <div style={{marginInlineEnd:"20px"}}>
             <button className='btn org-btn w-100 py-2 px-4 rounded-3'
-              onClick={showOffcanvasOnAddBoxSize}
+              onClick={showOffcanvasOnAddCookieBoxSize}
               role='button'>
               <i className='bi bi-plus-circle ms-1'></i>
               <span className='ms-2'>Create</span>
@@ -152,7 +152,7 @@ function CookieBoxSize() {
               </thead>
 
               <tbody>
-                {boxSizes.map((boxSize, index) => (
+                {cookieBoxSizes.map((boxSize, index) => (
                   <tr key={`${boxSize.id}-${index}`}>
 
                     <td>{boxSize.id}</td>
@@ -171,7 +171,7 @@ function CookieBoxSize() {
 
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="btn btn-sm btn-light p-2" onClick={() => showOffcanvasOnEditBoxSize(boxSize)}>
+                        <button className="btn btn-sm btn-light p-2" onClick={() => showOffcanvasOnEditCookieBoxSize(boxSize)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
                         <button className="btn btn-sm btn-light p-2" onClick={() => showDeleteConfirmation(boxSize.id)}>

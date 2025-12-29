@@ -8,7 +8,6 @@ export default function SidebarLayout() {
   const [open, setOpen] = useState(true);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
 
-  // Add class to body when sidebar is open/closed
   useEffect(() => {
     if (open) {
       document.body.classList.remove("sidebar-closed");
@@ -94,7 +93,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cake Size</span>
                   </Link>
                   <Link
@@ -104,7 +102,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
                   <Link
@@ -114,7 +111,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Custom Cake Type</span>
                   </Link>
                 </div>
@@ -146,7 +142,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
                   <Link
@@ -156,7 +151,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
                 </div>
@@ -188,7 +182,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies</span>
                   </Link>
                   <Link
@@ -198,7 +191,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
@@ -208,7 +200,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies Type</span>
                   </Link>
                 </div>
@@ -239,8 +230,20 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Branches</span>
+                  </Link>
+                </div>
+              )}
+              {activeSubMenu === "setting" && (
+                <div className="sidebar-submenu ms-3">
+                  <Link
+                    href="/dashboard/setting/occasion"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/setting/occasion") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="sidebar-label">Occasion</span>
                   </Link>
                 </div>
               )}
