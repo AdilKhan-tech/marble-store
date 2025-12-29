@@ -1,10 +1,25 @@
 "use Client"
-import React from 'react'
-import { useState } from "react"
+import React , { useState , useEffect } from 'react'
 
-function AddOccasions() {
+function AddOccasions({closePopup, occasions = null}) {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [formData, setFormData] = useState({
+    name_en: "",
+    name_ar: "",
+    parent_ocassion: "",
+    slug: "",
+  });
+  useEffect(() => {
+    if (occasions) {
+      setFormData({
+        name_en: occasions.name_en || "",
+        name_ar: occasions.name_ar || "",
+        parent_ocassion: occasions.parent_ocassion || "",
+        slug: occasions.slug || "",
+      });
+    }
+  }, [occasions]);
 
     const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -16,16 +31,32 @@ function AddOccasions() {
             <input 
              name='name_en'
              type='text'
-             className='form-control form-control-lg text-secondary'></input>
+             className='form-control form-control-lg text-secondary'
+             value={formData.name_en} 
+             onChange={(e)=>setFormData({...formData,name_en:e.target.value})}
+             />
+        </div>
+        <div className='form-group mt-3'>
+            <label className="form-label text-secondary">Name Arabic</label>
+            <input
+             name='name_ar'
+             className='form-control form-control-lg text-secondary'
+             value={formData.name_ar} 
+             onChange={(e)=>setFormData({...formData,name_ar:e.target.value})}/>
         </div>
         <div className='form-group mt-3'>
             <label className="form-label text-secondary">Slug</label>
             <input
              name='slug'
-             className='form-control form-control-lg text-secondary'></input>
+             className='form-control form-control-lg text-secondary'
+             value={formData.slug} 
+             onChange={(e)=>setFormData({...formData,slug:e.target.value})}/>
         </div>
         <div className='form-group mt-3'>
-            <label className='form-label text-secondary'>Select Parent Occasion</label>
+            <label className='form-label text-secondary'
+             value={formData.parent_ocassion} 
+             onChange={(e)=>setFormData({...formData,parent_ocassion:e.target.value})}
+            >Select Parent Occasion</label>
             <select className='form-select'>
                 <option value="">Select Parent Occasion</option>
                 <option value="1">None</option>
@@ -68,7 +99,7 @@ function AddOccasions() {
         </div>
       </div>
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
-        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100">Cancel</button>
+        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>Cancel</button>
         <button type="submit" className="org-btn py-2 d-flex justify-content-center rounded-3 fs-16 fw-normal border-0 w-100">Save</button>
        </div>
     </form>

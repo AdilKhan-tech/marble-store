@@ -39,6 +39,9 @@ function Occasions() {
     setOccasionData(occasion);
     setShowOffCanvas(true);
   };
+  const closePopup = () => {
+    setShowOffCanvas(false);
+  };
 
   const handleSort = (field) => {
     const newOrder =
@@ -134,7 +137,10 @@ function Occasions() {
           </Offcanvas.Header>
           <hr className="mt-0" />
           <Offcanvas.Body>
-            <AddOccasion/>
+            <AddOccasion
+             closePopup={closePopup}
+             occasions={occasions}
+            />
           </Offcanvas.Body>
         </Offcanvas>
         <ToastContainer />
