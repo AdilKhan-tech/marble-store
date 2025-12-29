@@ -24,6 +24,7 @@ export const updateCakeFlavourById =(cakeId)=> `${host}/cakes/flavors/${cakeId}`
 export const getIcecreamSizes = `${host}/icecreams/portions`
 export const deleteIcecreamSizes =(icecreamId)=> `${host}/icecreams/portions/${icecreamId}`;
 export const createIcecreamSizes = `${host}/icecreams/portions`
+export const updateIcecreamSizes =(icecreamId)=> `${host}/icecreams/portions/${icecreamId}`;
 
 export const getIcecreamAddons = `${host}/icecreams/addons`
 export const updateIcecreamAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
