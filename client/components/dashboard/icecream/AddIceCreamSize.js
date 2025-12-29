@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createIcecreamSizes } from "@/utils/apiRoutes";
+import { createIcecreamSizes,  } from "@/utils/apiRoutes";
+import CakeData from "./icecreamaddons/add/AddType";
+import { updateIcecreamSizes } from "@/utils/apiRoutes";
 const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -16,6 +18,21 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
     image_url: "",
     status: "active",
   });
+  // Load existing data
+  useEffect(() => {
+    if (iceCreamData) {
+      setFormData({
+        name_en: iceCreamData.name_en || "",
+        name_ar: iceCreamData.name_ar || "",
+        icecream_bucket_id: iceCreamData.icecream_bucket_id || "",
+        slug: iceCreamData.slug || "",
+        additional_price: iceCreamData.additional_price || "",
+        calorie: iceCreamData.calorie || "",
+        image_url: iceCreamData.image_url || "",
+        status: iceCreamData.status || false,
+      });
+    }
+  }, [iceCreamData]);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -46,24 +63,43 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
       return;
     }
     try {
-      const res = await axios.post(createIcecreamSizes, formData);
-
+     if(iceCreamData){
+        const res = await axios.put(updateIcecreamSizes(iceCreamData.id), formData);
       if (res.status === 201 || res.status === 200) {
         const createdIceCream = res.data;
-        console.log(res.data);
+
+        toast.success("IceCream Size updated successfully!", {
+          autoClose: 1000,
+          onClose: closePopup,
+        });
+
+         onAddIceCream(createdIceCream);
+      }
+      } else {
+        const res = await axios.post(createIcecreamSizes, formData);
+      if (res.status === 201 || res.status === 200) {
+        const createdIceCream = res.data;
 
         toast.success("IceCream Size added successfully!", {
           autoClose: 1000,
           onClose: closePopup,
         });
 
-        if (onAddIceCream) onAddIceCream(createdIceCream);
+         onAddIceCream(createdIceCream);
+      }
       }
     } catch (error) {
       const msg = error?.response?.data?.message || "Something went wrong!";
       setErrors([msg]);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">

@@ -14,7 +14,7 @@ export default function ListCakes() {
   const {token} = useAxiosConfig();
   const [icecreams, setIcecreams] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [iceCreamData, setCakeData] = useState(null);
+  const [iceCreamData, setIceCreamData] = useState(null);
 
   const fetchIceCreamSizes = async () => {
     try {
@@ -31,11 +31,11 @@ export default function ListCakes() {
   }, [token]);
 
   const showOffcanvasOnAddCakesSize = () => {
-        setCakeData(null);
+        setIceCreamData(null);
         setShowOffcanvas(true);
      }
      const showOffcanvasOnEditCakesSize = (icecream) => {
-        setCakeData(icecream);
+        setIceCreamData(icecream);
         setShowOffcanvas(true);
      }
      const closePopup = () => {
@@ -61,6 +61,8 @@ export default function ListCakes() {
           }
       }
     const addIceCreamToState = (newIceCream) => {
+console.log("New Ice Cream Size Added:", newIceCream);
+// fetchIceCreamSizes();
     setIcecreams(prev => [newIceCream, ...prev]);
     setShowOffcanvas(false);
     };
