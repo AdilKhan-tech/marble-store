@@ -14,7 +14,10 @@ export const createCustomCakeType = `${host}/cakes/customTypes`;
 export const deleteCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 export const updateCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 
-// Other API routes can be added here similarly
+export const getAllBranches = `${host}/branches/getAll`;
+export const createBranch = `${host}/branches/create`;
+export const deleteBranchById =(branchId)=> `${host}/branches/delete/${branchId}`;
+export const updateBranchById =(branchId)=> `${host}/branches/update/${branchId}`;
 
 export const getAllCakeFlavours = `${host}/cakes/flavors`
 export const createCakeFlavour = `${host}/cakes/flavors`

@@ -36,7 +36,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/occasions', occasionRoutes);
-app.use('/braches', branchRoutes);
+app.use('/branches', branchRoutes);
 app.use('/genders', genderRoutes);
 app.use('/cookies', cookiesRoutes);
 app.use('/icecreams', iceCreamRoutes);
