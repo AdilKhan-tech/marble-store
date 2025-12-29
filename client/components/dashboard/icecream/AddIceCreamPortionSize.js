@@ -2,10 +2,8 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createIcecreamSizes,  } from "@/utils/apiRoutes";
-import CakeData from "./icecreamaddons/add/AddType";
-import { updateIcecreamSizes } from "@/utils/apiRoutes";
-const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
+import { createIcecreamSizes, updateIcecreamSizes } from "@/utils/apiRoutes";
+const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
@@ -15,24 +13,24 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
     slug: "",
     additional_price: "",
     calorie: "",
-    image_url: "",
     status: "active",
   });
+
   // Load existing data
   useEffect(() => {
-    if (iceCreamData) {
+    if (iceCreamPortionData) {
       setFormData({
-        name_en: iceCreamData.name_en || "",
-        name_ar: iceCreamData.name_ar || "",
-        icecream_bucket_id: iceCreamData.icecream_bucket_id || "",
-        slug: iceCreamData.slug || "",
-        additional_price: iceCreamData.additional_price || "",
-        calorie: iceCreamData.calorie || "",
-        image_url: iceCreamData.image_url || "",
-        status: iceCreamData.status || false,
+        name_en: iceCreamPortionData.name_en || "",
+        name_ar: iceCreamPortionData.name_ar || "",
+        icecream_bucket_id: iceCreamPortionData.icecream_bucket_id || "",
+        slug: iceCreamPortionData.slug || "",
+        additional_price: iceCreamPortionData.additional_price || "",
+        calorie: iceCreamPortionData.calorie || "",
+        status: iceCreamPortionData.status || false,
       });
     }
-  }, [iceCreamData]);
+  }, [iceCreamPortionData]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -40,9 +38,11 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+
   const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
@@ -55,6 +55,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
     if (!formData.calorie) errors.push("Calorie is required.");
     return errors;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -62,35 +63,31 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
       setErrors(validationErrors);
       return;
     }
+
     try {
-     if(iceCreamData){
-        const res = await axios.put(updateIcecreamSizes(iceCreamData.id), formData);
-      if (res.status === 201 || res.status === 200) {
-        const createdIceCream = res.data;
+      const payload = new FormData();
+      Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
 
-        toast.success("IceCream Size updated successfully!", {
-          autoClose: 1000,
-          onClose: closePopup,
-        });
-
-         onAddIceCream(createdIceCream);
+      if (selectedFiles.length > 0) {
+        payload.append("image_url", selectedFiles[0]);
       }
+
+      let res;
+      if (iceCreamPortionData) {
+        res = await axios.put(updateIcecreamSizes(iceCreamPortionData.id), payload);
+        if (res.status === 200 || res.status === 201) {
+          toast.success("IceCream Portion Size updated successfully!", { autoClose: 1000, onClose: closePopup });
+          onUpdateIceCreamPortionSize?.(res.data);
+        }
       } else {
-        const res = await axios.post(createIcecreamSizes, formData);
-      if (res.status === 201 || res.status === 200) {
-        const createdIceCream = res.data;
-
-        toast.success("IceCream Size added successfully!", {
-          autoClose: 1000,
-          onClose: closePopup,
-        });
-
-         onAddIceCream(createdIceCream);
-      }
+        res = await axios.post(createIcecreamSizes, payload);
+        if (res.status === 200 || res.status === 201) {
+          toast.success("IceCream Portion Size added successfully!", { autoClose: 1000, onClose: closePopup });
+          onAddIceCreamPortionSize?.(res.data);
+        }
       }
     } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+      setErrors([error?.response?.data?.message || "Something went wrong!"]);
     }
   };
 
@@ -127,6 +124,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
           onChange={handleChange}
         />
       </div>
+
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Select Icecream Bucket
@@ -134,27 +132,28 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
         <select
           name="icecream_bucket_id"
           type="text"
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          className="form-select text-secondary"
           value={formData.icecream_bucket_id}
           onChange={handleChange}
         >
-          <option value="" className="fs-14 fw-normal text-secondary">
+          <option value="">
             Select Icecream Bucket
           </option>
-          <option value="1" className="fs-14 fw-normal text-secondary">
+          <option value="1">
             Big Dipper
           </option>
-          <option value="2" className="fs-14 fw-normal text-secondary">
+          <option value="2">
             Pint
           </option>
-          <option value="3" className="fs-14 fw-normal text-secondary">
+          <option value="3">
             Quart
           </option>
-          <option value="4" className="fs-14 fw-normal text-secondary">
+          <option value="4">
             Regular
           </option>
         </select>
       </div>
+
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Slug
@@ -167,6 +166,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
           onChange={handleChange}
         />
       </div>
+
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Additional Price
@@ -186,12 +186,13 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
         </label>
         <input
           name="calorie"
-          type="text"
+          type="number"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.calorie}
           onChange={handleChange}
         />
       </div>
+
       <div className="col-md-12 mt-3">
         <div className="form-check form-switch">
           <input
@@ -212,6 +213,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
           </label>
         </div>
       </div>
+
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           File Attachment
@@ -225,6 +227,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
             onChange={handleFileChange}
           />
         </div>
+
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
             <li className="list-unstyled text-muted" key={index}>
@@ -239,6 +242,7 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
           </span>
         </div>
       </div>
+
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"
@@ -258,4 +262,4 @@ const AddIceCream = ({ closePopup, iceCreamData, onAddIceCream }) => {
   );
 };
 
-export default AddIceCream;
+export default AddIceCreamPortionSize;

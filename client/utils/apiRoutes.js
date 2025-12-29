@@ -24,15 +24,16 @@ export const createCakeFlavour = `${host}/cakes/flavors`
 export const deleteCakeFlavourById =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
 export const updateCakeFlavourById =(cakeId)=> `${host}/cakes/flavors/${cakeId}`;
 
-export const getIcecreamSizes = `${host}/icecreams/portions`
-export const deleteIcecreamSizes =(icecreamId)=> `${host}/icecreams/portions/${icecreamId}`;
+export const getAllIceCreamPortionSizes = `${host}/icecreams/portions`
+export const deleteIceCreamPortionSizeById =(icecreamId)=> `${host}/icecreams/portions/${icecreamId}`;
 export const createIcecreamSizes = `${host}/icecreams/portions`
 export const updateIcecreamSizes =(icecreamId)=> `${host}/icecreams/portions/${icecreamId}`;
 
+
 export const getIcecreamAddons = `${host}/icecreams/addons`
-export const updateIcecreamAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
-export const deleteIceCreamsAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
-export const deletecakesAddons =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
+export const createIceCreamAddOn = `${host}/icecreams/addons`
+export const updateIceCreamAddOnById =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
+export const deleteIceCreamsAddonById =(icecreamId)=> `${host}/icecreams/addons/${icecreamId}`;
 
 
 export const getCookieBoxSizes = `${host}/cookies/size`;
