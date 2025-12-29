@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import { getAllOcassions } from "@/utils/apiRoutes";
+import { getAllOcassions, deleteOccasionById } from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import AddOccasion from "@/components/dashboard/setting/AddOccasion";
 
@@ -30,12 +30,12 @@ function Occasions() {
     fetchOccasions();
   }, [token]);
 
-  const showOffcanvasOnAddCakesSize = () => {
+  const showOffcanvasOnAddOcassion = () => {
     setOccasionData(null);
     setShowOffcanvas(true);
   };
 
-  const showOffcanvasOnEditCakesSize = (occasion) => {
+  const showOffcanvasOnEditOcassion = (occasion) => {
     setOccasionData(occasion);
     setShowOffcanvas(true);
   };
@@ -65,6 +65,31 @@ function Occasions() {
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
+
+  const handleDelete = async (occasionId) => {
+    try {
+      const response = await axios.delete(deleteOccasionById(occasionId));
+      if (response.status === 200) {
+        toast.success("Ocassion deleted successfully!", { autoClose: 1000 });
+        setOccasions((prev) =>
+          prev.filter((occasion) => occasion.id !== occasionId)
+        );
+      }
+      console.log(deleteOccasionById(occasionId))
+    } catch (error) {
+      console.error("Error deleting Cake size:", error);
+      toast.error("Failed to delete Cake size.");
+    }
+  };
+
+  const showDeleteConfirmation = (occasionId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this Cake size?"
+    );
+    if (confirmed) {
+      handleDelete(occasionId);
+    }
+  };
   return (
     <section className="" style={{ marginTop: "100px" }}>
       <div className="">
@@ -81,7 +106,7 @@ function Occasions() {
           <button
             style={{ marginInlineEnd: "20px" }}
             className="btn org-btn py-2 px-4 rounded-3 d-flex"
-            onClick={showOffcanvasOnAddCakesSize}
+            onClick={showOffcanvasOnAddOcassion}
           >
             <i className="bi bi-plus-circle"></i>Create
           </button>
@@ -121,10 +146,10 @@ function Occasions() {
                     <td>{occasion.count || "N/A"}</td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn" onClick={()=>showOffcanvasOnEditCakesSize(occasion)}>
+                        <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
-                        <button className="action-btn">
+                        <button className="action-btn" onClick={() => showDeleteConfirmation(occasion.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>

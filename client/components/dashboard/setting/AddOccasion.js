@@ -15,17 +15,15 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
     slug: "",
   });
   useEffect(() => {
-    if (occasions) {
+    if (occasionData) {
       setFormData({
-        name_en: occasions.name_en || "",
-        name_ar: occasions.name_ar || "",
-        parent_ocassion: occasions.parent_ocassion || "",
-        slug: occasions.slug || "",
+        name_en: occasionData.name_en || "",
+        name_ar: occasionData.name_ar || "",
+        parent_ocassion: occasionData.parent_ocassion || "",
+        slug: occasionData.slug || "",
       });
     }
-  }, [occasions]);
-
-  console.log(formData)
+  }, [occasionData]);
   
     const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -42,42 +40,56 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
+  
     try {
-      const res = await axios.post(createOcassion, formData);
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        selectedFiles.forEach((file) => {
+          payload.append("image_url", selectedFiles[0]);
+        });
+      }
 
       if (occasionData) {
-        const res = await axios.put(updateOccasionById(occasionData.id));
-  
+        const res = await axios.put(updateOccasionById(occasionData.id), payload);
+
         if (res.status === 200) {
           toast.success("Ocassion updated successfully!", {
             autoClose: 1000,
           });
-          
+
           if (onUpdateOccasion) {
             onUpdateOccasion({
               ...occasionData,
               ...formData,
               id: occasionData.id,
             });
-          }          
+          }
+
           closePopup();
         }
       }
+      //  CREATE
+      else {
+        const res = await axios.post(createOcassion, payload);
+  
+        if (res.status === 201 || res.status === 200) {
 
-      if (res.status === 201 || res.status === 200) {
-        const createdOcoasion = res.data;
-
-        toast.success("Occasion added successfully!", {
-          autoClose: 1000,
-          onClose: closePopup,
-        });
-
-        if (onAddOccasion) onAddOccasion(createdOcoasion);
+          toast.success("Ocassion added successfully!", {
+            autoClose: 1000,
+            onClose: closePopup,
+          });
+  
+          if (onAddOccasion) onAddOccasion(onAddOccasion);
+        }
       }
     } catch (error) {
       const msg = error?.response?.data?.message || "Something went wrong!";
