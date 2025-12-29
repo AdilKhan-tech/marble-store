@@ -1,9 +1,13 @@
 "use Client"
 import React , { useState , useEffect } from 'react'
+import {createOccasion} from "@/utils/apiRoutes"
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-function AddOccasions({closePopup, occasions = null}) {
+function AddOccasions({closePopup, occasions = null, addOccasion}) {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [errors, setErrors] = useState([]);
     const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -24,8 +28,50 @@ function AddOccasions({closePopup, occasions = null}) {
     const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.parent_ocassion) errors.push("Parent Ocassion is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    return errors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    try {
+      const res = await axios.post(createOccasion, formData);
+
+      if (res.status === 201 || res.status === 200) {
+        const createdOcoasion = res.data.occasions;
+
+        toast.success("Occasion added successfully!", {
+          autoClose: 1000,
+          onClose: closePopup,
+        });
+
+        if (addOccasion) addOccasion(createdOcoasion);
+      }
+    } catch (error) {
+      const msg = error?.response?.data?.message || "Something went wrong!";
+      setErrors([msg]);
+    }
+  };
+
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
   return (
-    <form className='mt-0'>
+    <form className='mt-0' onSubmit={handleSubmit}>
         <div className='form-group'>
             <label className='form-label text-secondary'>Name English</label>
             <input 
@@ -59,15 +105,15 @@ function AddOccasions({closePopup, occasions = null}) {
             >Select Parent Occasion</label>
             <select className='form-select'>
                 <option value="">Select Parent Occasion</option>
-                <option value="1">None</option>
-                <option value="2">Achievement</option>
-                <option value="3">Birthdays</option>
-                <option value="4">Congratulations</option>
-                <option value="5">Get Well Soon</option>
-                <option value="6">Graduation</option>
-                <option value="7">Holidays</option>
-                <option value="8">New Born</option>
-                <option value="9">Weddings</option>
+                <option value="None">None</option>
+                <option value="Achievement">Achievement</option>
+                <option value="Birthdays">Birthdays</option>
+                <option value="Congratulations">Congratulations</option>
+                <option value="Get Well Soon">Get Well Soon</option>
+                <option value="Graduation">Graduation</option>
+                <option value="Holidays">Holidays</option>
+                <option value="New Born">New Born</option>
+                <option value="Weddings">Weddings</option>
             </select>
         </div>
 

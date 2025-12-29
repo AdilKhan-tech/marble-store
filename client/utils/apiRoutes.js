@@ -47,3 +47,4 @@ export const createCookies = `${host}/cookies/create`
 export const updateCookieById = (cookieId) => `${host}/cookies/update/${cookieId}`
 
 export const getAllOcassions = `${host}/occasions/getAll`
+export const createOccasion = `${host}/occasions/create`

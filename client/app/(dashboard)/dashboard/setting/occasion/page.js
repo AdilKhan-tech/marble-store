@@ -21,7 +21,7 @@ function Occasions() {
       const response = await axios.get(getAllOcassions);
       setOccasions(response.data.occasions);
     } catch (error) {
-      console.error("Error fetching box sizes", error);
+      console.error("Error fetching occasion", error);
     }
   };
 
@@ -49,6 +49,11 @@ function Occasions() {
     setSortField(field);
     setSortOrder(newOrder);
   };
+  const addOccasion = (newOccasion) => {
+    setOccasions(prev => [newOccasion, ...prev]);
+    setShowOffCanvas(false);
+  };
+
 
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
@@ -140,6 +145,7 @@ function Occasions() {
             <AddOccasion
              closePopup={closePopup}
              occasions={occasions}
+             addOccasion={addOccasion}
             />
           </Offcanvas.Body>
         </Offcanvas>
