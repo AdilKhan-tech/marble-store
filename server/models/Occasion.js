@@ -38,6 +38,9 @@ const Occasion = sequelize.define("Occasion",{
       validate:{
         notNull: { msg: "Parent occasion is required" },
           notEmpty: { msg: "Parent occasion cannot be empty" },
+          len: {
+              args: [2, 100],
+            },
       }
     },
     slug:{

@@ -1,10 +1,10 @@
 "use Client"
 import React , { useState , useEffect } from 'react'
-import {createOccasion} from "@/utils/apiRoutes"
+import {createOcassion, updateOccasionById} from "@/utils/apiRoutes"
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-function AddOccasions({closePopup, occasions = null, addOccasion}) {
+function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOccasion, occasionData}) {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [errors, setErrors] = useState([]);
@@ -25,6 +25,8 @@ function AddOccasions({closePopup, occasions = null, addOccasion}) {
     }
   }, [occasions]);
 
+  console.log(formData)
+  
     const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
@@ -46,17 +48,36 @@ function AddOccasions({closePopup, occasions = null, addOccasion}) {
       return;
     }
     try {
-      const res = await axios.post(createOccasion, formData);
+      const res = await axios.post(createOcassion, formData);
+
+      if (occasionData) {
+        const res = await axios.put(updateOccasionById(occasionData.id));
+  
+        if (res.status === 200) {
+          toast.success("Ocassion updated successfully!", {
+            autoClose: 1000,
+          });
+          
+          if (onUpdateOccasion) {
+            onUpdateOccasion({
+              ...occasionData,
+              ...formData,
+              id: occasionData.id,
+            });
+          }          
+          closePopup();
+        }
+      }
 
       if (res.status === 201 || res.status === 200) {
-        const createdOcoasion = res.data.occasions;
+        const createdOcoasion = res.data;
 
         toast.success("Occasion added successfully!", {
           autoClose: 1000,
           onClose: closePopup,
         });
 
-        if (addOccasion) addOccasion(createdOcoasion);
+        if (onAddOccasion) onAddOccasion(createdOcoasion);
       }
     } catch (error) {
       const msg = error?.response?.data?.message || "Something went wrong!";
@@ -99,11 +120,10 @@ function AddOccasions({closePopup, occasions = null, addOccasion}) {
              onChange={(e)=>setFormData({...formData,slug:e.target.value})}/>
         </div>
         <div className='form-group mt-3'>
-            <label className='form-label text-secondary'
+            <label className='form-label text-secondary'>Select Parent Occasion</label>
+            <select className='form-select'
              value={formData.parent_ocassion} 
-             onChange={(e)=>setFormData({...formData,parent_ocassion:e.target.value})}
-            >Select Parent Occasion</label>
-            <select className='form-select'>
+             onChange={(e)=>setFormData({...formData,parent_ocassion:e.target.value})}>
                 <option value="">Select Parent Occasion</option>
                 <option value="None">None</option>
                 <option value="Achievement">Achievement</option>

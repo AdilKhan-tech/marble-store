@@ -14,7 +14,7 @@ function Occasions() {
   const [sortOrder, setSortOrder] = useState("asc");
   const [occasions, setOccasions] = useState([]);
   const [occasionData, setOccasionData] = useState(null);
-  const [showOffCanvas, setShowOffCanvas] = useState(false);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const fetchOccasions = async () => {
     try {
@@ -32,15 +32,15 @@ function Occasions() {
 
   const showOffcanvasOnAddCakesSize = () => {
     setOccasionData(null);
-    setShowOffCanvas(true);
+    setShowOffcanvas(true);
   };
 
   const showOffcanvasOnEditCakesSize = (occasion) => {
     setOccasionData(occasion);
-    setShowOffCanvas(true);
+    setShowOffcanvas(true);
   };
   const closePopup = () => {
-    setShowOffCanvas(false);
+    setShowOffcanvas(false);
   };
 
   const handleSort = (field) => {
@@ -49,12 +49,19 @@ function Occasions() {
     setSortField(field);
     setSortOrder(newOrder);
   };
-  const addOccasion = (newOccasion) => {
+  const onAddOccasion = (newOccasion) => {
     setOccasions(prev => [newOccasion, ...prev]);
-    setShowOffCanvas(false);
+    setShowOffcanvas(false);
   };
 
-
+  const onUpdateOcassion = (updateOcassion) => {
+    setOccasions((prev) =>
+      prev.map((occasion) =>
+        occasion.id === updateOcassion.id ? { ...occasion, ...updateOcassion } : occasion
+      )
+    );
+    setShowOffcanvas(false);
+  };
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
@@ -86,17 +93,17 @@ function Occasions() {
             <table className="datatable table datatable-table">
               <thead>
                 <tr>
-                  <th onClick={() => handleSort("status")}>
-                    ID<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("id")}>
+                    ID<span>{renderSortIcon("id")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Name<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("name_en")}>
+                    Name<span>{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Description<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("description")}>
+                    Description<span>{renderSortIcon("description")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Slug<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("slug")}>
+                    Slug<span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
                     Count<span>{renderSortIcon("status")}</span>
@@ -129,8 +136,8 @@ function Occasions() {
           </div>
         </div>
         <Offcanvas
-          show={showOffCanvas}
-          onHide={() => setShowOffCanvas(false)}
+          show={showOffcanvas}
+          onHide={() => setShowOffcanvas(false)}
           placement="end"
         >
           <Offcanvas.Header closeButton>
@@ -145,7 +152,9 @@ function Occasions() {
             <AddOccasion
              closePopup={closePopup}
              occasions={occasions}
-             addOccasion={addOccasion}
+             onAddOccasion={onAddOccasion}
+             occasionData={occasionData}
+             onUpdateOcassion={onUpdateOcassion}
             />
           </Offcanvas.Body>
         </Offcanvas>

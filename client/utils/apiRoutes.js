@@ -51,4 +51,6 @@ export const createCookies = `${host}/cookies/create`
 export const updateCookieById = (cookieId) => `${host}/cookies/update/${cookieId}`
 
 export const getAllOcassions = `${host}/occasions/getAll`
-export const createOccasion = `${host}/occasions/create`
+export const createOcassion = `${host}/occasions/create`
+export const updateOccasionById = (occasionId) => `${host}/occasion/update/${occasionId}`
+export const deleteOccasionById = (occasionId) => `${host}/occasion/delete/${occasionId}`
