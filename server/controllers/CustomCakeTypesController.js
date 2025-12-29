@@ -2,7 +2,7 @@ const CustomCakeTypes = require("../models/CustomCakeTypes");
 
 class CustomCakeTypesController {
 
-  static async createCustomCakeTypes (req, res){
+  static async createCustomCakeType (req, res){
     try {
         const {name_en, name_ar, slug, status} = req.body;
 
@@ -28,14 +28,15 @@ class CustomCakeTypesController {
   static async getAllCustomCakeTypes(req, res) {
     try {
       const customcaketypes = await CustomCakeTypes.findAll();
+
       return res.status(200).json(customcaketypes);
+
     } catch (error) {
-      console.error(error);
       return res.status(500).json({message: "Failed to retrieve custom cake types",error: error.message,});
     }
   }
 
-  static async updateCustomCakeTypesById(req, res) {
+  static async updateCustomCakeTypeById(req, res) {
     const { id } = req.params;
   
     try {
@@ -62,7 +63,6 @@ class CustomCakeTypesController {
         customCakeTypes,
       });
     } catch (error) {
-      console.error("UPDATE ERROR:", error);
       return res.status(500).json({
         message: "Failed to update Custom Cake Type",
         error: error.message,
@@ -71,7 +71,7 @@ class CustomCakeTypesController {
   }
   
 
-  static async deleteCustomCakeTypesById(req, res) {
+  static async deleteCustomCakeTypeById(req, res) {
     const { id } = req.params;
     try {
       const customcaketypes = await CustomCakeTypes.findByPk(id);
@@ -81,7 +81,6 @@ class CustomCakeTypesController {
       await customcaketypes.destroy();
       return res.status(200).json({ message: "Custom cake type deleted successfully" });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ message: error.message });
     }
   }

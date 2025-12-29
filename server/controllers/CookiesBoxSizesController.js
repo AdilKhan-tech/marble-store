@@ -2,7 +2,7 @@ const {CookiesBoxSizes, CookiesBoxTypes } = require ("../models")
 
 class CookiesBoxSizesController {
     
-    static async createCookiesBoxSizes (req, res) {
+    static async createCookieBoxSize (req, res) {
         try {
             const {name_en, name_ar, cookies_types_id, slug, portion_size, price, symbol, calories, status} = req.body;
 
@@ -21,7 +21,7 @@ class CookiesBoxSizesController {
                 image_url,
             })
 
-            return res.status(201).json({message: "Cookies Box Size created successfully", cookiesBoxSize});
+            return res.status(201).json(cookiesBoxSize);
         } catch(error) {
             return res.status(500).json({
                 message: "Failed to create Cookies Box Size",
@@ -51,7 +51,7 @@ class CookiesBoxSizesController {
         }
     }
 
-    static async updateCookiesBoxSizesById(req, res) {
+    static async updateCookieBoxSizeById(req, res) {
         const { id } = req.params;
         try {
             const cookiesBoxSize = await CookiesBoxSizes.findByPk(id);
@@ -89,12 +89,11 @@ class CookiesBoxSizesController {
             return res.status(200).json({message: "Cookies box size updated successfully",cookiesBoxSize});
     
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
             return res.status(500).json({message: "Failed to update Cookies box size",error: error.message});
         }
     }
 
-    static async deleteCookiesBoxSizesById(req, res) {
+    static async deleteCookieBoxSizeById(req, res) {
         try {
             const { id } = req.params;
     

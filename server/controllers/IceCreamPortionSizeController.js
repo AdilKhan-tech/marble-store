@@ -20,7 +20,6 @@ class IceCreamPortionSizeController {
       return res.status(201).json(icecreamportionsizes);
 
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ message: "Failed to create ice cream", error: error.message });
     }
   }
@@ -30,7 +29,6 @@ class IceCreamPortionSizeController {
       const icecreamportionsize = await IceCreamPortionSize.findAll();
       return res.status(200).json(icecreamportionsize);
     } catch (error) {
-      console.error(error);
       return res.status(500).json({
         message: "Failde to create IceCreamPortionSize ",
         error: error.message,
@@ -64,7 +62,6 @@ class IceCreamPortionSizeController {
       return res.status(200).json(iceCreamPortionSize);
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({message: "Failed to update Ice Cream Portion Size",error: error.message});
     }
   }
@@ -80,7 +77,6 @@ class IceCreamPortionSizeController {
       return res.status(200).json({ message: "Ice Cream Portion Size deleted sucesfully" });
 
     }catch(error) {
-      console.error(error);
       return res.status(500).json ({ message: error.message });
     }
   }

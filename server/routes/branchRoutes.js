@@ -7,7 +7,7 @@ const authenticateToken = require("../middlewares/authenticateToken");
 router.use(authenticateToken);
 
 router.post('/create', BranchController.createBranch);
-router.get('/getAll', BranchController.getAllBranches);
+router.get('/', BranchController.getAllBranches);
 router.put('/update/:id', BranchController.updateBranchById);
 router.delete('/delete/:id', BranchController.deleteBranchById);
 

@@ -20,7 +20,7 @@ export default function CakeFlavour() {
   const fetchCakeFlavors = async () => {
     try {
       const response = await axios.get(getAllCakeFlavours);
-      setCakeFlavors(response.data.data)
+      setCakeFlavors(response.data)
     } catch (error) {
       console.error("Error fetching cake Flavors", error);
     }

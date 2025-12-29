@@ -14,7 +14,7 @@ export const createCustomCakeType = `${host}/cakes/customTypes`;
 export const deleteCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 export const updateCustomCakeTypeById =(cakeId)=> `${host}/cakes/customTypes/${cakeId}`;
 
-export const getAllBranches = `${host}/branches/getAll`;
+export const getAllBranches = `${host}/branches`;
 export const createBranch = `${host}/branches/create`;
 export const deleteBranchById =(branchId)=> `${host}/branches/delete/${branchId}`;
 export const updateBranchById =(branchId)=> `${host}/branches/update/${branchId}`;
@@ -45,7 +45,7 @@ export const deleteCookieBoxTypesById =(boxTypeId)=> `${host}/cookies/types/${bo
 export const createCookiesTypes = `${host}/cookies/types`;
 export const updateCookiesTypesById =(boxTypeId)=> `${host}/cookies/types/${boxTypeId}`;
 
-export const getAllCookies = `${host}/cookies/getAll`;
+export const getAllCookies = `${host}/cookies`;
 export const deleteCookiesById = (boxTypeId)=> `${host}/cookies/delete/${boxTypeId}`;
 export const createCookies = `${host}/cookies/create`
 export const updateCookieById = (cookieId) => `${host}/cookies/update/${cookieId}`

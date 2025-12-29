@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const IceCreamBucketController = require('../controllers/IceCreamBucketController');
 const IceCreamPortionSizeController = require("../controllers/IceCreamPortionSizeController");
-const IceCreamAddOnsController = require("../controllers/IceCreamAddOnsController");
+const IceCreamAddOnController = require("../controllers/IceCreamAddOnController");
 
 const authenticateToken = require("../middlewares/authenticateToken");
 
@@ -23,10 +23,10 @@ router.put("/portions/:id", upload.single('image_url'), IceCreamPortionSizeContr
 router.delete("/portions/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
 
 
-router.post("/addons", IceCreamAddOnsController.createIceCreamAddOns);
-router.get("/addons", IceCreamAddOnsController.getAllIceCreamAddOns);
-router.put("/addons/:id", IceCreamAddOnsController.updateIceCreamAddOnsById);
-router.delete("/addons/:id", IceCreamAddOnsController.deleteIceCreamAddOnsById);
+router.post("/addOns", upload.single('image_url'), IceCreamAddOnController.createIceCreamAddOn);
+router.get("/addOns", IceCreamAddOnController.getAllIceCreamAddOns);
+router.put("/addOns/:id",upload.single('image_url'), IceCreamAddOnController.updateIceCreamAddOnById);
+router.delete("/addOns/:id", IceCreamAddOnController.deleteIceCreamAddOnById);
 
 
 

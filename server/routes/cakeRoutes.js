@@ -10,10 +10,10 @@ const upload = require("../middlewares/upload");
 router.use(authenticateToken);
 
 
-router.post('/sizes', upload.single('image_url'), CakeSizeController.createCakeSizes);
+router.post('/sizes', upload.single('image_url'), CakeSizeController.createCakeSize);
 router.get('/sizes', CakeSizeController.getAllCakeSizes);
-router.put('/sizes/:id', upload.single('image_url'), CakeSizeController.updateCakeSizesById);
-router.delete('/sizes/:id', CakeSizeController.deleteCakeSizesById);
+router.put('/sizes/:id', upload.single('image_url'), CakeSizeController.updateCakeSizeById);
+router.delete('/sizes/:id', CakeSizeController.deleteCakeSizeById);
 
 router.post('/flavors', upload.single('image_url'), CakeFlavorController.createCakeFlavor);
 router.get('/flavors', CakeFlavorController.getAllCakeFlavors);
@@ -21,9 +21,9 @@ router.put('/flavors/:id', upload.single('image_url'), CakeFlavorController.upda
 router.delete('/flavors/:id', CakeFlavorController.deleteCakeFlavorById);
 
 
-router.post('/customTypes', upload.single('image_url'), CustomCakeTypesController.createCustomCakeTypes);
+router.post('/customTypes', upload.single('image_url'), CustomCakeTypesController.createCustomCakeType);
 router.get('/customTypes', CustomCakeTypesController.getAllCustomCakeTypes);
-router.put('/customTypes/:id', upload.single('image_url'), CustomCakeTypesController.updateCustomCakeTypesById);
-router.delete('/customTypes/:id', CustomCakeTypesController.deleteCustomCakeTypesById);
+router.put('/customTypes/:id', upload.single('image_url'), CustomCakeTypesController.updateCustomCakeTypeById);
+router.delete('/customTypes/:id', CustomCakeTypesController.deleteCustomCakeTypeById);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const { CakeSize, CustomCakeTypes } = require("../models");
 
 class CakeSizeController {
 
-    static async createCakeSizes(req, res) {
+    static async createCakeSize(req, res) {
         try {
             const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,symbol,calories,status } = req.body
 
@@ -22,7 +22,6 @@ class CakeSizeController {
             });
             return res.status(201).json(cakesizes);
         } catch (err) {
-            console.error(err);
             return res.status(500).json({ message: "Failed to create cake size", error: err.message });
         }
     }
@@ -39,21 +38,14 @@ class CakeSizeController {
             ],
           });
       
-          return res.status(200).json({
-            success: true,
-            data: cakeSizes,
-          });
+          return res.status(200).json(cakeSizes);
         } catch (error) {
-          console.error(error);
-          return res.status(500).json({
-            success: false,
-            message: "Failed to retrieve cake sizes",
-          });
+            res.status(500).json({message: "Failed to get cake sizes", error: error.message});
         }
       }
       
 
-    static async updateCakeSizesById(req, res) {
+    static async updateCakeSizeById(req, res) {
         const { id } = req.params;
         try {
             const cakesizes = await CakeSize.findByPk(id);
@@ -93,12 +85,11 @@ class CakeSizeController {
             });
     
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
             return res.status(500).json({ message: "Failed to update cake size", error: error.message });
         }
     }
 
-    static async deleteCakeSizesById(req, res) {
+    static async deleteCakeSizeById(req, res) {
         try {
             const { id } = req.params;
             const cakesizes = await CakeSize.findByPk(id);
@@ -109,7 +100,6 @@ class CakeSizeController {
             return res.status(200).json({ message: "Cake size deleted successfully" });     
         }
         catch (err) {
-            console.error(err);
             return res.status(500).json({ message: err.message });
         }
     }

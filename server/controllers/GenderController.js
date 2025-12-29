@@ -14,10 +14,9 @@ class GenderController {
                 slug,
                 image_url,
             });
-            return res.status(201).json({ message: " Gender created successfully", gender });
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to create gender", error: err.message });
+            return res.status(201).json(gender);
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to create gender", error: error.message });
         }
     }
 
@@ -25,13 +24,12 @@ class GenderController {
         try {
             const gender = await Gender.findAll();
             return res.status(200).json(gender);
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to retrieve  genders", error: err.message });
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to retrieve  genders", error: error.message });
         }
     }
 
-    static async updateGender(req, res) {
+    static async updateGenderById(req, res) {
         const { id } = req.params;
         const { name_en, name_ar, slug, image_url } = req.body;
         try {
@@ -46,7 +44,6 @@ class GenderController {
             await gender.save();
             return res.status(200).json({ message: "Gender updated successfully", gender });
         } catch (error) {
-            console.error(error);
             return res.status(500).json({ message: error.message });
         }
     }
@@ -60,9 +57,8 @@ class GenderController {
             }
             await gender.destroy();
             return res.status(200).json({ message: "Gender deleted successfully" });
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to delete gender", error: err.message });
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to delete gender", error: error.message });
         }
     }
 }
