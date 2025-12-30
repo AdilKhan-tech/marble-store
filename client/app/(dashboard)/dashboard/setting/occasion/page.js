@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import { getAllOcassions } from "@/utils/apiRoutes";
+import { getAllOcassions, deleteOccasionById } from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import AddOccasion from "@/components/dashboard/setting/AddOccasion";
 
@@ -14,7 +14,7 @@ function Occasions() {
   const [sortOrder, setSortOrder] = useState("asc");
   const [occasions, setOccasions] = useState([]);
   const [occasionData, setOccasionData] = useState(null);
-  const [showOffCanvas, setShowOffCanvas] = useState(false);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const fetchOccasions = async () => {
     try {
@@ -30,17 +30,17 @@ function Occasions() {
     fetchOccasions();
   }, [token]);
 
-  const showOffcanvasOnAddCakesSize = () => {
+  const showOffcanvasOnAddOcassion = () => {
     setOccasionData(null);
-    setShowOffCanvas(true);
+    setShowOffcanvas(true);
   };
 
-  const showOffcanvasOnEditCakesSize = (occasion) => {
+  const showOffcanvasOnEditOcassion = (occasion) => {
     setOccasionData(occasion);
-    setShowOffCanvas(true);
+    setShowOffcanvas(true);
   };
   const closePopup = () => {
-    setShowOffCanvas(false);
+    setShowOffcanvas(false);
   };
 
   const handleSort = (field) => {
@@ -49,14 +49,46 @@ function Occasions() {
     setSortField(field);
     setSortOrder(newOrder);
   };
-  const addOccasion = (newOccasion) => {
+  const onAddOccasion = (newOccasion) => {
     setOccasions(prev => [newOccasion, ...prev]);
-    setShowOffCanvas(false);
+    setShowOffcanvas(false);
   };
 
-
+  const onUpdateOcassion = (updateOcassion) => {
+    setOccasions((prev) =>
+      prev.map((occasion) =>
+        occasion.id === updateOcassion.id ? { ...occasion, ...updateOcassion } : occasion
+      )
+    );
+    setShowOffcanvas(false);
+  };
   const renderSortIcon = (field) => {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+
+  const handleDelete = async (occasionId) => {
+    try {
+      const response = await axios.delete(deleteOccasionById(occasionId));
+      if (response.status === 200) {
+        toast.success("Ocassion deleted successfully!", { autoClose: 1000 });
+        setOccasions((prev) =>
+          prev.filter((occasion) => occasion.id !== occasionId)
+        );
+      }
+      console.log(deleteOccasionById(occasionId))
+    } catch (error) {
+      console.error("Error deleting Cake size:", error);
+      toast.error("Failed to delete Cake size.");
+    }
+  };
+
+  const showDeleteConfirmation = (occasionId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this Cake size?"
+    );
+    if (confirmed) {
+      handleDelete(occasionId);
+    }
   };
   return (
     <section className="" style={{ marginTop: "100px" }}>
@@ -74,7 +106,7 @@ function Occasions() {
           <button
             style={{ marginInlineEnd: "20px" }}
             className="btn org-btn py-2 px-4 rounded-3 d-flex"
-            onClick={showOffcanvasOnAddCakesSize}
+            onClick={showOffcanvasOnAddOcassion}
           >
             <i className="bi bi-plus-circle"></i>Create
           </button>
@@ -86,17 +118,17 @@ function Occasions() {
             <table className="datatable table datatable-table">
               <thead>
                 <tr>
-                  <th onClick={() => handleSort("status")}>
-                    ID<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("id")}>
+                    ID<span>{renderSortIcon("id")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Name<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("name_en")}>
+                    Name<span>{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Description<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("description")}>
+                    Description<span>{renderSortIcon("description")}</span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Slug<span>{renderSortIcon("status")}</span>
+                  <th onClick={() => handleSort("slug")}>
+                    Slug<span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
                     Count<span>{renderSortIcon("status")}</span>
@@ -114,10 +146,10 @@ function Occasions() {
                     <td>{occasion.count || "N/A"}</td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn" onClick={()=>showOffcanvasOnEditCakesSize(occasion)}>
+                        <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
-                        <button className="action-btn">
+                        <button className="action-btn" onClick={() => showDeleteConfirmation(occasion.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -129,8 +161,8 @@ function Occasions() {
           </div>
         </div>
         <Offcanvas
-          show={showOffCanvas}
-          onHide={() => setShowOffCanvas(false)}
+          show={showOffcanvas}
+          onHide={() => setShowOffcanvas(false)}
           placement="end"
         >
           <Offcanvas.Header closeButton>
@@ -145,7 +177,9 @@ function Occasions() {
             <AddOccasion
              closePopup={closePopup}
              occasions={occasions}
-             addOccasion={addOccasion}
+             onAddOccasion={onAddOccasion}
+             occasionData={occasionData}
+             onUpdateOcassion={onUpdateOcassion}
             />
           </Offcanvas.Body>
         </Offcanvas>

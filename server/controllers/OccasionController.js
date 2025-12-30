@@ -4,13 +4,14 @@ class OccasionController {
 
     static async createOccasion (req, res) {
         try{
-            const { name_en, name_ar,slug} = req.body;
+            const { name_en, name_ar,parent_ocassion, slug} = req.body;
 
-            const image_url = req.file?.path || null;    
-
+            const image_url = req.file?.path || null;
+            
             const occasion = await Occasion.create({
                 name_en,
                 name_ar,
+                parent_ocassion,
                 slug,
                 image_url,
             });
