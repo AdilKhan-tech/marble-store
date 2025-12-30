@@ -3,40 +3,38 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddIceCream from "@/components/dashboard/icecream/AddIceCreamSize";
+import AddIceCreamAddon from "@/components/dashboard/icecream/AddIceCreamAddon";
 import { useEffect, useState } from 'react';
-// import { getIcecreamSizes } from '@/utils/apiRoutes';
-import { getIcecreamAddons, updateIcecreamAddons, deleteIceCreamsAddons } from '@/utils/apiRoutes';
+import { deleteIceCreamsAddonById, getIcecreamAddons } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-export default function Listicecreams() {
+export default function IceCreamAddon () {
   const {token} = useAxiosConfig();
-  const [icecreams, setIcecreams] = useState([]);
+  const [iceCreamAddons, setIceCreamAddons] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [icecreamData, seticecreamData] = useState(null);
+  const [IceCreamAddonData, setIceCreamAddonData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const fetchIceCreamSizes = async () => {
+  const fetchIceCreamAddon = async () => {
     try {
       const response = await axios.get(getIcecreamAddons);
-      console.log("Icecreams data:", response.data);
-      setIcecreams(response.data)
+      setIceCreamAddons(response.data)
     } catch (error) {
-      console.error("Error fetching icecreams", error);
+      console.error("Error fetching icecream Addon", error);
     }
   };
 
   useEffect(() => {
     if (!token) return;
-    fetchIceCreamSizes();
+    fetchIceCreamAddon();
   }, [token]);
 
   const showOffcanvasOnAddicecreamsSize = () => {
-        seticecreamData(null);
+        setIceCreamAddonData(null);
         setShowOffcanvas(true);
      }
      const showOffcanvasOnEditicecreamsSize = (icecream) => {
-        seticecreamData(icecream);
+        setIceCreamAddonData(icecream);
         setShowOffcanvas(true);
      }
      const closePopup = () => {
@@ -45,24 +43,24 @@ export default function Listicecreams() {
 
       const handleDelete = async (iceCreamId) => {
       try {
-          const response = await axios.delete(deleteIceCreamsAddons(iceCreamId));
+          const response = await axios.delete(deleteIceCreamsAddonById(iceCreamId));
           if(response.status === 200) {
-              toast.success("icecream size deleted successfully!", {autoClose: 1000});
-              fetchIceCreamSizes();
+              toast.success("icecream Addon deleted successfully!", {autoClose: 1000});
+              fetchIceCreamAddon();
           }
       }catch (error){
-          console.error("Error deleting icecream size:", error);
-          toast.error("Failed to delete icecream size.");
+          console.error("Error deleting icecream Addon:", error);
+          toast.error("Failed to delete icecream Addon.");
           }
       }
       const showDeleteConfirmation = (iceCreamId) => {
-          const confirmed = window.confirm("Are you sure you want to delete this icecream size?");
+          const confirmed = window.confirm("Are you sure you want to delete this icecream Addon?");
           if(confirmed){
               handleDelete(iceCreamId)
           }
       }
     const addicecreamToState = (newicecream) => {
-    setIcecreams(prev => [newicecream, ...prev]);
+    setIceCreamAddons(prev => [newicecream, ...prev]);
     setShowOffcanvas(false);
     };
 
@@ -79,11 +77,11 @@ export default function Listicecreams() {
     const currentStatus = String(icecream.status || "").toLowerCase();
     const newStatus = currentStatus === "active" ? "in-active" : "active";
     try {
-      const response = await axios.put(updateIcecreamAddons(icecream.id), {
+      const response = await axios.put(updateIceCreamAddOnsById(icecream.id), {
         status: newStatus,
       });
       if (response.status === 200) {
-        seticecreams((prev) =>
+        setIceCreamAddons((prev) =>
           prev.map((c) => (c.id === icecream.id ? { ...c, status: newStatus } : c))
         );
         toast.success(`Status updated to ${newStatus}`, { autoClose: 1000 });
@@ -125,28 +123,26 @@ export default function Listicecreams() {
                     Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span></th>
                   <th onClick={() => handleSort("slug")} className="nowrap">
                     Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span></th>
-                  <th onClick={() => handleSort("add_on_type")} className="nowrap">
-                    Addon Type <span className="fs-12 text-secondary">{renderSortIcon("add_on_type")}</span></th>
+                  <th onClick={() => handleSort("type")} className="nowrap">
+                    Type <span className="fs-12 text-secondary">{renderSortIcon("type")}</span></th>
                   <th onClick={() => handleSort("status")} className="nowrap">
-                    Addon Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
+                    Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span></th>
                   <th className="fw-16 fnt-color">Action</th>
                 </tr>
               </thead>
 
               <tbody>
-                {icecreams.map((icecream, index) => (
+                {iceCreamAddons.map((icecream, index) => (
                   <tr key={`${icecream.id}-${index}`}>
 
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.id}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.name_en}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.slug}</span></td>
                     <td className="fw-normal fnt-color"><span className='ms-1'>{icecream.add_on_type}</span></td>
-                    <td className="fs-16">
-                    <div className="form-check form-switch ms-4">
-                      <input className="form-check-input fs-4" type="checkbox" role="switch" name="status"
-                        id={`flexSwitchCheck-${icecream?.id || ''}`}
-                        checked={String(icecream?.status || "").toLowerCase() === "active"} onChange={() => toggleLetterStatus(icecream)}/>
-                    </div>
+                    <td>
+                      <div className={icecream?.status === "active" ? "blue-status" : "red-status"}>
+                        {icecream?.status === "active" ? "Active" : "Inactive"}
+                      </div>
                     </td>
 
                     <td>
@@ -175,14 +171,14 @@ export default function Listicecreams() {
                 <Offcanvas.Header closeButton>
                 <Offcanvas.Title>
                    <div className='fs-24 fnt-color'>
-                     {icecreamData ? "Update Size" : "Add Size"}
+                     {IceCreamAddonData ? "Update Addon" : "Add Addon"}
                    </div>
                 </Offcanvas.Title>
                 </Offcanvas.Header>
                 <hr  className="mt-0"/>
                 <Offcanvas.Body>
-                 <AddIceCream
-                    icecreamData={icecreamData}
+                 <AddIceCreamAddon
+                    IceCreamAddonData={IceCreamAddonData}
                     closePopup={closePopup}
                     onAddicecream={addicecreamToState}
                 />

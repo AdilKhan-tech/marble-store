@@ -400,6 +400,15 @@ body * {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
+.action-btn:hover {
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-transform: capitalize;
+    border: 1px solid rgb(252, 230, 231);
+    color: rgba(252, 230, 231, 1);
+    background: rgba(255, 27, 84, 0.08);
+}
 table tbody tr:nth-child(odd) td {
   background-color: transparent;
   border: transparent;
@@ -449,4 +458,8 @@ table tr:nth-child(even) td {
   color: var(--Color, rgba(73, 73, 73, 1)) !important;
   font-size: 14px;
   font-weight: 600;
+}
+.image-fluid {
+  height: 35px;
+  width: 35px;
 }

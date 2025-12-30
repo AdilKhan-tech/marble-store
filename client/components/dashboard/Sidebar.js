@@ -8,6 +8,7 @@ export default function SidebarLayout() {
   const [open, setOpen] = useState(true);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
 
+  // Add class to body when sidebar is open/closed
   useEffect(() => {
     if (open) {
       document.body.classList.remove("sidebar-closed");
@@ -93,6 +94,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Cake Size</span>
                   </Link>
                   <Link
@@ -102,6 +104,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
                   <Link
@@ -111,6 +114,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Custom Cake Type</span>
                   </Link>
                 </div>
@@ -136,21 +140,23 @@ export default function SidebarLayout() {
               {activeSubMenu === "icecream" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/icecream/size"
+                    href="/dashboard/icecream/iceCreamPortionSize"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream") ? "active" : ""
+                      isActive("/dashboard/iceCreamPortionSize") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
                   <Link
-                    href="/dashboard/icecream/addons"
+                    href="/dashboard/icecream/iceCreamAddon"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream/addons") ? "active" : ""
+                      isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
                 </div>
@@ -182,6 +188,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Cookies</span>
                   </Link>
                   <Link
@@ -191,6 +198,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
@@ -200,6 +208,7 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Cookies Type</span>
                   </Link>
                 </div>
@@ -224,26 +233,14 @@ export default function SidebarLayout() {
               {activeSubMenu === "setting" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/branches"
+                    href="/dashboard/branch"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/branches") ? "active" : ""
+                      isActive("/dashboard/branch") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
+                    <span className=""></span>
                     <span className="sidebar-label">Branches</span>
-                  </Link>
-                </div>
-              )}
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
-                  <Link
-                    href="/dashboard/setting/occasion"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/occasion") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="sidebar-label">Occasion</span>
                   </Link>
                 </div>
               )}

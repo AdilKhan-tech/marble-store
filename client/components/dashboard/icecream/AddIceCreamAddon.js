@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCakesSize, updateCakeSizeById } from "@/utils/apiRoutes";
+import { createIceCreamAddOn, updateIceCreamAddOnById } from "@/utils/apiRoutes";
 
-const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
+const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -21,20 +21,20 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
 
   // Load existing data
   useEffect(() => {
-    if (cakeData) {
+    if (IceCreamAddonData) {
       setFormData({
-        category_id: cakeData.category_id || "",
-        name_en: cakeData.name_en || "",
-        name_ar: cakeData.name_ar || "",
-        slug: cakeData.slug || "",
-        scoop_size: cakeData.scoop_size || "",
-        additional_price: cakeData.additional_price || "",
-        symbol: cakeData.symbol || "",
-        calories: cakeData.calories || "",
-        status: cakeData.status || false,
+        category_id: IceCreamAddonData.category_id || "",
+        name_en: IceCreamAddonData.name_en || "",
+        name_ar: IceCreamAddonData.name_ar || "",
+        slug: IceCreamAddonData.slug || "",
+        scoop_size: IceCreamAddonData.scoop_size || "",
+        additional_price: IceCreamAddonData.additional_price || "",
+        symbol: IceCreamAddonData.symbol || "",
+        calories: IceCreamAddonData.calories || "",
+        status: IceCreamAddonData.status || false,
       });
     }
-  }, [cakeData]);
+  }, [IceCreamAddonData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -69,25 +69,25 @@ const CakeData = ({ closePopup, cakeData = null,onAddCake }) => {
     if (validationErrors.length > 0) return;
 
     try {
-      if (cakeData) {
-        const res = await axios.put(updateCakeSizeById(cakeData.id), formData);
+      if (IceCreamAddonData) {
+        const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), formData);
 
         if (res.status === 200) {
-          toast.success("Cake size updated successfully!", {
+          toast.success("Ice Cream Addon updated successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
         }
       } else {
-        const res = await axios.post(createCakesSize, formData);
+        const res = await axios.post(createIceCreamAddOn, formData);
 
         if (res.status === 201 || res.status === 200) {
-          const createdCake = res.data.cakesizes;
-          toast.success("Cake Size added successfully!", {
+          const createdIceCreamAddon = res.data.icecreamaddons;
+          toast.success("Ice Cream Addon added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-           if (onAddCake) onAddCake(createdCake); // update parent state
+           if (onAddCake) onAddCake(createdIceCreamAddon); // update parent state
         return; // exit so closePopup is not called
         }
       }
