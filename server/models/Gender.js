@@ -41,6 +41,10 @@ const Gender = sequelize.define('Gender', {
       },
     },
   },
+  parent_gender: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+  },
   image_url: {
     type: DataTypes.TEXT,
     allowNull: true,

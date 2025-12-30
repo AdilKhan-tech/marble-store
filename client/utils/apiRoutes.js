@@ -55,3 +55,7 @@ export const getAllOcassions = `${host}/occasions/getAll`
 export const createOcassion = `${host}/occasions/create`
 export const updateOccasionById = (occasionId) => `${host}/occasions/update/${occasionId}`
 export const deleteOccasionById = (occasionId) => `${host}/occasions/delete/${occasionId}`
+
+
+export const getAllGenders = `${host}/genders`
+export const deleteGenderById = (genderId) => `${host}/genders/delete/${genderId}`

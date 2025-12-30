@@ -186,7 +186,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         </label>
         <input
           name="calorie"
-          type="number"
+          type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.calorie}
           onChange={handleChange}
