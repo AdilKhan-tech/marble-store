@@ -17,7 +17,6 @@ class OccasionController {
             return res.status(201).json(occasion);
         }
         catch (error) {
-            console.error(error);
             res.status(500).json({message: "Failed to create occasion", error: error.message});
         }
     }
@@ -27,9 +26,8 @@ class OccasionController {
             const occasions = await Occasion.findAll();
             return res.status(200).json({ occasions })
 
-        }catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to fetch occasions", error: err.message });
+        }catch (error) {
+            return res.status(500).json({ message: "Failed to fetch occasions", error: error.message });
         }
     }
 
@@ -55,7 +53,6 @@ class OccasionController {
           return res.status(200).json(occasion);
     
         } catch (error) {
-            console.error(error )
             return res.status(500).json({ message: error.message });
         }
     }
@@ -70,9 +67,8 @@ class OccasionController {
             await occasion.destroy();
             return res.status(200).json({ message: "Occasion deleted successfully" });
         }
-        catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: err.message });
+        catch (error) {
+            return res.status(500).json({ message: error.message });
         }
     }
 }

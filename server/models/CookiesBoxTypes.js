@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const CookiesTypes = sequelize.define("CookiesTypes", {
+const CookiesBoxTypes = sequelize.define("CookiesBoxTypes", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -95,4 +95,4 @@ const CookiesTypes = sequelize.define("CookiesTypes", {
     timestamps: false,
 });
 
-module.exports = CookiesTypes;
+module.exports = CookiesBoxTypes;

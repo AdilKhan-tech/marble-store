@@ -2,7 +2,7 @@ const CookiesBoxTypes = require('../models/CookiesBoxTypes');
 
 class CookiesTypesController {
 
-    static async createCookiesTypes (req, res){
+    static async createCookieType (req, res){
         try {
             const {name_en, name_ar, slug, sort, status} = req.body;
 
@@ -29,14 +29,15 @@ class CookiesTypesController {
     static async getAllCookiesTypes (req, res) {
         try {
             const cookiesTypes = await CookiesBoxTypes.findAll();
-            return res.status(200).json({cookiesTypes});
+
+            return res.status(200).json(cookiesTypes);
 
         } catch(error) {
             res.status(500).json({message: "Failed to get Cookies Types", error: error.message});
         }
     }
 
-    static async updateCookiesTypesById(req, res) {
+    static async updateCookieTypeById(req, res) {
         const { id } = req.params;
         try {
             const cookiesTypes = await CookiesBoxTypes.findByPk(id);
@@ -44,13 +45,7 @@ class CookiesTypesController {
                 return res.status(404).json({ message: "Cookies Types not found" });
             }
     
-            const {
-                name_en,
-                name_ar,
-                slug,
-                sort,
-                status
-            } = req.body;
+            const { name_en, name_ar, slug, sort, status } = req.body;
 
             const image_url = req.file?.path || cookiesTypes.image_url;
     
@@ -66,12 +61,11 @@ class CookiesTypesController {
             return res.status(200).json({message: "Cookies Types updated successfully",cookiesTypes});
     
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
             return res.status(500).json({message: "Failed to update Cookies Types",error: error.message});
         }
     }
 
-    static async deleteCookiesTypesById(req, res) {
+    static async deleteCookieTypeById(req, res) {
         try {
             const { id } = req.params;
     

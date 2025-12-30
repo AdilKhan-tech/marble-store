@@ -20,63 +20,67 @@ class BranchController {
                 status
             });
 
-            return res.status(200).json({
-                success: true,
-                data: branch,
-              });
+            return res.status(200).json(branch);
         } catch (error) {
-            console.error(error);
             return res.status(500).json({
-                success: false,
-                message: "Failed to create branches",
+                message: "Failed to create branch",
+                error: error.message
             });
         }
     }
 
     static async getAllBranches(req, res) {
         try {
-          const branches = await Branch.findAll();
+          const branch = await Branch.findAll();
       
-          return res.status(200).json({
-            success: true,
-            data: branches,
-          });
+          return res.status(200).json(branch);
         } catch (error) {
-          console.error(error);
-          return res.status(500).json({
-            success: false,
-            message: "Failed to get branches",
-          });
+            res.status(500).json({message: "Failed to get Branches", error: error.message});
         }
       }
 
-    static async updateBranchById (req, res) {
+    static async updateBranchById(req, res) {
         const { id } = req.params;
-        const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, status} = req.body;
         try {
             const branch = await Branch.findByPk(id);
             if (!branch) {
                 return res.status(404).json({ message: "Branch not found" });
             }
-            branch.name_en = name_en;
-            branch.name_ar = name_ar;
-            branch.slug = slug;
-            branch.city = city;
-            branch.address = address;
-            branch.latitude = latitude;
-            branch.longitude = longitude;
-            branch.number = number;
-            branch.timing = timing;
-            branch.branch_store_id = branch_store_id;
-            branch.status = status;
-            await branch.save();
-            return res.status(200).json({
-                success: true,
-                data: branch,
+            const { 
+                name_en, 
+                name_ar, 
+                slug, 
+                city, 
+                address, 
+                latitude, 
+                longitude, 
+                number, 
+                timing, 
+                branch_store_id, 
+                status
+            } = req.body;
+
+            const image_url = req.file?.path || cakesizes.image_url;
+
+            await cakesizes.update({
+                name_en: name_en ?? branch.name_en,
+                name_ar: name_ar ?? branch.name_ar,
+                slug: slug ?? branch.slug,
+                city: city ?? branch.city,
+                address: address ?? branch.address,
+                latitude: latitude ?? branch.latitude,
+                longitude: longitude ?? branch.longitude,
+                number: number ?? branch.number,
+                timing: timing ?? branch.timing,
+                branch_store_id: branch_store_id ?? branch.branch_store_id,
+                status: status ?? branch.status,
+                image_url: image_url
             });
+    
+            return res.status(200).json({message: "Branch updated successfully",branch});
+    
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: error.message });
+            return res.status(500).json({ message: "Failed to update Branch", error: error.message });
         }
     }
 
@@ -90,7 +94,6 @@ class BranchController {
         await branch.destroy();
             return res.status(200).json({ message: "Branch deleted successfully" });
         } catch (error) {
-            console.error(error);
             return res.status(500).json({ message: error.message });
         }
     }

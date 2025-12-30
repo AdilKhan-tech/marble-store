@@ -19,7 +19,7 @@ export default function ListCakeSizes() {
   const fetchCakeSizes = async () => {
     try {
       const response = await axios.get(getAllCakesSizes);
-      setCakeSizes(response.data.data);
+      setCakeSizes(response.data);
     } catch (error) {
       console.error("Error fetching cake sizes", error);
     }

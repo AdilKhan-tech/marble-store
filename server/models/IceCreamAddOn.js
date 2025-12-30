@@ -1,8 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const IceCreamAddOns = sequelize.define(
-  "IceCreamAddOns",
+const IceCreamAddOn = sequelize.define("IceCreamAddOn",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -22,13 +21,13 @@ const IceCreamAddOns = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    add_on_type: {
+    type: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    add_on_status: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+    status: {
+      type: DataTypes.ENUM("Active", "Inactive"),
+      defaultValue: "Active",
     },
     image_url: {
       type: DataTypes.TEXT,
@@ -46,8 +45,8 @@ const IceCreamAddOns = sequelize.define(
     },
   },
   {
-    tableName: "add_new_addon",
+    tableName: "icecream_add_ons",
     timestamps: false,
   }
 );
-module.exports = IceCreamAddOns;
+module.exports = IceCreamAddOn;

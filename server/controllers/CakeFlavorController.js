@@ -18,11 +18,10 @@ class CakeFlavorController {
             status,
             image_url,
         });
+        
         return res.status(201).json(cakeflavors);
-        } 
-        catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to create cake flavor", error: err.message});
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to create cake flavor", error: error.message});
         }
     }
 
@@ -38,16 +37,9 @@ class CakeFlavorController {
             ],
           });
       
-          return res.status(200).json({
-            success: true,
-            data: cakeFlavors,
-          });
+          return res.status(200).json(cakeFlavors);
         } catch (error) {
-          console.error(error);
-          return res.status(500).json({
-            success: false,
-            message: "Failed to retrieve cake flavors",
-          });
+            res.status(500).json({message: "Failed to get cake flavors", error: error.message});
         }
     }
 
@@ -79,7 +71,6 @@ class CakeFlavorController {
             });
     
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
             return res.status(500).json({ message: "Failed to update cake flavor", error: error.message });
         }
     }
@@ -95,7 +86,6 @@ class CakeFlavorController {
             return res.status(200).json({ message: "Cake flavor deleted successfully" });
         }
         catch (error) {
-            console.error(error);
             return res.status(500).json({ message: error.message });
         }
     }

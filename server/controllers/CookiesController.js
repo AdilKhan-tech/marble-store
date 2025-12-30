@@ -2,7 +2,7 @@ const Cookies = require('../models/Cookies');
 
 class CookiesController {
 
-    static async createCookies (req, res){
+    static async createCookie (req, res){
         try {
             const {name_en, name_ar, cookies_type_id, slug, sort, status} = req.body;
 
@@ -37,7 +37,7 @@ class CookiesController {
         }
     }
 
-    static async updateCookiesById(req, res) {
+    static async updateCookieById(req, res) {
         const { id } = req.params;
         try {
             const cookies = await Cookies.findByPk(id);
@@ -80,12 +80,11 @@ class CookiesController {
             return res.status(200).json({message: "Cookies updated successfully",cookies});
     
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
             return res.status(500).json({message: "Failed to update Cookies",error: error.message});
         }
     }
 
-    static async deleteCookiesById(req, res) {
+    static async deleteCookieById(req, res) {
         try {
             const { id } = req.params;
     

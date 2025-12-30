@@ -16,10 +16,9 @@ class CategoryController {
                 image_url
             });
 
-            return res.status(201).json({ message: "Category created successfully", category });
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to create category", error: err.message });
+            return res.status(201).json(category);
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to create category", error: error.message });
         }
     }
 
@@ -27,9 +26,8 @@ class CategoryController {
         try {
             const categories = await Category.findAll();
             return res.status(200).json({ categories });
-        } catch (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Failed to fetch categories", error: err.message });
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to fetch categories", error: error.message });
         }
     }
 
@@ -48,7 +46,6 @@ class CategoryController {
             await category.save();
             return res.status(200).json({message: "Category updated successfully", category});
         } catch (error) {
-            console.error(error);
             return res.status(500).json({ message: error.message });
         }
     }
@@ -63,7 +60,6 @@ class CategoryController {
         await category.destroy();
             return res.status(200).json({ message: "Category deleted successfully" });
         } catch (err) {
-        console.error(err);
             return res.status(500).json({ message: err.message });
         }
     }
