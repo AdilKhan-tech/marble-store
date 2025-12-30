@@ -12,26 +12,19 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
     name_en: "",
     name_ar: "",
     slug: "",
-    scoop_size: "",
-    additional_price: "",
-    symbol: "",
-    calories: "",
-    status: false,
+    type:"",
+    status: "active",
   });
 
   // Load existing data
   useEffect(() => {
     if (IceCreamAddonData) {
       setFormData({
-        category_id: IceCreamAddonData.category_id || "",
         name_en: IceCreamAddonData.name_en || "",
         name_ar: IceCreamAddonData.name_ar || "",
         slug: IceCreamAddonData.slug || "",
-        scoop_size: IceCreamAddonData.scoop_size || "",
-        additional_price: IceCreamAddonData.additional_price || "",
-        symbol: IceCreamAddonData.symbol || "",
-        calories: IceCreamAddonData.calories || "",
-        status: IceCreamAddonData.status || false,
+        type: IceCreamAddonData.type || "",
+        status: IceCreamAddonData.status || "active",
       });
     }
   }, [IceCreamAddonData]);
@@ -54,10 +47,7 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.scoop_size) errors.push("Scoop size is required.");
-    if (!formData.additional_price)
-      errors.push("Additional price is required.");
-    if (!formData.symbol) errors.push("Symbol is required.");
+    if (!formData.type) errors.push("Ice Cream Addon Type is require")
     return errors;
   };
 
@@ -125,43 +115,19 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Scoop Size</label>
-        <input name="scoop_size" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.scoop_size} onChange={handleChange}/>
-      </div>
-
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Additional Price</label>
-        <input name="additional_price" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.additional_price} onChange={handleChange}/>
-      </div>
-
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
-        <input name="symbol" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.symbol} onChange={handleChange}/>
-      </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
-        <input name="calories" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calories} onChange={handleChange}/>
-      </div>
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Category</label>
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Addon Type</label>
         <select name="category_id" className="form-select textarea-hover-dark text-secondary"
-          value={formData.category_id} onChange={handleChange}>
-          <option value="" className="fs-14 fw-normal text-secondary">Select Category</option>
-          <option value="12 Inch" className="fs-14 fw-normal text-secondary">12 Inch</option>
-          <option value="16 Inch" className="fs-14 fw-normal text-secondary">16 Inch</option>
-          <option value="Large" className="fs-14 fw-normal text-secondary">Large</option>
-          <option value="Medium" className="fs-14 fw-normal text-secondary">Medium</option>
-          <option value="Small" className="fs-14 fw-normal text-secondary">Small</option>
+          value={formData.type} onChange={handleChange}>
+          <option value="">Select Addon Type</option>
+          <option value="Flavor">Flavor</option>
+          <option value="Mix-ins">Mix-ins</option>
+          <option value="Sauces">Sauces</option>
         </select>
       </div>
 
       <div className="col-md-12 mt-3">
-              <div className="form-check form-switch">
-                <input className="form-check-input" style={{ width: "50px", height: "26px" }} type="checkbox"
+              <div className="form-check form-switch m-2">
+                <input className="form-check-input fs-5" type="checkbox"
                   role="switch" checked={formData.status === "Active"} onChange={(e) => setFormData((prev) => ({
                       ...prev,status: e.target.checked ? "Active" : "Inactive",}))}/>
                 <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
