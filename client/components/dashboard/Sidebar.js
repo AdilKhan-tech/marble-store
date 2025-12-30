@@ -244,6 +244,20 @@ export default function SidebarLayout() {
                   </Link>
                 </div>
               )}
+              {activeSubMenu === "setting" && (
+                <div className="sidebar-submenu ms-3">
+                  <Link
+                    href="/dashboard/setting/occasion"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/setting/occasion") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className=""></span>
+                    <span className="sidebar-label">Ocassion</span>
+                  </Link>
+                </div>
+              )}
             </li>
           </ul>
         </nav>
