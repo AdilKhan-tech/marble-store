@@ -3,17 +3,17 @@ import React from 'react'
 import { useState , useEffect } from 'react';
 import axios from 'axios';
 import useAxiosConfig from '@/hooks/useAxiosConfig';
-import AddCookieType from '@/components/dashboard/cookies/AddCookieType';
+import AddCookieBoxType from '@/components/dashboard/cookies/AddCookieBoxType';
 import { ToastContainer, toast } from "react-toastify";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getCookieBoxTypes, deleteCookieBoxTypesById } from '@/utils/apiRoutes';
 
-export default function CookieBoxTypes() {
+export default function CookieBoxTypePage() {
 
   const {token} = useAxiosConfig();
   const [cookieBoxType, setCookieBoxType] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [cookieData, setCookieData] = useState(null);
+  const [cookieBoxTypeData, setCookieBoxTypeData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
@@ -32,12 +32,12 @@ const fetchCookieBoxTypes = async () => {
   }, [token]);
   
     const showOffcanvasOnAddCookieType = () => {
-      setCookieData(null);
+      setCookieBoxTypeData(null);
       setShowOffcanvas(true);
     }
   
     const showOffcanvasOnEditCookieType = (cookieBoxType) => {
-      setCookieData(cookieBoxType);
+      setCookieBoxTypeData(cookieBoxType);
       setShowOffcanvas(true);
     }
   
@@ -66,12 +66,12 @@ const fetchCookieBoxTypes = async () => {
     }
   }
 
-    const onAddCookie = (newCookie) => {
+    const addCookieBoxType = (newCookie) => {
     setCookieBoxType(prev => [newCookie, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const onUpdateCookie = (updatedCookie) => {
+  const updateCookieBoxType = (updatedCookie) => {
     setCookieBoxType((prev) =>
       prev.map((cookie) =>
         cookie.id === updatedCookie.id ? { ...cookie, ...updatedCookie } : cookie
@@ -169,17 +169,17 @@ const fetchCookieBoxTypes = async () => {
           <Offcanvas.Header closeButton>
           <Offcanvas.Title>
             <div className='fs-24 fnt-color'>
-              {cookieData ? "Update Box Type" : "Add Box Type"}
+              {cookieBoxTypeData ? "Update Box Type" : "Add Box Type"}
             </div>
           </Offcanvas.Title>
           </Offcanvas.Header>
           <hr  className="mt-0"/>
           <Offcanvas.Body>
-            <AddCookieType
-              cookieData={cookieData}
+            <AddCookieBoxType
+              cookieBoxTypeData={cookieBoxTypeData}
               closePopup={closePopup}
-              onAddCookie={onAddCookie}
-              onUpdateCookie={onUpdateCookie}
+              onAddCookieBoxType={addCookieBoxType}
+              onUpdateCookieBoxType={updateCookieBoxType}
             />
           </Offcanvas.Body>
         </Offcanvas>

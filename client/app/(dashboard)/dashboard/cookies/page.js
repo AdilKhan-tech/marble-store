@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
-import AddCookieType from "@/components/dashboard/cookies/AddCookies";
+import AddCookie from "@/components/dashboard/cookies/AddCookie";
 import { ToastContainer, toast } from "react-toastify";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { getAllCookies, deleteCookiesById } from "@/utils/apiRoutes";
@@ -19,7 +19,7 @@ export default function Cookies() {
   const fetchCookies = async () => {
     try {
       const response = await axios.get(getAllCookies);
-      setCookies(response?.data?.cookies);
+      setCookies(response?.data);
     } catch (error) {
       console.error("Error fetching Cookie", error);
     }
@@ -65,12 +65,12 @@ export default function Cookies() {
     }
   };
 
-  const onAddCookie = (newCookie) => {
+  const addCookie = (newCookie) => {
     setCookies((prev) => [newCookie, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const onUpdateCookie = (updatedCookie) => {
+  const updateCookie = (updatedCookie) => {
     setCookies((prev) =>
       prev.map((cookie) =>
         cookie.id === updatedCookie.id
@@ -130,8 +130,8 @@ export default function Cookies() {
                   <th onClick={() => handleSort("name_en")}>
                     Name<span>{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("cookies_type_id")}>
-                    Cookies Size<span>{renderSortIcon("cookies_type_id")}</span>
+                  <th onClick={() => handleSort("cookie_type_id")}>
+                    Cookies Box Type<span>{renderSortIcon("cookie_type_id")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
                     slug<span>{renderSortIcon("slug")}</span>
@@ -147,20 +147,15 @@ export default function Cookies() {
               </thead>
               <tbody>
                 {cookies.map((cookie, index) => (
-                  <tr key={cookie._id || cookie.id || index}>
+                  <tr key={cookie.id || cookie.id || index}>
                     <td>{cookie?.id}</td>
                     <td>{cookie?.name_en}</td>
-                    <td>{cookie?.cookies_type_id}</td>
+                    <td>{cookie?.cookie_type_id}</td>
                     <td>{cookie?.slug}</td>
                     <td>{cookie?.sort}</td>
                     <td>
                       <div
-                        className={
-                          cookie?.status === "active"
-                            ? "blue-status"
-                            : "red-status"
-                        }
-                      >
+                        className={cookie?.status === "active"? "blue-status": "red-status"}>
                         {cookie?.status === "active" ? "Active" : "Inactive"}
                       </div>
                     </td>
@@ -193,17 +188,17 @@ export default function Cookies() {
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>
               <div className="fs-24 fnt-color">
-                {cookieData ? "Update Cookies" : "Add Cookies"}
+                {cookieData ? "Update Cookie" : "Add Cookie"}
               </div>
             </Offcanvas.Title>
           </Offcanvas.Header>
           <hr className="mt-0" />
           <Offcanvas.Body>
-            <AddCookieType
+            <AddCookie
               cookieData={cookieData}
               closePopup={closePopup}
-              onAddCookie={onAddCookie}
-              onUpdateCookie={onUpdateCookie}
+              onAddCookie={addCookie}
+              onUpdateCookie={updateCookie}
             />
           </Offcanvas.Body>
         </Offcanvas>

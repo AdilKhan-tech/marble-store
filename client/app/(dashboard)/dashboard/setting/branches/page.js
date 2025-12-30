@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import axios from "axios";
-import AddBranch from '@/components/dashboard/branch/AddBranch';
+import AddBranch from '@/components/dashboard/setting/AddBranch';
 import { getAllBranches, deleteBranchById } from "@/utils/apiRoutes";
 
-export default function Branches() {
+export default function BranchPage() {
   const { token } = useAxiosConfig();
   const [branches, setBranches] = useState([]);
   const [sortField, setSortField] = useState("");
@@ -19,7 +19,7 @@ export default function Branches() {
   const fetchBranches = async () => {
     try {
       const response = await axios.get(getAllBranches);
-      setBranches(response.data.data);
+      setBranches(response.data);
     } catch (error) {
       console.error("Error fetching cake sizes", error);
     }
