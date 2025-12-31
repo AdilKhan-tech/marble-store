@@ -94,7 +94,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cake Size</span>
                   </Link>
                   <Link
@@ -104,7 +103,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
                   <Link
@@ -114,8 +112,16 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Custom Cake Type</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/cakes/customCakeFlavor"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/cakes/customCakeFlavor") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="sidebar-label">Custom Cake Flavor</span>
                   </Link>
                 </div>
               )}
@@ -146,7 +152,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Size</span>
                   </Link>
                   <Link
@@ -156,7 +161,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
                 </div>
@@ -188,7 +192,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies</span>
                   </Link>
                   <Link
@@ -198,7 +201,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
@@ -208,7 +210,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Cookies Type</span>
                   </Link>
                 </div>
@@ -236,10 +237,10 @@ export default function SidebarLayout() {
                     href="/dashboard/setting/branches"
                     className={`sidebar-submenu-link ${
                       isActive("/dashboard/setting/branches") ? "active" : ""
+
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Branches</span>
                   </Link>
                 </div>
@@ -253,7 +254,6 @@ export default function SidebarLayout() {
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    <span className=""></span>
                     <span className="sidebar-label">Ocassion</span>
                   </Link>
                 </div>
