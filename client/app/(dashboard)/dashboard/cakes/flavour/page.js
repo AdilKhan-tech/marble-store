@@ -3,17 +3,17 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddFlavour from "@/components/dashboard/cake/AddCakeFlavours";
+import AddCakeFlavour from "@/components/dashboard/cake/AddCakeFlavour";
 import { useEffect, useState } from 'react';
 import { getAllCakeFlavours, deleteCakeFlavourById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-export default function CakeFlavour() {
+export default function CakeFlavourPage() {
 
   const {token} = useAxiosConfig();
-  const [flavors, setCakeFlavors] = useState([]);
+  const [cakeFlavors, setCakeFlavors] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [flavorData, setFlavorData] = useState(null);
+  const [cakeFlavorData, setCakeFlavorData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
@@ -32,12 +32,12 @@ export default function CakeFlavour() {
   }, [token]);
 
   const showOffcanvasOnAddCakesFlavour = () => {
-    setFlavorData(null);
+    setCakeFlavorData(null);
     setShowOffcanvas(true);
   }
 
   const showOffcanvasOnEditCakesFlavour = (flavor) => {
-    setFlavorData(flavor);
+    setCakeFlavorData(flavor);
     setShowOffcanvas(true);
   }
 
@@ -136,23 +136,23 @@ export default function CakeFlavour() {
                 </tr>
               </thead>
               <tbody>
-                {flavors.map((flavor, index) => (
-                  <tr key={flavor?.id}>
-                    <td>{flavor?.id}</td>
-                    <td>{flavor?.name_en}</td>
-                    <td>{flavor?.customCakeType?.name_en}</td>
-                    <td>{flavor?.slug}</td>
+                {cakeFlavors.map((cakeFlavor, index) => (
+                  <tr key={cakeFlavor?.id}>
+                    <td>{cakeFlavor?.id}</td>
+                    <td>{cakeFlavor?.name_en}</td>
+                    <td>{cakeFlavor?.customCakeType?.name_en}</td>
+                    <td>{cakeFlavor?.slug}</td>
                     <td>
-                      <div className={flavor?.status === "active" ? "blue-status" : "red-status"}>
-                        {flavor?.status === "active" ? "Active" : "Inactive"}
+                      <div className={cakeFlavor?.status === "active" ? "blue-status" : "red-status"}>
+                        {cakeFlavor?.status === "active" ? "Active" : "Inactive"}
                       </div>
                     </td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn border-secondary" onClick={() => showOffcanvasOnEditCakesFlavour(flavor)}>
+                        <button className="action-btn border-secondary" onClick={() => showOffcanvasOnEditCakesFlavour(cakeFlavor)}>
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
-                        <button className="action-btn border-secondary" onClick={() => showDeleteConfirmation(flavor.id)}>
+                        <button className="action-btn border-secondary" onClick={() => showDeleteConfirmation(cakeFlavor.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -170,14 +170,14 @@ export default function CakeFlavour() {
           <Offcanvas.Header closeButton>
           <Offcanvas.Title>
             <div className='fs-24'>
-              {flavorData ? "Update Flavour" : "Add Flavour"}
+              {cakeFlavorData ? "Update Cake Flavour" : "Add Cake Flavour"}
             </div>
           </Offcanvas.Title>
           </Offcanvas.Header>
           <hr  className="mt-0"/>
           <Offcanvas.Body>
-            <AddFlavour
-              flavorData={flavorData}
+            <AddCakeFlavour
+              cakeFlavorData={cakeFlavorData}
               closePopup={closePopup}
               onAddCakeFlavor={addCakeFlavor}
               onUpdateCakeFlavor={updateCakeFlavor}

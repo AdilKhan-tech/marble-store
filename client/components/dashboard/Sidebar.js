@@ -106,9 +106,9 @@ export default function SidebarLayout() {
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
                   <Link
-                    href="/dashboard/cakes/customType"
+                    href="/dashboard/cakes/customCakeType"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cakes/customType") ? "active" : ""
+                      isActive("/dashboard/cakes/customCakeType") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
@@ -195,18 +195,18 @@ export default function SidebarLayout() {
                     <span className="sidebar-label">Cookies</span>
                   </Link>
                   <Link
-                    href="/dashboard/cookies/size"
+                    href="/dashboard/cookies/boxSize"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/size") ? "active" : ""
+                      isActive("/dashboard/cookies/boxSize") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
-                    href="/dashboard/cookies/type"
+                    href="/dashboard/cookies/boxType"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/type") ? "active" : ""
+                      isActive("/dashboard/cookies/boxType") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
@@ -234,9 +234,10 @@ export default function SidebarLayout() {
               {activeSubMenu === "setting" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/branches"
+                    href="/dashboard/setting/branches"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/branches") ? "active" : ""
+                      isActive("/dashboard/setting/branches") ? "active" : ""
+
                     }`}
                     onClick={() => setOpen(false)}
                   >

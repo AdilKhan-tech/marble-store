@@ -3,24 +3,24 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddType from '@/components/dashboard/cake/AddCustomCakeType';
+import AddCustomCakeType from '@/components/dashboard/cake/AddCustomCakeType';
 import { useEffect, useState } from 'react';
-import { getAllCustomCakeTypes, updateCustomCakeTypeById, deleteCustomCakeTypeById } from '@/utils/apiRoutes';
+import { getAllCustomCakeTypes, deleteCustomCakeTypeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-export default function CustomCakeTypes() {
+export default function CustomCakeTypePage() {
   
   const {token} = useAxiosConfig();
-  const [cakeTypes, setCakeTypes] = useState([]);
+  const [customeCakeTypes, setCustomCakeTypes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [cakeTypeData, setCakeTypeData] = useState(null);
+  const [customCakeTypeData, setCustomCakeTypeData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchCustomCakeTypes = async () => {
     try {
       const response = await axios.get(getAllCustomCakeTypes);
-      setCakeTypes(response.data);
+      setCustomCakeTypes(response.data);
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
@@ -31,13 +31,13 @@ export default function CustomCakeTypes() {
     fetchCustomCakeTypes();
   }, [token]);
 
-  const showOffcanvasAddType = () => {
-    setCakeTypeData(null);
+  const showOffcanvasAddCustomCakeType = () => {
+    setCustomCakeTypeData(null);
     setShowOffcanvas(true);
   }
 
-  const showOffcanvasOnEditCakeTypes = (cakeType) => {
-    setCakeTypeData(cakeType);
+  const showOffcanvasOnEditCakeTypes = (customeCakeType) => {
+    setCustomCakeTypeData(customeCakeType);
     setShowOffcanvas(true);
   }
 
@@ -45,39 +45,39 @@ export default function CustomCakeTypes() {
     setShowOffcanvas(false);
   };
 
-  const handleDelete = async (cakeTypeId) => {
+  const handleDelete = async (customeCakeTypeId) => {
     try {
-      const response = await axios.delete(deleteCustomCakeTypeById(cakeTypeId));
+      const response = await axios.delete(deleteCustomCakeTypeById(customeCakeTypeId));
       if(response.status === 200) {
-          toast.success("Custom Cake Type deleted successfully!", {autoClose: 1000});
-          setCakeTypes((prev) =>
-            prev.filter((cakeType) => cakeType.id !== cakeTypeId)
-          );
+        toast.success("Custom Cake Type deleted successfully!", {autoClose: 1000});
+        setCustomCakeTypes((prev) =>
+          prev.filter((customeCakeType) => customeCakeType.id !== customeCakeTypeId)
+        );
       }
     }catch (error){
-      console.error("Error deleting Custom Cake Typeb", error);
+      console.error("Error deleting Custom Cake Type", error);
       toast.error("Failed to delete Custom Cake Type");
     }
   }
 
-  const showDeleteConfirmation = (cakeTypeId) => {
+  const showDeleteConfirmation = (customeCakeTypeId) => {
     const confirmed = window.confirm("Are you sure you want to delete this Custom Cake Type?");
     if(confirmed){
-        handleDelete(cakeTypeId)
+        handleDelete(customeCakeTypeId)
     }
   }
 
-  const addCakeTypes = (newCakeType) => {
-    setCakeTypes(prev => [newCakeType, ...prev]);
+  const addCustomCakeType = (newCustomeCakeType) => {
+    setCustomCakeTypes(prev => [newCustomeCakeType, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const updateCakeTypes = (updatedCakeTypes) => {
-    setCakeTypes((prev) =>
-      prev.map((cakeType) =>
-        cakeType.id === updatedCakeTypes.id
-          ? { ...cakeType, ...updatedCakeTypes }
-          : cakeType
+  const updateCustomCakeType = (updatedCustomeCakeType) => {
+    setCustomCakeTypes((prev) =>
+      prev.map((customeCakeType) =>
+        customeCakeType.id === updatedCustomeCakeType.id
+          ? { ...customeCakeType, ...updatedCustomeCakeType }
+          : customeCakeType
       )
     );
     setShowOffcanvas(false);
@@ -112,7 +112,7 @@ export default function CustomCakeTypes() {
           <div style={{marginInlineEnd:"20px"}}>
             <div 
               className='org-btn py-2 px-4 rounded-3' 
-              onClick={showOffcanvasAddType} 
+              onClick={showOffcanvasAddCustomCakeType} 
               role='button'
             >
               <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
@@ -144,21 +144,20 @@ export default function CustomCakeTypes() {
               </thead>
 
               <tbody>
-                {cakeTypes.map((cakeType, index) => (
-                  <tr key={cakeType?.id}>
-                    <td>{cakeType?.id}</td>
-                    <td>{cakeType?.name_en}</td>
-                    <td>{cakeType?.slug}</td>
+                {customeCakeTypes.map((customeCakeType, index) => (
+                  <tr key={customeCakeType?.id}>
+                    <td>{customeCakeType?.id}</td>
+                    <td>{customeCakeType?.name_en}</td>
+                    <td>{customeCakeType?.slug}</td>
                     <td>
-                      <div className="form-check form-switch ms-3">
-                        <input className="form-check-input fs-5" type="checkbox" role="switch"
-                        />
+                      <div className={customeCakeType?.status === "active" ? "blue-status" : "red-status"}>
+                        {customeCakeType?.status === "active" ? "Active" : "Inactive"}
                       </div>
                     </td>
                     <td className='d-flex gap-2'>
-                      <div className='action-btn' onClick={() => showOffcanvasOnEditCakeTypes(cakeType)}>
+                      <div className='action-btn' onClick={() => showOffcanvasOnEditCakeTypes(customeCakeType)}>
                         <i className="bi bi-pencil text-primary"></i></div>
-                      <div className='action-btn' onClick={() => showDeleteConfirmation(cakeType.id)}>
+                      <div className='action-btn' onClick={() => showDeleteConfirmation(customeCakeType.id)}>
                         <i className="bi bi-trash text-danger"></i></div>
                     </td>
                   </tr>
@@ -175,17 +174,17 @@ export default function CustomCakeTypes() {
             <Offcanvas.Header closeButton>
             <Offcanvas.Title>
               <div className='fs-24 fnt-color'>
-                {cakeTypeData ? "Update Type" : "Add Type"}
+                {customCakeTypeData ? "Update Cake Type" : "Add Cake Type"}
               </div>
             </Offcanvas.Title>
             </Offcanvas.Header>
             <hr  className="mt-0"/>
             <Offcanvas.Body>
-              <AddType
-                cakeTypeData={cakeTypeData}
+              <AddCustomCakeType
+                customCakeTypeData={customCakeTypeData}
                 closePopup={closePopup}
-                onAddCakeTypes={addCakeTypes}
-                onUpdateCakeTypes={updateCakeTypes}
+                onAddCustomCakeType={addCustomCakeType}
+                onUpdateCustomCakeType={updateCustomCakeType}
               />
             </Offcanvas.Body>
         </Offcanvas>

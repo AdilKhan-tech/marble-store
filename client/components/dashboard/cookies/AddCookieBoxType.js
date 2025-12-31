@@ -1,40 +1,36 @@
 "use client";
 import React, { use } from "react";
 import { useEffect, useState } from "react";
-import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookies, updateCookieById } from "@/utils/apiRoutes";
+import { createCookiesTypes, updateCookiesTypesById } from "@/utils/apiRoutes";
 
-const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
+const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBoxType, onUpdateCookieBoxType }) => {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [formData, setFormData] = useState({
+    name_en:"",
+    name_ar:"",
+    slug:"",
+    sort:"",
+    status:"active",
+    image_url:"",
+  })
 
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [formData, setFormData] = useState({
-        name_en:"",
-        name_ar:"",
-        cookies_type_id :"",
-        slug:"",
-        sort:"",
-        status:"active",
-        image_url:"",
-    })
+  useEffect(() => {
+    if (cookieBoxTypeData) {
+      setFormData({
+        name_en: cookieBoxTypeData.name_en || "",
+        name_ar: cookieBoxTypeData.name_ar || "",
+        slug: cookieBoxTypeData.slug || "",
+        sort: cookieBoxTypeData.sort || "",
+        status: cookieBoxTypeData.status || "active",
+        image_url: cookieBoxTypeData.image_url || "",
+      });
+    }
+  }, [cookieBoxTypeData]);
 
-    useEffect(() => {
-        if (cookieData) {
-          setFormData({
-            name_en: cookieData.name_en || "",
-            name_ar: cookieData.name_ar || "",
-            cookies_type_id:cookieData.cookies_type_id || "",
-            slug: cookieData.slug || "",
-            sort: cookieData.sort || "",
-            status: cookieData.status || "active",
-            image_url: cookieData.image_url || "",
-          });
-        }
-      }, [cookieData]);
-
-      const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -45,13 +41,12 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
- };
+  };
 
-    const validateForm = () => {
+  const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.cookies_type_id) errors.push("Cookie type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.sort) errors.push("Sort is required.");
     if (!formData.status) errors.push("Status is required.");
@@ -78,19 +73,19 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
         });
       }
 
-      if (cookieData) {
-        const res = await axios.put(updateCookieById(cookieData.id), payload);
+      if (cookieBoxTypeData) {
+        const res = await axios.put(updateCookiesTypesById(cookieBoxTypeData.id), payload);
 
         if (res.status === 200) {
-          toast.success("Cookie updated successfully!", {
+          toast.success("Cookie box type updated successfully!", {
             autoClose: 1000,
           });
 
-          if (onUpdateCookie) {
-            onUpdateCookie({
-              ...cookieData,
+          if (onUpdateCookieBoxType) {
+            onUpdateCookieBoxType({
+              ...cookieBoxTypeData,
               ...formData,
-              id: cookieData.id,
+              id: cookieBoxTypeData.id,
             });
           }
 
@@ -99,16 +94,16 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
       }
       //  CREATE
       else {
-        const res = await axios.post(createCookies, payload);
+        const res = await axios.post(createCookiesTypes, payload);
   
         if (res.status === 201 || res.status === 200) {
 
-          toast.success("Cookie added successfully!", {
+          toast.success("Cookie box type added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
   
-          if (onAddCookie) onAddCookie(onAddCookie);
+          if (onAddCookieBoxType) onAddCookieBoxType(onAddCookie);
         }
       }
     } catch (error) {
@@ -123,54 +118,55 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
       setErrors([]);
     }
   }, [errors]);
+
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label text-secondary">Name English</label>
         <input
-          name="name_en" type="text"
+          name="name_en" 
+          type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-            value={formData.name_en} onChange={handleChange}/>
+          value={formData.name_en} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label text-secondary">Name Arabic</label>
         <input
-          name="name_ar" type="text"
+          name="name_ar" 
+          type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-            value={formData.name_ar} onChange={handleChange}/>
-      </div>
-      
-      <div className="col-md-12 form-group mt-2">
-        <label className="form-label text-secondary">Select Cookie Size</label>
-        <select name="cookies_type_id" className="form-select textarea-hover-dark text-secondary"
-          value={formData.cookies_type_id} onChange={handleChange}>Select Cookie Size
-            <option value="">Select Cookie Type</option>
-            <option value="1">adil</option>
-            <option value="2">rehan</option>
-            <option value="3">king</option>
-            <option value="4">khan</option>
-        </select>
+          value={formData.name_ar} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label text-dark-custom text-secondary">Slug</label>
         <input
-          name="slug" type="text"
+          name="slug" 
+          type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-            value={formData.slug} onChange={handleChange}/>
+          value={formData.slug} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label text-dark-custom text-secondary">Sort</label>
         <input
-          name="sort" type="number"
+          name="sort" 
+          type="number"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-            value={formData.sort} onChange={handleChange}/>
+          value={formData.sort} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="col-md-12 mt-3">
-      <label className="form-label text-dark-custom text-secondary">Status</label>
+        <label className="form-label text-dark-custom text-secondary">Status</label>
         <div className="form-check form-switch m-3">
           <input 
             className="form-check-input fs-4" 
@@ -218,4 +214,4 @@ const AddCookies = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie
   );
 };
 
-export default AddCookies;
+export default AddCookieBoxType;

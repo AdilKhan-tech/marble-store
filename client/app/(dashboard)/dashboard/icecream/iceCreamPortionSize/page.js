@@ -5,11 +5,10 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import AddIceCreamSize from "@/components/dashboard/icecream/AddIceCreamPortionSize";
 import { useEffect, useState } from "react";
-// import { getIcecreamSizes } from '@/utils/apiRoutes';
 import { getAllIceCreamPortionSizes, deleteIceCreamPortionSizeById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-export default function IceCreamPortionSizes() {
+export default function IceCreamPortionSizePage() {
   const { token } = useAxiosConfig();
   const [iceCreamPortionSizes, setIceCreamPortionSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -18,6 +17,7 @@ export default function IceCreamPortionSizes() {
   const fetchIceCreamPortionSizes = async () => {
     try {
       const response = await axios.get(getAllIceCreamPortionSizes);
+      console.log("ddddddddddddddd", response.data)
       setIceCreamPortionSizes(response.data);
     } catch (error) {
       console.error("Error fetching icecream Portion Sizes", error);
@@ -67,18 +67,10 @@ export default function IceCreamPortionSizes() {
     }
   };
 
-  // const addIceCreamToState = (newIceCream) => {
-  //   // fetchIceCreamSizes();
-  //   setIceCreamPortionSizes((prev) => [newIceCream, ...prev]);
-  //   setShowOffcanvas(false);
-  // };
-
-
   const addIceCreamPortionSize = (newIceCream) => {
     setIceCreamPortionSizes((prev) => [newIceCream, ...prev]);
     setShowOffcanvas(false);
   };
-
 
   const updateIceCreamPortionSize = (updatedIceCream) => {
     setIceCreamPortionSizes((prev) =>
@@ -111,7 +103,7 @@ export default function IceCreamPortionSizes() {
                 role="button"
               >
                 <i className="bi bi-plus-circle ms-2"></i>
-                <span className="ms-1">Create</span>
+                <span>Create</span>
               </div>
             </div>
           </div>
@@ -122,60 +114,36 @@ export default function IceCreamPortionSizes() {
               <table className="table datatable datatable-table">
                 <thead className="">
                   <tr className="">
-                    <th className="fw-16 fnt-color">ID</th>
-                    <th className="fw-16 fnt-color">Name</th>
-                    <th className="fw-16 fnt-color">Icecream Bucket </th>
-                    <th className="fw-16 fnt-color">Slug</th>
-                    <th className="fw-16 fnt-color">Additional Price</th>
-                    <th className="fw-16 fnt-color">Calorie</th>
-                    <th className="fw-16 fnt-color">Status</th>
-                    <th className="fw-16 fnt-color">Action</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Icecream Bucket </th>
+                    <th>Slug</th>
+                    <th>Additional Price</th>
+                    <th>Calorie</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {iceCreamPortionSizes.map((icecream, index) => (
                     <tr key={`${icecream.id}-${index}`}>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">{icecream.id}</span>
-                      </td>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">{icecream.name_en}</span>
-                      </td>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">
-                          {icecream.icecream_bucket_id}
-                        </span>
-                      </td>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">{icecream.slug}</span>
-                      </td>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">
-                          {icecream.additional_price}
-                        </span>
-                      </td>
-                      <td className="fw-normal fnt-color">
-                        <span className="ms-1">{icecream.calorie}</span>
-                      </td>
+                      <td>{icecream.id}</td>
+                      <td>{icecream.name_en}</td>
+                      <td>{icecream.icecream_bucket_id}</td>
+                      <td>{icecream.slug}</td>
+                      <td>{icecream.additional_price}</td>
+                      <td>{icecream.calories}</td>
                       <td>
-                        <div
-                          className={
-                            icecream?.status === "active"
-                              ? "blue-status"
-                              : "red-status"
-                          }
-                        >
-                          {icecream?.status === "active"
-                            ? "Active"
-                            : "Inactive"}
+                        <div className={icecream?.status === "active"? "blue-status": "red-status"}>
+                          {icecream?.status === "active"? "Active": "Inactive"}
                         </div>
                       </td>
 
                       <td>
                         <div className="d-flex gap-1">
                           <button
-                            className="btn btn-sm btn-light p-2"
+                            className="action-btn"
                             onClick={() =>
                               showOffcanvasOnEditCakesSize(icecream)
                             }
@@ -183,7 +151,7 @@ export default function IceCreamPortionSizes() {
                             <i className="bi bi-pencil text-primary"></i>
                           </button>
                           <button
-                            className="btn btn-sm btn-light p-2"
+                            className="action-btn"
                             onClick={() => showDeleteConfirmation(icecream.id)}
                           >
                             <i className="bi bi-trash3 text-danger"></i>

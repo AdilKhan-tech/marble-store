@@ -6,7 +6,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createCakeFlavour, updateCakeFlavourById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
+const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -23,18 +23,18 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpd
   });
 
   useEffect(() => {
-    if (flavorData) {
+    if (cakeFlavorData) {
       setFormData({
-        name_en: flavorData.name_en || "",
-        name_ar: flavorData.name_ar || "",
-        custom_cake_type_id: flavorData.custom_cake_type_id || "",
-        slug: flavorData.slug || "",
-        additional_price: flavorData.additional_price || "",
-        symbol: flavorData.symbol || "",
-        status: flavorData.status || "active",
+        name_en: cakeFlavorData.name_en || "",
+        name_ar: cakeFlavorData.name_ar || "",
+        custom_cake_type_id: cakeFlavorData.custom_cake_type_id || "",
+        slug: cakeFlavorData.slug || "",
+        additional_price: cakeFlavorData.additional_price || "",
+        symbol: cakeFlavorData.symbol || "",
+        status: cakeFlavorData.status || "active",
       });
     }
-  }, [flavorData]);
+  }, [cakeFlavorData]);
 
   const fetchCustomCakeTypes = async () => {
     try {
@@ -92,8 +92,8 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpd
         });
       }
   
-      if (flavorData) {
-        const res = await axios.put(updateCakeFlavourById(flavorData.id), payload);
+      if (cakeFlavorData) {
+        const res = await axios.put(updateCakeFlavourById(cakeFlavorData.id), payload);
   
         if (res.status === 200) {
           toast.success("Cake Flavour  updated successfully!", {
@@ -102,9 +102,9 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpd
           
           if (onUpdateCakeFlavor) {
             onUpdateCakeFlavor({
-              ...flavorData,
+              ...cakeFlavorData,
               ...formData,
-              id: flavorData.id,
+              id: cakeFlavorData.id,
             });
           }
 
@@ -272,4 +272,4 @@ const AddCakeFlavours = ({ closePopup, flavorData = null, onAddCakeFlavor, onUpd
   );
 };
 
-export default AddCakeFlavours;
+export default AddCakeFlavour;

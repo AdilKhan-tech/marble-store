@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createCookiesSizes, updateCookiesSizes ,getCookieBoxTypes } from "@/utils/apiRoutes";
 
-const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdateCookie }) => {
+const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBoxSize, onUpdateCookieBoxSize }) => {
   const [errors, setErrors] = useState([]);
   const {token} = useAxiosConfig();
   const [cookiesBoxTypes, setCookiesBoxTypes] = useState([]);
@@ -25,20 +25,20 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
   });
 
   useEffect(() => {
-    if (boxSizeData) {
+    if (cookieBoxSizeData) {
       setFormData({
-        cookies_types_id: boxSizeData.cookies_types_id || "",
-        name_en: boxSizeData.name_en || "",
-        name_ar: boxSizeData.name_ar || "",
-        slug: boxSizeData.slug || "",
-        price: boxSizeData.price || "",
-        portion_size: boxSizeData.portion_size || "",
-        symbol: boxSizeData.symbol || "",
-        calories: boxSizeData.calories || "",
-        status: boxSizeData.status || "active",
+        cookies_types_id: cookieBoxSizeData.cookies_types_id || "",
+        name_en: cookieBoxSizeData.name_en || "",
+        name_ar: cookieBoxSizeData.name_ar || "",
+        slug: cookieBoxSizeData.slug || "",
+        price: cookieBoxSizeData.price || "",
+        portion_size: cookieBoxSizeData.portion_size || "",
+        symbol: cookieBoxSizeData.symbol || "",
+        calories: cookieBoxSizeData.calories || "",
+        status: cookieBoxSizeData.status || "active",
       });
     }
-  }, [boxSizeData]);
+  }, [cookieBoxSizeData]);
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -76,19 +76,19 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
         });
       }
   
-      if (boxSizeData) {
-        const res = await axios.put(updateCookiesSizes(boxSizeData.id), payload);
+      if (cookieBoxSizeData) {
+        const res = await axios.put(updateCookiesSizes(cookieBoxSizeData.id), payload);
   
         if (res.status === 200) {
           toast.success("Cookie Box Size updated successfully!", {
             autoClose: 1000,
           });
           
-          if (onUpdateCookie) {
-            onUpdateCookie({
-              ...boxSizeData,
+          if (onUpdateCookieBoxSize) {
+            onUpdateCookieBoxSize({
+              ...cookieBoxSizeData,
               ...formData,
-              id: boxSizeData.id,
+              id: cookieBoxSizeData.id,
             });
           }
 
@@ -113,7 +113,7 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
             autoClose: 1000,
             onClose: closePopup,
           });
-          if (onAddCookie) onAddCookie(createdCookie);
+          if (onAddCookieBoxSize) onAddCookieBoxSize(createdCookie);
         }
       }
     } catch (error) {
@@ -148,15 +148,19 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
       <div className="form-group">
         <label className="form-label text-secondary">Name English</label>
         <input 
-        name="name_en" type="text" className="form-control textarea-hover-dark"
-        value={formData.name_en}
-        onChange={(e)=>setFormData({...formData,name_en:e.target.value})}/>
+          name="name_en" 
+          type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.name_en}
+          onChange={(e)=>setFormData({...formData,name_en:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Name Arabic</label>
         <input
-         name="name_ar" type="text" className="form-control textarea-hover-dark"
+         name="name_ar" 
+         type="text" className="form-control textarea-hover-dark"
          value={formData.name_ar} 
          onChange={(e)=>setFormData({...formData,name_ar:e.target.value})}/>
       </div>
@@ -167,7 +171,7 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
           name="cookies_types_id"
           className="form-select textarea-hover-dark text-secondary"
           value={formData.cookies_types_id}
-         onChange={(e)=>setFormData({...formData,cookies_types_id:e.target.value})}
+          onChange={(e)=>setFormData({...formData,cookies_types_id:e.target.value})}
         >
           <option value="">Select Cookie Type</option>
 
@@ -182,61 +186,87 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Slug</label>
         <input 
-        name="slug" type="text" className="form-control textarea-hover-dark"
-        value={formData.slug} 
-        onChange={(e)=>setFormData({...formData,slug:e.target.value})}/>
+          name="slug" type="text" 
+          className="form-control textarea-hover-dark"
+          value={formData.slug} 
+          onChange={(e)=>setFormData({...formData,slug:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Price</label>
         <input
-        name="price" type="number" className="form-control textarea-hover-dark"
-        value={formData.price} 
-        onChange={(e)=>setFormData({...formData,price:e.target.value})}/>
+          name="price" 
+          type="number" 
+          className="form-control textarea-hover-dark"
+          value={formData.price} 
+          onChange={(e)=>setFormData({...formData,price:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Portion Size</label>
         <input 
-        name="portion_size" type="text" className="form-control textarea-hover-dark"
+          name="portion_size" 
+          type="text" 
+          className="form-control textarea-hover-dark"
           value={formData.portion_size} 
-          onChange={(e)=>setFormData({...formData,portion_size:e.target.value})}/>
+          onChange={(e)=>setFormData({...formData,portion_size:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Symbol</label>
         <input 
-        name="symbol" type="text" className="form-control textarea-hover-dark"
+          name="symbol" 
+          type="text" 
+          className="form-control textarea-hover-dark"
           value={formData.symbol} 
-          onChange={(e)=>setFormData({...formData,symbol:e.target.value})}/>
+          onChange={(e)=>setFormData({...formData,symbol:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">Calories</label>
         <input 
-        name="calories" type="number" className="form-control textarea-hover-dark"
+          name="calories" 
+          type="number" 
+          className="form-control textarea-hover-dark"
           value={formData.calories} 
-          onChange={(e)=>setFormData({...formData,calories:e.target.value})}/>
+          onChange={(e)=>setFormData({...formData,calories:e.target.value})}
+        />
       </div>
 
 
       <div className="col-md-12 mt-3">
         <div className="form-check form-switch m-2">
-          <input className="form-check-input fs-5" name="status" type="checkbox"
-            role="switch" checked={formData.status === "active"} onChange={(e) => setFormData((prev) => ({
-            ...prev,
-            status: e.target.checked ? "active" : "inactive",}))}/>
+          <input 
+            className="form-check-input fs-5" 
+            name="status" 
+            type="checkbox"
+            role="switch" 
+            checked={formData.status === "active"} 
+            onChange={(e) => setFormData((prev) => ({
+              ...prev,
+              status: e.target.checked ? "active" : "inactive",
+            }))}
+          />
           <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
             {formData.status === "active"? "active": "inactive"}
           </label>
         </div>
       </div>
+
       <div className="col-md-12 px-1 mt-3">
         <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
-          type="file" className="form-control textarea-hover-dark bg-light" id="fileInput"
-            multiple onChange={handleFileChange}/>
+            type="file" 
+            className="form-control textarea-hover-dark bg-light" 
+            id="fileInput"
+            multiple 
+            onChange={handleFileChange}
+          />
         </div>
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
@@ -254,13 +284,18 @@ const AddCookieBoxSize = ({ closePopup, boxSizeData = null, onAddCookie, onUpdat
 
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button 
-        type="submit" 
-        className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-100">Save
+          type="submit" 
+          className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-100"
+        >
+          Save
         </button>
         <button 
-        type="button" 
-        className="cancle-btn rounded-3 border-1 fs-16 py-2 fw-bold w-100" 
-        onClick={closePopup}>Cancel</button>
+          type="button" 
+          className="cancle-btn rounded-3 border-1 fs-16 py-2 fw-bold w-100" 
+          onClick={closePopup}
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );
