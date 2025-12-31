@@ -3,7 +3,7 @@ const IceCreamAddOn = require("../models/IceCreamAddOn");
 class IceCreamAddOnController {
   static async createIceCreamAddOn(req, res) {
     try {
-      const { name_en, name_ar, slug, add_ontype, add_on_status } = req.body;
+      const { name_en, name_ar, slug, type, status } = req.body;
 
       const image_url = req.file?.path || null;
 
@@ -12,7 +12,7 @@ class IceCreamAddOnController {
         name_ar,
         slug,
         type,
-        add_on_status,
+        status,
         image_url,
       });
       return res.status(201).json(iceCreamaddon);
