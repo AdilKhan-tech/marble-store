@@ -258,6 +258,20 @@ export default function SidebarLayout() {
                   </Link>
                 </div>
               )}
+              {activeSubMenu === "setting" && (
+                <div className="sidebar-submenu ms-3">
+                  <Link
+                    href="/dashboard/setting/gender"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/setting/gender") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className=""></span>
+                    <span className="sidebar-label">Gender</span>
+                  </Link>
+                </div>
+              )}
             </li>
           </ul>
         </nav>

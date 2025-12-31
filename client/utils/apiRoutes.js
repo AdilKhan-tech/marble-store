@@ -56,6 +56,10 @@ export const createOcassion = `${host}/occasions/create`
 export const updateOccasionById = (occasionId) => `${host}/occasions/update/${occasionId}`
 export const deleteOccasionById = (occasionId) => `${host}/occasions/delete/${occasionId}`
 
+
+export const getAllGenders = `${host}/genders`
+export const deleteGenderById = (genderId) => `${host}/genders/delete/${genderId}`
+
 export const getAllCustomCakeFlavor = `${host}/cakes/customFlavors`
 export const createCustomCakeFlavor = `${host}/cakes/customflavor`
 export const updateCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`

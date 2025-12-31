@@ -4,13 +4,14 @@ class GenderController {
 
     static async createGender(req, res) {
         try {
-            const { name_en, name_ar, slug } = req.body;
+            const { name_en, name_ar, parent_gender, slug } = req.body;
 
-            const image_url = req.files?.[0]?.path || null;
+            const image_url = req.file?.path || null;
 
             const gender = await Gender.create({
                 name_en,
                 name_ar,
+                parent_gender,
                 slug,
                 image_url,
             });
@@ -31,7 +32,7 @@ class GenderController {
 
     static async updateGenderById(req, res) {
         const { id } = req.params;
-        const { name_en, name_ar, slug, image_url } = req.body;
+        const { name_en, name_ar, slug, parent_gender, image_url } = req.body;
         try {
             const gender = await Gender.findByPk(id);
             if (!gender) {
@@ -39,6 +40,7 @@ class GenderController {
             }
             gender.name_en = name_en;
             gender.name_ar = name_ar;
+            gender.parent_gender = parent_gender;
             gender.slug = slug;
             gender.image_url = image_url;
             await gender.save();
