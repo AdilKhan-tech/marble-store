@@ -1,17 +1,17 @@
-const Cookies = require('../models/Cookies');
+const { Cookies, CookiesBoxTypes } = require('../models');
 
 class CookiesController {
 
     static async createCookie (req, res){
         try {
-            const {name_en, name_ar, cookies_type_id, slug, sort, status} = req.body;
+            const {name_en, name_ar, cookie_type_id, slug, sort, status} = req.body;
 
             const image_url = req.file?.path || null;
 
             const cookies = await Cookies.create({
                 name_en,
                 name_ar,
-                cookies_type_id,
+                cookie_type_id,
                 slug,
                 sort,
                 status,
@@ -29,8 +29,16 @@ class CookiesController {
 
     static async getAllCookies (req, res) {
         try {
-            const cookies = await Cookies.findAll();
-            return res.status(200).json({cookies});
+            const cookies = await Cookies.findAll({
+                include: [
+                    {
+                        model:CookiesBoxTypes,
+                        as: "type",
+                        attributes: ["id", "name_en", "name_ar"]
+                    }
+                ]
+            });
+            return res.status(200).json(cookies);
 
         } catch(error) {
             res.status(500).json({message: "Failed to get Cookies", error: error.message});
@@ -48,7 +56,7 @@ class CookiesController {
             const {
                 name_en,
                 name_ar,
-                cookies_type_id,
+                cookie_type_id,
                 slug,
                 sort,
                 status
@@ -70,7 +78,7 @@ class CookiesController {
             await cookies.update({
                 name_en: name_en ?? cookies.name_en,
                 name_ar: name_ar ?? cookies.name_ar,
-                cookies_type_id: cookies_type_id ?? cookies.cookies_type_id,
+                cookie_type_id: cookie_type_id ?? cookies.cookie_type_id,
                 slug: slug ?? cookies.slug,
                 sort: sort ?? cookies.sort,
                 status: parsedStatus,

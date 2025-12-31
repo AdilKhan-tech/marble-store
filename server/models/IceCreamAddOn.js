@@ -44,8 +44,8 @@ const IceCreamAddOn = sequelize.define("IceCreamAddOn",
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("Active", "Inactive"),
-      defaultValue: "Active",
+      type: DataTypes.ENUM("active", "inactive"),
+      defaultValue: "active",
       validate:{
         isIn:{
           args: [["active", "inactive"]],

@@ -3,16 +3,16 @@ import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddCakes from "@/components/dashboard/cake/AddCakesSize";
+import AddCakeSize from "@/components/dashboard/cake/AddCakesSize";
 import { useEffect, useState } from 'react';
-import { getAllCakesSizes, deleteCakeSizeById ,updateCakeSizeById } from '@/utils/apiRoutes';
+import { getAllCakesSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-export default function ListCakeSizes() {
+export default function CakeSizePage() {
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [cakeData, setCakeSizeData] = useState(null);
+  const [cakeSizeData, setCakeSizeData] = useState(null);
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
@@ -178,14 +178,14 @@ export default function ListCakeSizes() {
           <Offcanvas.Header closeButton>
           <Offcanvas.Title>
             <div className='fs-24 fnt-color'>
-              {cakeData ? "Update Size" : "Add Size"}
+              {cakeSizeData ? "Update Cake Size" : "Add Cake Size"}
             </div>
           </Offcanvas.Title>
           </Offcanvas.Header>
           <hr  className="mt-0"/>
           <Offcanvas.Body>
-            <AddCakes
-              cakeData={cakeData}
+            <AddCakeSize
+              cakeSizeData={cakeSizeData}
               closePopup={closePopup}
               onAddCakeSize={addCakeSize}
               onUpdateCakeSize={updateCakeSize}

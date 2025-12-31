@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createCustomCakeType, updateCustomCakeTypeById } from "@/utils/apiRoutes";
 
-const AddCustomCakeType = ({ closePopup, cakeTypeData = null, onAddCakeTypes, onUpdateCakeTypes }) => {
+const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomCakeType, onUpdateCustomCakeType }) => {
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -17,16 +17,16 @@ const AddCustomCakeType = ({ closePopup, cakeTypeData = null, onAddCakeTypes, on
   });
 
   useEffect(() => {
-    if (cakeTypeData) {
+    if (customCakeTypeData) {
       setFormData({
-        id: cakeTypeData.id,
-        name_en: cakeTypeData.name_en || "",
-        name_ar: cakeTypeData.name_ar || "",
-        slug: cakeTypeData.slug || "",
-        status: cakeTypeData.status || "active",
+        id: customCakeTypeData.id,
+        name_en: customCakeTypeData.name_en || "",
+        name_ar: customCakeTypeData.name_ar || "",
+        slug: customCakeTypeData.slug || "",
+        status: customCakeTypeData.status || "active",
       });
     }
-  }, [cakeTypeData]);
+  }, [customCakeTypeData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -77,8 +77,8 @@ const AddCustomCakeType = ({ closePopup, cakeTypeData = null, onAddCakeTypes, on
         if (res.status === 200) {
           toast.success("Custom Cake Type updated successfully!");
 
-          if (onUpdateCakeTypes) {
-            onUpdateCakeTypes(res.data.customCakeTypes);
+          if (onUpdateCustomCakeType) {
+            onUpdateCustomCakeType(res.data.customCakeTypes);
           }
 
           closePopup();
@@ -92,8 +92,8 @@ const AddCustomCakeType = ({ closePopup, cakeTypeData = null, onAddCakeTypes, on
         if (res.status === 201 || res.status === 200) {
           toast.success("Custom Cake Type added successfully!");
 
-          if (onAddCakeTypes) {
-            onAddCakeTypes(res.data);
+          if (onAddCustomCakeType) {
+            onAddCustomCakeType(res.data);
           }
 
           closePopup();

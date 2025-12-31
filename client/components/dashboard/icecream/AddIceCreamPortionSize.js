@@ -12,7 +12,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     icecream_bucket_id: "",
     slug: "",
     additional_price: "",
-    calorie: "",
+    calories: "",
     status: "active",
   });
 
@@ -25,7 +25,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         icecream_bucket_id: iceCreamPortionData.icecream_bucket_id || "",
         slug: iceCreamPortionData.slug || "",
         additional_price: iceCreamPortionData.additional_price || "",
-        calorie: iceCreamPortionData.calorie || "",
+        calories: iceCreamPortionData.calories || "",
         status: iceCreamPortionData.status || false,
       });
     }
@@ -52,7 +52,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.additional_price)
       errors.push("Additional price is required.");
-    if (!formData.calorie) errors.push("Calorie is required.");
+    if (!formData.calories) errors.push("Calories is required.");
     return errors;
   };
 
@@ -182,13 +182,13 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
 
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Calorie
+          Calories
         </label>
         <input
-          name="calorie"
-          type="text"
+          name="calories"
+          type="number"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calorie}
+          value={formData.calories}
           onChange={handleChange}
         />
       </div>

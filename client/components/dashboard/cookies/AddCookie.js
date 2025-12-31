@@ -4,14 +4,16 @@ import { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookiesTypes, updateCookiesTypesById } from "@/utils/apiRoutes";
-const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
+import { createCookies, updateCookieById } from "@/utils/apiRoutes";
+
+const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [errors, setErrors] = useState([]);
     const [formData, setFormData] = useState({
         name_en:"",
         name_ar:"",
+        cookie_type_id :"",
         slug:"",
         sort:"",
         status:"active",
@@ -23,6 +25,7 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
           setFormData({
             name_en: cookieData.name_en || "",
             name_ar: cookieData.name_ar || "",
+            cookie_type_id:cookieData.cookie_type_id || "",
             slug: cookieData.slug || "",
             sort: cookieData.sort || "",
             status: cookieData.status || "active",
@@ -44,10 +47,11 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
     setSelectedFiles(files);
  };
 
-      const validateForm = () => {
+    const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.cookie_type_id) errors.push("Cookie type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.sort) errors.push("Sort is required.");
     if (!formData.status) errors.push("Status is required.");
@@ -75,10 +79,10 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       }
 
       if (cookieData) {
-        const res = await axios.put(updateCookiesTypesById(cookieData.id), payload);
+        const res = await axios.put(updateCookieById(cookieData.id), payload);
 
         if (res.status === 200) {
-          toast.success("Cookie box type updated successfully!", {
+          toast.success("Cookie updated successfully!", {
             autoClose: 1000,
           });
 
@@ -95,11 +99,11 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
       }
       //  CREATE
       else {
-        const res = await axios.post(createCookiesTypes, payload);
+        const res = await axios.post(createCookies, payload);
   
         if (res.status === 201 || res.status === 200) {
 
-          toast.success("Cookie box type added successfully!", {
+          toast.success("Cookie added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
@@ -135,6 +139,18 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
           name="name_ar" type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
             value={formData.name_ar} onChange={handleChange}/>
+      </div>
+      
+      <div className="col-md-12 form-group mt-2">
+        <label className="form-label text-secondary">Select Cookie Size</label>
+        <select name="cookie_type_id" className="form-select textarea-hover-dark text-secondary"
+          value={formData.cookie_type_id} onChange={handleChange}>Select Cookie Size
+            <option value="">Select Cookie Type</option>
+            <option value="1">adil</option>
+            <option value="2">rehan</option>
+            <option value="3">king</option>
+            <option value="4">khan</option>
+        </select>
       </div>
 
       <div className="form-group mt-2">
@@ -202,4 +218,4 @@ const AddCookieType = ({ closePopup, cookieData = null, onAddCookie, onUpdateCoo
   );
 };
 
-export default AddCookieType;
+export default AddCookie;

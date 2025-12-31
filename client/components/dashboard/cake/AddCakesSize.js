@@ -6,7 +6,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createCakesSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
-const AddCakeSize = ({ closePopup, cakeData = null, onAddCakeSize, onUpdateCakeSize }) => {
+const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -26,20 +26,20 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCakeSize, onUpdateCakeS
 
   // Load existing data
   useEffect(() => {
-    if (cakeData) {
+    if (cakeSizeData) {
       setFormData({
-        custom_cake_type_id: cakeData.custom_cake_type_id || "",
-        name_en: cakeData.name_en || "",
-        name_ar: cakeData.name_ar || "",
-        slug: cakeData.slug || "",
-        scoop_size: cakeData.scoop_size || "",
-        additional_price: cakeData.additional_price || "",
-        symbol: cakeData.symbol || "",
-        calories: cakeData.calories || "",
-        status: cakeData.status || "active",
+        custom_cake_type_id: cakeSizeData.custom_cake_type_id || "",
+        name_en: cakeSizeData.name_en || "",
+        name_ar: cakeSizeData.name_ar || "",
+        slug: cakeSizeData.slug || "",
+        scoop_size: cakeSizeData.scoop_size || "",
+        additional_price: cakeSizeData.additional_price || "",
+        symbol: cakeSizeData.symbol || "",
+        calories: cakeSizeData.calories || "",
+        status: cakeSizeData.status || "active",
       });
     }
-  }, [cakeData]);
+  }, [cakeSizeData]);
 
   const fetchCustomCakeTypes = async () => {
     try {
@@ -100,8 +100,8 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCakeSize, onUpdateCakeS
         });
       }
   
-      if (cakeData) {
-        const res = await axios.put(updateCakeSizeById(cakeData.id), payload);
+      if (cakeSizeData) {
+        const res = await axios.put(updateCakeSizeById(cakeSizeData.id), payload);
   
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
@@ -110,9 +110,9 @@ const AddCakeSize = ({ closePopup, cakeData = null, onAddCakeSize, onUpdateCakeS
           
           if (onUpdateCakeSize) {
             onUpdateCakeSize({
-              ...cakeData,
+              ...cakeSizeData,
               ...formData,
-              id: cakeData.id,
+              id: cakeSizeData.id,
             });
           }
 

@@ -3,34 +3,34 @@ const IceCreamPortionSize = require("../models/IceCreamPortionSize");
 class IceCreamPortionSizeController {
   static async createIceCreamPortionSize(req, res) {
     try {
-      const {icecream_bucket_id, name_en, name_ar,slug, additional_price, calorie,status} = req.body;
+      const {icecream_bucket_id, name_en, name_ar, slug, additional_price, calories, status} = req.body;
 
       const image_url = req.file?.path || null;
 
-      const icecreamportionsizes = await IceCreamPortionSize.create({
+      const iceCreamPortionSize = await IceCreamPortionSize.create({
         icecream_bucket_id,
         name_en,
         name_ar,
         slug,
         additional_price,
-        calorie,
+        calories,
         status,
         image_url,
       });
-      return res.status(201).json(icecreamportionsizes);
+      return res.status(201).json(iceCreamPortionSize);
 
     } catch (error) {
-      return res.status(500).json({ message: "Failed to create ice cream", error: error.message });
+      return res.status(500).json({ message: "Failed to create IceCream Portion Size", error: error.message });
     }
   }
 
   static async getAllIceCreamPortionSize(req, res) {
     try {
-      const icecreamportionsize = await IceCreamPortionSize.findAll();
-      return res.status(200).json(icecreamportionsize);
+      const iceCreamPortionSize = await IceCreamPortionSize.findAll();
+      return res.status(200).json(iceCreamPortionSize);
     } catch (error) {
       return res.status(500).json({
-        message: "Failde to create IceCreamPortionSize ",
+        message: "Failde to create IceCream Portion Size ",
         error: error.message,
       });
     }

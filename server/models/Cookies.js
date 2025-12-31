@@ -32,12 +32,12 @@ const Cookies = sequelize.define("Cookies",{
             },
         },
     },
-    cookies_type_id: {
+    cookie_type_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            notNull: { msg: "Cookies Type ID is required" },
-            isInt: { msg: "Cookies Type ID must be a number" },
+            notNull: { msg: "Cookie Box Type is required" },
+            isInt: { msg: "Cookie Box Type must be a number" },
         },
     },
     slug: {

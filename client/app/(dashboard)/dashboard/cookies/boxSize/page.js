@@ -4,23 +4,23 @@ import { useState , useEffect } from 'react'
 import axios from 'axios';
 import { getCookieBoxSizes ,deleteCookieBoxSizes } from '@/utils/apiRoutes';
 import {ToastContainer, toast} from "react-toastify";
-import AddBoxSize from "@/components/dashboard/cookies/AddCookieBoxSize";
+import AddCookieBoxSize from "@/components/dashboard/cookies/AddCookieBoxSize";
 import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-function CookieBoxSize() {
+export default function CookieBoxSizePage() {
   const [cookieBoxSizes, setCookieBoxSizes] = useState([]);
   const {token} = useAxiosConfig();
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [boxSizeData, setBoxSizeData] = useState(null);
+  const [cookieBoxSizeData, setCookieBoxSizeData] = useState(null);
 
 
   const fetchCookieBoxSizes = async () => {
     try {
-    const response = await axios.get(getCookieBoxSizes);
-    setCookieBoxSizes(response.data);
+      const response = await axios.get(getCookieBoxSizes);
+      setCookieBoxSizes(response.data);
     } catch (error) {
       console.error("Error fetching Cookie box sizes", error);
     }
@@ -32,11 +32,11 @@ function CookieBoxSize() {
   }, [token]);
 
   const showOffcanvasOnEditCookieBoxSize = (boxSize) => {
-    setBoxSizeData(boxSize);
+    setCookieBoxSizeData(boxSize);
     setShowOffcanvas(true);
   }
   const showOffcanvasOnAddCookieBoxSize = () => {
-    setBoxSizeData();
+    setCookieBoxSizeData();
     setShowOffcanvas(true);
   }
 
@@ -44,12 +44,12 @@ function CookieBoxSize() {
     setShowOffcanvas(false);
   };
 
-  const addCookieToState = (newCookieSize) => {
+  const addCookieBoxSize = (newCookieSize) => {
     setCookieBoxSizes(prev => [newCookieSize, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const updateCookieSize = (updatedCookieSize) => {
+  const updateCookieBoxSize = (updatedCookieSize) => {
     setCookieBoxSizes((prev) =>
       prev.map((cookieSize) =>
         cakeSize.id === updatedCookieSize.id ? { ...cookieSize, ...updatedCookieSize } : cookieSize
@@ -187,30 +187,29 @@ function CookieBoxSize() {
           </div>
         </div>
         <Offcanvas
-        show={showOffcanvas}
-        onHide={() => setShowOffcanvas(false)}
-        placement="end">
-        <Offcanvas.Header closeButton>
-        <Offcanvas.Title>
+          show={showOffcanvas}
+          onHide={() => setShowOffcanvas(false)}
+          placement="end">
+          <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
             <div className='fs-24 fnt-color'>
-              {boxSizeData ? "Add Box Size" : "Update Box Size"}
+              {cookieBoxSizeData ? "Add Box Size" : "Update Box Size"}
             </div>
-        </Offcanvas.Title>
-        </Offcanvas.Header>
-        <hr  className="mt-0"/>
-        <Offcanvas.Body>
-          <AddBoxSize
-            boxSizeData={boxSizeData}
-            closePopup={closePopup}
-            onAddBoxSize={addCookieToState}
-            updateCookieSize={updateCookieSize}
-        />
-        </Offcanvas.Body>
-    </Offcanvas>
+          </Offcanvas.Title>
+          </Offcanvas.Header>
+          <hr  className="mt-0"/>
+          <Offcanvas.Body>
+            <AddCookieBoxSize
+              cookieBoxSizeData={cookieBoxSizeData}
+              closePopup={closePopup}
+              onAddCookieBoxSize={addCookieBoxSize}
+              onUpdateCookieBoxSize={updateCookieBoxSize}
+            />
+          </Offcanvas.Body>
+        </Offcanvas>
     <ToastContainer />
       </div>
     </section>
   )
 }
 
-export default CookieBoxSize
