@@ -1,9 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
+import { useState,  useEffect } from "react";
+import { toast } from "react-toastify";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
+import axios from "axios";
+import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCustomCakeTypes} from "@/utils/apiRoutes"
 
-function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null }) {
+function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCustomCakeFlavor , addCustomCakeFlavor }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const {token} = useAxiosConfig();
+  const [errors , setErrors] = useState([]);
+  const [customCakeTypes , setCustomCakeTypes] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -20,7 +27,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null }) {
         name_ar: customCakeFlavorData.name_ar || "",
         slug: customCakeFlavorData.slug || "",
         cake_type_id: customCakeFlavorData.cake_type_id || "",
-        status: customCakeFlavorData.status || "",
+        status: customCakeFlavorData.status || "active",
       });
     }
   }, [customCakeFlavorData]);
@@ -28,8 +35,108 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null }) {
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.cake_type_id) errors.push("Custom cake type is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    return errors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
+  
+    try {
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        selectedFiles.forEach((file) => {
+          payload.append("image_url", selectedFiles[0]);
+        });
+      }
+  
+      if (customCakeFlavorData) {
+        const res = await axios.put(updateCustomCakeFlavorById(customCakeFlavorData.id), payload);
+  
+        if (res.status === 200) {
+          toast.success("Custom Cake Flavor updated successfully!", {
+            autoClose: 1000,
+          });
+          
+          if (updateCustomCakeFlavor) {
+            updateCustomCakeFlavor({
+              ...customCakeFlavorData,
+              ...formData,
+              id: customCakeFlavorData.id,
+            });
+          }
+
+          closePopup();
+        }
+      }
+      //  CREATE
+      else {
+        const res = await axios.post(createCustomCakeFlavor, payload);
+
+        
+  
+        if (res.status === 201 || res.status === 200) {
+
+          const selectedType = customCakeTypes.find(
+            (t) => String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
+          const createCustomCakeFlavor = {
+            ...res.data,
+            customCakeType: selectedType || null,
+          };
+
+          toast.success("Custom Cake Flavor added successfully!", {
+            autoClose: 1000,
+            onClose: closePopup,
+          });
+  
+          if (addCustomCakeFlavor) addCustomCakeFlavor(createCustomCakeFlavor);
+        }
+      }
+    } catch (error) {
+      const msg = error?.response?.data?.message || "Something went wrong!";
+      setErrors([msg]);
+    }
+  };
+
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
+
+  const fetchAllCustomCakeType = async () => {
+    try {
+      const response = await axios.get(getAllCustomCakeTypes)
+      setCustomCakeTypes(response.data)
+    } catch (error) {
+      console.error("Error fetching custom cake types", error);
+    }
+  }
+
+  useEffect (() =>{
+    if (!token) return;
+    fetchAllCustomCakeType();
+  },[token])
   return (
-    <form className="mt-0">
+    <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Name English
@@ -72,15 +179,33 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null }) {
           type="select"
           className="form-select textarea-hove-dark text-secondary"
           value={formData.cake_type_id} onChange={(e)=>setFormData({...formData,cake_type_id:e.target.value})}>
-          <option value="Cookie Cake">Cookie Cake</option>
-          <option value="Cute Cake">Cute Cake</option>
-          <option value="Ice Cream Cake">Ice Cream Cake</option>
-          <option value="Other">Other</option>
-          <option value="Sponge Cake ">Sponge Cake </option>
+          <option value="Cookie Cake">Select Custom Cake Type</option>
+            {customCakeTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name_en}
+              </option>
+            ))}
         </select>
       </div>
 
-      <div className="col-md-12 px-1 mt-2">
+      <div className="col-md-12 mt-3">
+        <div className="form-check form-switch m-2">
+          <input 
+            className="form-check-input fs-5" 
+            type="checkbox"
+            role="switch" 
+            checked={formData.status === "active"} 
+            onChange={(e) => setFormData((prev) => ({
+              ...prev,status: e.target.checked ? "active" : "inactive"
+            }))
+            }/>
+          <label className="form-check-label mt-1 fs-14 fw-normal text-secondary">
+            {formData.status === "active"? "active": "inactive"}
+          </label>
+        </div>
+      </div>
+
+      <div className="col-md-12 px-1 mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           File Attachment
         </label>
@@ -110,8 +235,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null }) {
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"
-          className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100"
-        >
+          className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>
           Cancel
         </button>
         <button

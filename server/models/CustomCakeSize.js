@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const CustomCakeFlavor = sequelize.define(
-  "CustomCakeFlavor",
+const CustomCakeSize = sequelize.define(
+  "CustomCakeSize",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -53,6 +53,36 @@ const CustomCakeFlavor = sequelize.define(
         },
       },
     },
+    portion_size: {
+      type: DataTypes.STRING(55),
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: "Scoop size is required" },
+        len: {
+          args: [1, 55],
+          msg: "Scoop size must be between 1 and 55 characters",
+        },
+      },
+    },
+    sort: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        isInt: { msg: "Sort must be a number" },
+        min: { args: [0], msg: "Sort cannot be negative" },
+      },
+    },
+    calories: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      validate: {
+        len: {
+          args: [0, 50],
+          msg: "Calories value must not exceed 50 characters",
+        },
+      },
+    },
     status: {
       type: DataTypes.ENUM("active", "inactive"),
       defaultValue: "active",
@@ -91,9 +121,9 @@ const CustomCakeFlavor = sequelize.define(
     },
   },
   {
-    tableName: "custom_cake_flavors",
+    tableName: "custom_cake_sizes",
     timestamps: false,
   }
 );
 
-module.exports = CustomCakeFlavor;
+module.exports = CustomCakeSize;

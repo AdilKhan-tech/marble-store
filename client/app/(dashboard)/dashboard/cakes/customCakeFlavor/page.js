@@ -71,6 +71,20 @@ function page() {
   const closePopup = () => {
     setShowOffcanvas(false);
   };
+
+  const addCustomCakeFlavor = (newCustomCakeFlavor) => {
+    setCustomCakeFlavors(prev => [newCustomCakeFlavor, ...prev]);
+    setShowOffcanvas(false);
+  };
+
+  const updateCustomCakeFlavor = (updatedCustomCakeFlavor) => {
+    setCustomCakeFlavors((prev) =>
+      prev.map((customCakeFlavor) =>
+        customCakeFlavor.id === updatedCustomCakeFlavor.id ? { ...customCakeFlavor, ...updatedCustomCakeFlavor } : customCakeFlavor
+      )
+    );
+    setShowOffcanvas(false);
+  };
   return (
     <section style={{ marginTop: "100px" }}>
       <div className="">
@@ -119,7 +133,7 @@ function page() {
                     <td>
                       <div
                         className={customCakeFlavor.status === "active"? "blue-status": "red-status"}>
-                        {customCakeFlavor.status === "active"? "Active": "Inactive"}
+                        {customCakeFlavor.status === "active"? "active": "inactive"}
                       </div>
                     </td>
 
@@ -162,6 +176,8 @@ function page() {
             <AddCustomCakeFlavor
               closePopup={closePopup}
               customCakeFlavorData={customCakeFlavorData}
+              updateCustomCakeFlavor = {updateCustomCakeFlavor}
+              addCustomCakeFlavor = {addCustomCakeFlavor}
             />
           </Offcanvas.Body>
         </Offcanvas>
