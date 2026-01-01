@@ -150,7 +150,7 @@ export default function Cookies() {
                   <tr key={cookie.id || cookie.id || index}>
                     <td>{cookie?.id}</td>
                     <td>{cookie?.name_en}</td>
-                    <td>{cookie?.cookie_type_id}</td>
+                    <td>{cookie?.type?.name_en}</td>
                     <td>{cookie?.slug}</td>
                     <td>{cookie?.sort}</td>
                     <td>
@@ -168,7 +168,7 @@ export default function Cookies() {
                       </div>
                       <div
                         className="action-btn"
-                        onClick={() => showDeleteConfirmation(cookie.id)}
+                        onClick={() => showDeleteConfirmation(cookie?.id)}
                       >
                         <i className="bi bi-trash text-danger"></i>
                       </div>

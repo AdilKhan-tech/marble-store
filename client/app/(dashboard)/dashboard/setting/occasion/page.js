@@ -75,7 +75,6 @@ function Occasions() {
           prev.filter((occasion) => occasion.id !== occasionId)
         );
       }
-      console.log(deleteOccasionById(occasionId))
     } catch (error) {
       console.error("Error deleting Cake size:", error);
       toast.error("Failed to delete Cake size.");
