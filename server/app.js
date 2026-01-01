@@ -10,6 +10,7 @@ const genderRoutes = require('./routes/genderRoutes');
 const cookiesRoutes = require('./routes/cookiesRoutes');
 const iceCreamRoutes = require('./routes/iceCreamRoutes');
 const cakeRoutes = require('./routes/cakeRoutes');
+const productRoutes = require ('./routes/productRoutes')
 
 
 const app = express();
@@ -41,6 +42,7 @@ app.use('/genders', genderRoutes);
 app.use('/cookies', cookiesRoutes);
 app.use('/icecreams', iceCreamRoutes);
 app.use('/cakes', cakeRoutes);
+app.use('/products', productRoutes);
 
 // Database and server setup
 const sequelize = require("./config/database");
