@@ -7,6 +7,7 @@ const CustomCakeFlavorController = require('../controllers/CustomCakeFlavorContr
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
+const CustomCakeSizeController = require("../controllers/CustomCakeSizeController");
 
 router.use(authenticateToken);
 
@@ -31,5 +32,8 @@ router.post('/customFlavor', upload.single('image_url'), CustomCakeFlavorControl
 router.get('/customFlavors', CustomCakeFlavorController.getAllCustomCakeFlavor)
 router.delete('/customflavor/:id', CustomCakeFlavorController.deleteCustomCakeFlavorById)
 router.put('/customFlavor/:id', CustomCakeFlavorController.updateCustomCakeFlavorById)
+
+router.post('/customSize', upload.single('image_url'), CustomCakeSizeController.createCustomCakeSize)
+router.get('/', CustomCakeSizeController.getAllCustomCakeSize)
 
 module.exports = router;

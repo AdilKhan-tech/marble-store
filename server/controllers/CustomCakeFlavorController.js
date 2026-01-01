@@ -1,4 +1,4 @@
-const CustomCakeFlavors = require("../models/CustomCakeFlavor");
+const { CustomCakeFlavor, CustomCakeTypes} = require("../models");
 
 class CustomCakeFlavorController {
   static async createCustomCakeFlavor(req, res) {
@@ -7,7 +7,7 @@ class CustomCakeFlavorController {
 
       const image_url = req.file?.path || null;
 
-      const customCakeFlavor = await CustomCakeFlavors.create({
+      const customCakeFlavor = await CustomCakeFlavor.create({
         name_en,
         name_ar,
         cake_type_id,
@@ -23,7 +23,15 @@ class CustomCakeFlavorController {
 
   static async getAllCustomCakeFlavor(req, res) {
     try {
-      const customCakeFlavor = await CustomCakeFlavors.findAll();
+      const customCakeFlavor = await CustomCakeFlavor.findAll({
+        include: [
+              {
+                model: CustomCakeTypes,
+                as: "customCakeType",
+                attributes: ["id", "name_en", "name_ar"],
+              },
+            ],
+      });
       return res.status(200).json(customCakeFlavor);
     } catch (error) {
       return res.status(500).json({message: "Failed to get Custom Cake Flavor",error: error.message,});
@@ -33,7 +41,7 @@ class CustomCakeFlavorController {
   static async updateCustomCakeFlavorById(req, res) {
     const { id } = req.params;
     try {
-      const customCakeFlavor = await CustomCakeFlavors.findByPk(id);
+      const customCakeFlavor = await CustomCakeFlavor.findByPk(id);
       if (!customCakeFlavor) {
         return res.status(404).json({ message: "Custom cake flavor not found." });
       }
@@ -44,7 +52,7 @@ class CustomCakeFlavorController {
       await customCakeFlavor.update({
         name_en: name_en ?? customCakeFlavor.name_en,
         name_ar: name_ar ?? customCakeFlavor.name_ar,
-        cake_type_id: cake_type_id ?? customCakeFlavor.CustomCakeFlavor,
+        cake_type_id: cake_type_id ?? customCakeFlavor.cake_type_id,
         slug: slug ?? customCakeFlavor.slug,
         status: status ?? customCakeFlavor.status,
         image_url: image_url ?? customCakeFlavor.image_url,
@@ -58,7 +66,7 @@ class CustomCakeFlavorController {
   static async deleteCustomCakeFlavorById(req, res) {
     try {
       const { id } = req.params;
-      const CustomCakeFlavor = await CustomCakeFlavors.findByPk(id);
+      const CustomCakeFlavor = await CustomCakeFlavor.findByPk(id);
       if (!CustomCakeFlavor) {
         return res
           .status(404)

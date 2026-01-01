@@ -5,6 +5,7 @@ const CustomCakeTypes = require("./CustomCakeTypes");
 const CookiesBoxSizes = require("./CookiesBoxSizes");
 const CookiesBoxTypes = require("./CookiesBoxTypes");
 const Cookies = require("./Cookies");
+const CustomCakeFlavor = require("./CustomCakeFlavor");
 
 // Cake Sizes Relations
 CustomCakeTypes.hasMany(CakeSize, {
@@ -46,6 +47,16 @@ Cookies.belongsTo(CookiesBoxTypes, {
   as: "type",
 });
 
+//Custom Cake Size Belong to Custom Cake Flavor
+CustomCakeTypes.hasMany(CustomCakeFlavor, {
+  foreignKey: "cake_type_id",
+  as: "customCakeflavor",
+});
+
+CustomCakeFlavor.belongsTo(CustomCakeTypes, {
+  foreignKey: "cake_type_id",
+  as: "customCakeType",
+});
 
 
 module.exports = {
@@ -56,4 +67,8 @@ module.exports = {
   CookiesBoxSizes,
   CookiesBoxTypes,
   Cookies,
+
+  CustomCakeTypes,
+  CustomCakeFlavor,
+
 };
