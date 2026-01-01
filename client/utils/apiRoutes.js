@@ -59,6 +59,9 @@ export const deleteOccasionById = (occasionId) => `${host}/occasions/delete/${oc
 
 export const getAllGenders = `${host}/genders`
 export const deleteGenderById = (genderId) => `${host}/genders/delete/${genderId}`
+export const createGender= `${host}/genders/create`
+export const UpdateGenderById = (genderId) => `${host}/genders/update/${genderId}`
+
 
 export const getAllCustomCakeFlavor = `${host}/cakes/customFlavors`
 export const createCustomCakeFlavor = `${host}/cakes/customflavor`

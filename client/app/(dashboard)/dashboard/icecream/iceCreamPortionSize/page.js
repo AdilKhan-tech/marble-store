@@ -153,7 +153,7 @@ export default function IceCreamPortionSizePage() {
                             className="action-btn"
                             onClick={() => showDeleteConfirmation(icecream.id)}
                           >
-                            <i className="bi bi-trash3 text-danger"></i>
+                            <i className="bi bi-trash text-danger"></i>
                           </button>
                         </div>
                       </td>
