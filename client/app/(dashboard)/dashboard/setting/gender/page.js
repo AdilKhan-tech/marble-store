@@ -4,9 +4,9 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getAllGenders } from "@/utils/apiRoutes";
+import { getAllGenders,deleteGenderById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
-// import AddGender from "@/components/dashboard/setting/AddGender";
+import AddGender from "@/components/dashboard/setting/AddGender";
 
 export default function GenderPage() {
   const { token } = useAxiosConfig();
@@ -54,16 +54,16 @@ export default function GenderPage() {
       handleDelete(genderId);
     }
   };
-const AddGender = (newGender) => {
-    setGenderData((prev) => [newGender, ...prev]);
+const onAddGender = (newgender) => {
+    setGenders((prev) => [newgender, ...prev]);
     setShowOffcanvas(false);
   };
 
 
-  const updateGenderById= (updatedGender) => {
+  const onUpdateGender= (updatedgender) => {
     setIceCreamPortionSizes((prev) =>
       prev.map((item) =>
-        item.id === updatedGender.id ? updatedGender : item
+        item.id === updatedgender.id ? updatedgender : item
       )
     );
     setShowOffcanvas(false);
@@ -105,6 +105,7 @@ const AddGender = (newGender) => {
                   <th>Name</th>
                   <th>Parent Gender</th>
                   <th>Slug</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -113,8 +114,14 @@ const AddGender = (newGender) => {
                   <tr key={`${gender.id}-${index}`}>
                     <td>{gender.id}</td>
                     <td>{gender.name_en}</td>
-                    <td>{gender.parent_gender}</td>
                     <td>{gender.slug}</td>
+                    <td>{gender.parent_gender}</td>
+                   <td>
+                        <div className={gender?.status === "active"? "blue-status": "red-status"}>
+                          {gender?.status === "active"? "Active": "Inactive"}
+                        </div>
+                      </td>
+        
                     <td>
                       <div className="d-flex gap-1">
                         <button
@@ -146,8 +153,8 @@ const AddGender = (newGender) => {
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
                   {genderData
-                    ? "Update Ice Cream Portion Size"
-                    : "Add Ice Cream Portion Size"}
+                    ? "Update Gender"
+                    : "Add Gender"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
@@ -155,7 +162,9 @@ const AddGender = (newGender) => {
             <Offcanvas.Body>
               <AddGender
                 closePopup={closePopup}
-                AddGender = {genderData}
+                genderData = {genderData}
+                onAddGender = {onAddGender}
+                onUpdateGender ={onUpdateGender}
               />
                 
             </Offcanvas.Body>
