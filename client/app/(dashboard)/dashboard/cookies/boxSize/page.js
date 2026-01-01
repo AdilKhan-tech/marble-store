@@ -52,7 +52,7 @@ export default function CookieBoxSizePage() {
   const updateCookieBoxSize = (updatedCookieSize) => {
     setCookieBoxSizes((prev) =>
       prev.map((cookieSize) =>
-        cakeSize.id === updatedCookieSize.id ? { ...cookieSize, ...updatedCookieSize } : cookieSize
+        cookieSize.id === updatedCookieSize.id ? { ...cookieSize, ...updatedCookieSize } : cookieSize
       )
     );
     setShowOffcanvas(false);

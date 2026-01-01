@@ -64,24 +64,13 @@ class CookiesController {
 
             const image_url = req.file?.path || cookies.image_url;
     
-            let parsedStatus = cookies.status;
-    
-            if (status !== undefined) {
-                if (status === 'true' || status === true || status === '1' || status === 1) {
-                    parsedStatus = true;
-                }
-                else if (status === 'false' || status === false || status === '0' || status === 0) {
-                    parsedStatus = false;
-                }
-            }
-    
             await cookies.update({
                 name_en: name_en ?? cookies.name_en,
                 name_ar: name_ar ?? cookies.name_ar,
                 cookie_type_id: cookie_type_id ?? cookies.cookie_type_id,
                 slug: slug ?? cookies.slug,
                 sort: sort ?? cookies.sort,
-                status: parsedStatus,
+                status: status ?? cookies.status,
                 image_url: image_url
             });
 
