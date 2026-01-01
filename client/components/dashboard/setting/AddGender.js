@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createGender, UpdateGenderById } from "@/utils/apiRoutes";
-const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
+import { createGender, updateGenderById } from "@/utils/apiRoutes";
+const AddGender = ({ closePopup, genderData = null, onAddGender, onUpdateGender }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
@@ -11,7 +11,6 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
     name_ar: "",
     parent_gender: "",
     slug: "",
-    status: "active",
   });
   //load data
   useEffect(() => {
@@ -21,19 +20,20 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
         name_ar: genderData.name_ar || "",
         parent_gender: genderData.parent_gender || "",
         slug: genderData.slug || "",
-        status: genderData.status || false,
       });
     }
   }, [genderData]);
+
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+
   // validation
   const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.parent_gender) errors.push("Parent Gender is required.");
+    if (!formData.parent_gender) errors.push("Parent Gender price is required.");
     if (!formData.slug) errors.push("Slug is required.");
     return errors;
   };
@@ -48,32 +48,23 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
 
     try {
       const payload = new FormData();
-      Object.entries(formData).forEach(([key, value]) =>
-        payload.append(key, value)
-      );
+      Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
 
       if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
 
-      let res;
       if (genderData) {
-        res = await axios.put(UpdateGenderById(genderData.id), payload);
+        const res = await axios.put(updateGenderById(genderData.id), payload);
         if (res.status === 200 || res.status === 201) {
-          toast.success("Gender updated successfully!", {
-            autoClose: 1000,
-            onClose: closePopup,
-          });
-          onUpdateGender?.(res.data);
+          toast.success("Gender updated successfully!", { autoClose: 1000, onClose: closePopup });
+          onUpdateGender(res.data);
         }
       } else {
-        res = await axios.post(createGender, payload);
+        const res = await axios.post(createGender, payload);
         if (res.status === 200 || res.status === 201) {
-          toast.success("Gender added successfully!", {
-            autoClose: 1000,
-            onClose: closePopup,
-          });
-          onAddGender?.(res.data);
+          toast.success("Gender added successfully!", { autoClose: 1000, onClose: closePopup });
+          onAddGender(res.data);
         }
       }
     } catch (error) {
@@ -87,6 +78,7 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
       setErrors([]);
     }
   }, [errors]);
+  
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -120,6 +112,19 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
 
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          Slug
+        </label>
+        <input
+          name="slug"
+          type="text"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.slug}
+          onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+        />
+      </div>
+
+      <div className="form-group mt-3">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Parent Gender
         </label>
         <select
@@ -136,37 +141,7 @@ const AddGender = ({ closePopup, genderData, onAddGender, onUpdateGender }) => {
           <option value="Girl">Girl</option>
         </select>
       </div>
-      <div className="form-group mt-3">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Slug
-        </label>
-        <input
-          name="slug"
-          type="text"
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug}
-          onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-        />
-      </div>
-      <div className="col-md-12 mt-3">
-        <div className="form-check form-switch m-2">
-          <input
-            className="form-check-input fs-5"
-            type="checkbox"
-            role="switch"
-            checked={formData.status === "Active"}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                status: e.target.checked ? "Active" : "Inactive",
-              }))
-            }
-          />
-          <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-            {formData.status === "Active" ? "Active" : "Inactive"}
-          </label>
-        </div>
-      </div>
+
       <div className="col-md-12 px-1 mt-2">
         <label className='form-label fs-14 fw-bold text-dark-custom text-secondary"'>
           File Attachment

@@ -72,18 +72,17 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         payload.append("image_url", selectedFiles[0]);
       }
 
-      let res;
       if (iceCreamPortionData) {
-        res = await axios.put(updateIcecreamSizes(iceCreamPortionData.id), payload);
+        const res = await axios.put(updateIcecreamSizes(iceCreamPortionData.id), payload);
         if (res.status === 200 || res.status === 201) {
           toast.success("IceCream Portion Size updated successfully!", { autoClose: 1000, onClose: closePopup });
-          onUpdateIceCreamPortionSize?.(res.data);
+          onUpdateIceCreamPortionSize(res.data);
         }
       } else {
-        res = await axios.post(createIcecreamSizes, payload);
+        const res = await axios.post(createIcecreamSizes, payload);
         if (res.status === 200 || res.status === 201) {
           toast.success("IceCream Portion Size added successfully!", { autoClose: 1000, onClose: closePopup });
-          onAddIceCreamPortionSize?.(res.data);
+          onAddIceCreamPortionSize(res.data);
         }
       }
     } catch (error) {

@@ -10,7 +10,7 @@ router.use(authenticateToken);
 
 router.post('/create', upload.single("image_url"), GenderController.createGender);
 router.get('/', GenderController.getAllGenders);
-router.put('/update/:id', GenderController.updateGenderById);
+router.put('/update/:id', upload.single("image_url"),  GenderController.updateGenderById);
 router.delete('/delete/:id', GenderController.deleteGenderById);
 
 
