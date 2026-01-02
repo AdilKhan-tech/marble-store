@@ -56,27 +56,13 @@ const CakeSize = sequelize.define("CakeSize", {
 
   scoop_size: {
     type: DataTypes.STRING(55),
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "Scoop size is required"},
-      len: {
-        args: [1, 55],
-        msg: "Scoop size must be between 1 and 55 characters",
-      },
-    },
+    allowNull: true,
   },
 
   additional_price: {
     type: DataTypes.FLOAT,
     allowNull: false,
     defaultValue: 0,
-    validate: {
-      isFloat: { msg: "Additional price must be a valid number"},
-      min: {
-        args: [0],
-        msg: "Additional price cannot be negative",
-      },
-    },
   },
 
   symbol: {

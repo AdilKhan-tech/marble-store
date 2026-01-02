@@ -45,7 +45,7 @@ function page() {
         );
       }
     } catch (error) {
-      toast.error("Failed to delete Cookie Box Size.");
+      toast.error("Failed to delete Custom Cake Flavor.");
     }
   };
 
@@ -125,18 +125,17 @@ function page() {
               </thead>
               <tbody>
                 {customCakeFlavors.map((customCakeFlavor, index) => (
-                  <tr key={`${customCakeFlavor.id}-${index}`}>
-                    <td>{customCakeFlavor.id}</td>
-                    <td>{customCakeFlavor.name_en}</td>
-                    <td>{customCakeFlavor.slug}</td>
-                    <td>{customCakeFlavor.cake_type_id}</td>
+                  <tr key={`${customCakeFlavor?.id}-${index}`}>
+                    <td>{customCakeFlavor?.id}</td>
+                    <td>{customCakeFlavor?.name_en}</td>
+                    <td>{customCakeFlavor?.slug}</td>
+                    <td>{customCakeFlavor?.customCakeType?.name_en}</td>
                     <td>
                       <div
-                        className={customCakeFlavor.status === "active"? "blue-status": "red-status"}>
-                        {customCakeFlavor.status === "active"? "active": "inactive"}
+                        className={customCakeFlavor?.status === "active"? "blue-status": "red-status"}>
+                        {customCakeFlavor?.status === "active"? "active": "inactive"}
                       </div>
                     </td>
-
                     <td>
                       <div className="d-flex gap-1">
                         <button
@@ -146,7 +145,7 @@ function page() {
                         </button>
                         <button
                           className="action-btn"
-                          onClick={() =>showDeleteConfirmation(customCakeFlavor.id)}>
+                          onClick={() =>showDeleteConfirmation(customCakeFlavor?.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -176,8 +175,8 @@ function page() {
             <AddCustomCakeFlavor
               closePopup={closePopup}
               customCakeFlavorData={customCakeFlavorData}
-              updateCustomCakeFlavor = {updateCustomCakeFlavor}
-              addCustomCakeFlavor = {addCustomCakeFlavor}
+              onUpdateCustomCakeFlavor = {updateCustomCakeFlavor}
+              onAddCustomCakeFlavor = {addCustomCakeFlavor}
             />
           </Offcanvas.Body>
         </Offcanvas>

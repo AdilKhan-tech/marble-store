@@ -87,37 +87,46 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
   
+      // ================= UPDATE =================
       if (cakeFlavorData) {
-        const res = await axios.put(updateCakeFlavourById(cakeFlavorData.id), payload);
+        const res = await axios.put(
+          updateCakeFlavourById(cakeFlavorData.id),
+          payload
+        );
   
         if (res.status === 200) {
-          toast.success("Cake Flavour  updated successfully!", {
+          toast.success("Cake Flavour updated successfully!", {
             autoClose: 1000,
           });
-          
+
+          const selectedType = customCakeTypes.find((t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
           if (onUpdateCakeFlavor) {
             onUpdateCakeFlavor({
               ...cakeFlavorData,
               ...formData,
               id: cakeFlavorData.id,
+              customCakeType: selectedType || null,
             });
           }
-
+  
           closePopup();
         }
       }
-      //  CREATE
+  
+      // ================= CREATE =================
       else {
         const res = await axios.post(createCakeFlavour, payload);
   
         if (res.status === 201 || res.status === 200) {
           const selectedType = customCakeTypes.find(
-            (t) => String(t.id) === String(formData.custom_cake_type_id)
+            (t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
           );
   
           const createdCake = {
@@ -134,10 +143,13 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         }
       }
     } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
+      const msg =
+        error?.response?.data?.message ||
+        "Something went wrong!";
       setErrors([msg]);
     }
   };
+  
 
   useEffect(() => {
     if (errors.length) {
