@@ -98,20 +98,35 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
-        <input name="name_en" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-        value={formData.name_en} onChange={handleChange}/>
+        <input 
+          name="name_en" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.name_en} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
-        <input name="name_ar" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_ar} onChange={handleChange}/>
+        <input 
+          name="name_ar" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.name_ar} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
-        <input name="slug" type="text" className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} onChange={handleChange}/>
+        <input 
+          name="slug" 
+          type="text" 
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          value={formData.slug} 
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-group mt-2">

@@ -27,17 +27,21 @@ export default function GenderPage() {
     if (!token) return;
     fetchAllGenders();
   }, [token]);
+
   const showOffcanvasOnAddGender = () => {
     setGenderData(null);
     setShowOffcanvas(true);
   };
+
   const showOffcanvasOnEditGender = (gender) => {
     setGenderData(gender);
     setShowOffcanvas(true);
   };
+
   const closePopup = () => {
     setShowOffcanvas(false);
   };
+
   const handleDelete = async (genderId) => {
     try {
       const response = await axios.delete(deleteGenderById(genderId));
@@ -49,21 +53,22 @@ export default function GenderPage() {
       toast.error("Failed to delete Gender.");
     }
   };
+
   const showDeleteConfirmation = (genderId) => {
     if (confirm("Are you sure you want to delete this Gender?")) {
       handleDelete(genderId);
     }
   };
-const onAddGender = (newgender) => {
-    setGenders((prev) => [newgender, ...prev]);
+
+  const addGender = (newGender) => {
+    setGenders((prev) => [newGender, ...prev]);
     setShowOffcanvas(false);
   };
 
-
-  const onUpdateGender= (updatedgender) => {
-    setIceCreamPortionSizes((prev) =>
+  const updateGender = (updatedGender) => {
+    setGenders((prev) =>
       prev.map((item) =>
-        item.id === updatedgender.id ? updatedgender : item
+        item.id === updatedGender.id ? updatedGender : item
       )
     );
     setShowOffcanvas(false);
@@ -75,12 +80,11 @@ const onAddGender = (newgender) => {
         <p className="pagetitle mb-0 fnt-color">Genders</p>
         <div className="d-flex justify-content-between mt-4">
           <div className="d-flex">
-            <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
+            <i className="bi bi-search fs-5 px-3 py-2 text-secondary position-absolute"></i>
             <input
               type="text"
               className="form-control form-control-lg px-5 text-dark-custom"
               placeholder="Search here..."
-              style={{ height: "46px", width: "300px" }}
             />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
@@ -105,7 +109,6 @@ const onAddGender = (newgender) => {
                   <th>Name</th>
                   <th>Parent Gender</th>
                   <th>Slug</th>
-                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -114,14 +117,9 @@ const onAddGender = (newgender) => {
                   <tr key={`${gender.id}-${index}`}>
                     <td>{gender.id}</td>
                     <td>{gender.name_en}</td>
-                    <td>{gender.slug}</td>
                     <td>{gender.parent_gender}</td>
-                   <td>
-                        <div className={gender?.status === "active"? "blue-status": "red-status"}>
-                          {gender?.status === "active"? "Active": "Inactive"}
-                        </div>
-                      </td>
-        
+                    <td>{gender.slug}</td>
+                    
                     <td>
                       <div className="d-flex gap-1">
                         <button
@@ -148,27 +146,24 @@ const onAddGender = (newgender) => {
             show={showOffcanvas}
             onHide={() => setShowOffcanvas(false)}
             placement="end"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>
-                <div className="fs-24 fnt-color">
-                  {genderData
-                    ? "Update Gender"
-                    : "Add Gender"}
-                </div>
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <hr className="mt-0" />
-            <Offcanvas.Body>
-              <AddGender
-                closePopup={closePopup}
-                genderData = {genderData}
-                onAddGender = {onAddGender}
-                onUpdateGender ={onUpdateGender}
-              />
-                
-            </Offcanvas.Body>
-          </Offcanvas>
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="fs-24 fnt-color">
+                {genderData ? "Update Gender": "Add Gender"}
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <hr className="mt-0" />
+          <Offcanvas.Body>
+            <AddGender
+              closePopup={closePopup}
+              genderData = {genderData}
+              onAddGender = {addGender}
+              onUpdateGender ={updateGender}
+            />
+          </Offcanvas.Body>
+        </Offcanvas>
         <ToastContainer />
       </div>
     </section>

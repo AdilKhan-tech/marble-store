@@ -35,5 +35,7 @@ router.put('/customFlavor/:id', CustomCakeFlavorController.updateCustomCakeFlavo
 
 router.post('/customSize', upload.single('image_url'), CustomCakeSizeController.createCustomCakeSize)
 router.get('/', CustomCakeSizeController.getAllCustomCakeSize)
+router.delete('/customSize/:id', CustomCakeSizeController.deleteCustomCakeSizeById)
+router.put('/customSize/:id', upload.single('image_url'), CustomCakeSizeController.updateCustomCakeSizeById);
 
 module.exports = router;
