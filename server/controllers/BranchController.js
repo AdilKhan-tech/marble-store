@@ -58,11 +58,9 @@ class BranchController {
                 timing, 
                 branch_store_id, 
                 status
-            } = req.body;
+            } = req.body
 
-            const image_url = req.file?.path || cakesizes.image_url;
-
-            await cakesizes.update({
+            await branch.update({
                 name_en: name_en ?? branch.name_en,
                 name_ar: name_ar ?? branch.name_ar,
                 slug: slug ?? branch.slug,
@@ -74,7 +72,6 @@ class BranchController {
                 timing: timing ?? branch.timing,
                 branch_store_id: branch_store_id ?? branch.branch_store_id,
                 status: status ?? branch.status,
-                image_url: image_url
             });
     
             return res.status(200).json({message: "Branch updated successfully",branch});

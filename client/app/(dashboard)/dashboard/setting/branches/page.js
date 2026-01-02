@@ -74,9 +74,7 @@ export default function BranchPage() {
   const updateBranch = (updatedBranch) => {
     setBranches((prev) =>
       prev.map((branch) =>
-        branch.id === updatedBranch.id
-          ? { ...branch, ...updatedBranch }
-          : branch
+        branch.id === updatedBranch.id ? updatedBranch : branch
       )
     );
     setShowOffcanvas(false);

@@ -5,6 +5,7 @@ import axios from "axios";
 import { createBranch, updateBranchById } from "@/utils/apiRoutes";
 
 const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch }) => {
+    const [errors, setErrors] = useState([]);
 
     const [formData, setFormData] = useState({
         name_en: "",
@@ -38,7 +39,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         }
       }, [branchData]);
       
-
+      
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -47,35 +48,56 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         }));
     };
 
+    const validateForm = () => {
+        const errors = [];
+        if (!formData.name_en) errors.push("Name English is required.");
+        if (!formData.name_ar) errors.push("Name Arabic is required.");
+        if (!formData.slug) errors.push("Slug is required.");
+        if (!formData.status) errors.push("Status is required.");
+        return errors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        try {
-          // UPDATE
-          if (branchData) {
-            const res = await axios.put(
-              updateBranchById(branchData.id),
-              formData
-            );
-    
-            toast.success("Branch updated successfully");
-            onUpdateBranch?.(res.data.data);
-          }
-          
-    
-          // CREATE
-          else {
-            const res = await axios.post(createBranch, formData);
-    
-            toast.success("Branch added successfully");
-            onAddBranch?.(res.data.data);
-          }
-    
-          closePopup();
-        } catch (error) {
-          toast.error(error?.response?.data?.message || "Something went wrong");
+      
+        const validationErrors = validateForm();
+        if (validationErrors.length > 0) {
+          setErrors(validationErrors);
+          return;
         }
-      };
+        try {
+          if (branchData) {
+            const res = await axios.put(updateBranchById(branchData.id),formData);
+      
+            toast.success("Branch updated successfully!", {
+              autoClose: 1000,
+              onClose: closePopup,
+            });
+      
+            onUpdateBranch(res.data.branch);
+          } else {
+            const res = await axios.post(createBranch, formData);
+      
+            toast.success("Branch added successfully!", {
+              autoClose: 1000,
+              onClose: closePopup,
+            });
+      
+            onAddBranch(res.data);
+          }
+        } catch (error) {
+            toast.error(
+              error?.response?.data?.message || "Something went wrong!"
+            );
+          }          
+    };
+
+    useEffect(() => {
+        if (errors.length) {
+          errors.forEach((err) => toast.error(err));
+          setErrors([]);
+        }
+    }, [errors]);
 
     return (
         <form className="mt-0" onSubmit={handleSubmit}>
@@ -208,7 +230,6 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
                 <option value="Inactive for Both">Inactive for Both</option>
             </select>
         </div>
-
 
         <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
             <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>Cancel</button>
