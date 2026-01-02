@@ -128,9 +128,6 @@ const fetchCookieBoxTypes = async () => {
                   <th onClick={() => handleSort("slug")}>
                   Slug<span>{renderSortIcon("slug")}</span>
                   </th>
-                  <th onClick={() => handleSort("sort")}>
-                  Sort<span>{renderSortIcon("sort")}</span>
-                  </th>
                   <th onClick={() => handleSort("status")}>
                   Status<span>{renderSortIcon("status")}</span>
                   </th>
@@ -143,7 +140,6 @@ const fetchCookieBoxTypes = async () => {
                     <td>{type?.id}</td>
                     <td>{type?.name_en}</td>
                     <td>{type?.slug}</td>
-                    <td>{type?.sort}</td>
                     <td>
                       <div className={type?.status === "active" ? "blue-status" : "red-status"}>
                         {type?.status === "active" ? "Active" : "Inactive"}
