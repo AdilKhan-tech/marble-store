@@ -1,10 +1,10 @@
-const Product = require ("../models/Product");
+const {Category, Gender , Product} = require ("../models");
 
 class ProductController {
 
     static async createProduct (req, res) {
         try{
-            const { name_en, name_ar,description, Product_category_id, Product_branch_id,Product_tag, cookie_box_type_id, cookie_box_size_id, cookies_id, occasions_id, genders_id, icecream_bucket_id, icecream_addons_id, cake_portion_size_id, cake_size_id, cake_flavor_id, custom_cake_type_id, custom_cake_size_id, custom_cake_flavor_id, regular_price, sale_price, tax_status, tax_class } = req.body;
+            const { name_en, name_ar,description, Product_category_id, Product_branch_id,Product_tag, occasions_id, genders_id, regular_price, sale_price, tax_status, tax_class } = req.body;
 
             const image_url = req.file?.path || null;
             
@@ -15,19 +15,8 @@ class ProductController {
                 Product_category_id,
                 Product_branch_id,
                 Product_tag,
-                cookie_box_type_id,
-                cookie_box_size_id,
-                cookies_id,
                 occasions_id,
                 genders_id,
-                icecream_bucket_id,
-                icecream_addons_id,
-                cake_portion_size_id,
-                cake_size_id,
-                cake_flavor_id,
-                custom_cake_type_id,
-                custom_cake_size_id,
-                custom_cake_flavor_id,
                 regular_price,
                 sale_price,
                 tax_status,
@@ -43,7 +32,24 @@ class ProductController {
 
     static async getAllProducts (req, res) {
         try{
-            const product = await Product.findAll();
+            const product = await Product.findAll({
+
+            include: [
+              {
+                model: Category,
+                as: "productCategory",
+                attributes: ["id", "name_en", "name_ar"],
+              },
+            ],
+
+            include: [
+              {
+                model: Gender,
+                as: "productGender",
+                attributes: ["id", "name_en", "name_ar"],
+              },
+            ],
+          });
             return res.status(200).json(product)
 
         }catch (error) {

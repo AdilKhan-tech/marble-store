@@ -130,18 +130,6 @@ export default function CookieBoxSizePage() {
                   <th onClick={() => handleSort("slug")}>
                     Slug<span>{renderSortIcon("slug")}</span>
                   </th>
-                  <th onClick={() => handleSort("portion_size")}>
-                    Portion Size<span>{renderSortIcon("portion_size")}</span>
-                  </th>
-                  <th onClick={() => handleSort("price")}>
-                    Price<span>{renderSortIcon("price")}</span>
-                  </th>
-                  <th onClick={() => handleSort("symbol")}>
-                    Symbol<span>{renderSortIcon("symbol")}</span>
-                  </th>
-                  <th onClick={() => handleSort("calories")}>
-                    Calories<span>{renderSortIcon("calories")}</span>
-                  </th>
                   <th onClick={() => handleSort("status")}>
                     Status<span>{renderSortIcon("status")}</span>
                   </th>
@@ -159,10 +147,6 @@ export default function CookieBoxSizePage() {
                     <td>{boxSize.name_en}</td>
                     <td>{boxSize.cookies_types_id}</td>
                     <td>{boxSize.slug}</td>
-                    <td>{boxSize.portion_size}</td>
-                    <td>{boxSize.price}</td>
-                    <td>{boxSize.symbol}</td>
-                    <td>{boxSize.calories}</td>
                     <td>
                     <div className={boxSize.status === "active" ? "blue-status" : "red-status"}>
                       {boxSize.status === "active" ? "Active" : "Inactive"}
