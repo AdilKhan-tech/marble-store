@@ -67,3 +67,5 @@ export const getAllCustomCakeFlavor = `${host}/cakes/customFlavors`
 export const createCustomCakeFlavor = `${host}/cakes/customflavor`
 export const updateCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
 export const deleteCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
+
+export const getAllProducts = `${host}/products`

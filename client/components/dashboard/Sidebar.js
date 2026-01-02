@@ -70,6 +70,20 @@ export default function SidebarLayout() {
             </li>
 
             <li className="sidebar-menu-item">
+              <Link
+                href="/dashboard/product"
+                className={`sidebar-link ${
+                  isActive("/dashboard/product") ? "active" : ""
+                }`}
+                onClick={() => setOpen(false)}
+              >
+                <span className="">
+                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Product
+                </span>
+              </Link>
+            </li>
+
+            <li className="sidebar-menu-item">
               <div
                 className={`sidebar-submenu-header ${
                   isActiveParent("/dashboard/cakes") ? "active" : ""
