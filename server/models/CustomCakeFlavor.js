@@ -1,9 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const CustomCakeFlavor = sequelize.define(
-  "CustomCakeFlavor",
-  {
+const CustomCakeFlavor = sequelize.define("CustomCakeFlavor",{
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -34,11 +32,11 @@ const CustomCakeFlavor = sequelize.define(
         },
       },
     },
-    cake_type_id: {
+    custom_cake_type_id: {
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notNull: { msg: "Cookies Type ID is required" },
+        notNull: { msg: "Custom Cake Type is required" },
       },
     },
     slug: {

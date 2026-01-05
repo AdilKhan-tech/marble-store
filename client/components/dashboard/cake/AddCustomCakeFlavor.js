@@ -6,7 +6,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCustomCakeTypes} from "@/utils/apiRoutes"
 
-function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCustomCakeFlavor , addCustomCakeFlavor }) {
+function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdateCustomCakeFlavor , onAddCustomCakeFlavor }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
   const [errors , setErrors] = useState([]);
@@ -15,7 +15,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
     name_en: "",
     name_ar: "",
     slug: "",
-    cake_type_id: "",
+    custom_cake_type_id: "",
     status: "active",
     image_url: "",
   });
@@ -26,7 +26,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
         name_en: customCakeFlavorData.name_en || "",
         name_ar: customCakeFlavorData.name_ar || "",
         slug: customCakeFlavorData.slug || "",
-        cake_type_id: customCakeFlavorData.cake_type_id || "",
+        custom_cake_type_id: customCakeFlavorData.custom_cake_type_id || "",
         status: customCakeFlavorData.status || "active",
       });
     }
@@ -40,7 +40,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.cake_type_id) errors.push("Custom cake type is required.");
+    if (!formData.custom_cake_type_id) errors.push("Custom cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     return errors;
   };
@@ -60,60 +60,68 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
   
+      // ================= UPDATE =================
       if (customCakeFlavorData) {
-        const res = await axios.put(updateCustomCakeFlavorById(customCakeFlavorData.id), payload);
+        const res = await axios.put(
+          updateCustomCakeFlavorById(customCakeFlavorData.id),
+          payload
+        );
   
         if (res.status === 200) {
           toast.success("Custom Cake Flavor updated successfully!", {
             autoClose: 1000,
           });
-          
-          if (updateCustomCakeFlavor) {
-            updateCustomCakeFlavor({
+  
+          const selectedType = customCakeTypes.find((t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
+          if (onUpdateCustomCakeFlavor) {
+            onUpdateCustomCakeFlavor({
               ...customCakeFlavorData,
               ...formData,
               id: customCakeFlavorData.id,
+              customCakeType: selectedType || null, 
             });
           }
-
+  
           closePopup();
         }
       }
-      //  CREATE
+  
+      // ================= CREATE =================
       else {
         const res = await axios.post(createCustomCakeFlavor, payload);
-
-        
   
         if (res.status === 201 || res.status === 200) {
-
           const selectedType = customCakeTypes.find(
-            (t) => String(t.id) === String(formData.custom_cake_type_id)
+            (t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
           );
   
-          const createCustomCakeFlavor = {
+          const createdCustomCakeFlavor = {
             ...res.data,
-            customCakeType: selectedType || null,
+            customCakeType: selectedType || null, // 🔑 FIX
           };
-
+  
           toast.success("Custom Cake Flavor added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
   
-          if (addCustomCakeFlavor) addCustomCakeFlavor(createCustomCakeFlavor);
+          if (onAddCustomCakeFlavor)
+            onAddCustomCakeFlavor(createdCustomCakeFlavor);
         }
       }
     } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
+      const msg = error?.response?.data?.message ||"Something went wrong!";
       setErrors([msg]);
     }
   };
+  
 
   useEffect(() => {
     if (errors.length) {
@@ -145,7 +153,9 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
           name="name_en"
           type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_en} onChange={(e)=>setFormData({...formData,name_en:e.target.value})}/>
+          value={formData.name_en} 
+          onChange={(e)=>setFormData({...formData,name_en:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-2">
@@ -156,7 +166,9 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
           name="name_ar"
           type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.name_ar} onChange={(e)=>setFormData({...formData,name_ar:e.target.value})}/>
+          value={formData.name_ar} 
+          onChange={(e)=>setFormData({...formData,name_ar:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-2">
@@ -167,7 +179,9 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
           name="slug"
           type="text"
           className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} onChange={(e)=>setFormData({...formData,slug:e.target.value})}/>
+          value={formData.slug} 
+          onChange={(e)=>setFormData({...formData,slug:e.target.value})}
+        />
       </div>
 
       <div className="form-group mt-2">
@@ -175,10 +189,10 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, updateCu
           Cake Type
         </label>
         <select
-          name="cake_type_id"
+          name="custom_cake_type_id"
           type="select"
           className="form-select textarea-hove-dark text-secondary"
-          value={formData.cake_type_id} onChange={(e)=>setFormData({...formData,cake_type_id:e.target.value})}>
+          value={formData.custom_cake_type_id} onChange={(e)=>setFormData({...formData,custom_cake_type_id:e.target.value})}>
           <option value="Cookie Cake">Select Custom Cake Type</option>
             {customCakeTypes.map((type) => (
               <option key={type.id} value={type.id}>
