@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import { getAllCakesSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+
 export default function CakeSizePage() {
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
@@ -16,10 +19,28 @@ export default function CakeSizePage() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(2);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+
   const fetchCakeSizes = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllCakesSizes);
-      setCakeSizes(response.data);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+      };
+
+      const response = await axios.get(getAllCakesSizes, { params });
+
+      setCakeSizes(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
+
     } catch (error) {
       console.error("Error fetching cake sizes", error);
     }
@@ -28,8 +49,8 @@ export default function CakeSizePage() {
   useEffect(() => {
     if (!token) return;
     fetchCakeSizes();
-  }, [token]);
-
+  }, [currentPage, pageLimit, keywords, token]);
+  
   const showOffcanvasOnAddCakesSize = () => {
     setCakeSizeData(null);
     setShowOffcanvas(true);
@@ -43,6 +64,14 @@ export default function CakeSizePage() {
   const closePopup = () => {
     setShowOffcanvas(false);
     
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleDelete = async (cakeSizeId) => {
@@ -99,14 +128,20 @@ export default function CakeSizePage() {
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
-            <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+            <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
-              className="form-control border rounded-start-0 border-start-0" 
+              className="form-control form-control-lg px-5 text-dark-custom" 
               placeholder="Search here..." 
               style={{height:"46px", width:"300px"}}
+              onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
+
+          <EntriesPerPageSelector
+            pageLimit={pageLimit}
+            onPageLimitChange={handleLimitChange}
+          />
           <div style={{marginInlineEnd:"20px"}}>
             <div 
               className='org-btn py-2 px-4 rounded-3' 
@@ -195,6 +230,14 @@ export default function CakeSizePage() {
         <ToastContainer />
       </div>
     </section>
+
+    <Pagination
+      currentPage={currentPage}
+      pageCount={pageCount}
+      onPageChange={handlePageChange}
+      pageLimit={pageLimit}
+      totalEntries={totalEntries}
+    />
     </>    
   )
 }

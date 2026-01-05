@@ -73,9 +73,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.scoop_size) errors.push("Scoop size is required.");
-    if (!formData.additional_price)
-      errors.push("Additional price is required.");
     if (!formData.symbol) errors.push("Symbol is required.");
     return errors;
   };
@@ -95,40 +92,49 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
   
+      // ================= UPDATE =================
       if (cakeSizeData) {
-        const res = await axios.put(updateCakeSizeById(cakeSizeData.id), payload);
+        const res = await axios.put(
+          updateCakeSizeById(cakeSizeData.id),
+          payload
+        );
   
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
             autoClose: 1000,
           });
-          
+
+          const selectedType = customCakeTypes.find(
+            (t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
+          );
+  
           if (onUpdateCakeSize) {
             onUpdateCakeSize({
               ...cakeSizeData,
               ...formData,
               id: cakeSizeData.id,
+              customCakeType: selectedType || null,
             });
           }
-
+  
           closePopup();
         }
       }
-      //  CREATE
+  
+      // ================= CREATE =================
       else {
         const res = await axios.post(createCakesSize, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = customCakeTypes.find(
-            (t) => String(t.id) === String(formData.custom_cake_type_id)
+          const selectedType = customCakeTypes.find((t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
           );
   
-          const createdCake = {
+          const createdCakeSize = {
             ...res.data,
             customCakeType: selectedType || null,
           };
@@ -138,7 +144,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             onClose: closePopup,
           });
   
-          if (onAddCakeSize) onAddCakeSize(createdCake);
+          if (onAddCakeSize) onAddCakeSize(createdCakeSize);
         }
       }
     } catch (error) {
@@ -146,6 +152,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       setErrors([msg]);
     }
   };
+  
 
   useEffect(() => {
     if (errors.length) {
