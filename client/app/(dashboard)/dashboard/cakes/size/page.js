@@ -37,9 +37,9 @@ export default function CakeSizePage() {
 
       const response = await axios.get(getAllCakesSizes, { params });
 
-      setCakeSizes(response.data.data);
-      setTotalEntries(response.data.pagination.total);
-      setPageCount(response.data.pagination.pageCount);
+      setCakeSizes(response.data);
+      setTotalEntries(response.data.pagination);
+      setPageCount(response.data.pagination);
 
     } catch (error) {
       console.error("Error fetching cake sizes", error);
@@ -123,7 +123,7 @@ export default function CakeSizePage() {
 
   return (
     <>
-    <section className='' style={{ marginTop:"100px"}}>
+    <section className='content-container' style={{ marginTop:"100px"}}>
       <div className=""> 
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -138,10 +138,6 @@ export default function CakeSizePage() {
             />
           </div>
 
-          <EntriesPerPageSelector
-            pageLimit={pageLimit}
-            onPageLimitChange={handleLimitChange}
-          />
           <div style={{marginInlineEnd:"20px"}}>
             <div 
               className='org-btn py-2 px-4 rounded-3' 
@@ -230,7 +226,8 @@ export default function CakeSizePage() {
         <ToastContainer />
       </div>
     </section>
-
+    <hr/>
+    <div className='datatable-bottom'>
     <Pagination
       currentPage={currentPage}
       pageCount={pageCount}
@@ -238,6 +235,11 @@ export default function CakeSizePage() {
       pageLimit={pageLimit}
       totalEntries={totalEntries}
     />
+    <EntriesPerPageSelector
+      pageLimit={pageLimit}
+      onPageLimitChange={handleLimitChange}
+    />
+    </div>
     </>    
   )
 }

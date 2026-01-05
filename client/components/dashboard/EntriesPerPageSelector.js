@@ -1,5 +1,4 @@
-// import useLangCode from "@/hooks/useLangCode";
-// import useTranslation from "@/hooks/useTranslation";
+
 function EntriesPerPageSelector({ pageLimit, onPageLimitChange }) {
     // const langCode = useLangCode();
     // const translations = useTranslation(langCode, "entriesPerpage");
