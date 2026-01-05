@@ -2,53 +2,40 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import {getAllGenders} from "@/utils/apiRoutes";
+import {getAllGenders, getAllBranches, getCategory, getAllOcassions} from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const AddProduct = () => {
 
-  const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
-
   const [selectedFiles, setSelectedFiles] = useState([]);
-  // const [categories , setCategories] = useState([]);
   const [genders , setGenders] = useState([]);
-  const [branchIds, setBranchIds] = useState([]);
-  const [isBranchesOpen, setIsBranchesOpen] = useState(false);
-
+  const [branchId, setBranchId] = useState([]);
+  const [isBrancheOpen, setIsBrancheOpen] = useState(false);
   const [isOccasionOpen, setIsOccasionOpen] = useState(false);
-  const [occasionIds, setOccasionIds] = useState([]);
-
+  const [occasionId, setOccasionId] = useState([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [categoryIds, setCategoryIds] = useState([]);
+  const [categoryId, setCategoryId] = useState([]);
   const {token} = useAxiosConfig();
-  const [branches, setBranches] = useState([
-  { id: 1, name: "Alkhaldiyah" },
-  { id: 2, name: "Dammam Madinat" },
-  { id: 3, name: "Laban" },
-  { id: 4, name: "Mohammadyiah" },
-  { id: 5, name: "Olaya" },
-]);
-  const [occasions, setOccasions] = useState([
-  { id: 1, name: "Achievement" },
-  { id: 2, name: "Birthday" },
-  { id: 3, name: "Sports" },
-  { id: 4, name: "Holiday" },
-  { id: 5, name: "Congratulation" },
-]);
-
-  const [categories, setCategories] = useState([
-  { id: 1, name: "Uncategorized" },
-  { id: 2, name: "Add ons" },
-  { id: 3, name: "Bonus" },
-  { id: 4, name: "Cakes" },
-  { id: 5, name: "Cookies Box" },
-  { id: 6, name: "Custom Ice Cream" },
-  { id: 7, name: "DIY" },
-  { id: 8, name: "Ice Creams" },
-  { id: 9, name: "Promotions" },
-  { id: 10, name: "Special Day" },
-]);
+  const [branches, setBranches] = useState([]);
+  const [occasions, setOccasions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [formData, setFormData] = useState({
+    name_en:"",
+    name_ar:"",
+    product_tag :"",
+    description:"",
+    product_category_id:"",
+    product_branch_id:"",
+    occasions_id:"",
+    genders_id:"",
+    regular_price:"",
+    sale_price:"",
+    tax_status:"Active for Both",
+    tax_class:"Taxable",
+    image_url:"",
+  })
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -62,71 +49,100 @@ const AddProduct = () => {
       console.error("Error fetching Genders", error);
     }
   };
+  const fetchAllBranchesRoute = async () => {
+    try {
+      const response = await axios.get(getAllBranches);
+      setBranches(response?.data);  
+    } catch (error) {
+      console.error("Error fetching Branches", error);
+    }
+  };
+
+  const fetchAllCategoriesRoute = async () => {
+    try {
+      const response = await axios.get(getCategory);
+      setCategories(response?.data?.categories);
+    } catch (error) {
+      console.error("Error fetching Categories", error);
+    }
+  };
+
+  const fetchAllOccasionsRoute = async () => {
+    try {
+      const response = await axios.get(getAllOcassions);
+      setOccasions(response?.data?.occasions);      
+    } catch (error) {
+      console.error("Error fetching Occasions", error);
+    }
+  };
 
   useEffect(() => {
     if (!token) return;
     fetchAllGenders();
+    fetchAllBranchesRoute();
+    fetchAllCategoriesRoute();
+    fetchAllOccasionsRoute();
   }, [token]);
 
   const toggleBranch = (id) => {
-    setBranchIds((prev) =>
+    setBranchId((prev) =>
       prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
   };
 
   const toggleAllBranches = () => {
-    if (branchIds.length === branches.length) {
-      setBranchIds([]);
+    if (branchId.length === branches.length) {
+      setBranchId([]);
     } else {
-      setBranchIds(branches.map((b) => b.id));
+      setBranchId(branches.map((b) => b.id));
     }
   };
 
   const selectedBranchNames = branches
-  .filter(b => branchIds.includes(b.id))
-  .map(b => b.name);
+  .filter(b => branchId.includes(b.id))
+  .map(b => b.name_en);
 
   const toggleOccasions = (id) => {
-    setOccasionIds((prev) =>
+    setOccasionId((prev) =>
       prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
   };
 
   const toggleAllOccasions = () => {
-    if (occasionIds.length === occasions.length) {
-      setOccasionIds([]);
+    if (occasionId.length === occasions.length) {
+      setOccasionId([]);
     } else {
-      setOccasionIds(occasions.map((b) => b.id));
+      setOccasionId(occasions.map((b) => b.id));
     }
   };
 
   const selectedOccasionNames = occasions
-  .filter(b => occasionIds.includes(b.id))
-  .map(b => b.name);
+  .filter(b => occasionId.includes(b.id))
+  .map(b => b.name_en);
 
 
     const toggleCategory = (id) => {
-    setCategoryIds((prev) =>
+    setCategoryId((prev) =>
       prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
   };
 
   const toggleAllCategories = () => {
-    if (categoryIds.length === categories.length) {
-      setCategoryIds([]);
+    if (categoryId.length === categories.length) {
+      setCategoryId([]);
     } else {
-      setCategoryIds(categories.map((b) => b.id));
+      setCategoryId(categories.map((b) => b.id));
     }
   };
 
   const selectedCategoryNames = categories
-  .filter(b => categoryIds.includes(b.id))
-  .map(b => b.name);
+  .filter(b => categoryId.includes(b.id))
+  .map(b => b.name_en);
 
 
 
   return (
-    <form className="" style={{ marginTop: "100px" }}>
+    <form className="content-contianer">
       <div className="card p-4 rounded-4">
         <div className="row">
           <div className="col-md-5">
@@ -170,6 +186,7 @@ const AddProduct = () => {
                 <input
                   name="name_en"
                   type="text"
+                  value={formData.name_en}
                   className="form-control form-control-lg textarea-hover-dark text-secondary"/>
               </div>
 
@@ -207,8 +224,8 @@ const AddProduct = () => {
                   onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                   style={{ cursor: "pointer" }}>
                   <div className="d-flex flex-wrap gap-1">
-                    {selectedCategoryNames.length ? selectedCategoryNames.map(n => (
-                          <span key={n} className="px-2 py-1 border rounded small">{n}</span>
+                    {selectedCategoryNames.length ? selectedCategoryNames.map((name, index) => (
+                          <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
                         )): "Select Categories"}
                   </div>
 
@@ -218,16 +235,19 @@ const AddProduct = () => {
                   <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
                     
                     <div className="form-check border-bottom pb-1">
-                      <input type="checkbox" checked={categoryIds.length === categories.length}
+                      <input type="checkbox" checked={categoryId.length === categories.length}
                         onChange={toggleAllCategories}/>
                       <label className="ps-2 fs-14 fw-bold">Select All</label>
                     </div>
 
-                    {categories.slice().map(b => (
+                     {categories.map((b) => (
                       <div key={b.id} className="form-check py-1">
-                        <input type="checkbox" checked={categoryIds.includes(b.id)}
-                          onChange={() => toggleCategory(b.id)}/>
-                        <label className="ps-2 fs-14">{b.name}</label>
+                        <input
+                          type="checkbox"
+                          checked={categoryId.includes(b.id)}
+                          onChange={() => toggleCategory(b.id)}
+                        />
+                        <label className="ps-2 fs-14">{b.name_en || b.name}</label>
                       </div>
                     ))}
                   </div>
@@ -238,30 +258,33 @@ const AddProduct = () => {
                 <label className="form-label text-secondary">Product Branches</label>
                 <div
                   className="form-control d-flex justify-content-between align-items-center"
-                  onClick={() => setIsBranchesOpen(!isBranchesOpen)}
+                  onClick={() => setIsBrancheOpen(!isBrancheOpen)}
                   style={{ cursor: "pointer" }}>
                   <div className="d-flex flex-wrap gap-1">
-                    {selectedBranchNames.length ? selectedBranchNames.map(n => (
-                          <span key={n} className="px-2 py-1 border rounded small">{n}</span>
+                    {selectedBranchNames.length ? selectedBranchNames.map((name, index) => (
+                          <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
                         )): "Select Branches"}
                   </div>
 
-                  <i className={`bi bi-chevron-${isBranchesOpen ? "up" : "down"}`} />
+                  <i className={`bi bi-chevron-${isBrancheOpen ? "up" : "down"}`} />
                 </div>
-                {isBranchesOpen && (
+                {isBrancheOpen && (
                   <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
                     
                     <div className="form-check border-bottom pb-1">
-                      <input type="checkbox" checked={branchIds.length === branches.length}
+                      <input type="checkbox" checked={branchId.length === branches.length}
                         onChange={toggleAllBranches}/>
                       <label className="ps-2 fs-14 fw-bold">Select All</label>
                     </div>
 
-                    {branches.slice().map(b => (
+                    {branches.map((b) => (
                       <div key={b.id} className="form-check py-1">
-                        <input type="checkbox" checked={branchIds.includes(b.id)}
-                          onChange={() => toggleBranch(b.id)}/>
-                        <label className="ps-2 fs-14">{b.name}</label>
+                        <input
+                          type="checkbox"
+                          checked={branchId.includes(b.id)}
+                          onChange={() => toggleBranch(b.id)}
+                        />
+                        <label className="ps-2 fs-14">{b.name_en || b.name}</label>
                       </div>
                     ))}
                   </div>
@@ -278,8 +301,8 @@ const AddProduct = () => {
                   onClick={() => setIsOccasionOpen(!isOccasionOpen)}
                   style={{ cursor: "pointer" }}>
                   <div className="d-flex flex-wrap gap-1">
-                    {selectedOccasionNames.length ? selectedOccasionNames.map(n => (
-                          <span key={n} className="px-2 py-1 border rounded small">{n}</span>
+                    {selectedOccasionNames.length ? selectedOccasionNames.map((name, index) => (
+                          <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
                         )): "Select Occasions"}
                   </div>
 
@@ -289,16 +312,19 @@ const AddProduct = () => {
                   <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
                     
                     <div className="form-check border-bottom pb-1 gap-2">
-                      <input type="checkbox" checked={occasionIds.length === occasions.length}
-                        onChange={toggleAllOccasions}/>
+                      <input type="checkbox" checked={occasionId.length === occasions.length}
+                        onChange={toggleOccasions}/>
                       <label className="ps-2 fs-14 fw-bold">Select All</label>
                     </div>
 
-                    {occasions.slice().map(b => (
+                     {occasions.map((b) => (
                       <div key={b.id} className="form-check py-1">
-                        <input type="checkbox" checked={occasionIds.includes(b.id)}
-                          onChange={() => toggleOccasions(b.id)}/>
-                        <label className="ps-2 fs-14">{b.name}</label>
+                        <input
+                          type="checkbox"
+                          checked={occasionId.includes(b.id)}
+                          onChange={() => toggleAllOccasions(b.id)}
+                        />
+                        <label className="ps-2 fs-14">{b.name_en || b.name}</label>
                       </div>
                     ))}
                   </div>

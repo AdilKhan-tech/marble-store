@@ -68,3 +68,4 @@ export const updateCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes
 export const deleteCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
 
 export const getAllProducts = `${host}/products`
+export const deleteProductByIdRoute = (productId) => `${host}/products/delete/${productId}`

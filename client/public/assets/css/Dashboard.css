@@ -463,3 +463,6 @@ table tr:nth-child(even) td {
   height: 35px;
   width: 35px;
 }
+.content-contianer{
+  margin-top: 100px;
+}

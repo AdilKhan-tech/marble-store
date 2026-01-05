@@ -6,9 +6,11 @@ const CookiesBoxSizes = require("./CookiesBoxSizes");
 const CookiesBoxTypes = require("./CookiesBoxTypes");
 const Cookies = require("./Cookies");
 const CustomCakeFlavor = require("./CustomCakeFlavor");
-const Category = require("./Category")
 const Product = require("./Product")
 const Gender = require("./Gender")
+const ProductBranch = require("./ProductBranch");
+const Category = require("./Category")
+const Branch = require("./Branch");
 
 // Cake Sizes Relations
 CustomCakeTypes.hasMany(CakeSize, {
@@ -61,18 +63,19 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
   as: "customCakeType",
 });
 
+
 //Category Belong to Product
-Category.hasMany(Product, {
-  foreignKey: "Product_category_id",
+Branch.hasMany(Product, {
+  foreignKey: "product_branch_id",
   as: "product",
 });
 
-Product.belongsTo(Category, {
-  foreignKey: "Product_category_id",
-  as: "productCategory",
+Product.belongsTo(Branch, {
+  foreignKey: "product_branch_id",
+  as: "productBranch",
 });
 
-//Category Belong to Product
+//gender Belong to Product
 Gender.hasMany(Product, {
   foreignKey: "genders_id",
   as: "product",
@@ -82,6 +85,37 @@ Product.belongsTo(Gender, {
   foreignKey: "genders_id",
   as: "productGender",
 });
+
+//Category Belong to Product
+Category.hasMany(Product, {
+  foreignKey: "product_category_id",
+  as: "product",
+});
+
+Product.belongsTo(Category, {
+  foreignKey: "product_category_id",
+  as: "productCategory",
+});
+
+
+// Product ka relation ProductBranch ke saath
+// Product.hasMany(ProductBranch, {
+//   foreignKey: "product_id",
+//   as: "branches",
+// });
+
+Product.belongsToMany(ProductBranch, {
+  through: "ProductBranch",
+  onDelete: "CASCADE",
+  as:"productBranch",
+  hooks: true,
+});
+
+ProductBranch.belongsToMany(Product, {
+  through: "ProductBranch",
+  as: "products",
+});
+
 
 
 module.exports = {
@@ -96,8 +130,10 @@ module.exports = {
   CustomCakeTypes,
   CustomCakeFlavor,
 
-  Category,
   Product,
   Gender,
+  ProductBranch,
+  Branch,
+  Category,
 
 };
