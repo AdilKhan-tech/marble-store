@@ -37,8 +37,8 @@ export default function CakeSizePage() {
 
       const response = await axios.get(getAllCakesSizes, { params });
 
-      setCakeSizes(response.data);
-      setTotalEntries(response.data.pagination);
+      setCakeSizes(response.data.data);
+      setTotalEntries(response.data.pagination.pagination);
       setPageCount(response.data.pagination);
 
     } catch (error) {

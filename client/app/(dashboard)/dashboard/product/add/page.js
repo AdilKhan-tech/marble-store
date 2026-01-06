@@ -184,9 +184,7 @@ const AddProduct = () => {
                   Name English
                 </label>
                 <input
-                  name="name_en"
                   type="text"
-                  value={formData.name_en}
                   className="form-control form-control-lg textarea-hover-dark text-secondary"/>
               </div>
 
@@ -333,7 +331,7 @@ const AddProduct = () => {
           <div className="form-group mt-3 col-md-6">
             <label className="form-label text-secondary">Genders</label>
             <select className="form-select text-secondary">
-              <option>Select Product Category</option>
+              <option>Select Gender</option>
                 {genders.map((gender) => (
               <option key={gender.id} value={gender.id}>
               {gender.name_en}</option>))}

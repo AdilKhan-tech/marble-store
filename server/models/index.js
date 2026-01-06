@@ -99,22 +99,14 @@ Product.belongsTo(Category, {
 
 
 // Product ka relation ProductBranch ke saath
-// Product.hasMany(ProductBranch, {
-//   foreignKey: "product_id",
-//   as: "branches",
-// });
-
-Product.belongsToMany(ProductBranch, {
-  through: "ProductBranch",
-  onDelete: "CASCADE",
-  as:"productBranch",
-  hooks: true,
-});
-
-ProductBranch.belongsToMany(Product, {
-  through: "ProductBranch",
-  as: "products",
-});
+Product.belongsToMany(Branch, { 
+  through: ProductBranch,
+  as: "branches"
+ })
+Branch.belongsToMany(Product, { 
+  through: ProductBranch, 
+  as: "products" 
+})
 
 
 
