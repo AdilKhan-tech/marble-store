@@ -11,6 +11,7 @@ const Gender = require("./Gender")
 const ProductBranch = require("./ProductBranch");
 const Category = require("./Category")
 const Branch = require("./Branch");
+const ProductCategory = require("./ProductCategory");
 
 // Cake Sizes Relations
 CustomCakeTypes.hasMany(CakeSize, {
@@ -98,14 +99,24 @@ Product.belongsTo(Category, {
 });
 
 
-// Product ka relation ProductBranch ke saath
+// Product ka relation branch ke saath
 Product.belongsToMany(Branch, { 
   through: ProductBranch,
   as: "branches"
  })
 Branch.belongsToMany(Product, { 
   through: ProductBranch, 
-  as: "products" 
+  as: "branchProduct" 
+})
+
+// category ka relation branch ke saath
+Product.belongsToMany(Category, { 
+  through: ProductCategory,
+  as: "categories"
+ })
+Category.belongsToMany(Product, { 
+  through: ProductCategory, 
+  as: "categoryProduct" 
 })
 
 
@@ -127,5 +138,6 @@ module.exports = {
   ProductBranch,
   Branch,
   Category,
+  ProductCategory,
 
 };

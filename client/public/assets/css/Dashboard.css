@@ -471,7 +471,7 @@ table tr:nth-child(even) td {
 }
 .pagination-Div .pagination{
   display:flex;
-  gap:10px;
+  gap:5px;
   align-items:center;
 }
 .pagination-Div .page-item{list-style:none}
@@ -510,9 +510,7 @@ select {
   font-size: 14px;
   line-height: 20px;
   background: transparent;
-  /* background-image: url("..//images/arrow-down-fig.svg") !important; */
   background-repeat: no-repeat !important;
-  appearance: none;
   margin-bottom: 0 !important;
 }
 html[lang="en"] select.datatable-selector,
@@ -524,6 +522,11 @@ html[lang="en"] select {
 .datatable-bottom {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   margin-top: 10px;
+}
+.showperpage {
+  color: #90908f;
+  font-size: 14px;
+  width: max-content;
 }

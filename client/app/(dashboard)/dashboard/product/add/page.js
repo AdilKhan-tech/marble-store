@@ -26,7 +26,7 @@ const AddProduct = () => {
     name_ar:"",
     product_tag :"",
     description:"",
-    product_category_id:"",
+    category_id:"",
     product_branch_id:"",
     occasions_id:"",
     genders_id:"",
