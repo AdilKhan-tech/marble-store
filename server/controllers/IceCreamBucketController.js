@@ -4,7 +4,7 @@ class IceCreamBucketController {
 
     static async createIceCreamBucket(req, res) {
         try {
-            const {name_en,name_ar,slug,size,price,symbol,calories,status} = req.body;
+            const {name_en,name_ar,slug,size,price,calories,status} = req.body;
 
             const image_url = req.file?.path || null;
     
@@ -14,7 +14,6 @@ class IceCreamBucketController {
                 slug,
                 size,
                 price,
-                symbol,
                 calories,
                 status,
                 image_url
@@ -52,23 +51,11 @@ class IceCreamBucketController {
                 slug,
                 size,
                 price,
-                symbol,
                 calories,
                 status,
             } = req.body;
 
             const image_url = req.file?.path || iceCreamBucket.image_url;
-    
-            let parsedStatus = iceCreamBucket.status;
-    
-            if (status !== undefined) {
-                if (status === 'true' || status === true || status === '1' || status === 1) {
-                    parsedStatus = true;
-                }
-                else if (status === 'false' || status === false || status === '0' || status === 0) {
-                    parsedStatus = false;
-                }
-            }
     
             await iceCreamBucket.update({
                 name_en: name_en ?? iceCreamBucket.name_en,
@@ -76,9 +63,8 @@ class IceCreamBucketController {
                 slug: slug ?? iceCreamBucket.slug,
                 size: size ?? iceCreamBucket.size,
                 price: price ?? iceCreamBucket.price,
-                symbol: symbol ?? iceCreamBucket.symbol,
                 calories: calories ?? iceCreamBucket.calories,
-                status: parsedStatus,
+                status: status ?? iceCreamBucket.status,
                 image_url: image_url
             });
 
@@ -127,8 +113,5 @@ class IceCreamBucketController {
             });
         }
     }
-        
-      
-
 }
 module.exports = IceCreamBucketController;
