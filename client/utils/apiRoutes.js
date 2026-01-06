@@ -2,7 +2,7 @@ import { host } from "./apiHost"
 
 export const loginRoute = `${host}/users/login`
 
-export const getCategory = `${host}/categories/getAll`;
+export const getCategory = `${host}/categories/`;
 
 export const getAllCakesSizes = `${host}/cakes/sizes`
 export const createCakesSize = `${host}/cakes/sizes`
@@ -68,3 +68,4 @@ export const updateCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes
 export const deleteCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
 
 export const getAllProducts = `${host}/products`
+export const deleteProductByIdRoute = (productId) => `${host}/products/delete/${productId}`

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import Common from "@/utils/Common";
-import {getAllProducts} from "@/utils/apiRoutes"
+import {getAllProducts, deleteProductByIdRoute} from "@/utils/apiRoutes"
+import { ToastContainer, toast } from "react-toastify";
 import useAxiosConfig from '@/hooks/useAxiosConfig';
 import axios from "axios";
 import Link from "next/link";
@@ -37,14 +37,30 @@ export default function CakeFlavourPage() {
     return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
   };
 
-  const cleanHTML = (html) => {
-    if (!html) return "";
-    return html.replace(/<\/?p>/g, "");
+  const handleDelete = async (productId) => {
+    try {
+      const response = await axios.delete(deleteProductByIdRoute(productId));
+      if (response.status === 200) {
+        toast.success("Product deleted successfully!", { autoClose: 1000 });
+        setProducts((prev) => prev.filter((product) => product.id !== productId));
+      }
+    } catch (error) {
+      toast.error("Failed to delete Product.");
+    }
+  };
+
+  const showDeleteConfirmation = (productId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this Product?"
+    );
+    if (confirmed) {
+      handleDelete(productId);
+    }
   };
 
   return (
     <>
-      <section className="" style={{ marginTop: "100px" }}>
+      <section className="content-contianer">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Products</p>
           <div className="d-flex justify-content-between mt-4">
@@ -78,6 +94,13 @@ export default function CakeFlavourPage() {
                       <div className="form-check fs-5">
                         <input className="form-check-input" type="checkbox" />
                       </div>
+                    </th>
+
+                    <th onClick={() => handleSort("id")}>
+                      Id
+                      <span className="fs-12 text-secondary">
+                        {renderSortIcon("id")}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("name_en")}>
@@ -133,46 +156,38 @@ export default function CakeFlavourPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {products.map((product, index) => (
+                  <tr key={product.id || product.id || index}>
                     <td>
                       <div className="form-check fs-5">
                         <input className="form-check-input" type="checkbox" />
                       </div>
                     </td>
-                    <td>Graduation free box</td>
-                    <td>---</td>
-                    <td>In stock</td>
-                    <td>0.00 SR</td>
-                    <td>Promotions</td>
-                    <td>2025/05/01 at 9:04 am</td>
-                    <td>
+                    <td>{product?.id}</td>
+                    <td>{product?.name_en}</td>
+                    <td>{product?.sku || "N/A"}</td>
+                    <td>{product?.stock || "In Stock"}</td>
+                    <td>{product?.regular_price}</td>
+                    <td>{product?.product_category_id}</td>
+                    <td>{product?.created_at}</td>
+                    <td>{product?.product_branch_id}</td>
+                    <td className="d-flex gap-2">
                       <div
-                        dangerouslySetInnerHTML={{
-                          __html: cleanHTML(
-                            Common.truncateText(
-                              "Alkhaldiyah, Dammam Madinat, Laban, Mohammadyiah, Olaya, Qurtoba, Rabwah, Rakkah, Rawdah, Sahafa",
-                              20
-                            )
-                          ),
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <div className="d-flex gap-1">
-                        <button
-                          className="action-btn border-secondary">
-                          <i className="bi bi-pencil text-primary"></i>
-                        </button>
-                        <button className="action-btn border-secondary">
-                          <i className="bi bi-trash3 text-danger"></i>
-                        </button>
+                        className="action-btn"
+                      >
+                        <i className="bi bi-pencil text-primary"></i>
+                      </div>
+                      <div className="action-btn" onClick={() => showDeleteConfirmation(product?.id)}>
+                        <i className="bi bi-trash text-danger"></i>
                       </div>
                     </td>
                   </tr>
+                ))}
                 </tbody>
               </table>
             </div>
           </div>
+          <ToastContainer/>
         </div>
       </section>
     </>

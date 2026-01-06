@@ -4,7 +4,7 @@ class CategoryController {
 
     static async createCategory(req, res) {
         try {
-            const { name_en, name_ar, slug, description } = req.body;
+            const { name_en, name_ar, slug, parent_category, display_type } = req.body;
 
             const image_url = req.files?.[0]?.path || null;
 
@@ -12,7 +12,8 @@ class CategoryController {
                 name_en,
                 name_ar,
                 slug,
-                description,
+                parent_category,
+                display_type,
                 image_url
             });
 
@@ -33,7 +34,7 @@ class CategoryController {
 
     static async updateCategoryById(req, res) {
         const { id } = req.params;
-        const { name_en, name_ar, slug, description } = req.body;
+        const { name_en, name_ar, slug, parent_category, display_type } = req.body;
         try {
             const category = await Category.findByPk(id);
             if (!category) {
@@ -42,7 +43,8 @@ class CategoryController {
             category.name_en = name_en;
             category.name_ar = name_ar;
             category.slug = slug;
-            category.description = description;
+            category.parent_category = parent_category;
+            category.display_type = display_type,
             await category.save();
             return res.status(200).json({message: "Category updated successfully", category});
         } catch (error) {

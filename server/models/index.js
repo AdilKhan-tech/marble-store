@@ -6,6 +6,11 @@ const CookiesBoxSizes = require("./CookiesBoxSizes");
 const CookiesBoxTypes = require("./CookiesBoxTypes");
 const Cookies = require("./Cookies");
 const CustomCakeFlavor = require("./CustomCakeFlavor");
+const Product = require("./Product")
+const Gender = require("./Gender")
+const ProductBranch = require("./ProductBranch");
+const Category = require("./Category")
+const Branch = require("./Branch");
 
 // Cake Sizes Relations
 CustomCakeTypes.hasMany(CakeSize, {
@@ -59,6 +64,52 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
 });
 
 
+//Category Belong to Product
+Branch.hasMany(Product, {
+  foreignKey: "product_branch_id",
+  as: "product",
+});
+
+Product.belongsTo(Branch, {
+  foreignKey: "product_branch_id",
+  as: "productBranch",
+});
+
+//gender Belong to Product
+Gender.hasMany(Product, {
+  foreignKey: "genders_id",
+  as: "product",
+});
+
+Product.belongsTo(Gender, {
+  foreignKey: "genders_id",
+  as: "productGender",
+});
+
+//Category Belong to Product
+Category.hasMany(Product, {
+  foreignKey: "product_category_id",
+  as: "product",
+});
+
+Product.belongsTo(Category, {
+  foreignKey: "product_category_id",
+  as: "productCategory",
+});
+
+
+// Product ka relation ProductBranch ke saath
+Product.belongsToMany(Branch, { 
+  through: ProductBranch,
+  as: "branches"
+ })
+Branch.belongsToMany(Product, { 
+  through: ProductBranch, 
+  as: "products" 
+})
+
+
+
 module.exports = {
   CakeSize,
   CakeFlavor,
@@ -70,5 +121,11 @@ module.exports = {
 
   CustomCakeTypes,
   CustomCakeFlavor,
+
+  Product,
+  Gender,
+  ProductBranch,
+  Branch,
+  Category,
 
 };
