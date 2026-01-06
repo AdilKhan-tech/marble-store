@@ -3,17 +3,16 @@ import React from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import Addcategories from "@/components/dashboard/setting/AddCategory";
+import AddCategory from "@/components/dashboard/setting/AddCategory";
 import { useEffect, useState } from "react";
 import { getAllCategories, deleteCategoriesById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-export default function CategoriesPage() {
+export default function CategoryPage() {
 
   const { token } = useAxiosConfig();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [categorieData, setCategorieData] = useState(null);
-
   const [categories, setCategories] = useState([]);
 
   const fetchAllCategories = async () => {
@@ -24,21 +23,26 @@ export default function CategoriesPage() {
       console.error("Error fetching categories", error);
     }
   };
+
   useEffect(() => {
     if (!token) return;
     fetchAllCategories();
   }, [token]);
-  const showOffcanvasOnAddCategories = () => {
+
+  const showOffcanvasOnAddCategory = () => {
     setCategorieData(null);
     setShowOffcanvas(true);
   };
-  const showOffcanvasOnEditCategories = (category) => {
+
+  const showOffcanvasOnEditCategory = (category) => {
     setCategorieData(category);
     setShowOffcanvas(true);
   };
+
   const closePopup = () => {
     setShowOffcanvas(false);
   };
+
   const handleDelete = async (categoryId) => {
     try {
       const response = await axios.delete(deleteCategoriesById(categoryId));
@@ -52,20 +56,22 @@ export default function CategoriesPage() {
       toast.error("Failed to delete Categories.");
     }
   };
+
   const showDeleteConfirmation = (categoryId) => {
     if (confirm("Are you sure you want to delete this Categories?")) {
       handleDelete(categoryId);
     }
   };
-  const onAddcategories = (newCategories) => {
-    setCategories((prev) => [newCategories, ...prev]);
+
+  const addCategory = (newCategory) => {
+    setCategories((prev) => [newCategory, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const onUpdateCategories = (updatedCategories) => {
+  const updateCategory = (updatedCategory) => {
     setCategories((prev) =>
       prev.map((item) =>
-        item.id === updatedCategories.id ? updatedCategories : item
+        item.id === updatedCategory.id ? updatedCategory : item
       )
     );
     setShowOffcanvas(false);
@@ -73,7 +79,7 @@ export default function CategoriesPage() {
 
   return (
     <>
-      <section className="content-container" style={{ marginTop: "100px" }}>
+      <section className="content-container">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Categories</p>
           <div className="d-flex justify-content-between mt-4">
@@ -89,7 +95,7 @@ export default function CategoriesPage() {
               <div
                 className="org-btn py-2 px-4 rounded-3"
                 role="button"
-                onClick={showOffcanvasOnAddCategories}
+                onClick={showOffcanvasOnAddCategory}
               >
                 <i className="bi bi-plus-circle ms-2"></i>
                 <span className="ms-1">Create</span>
@@ -124,7 +130,7 @@ export default function CategoriesPage() {
                           <button
                             className="action-btn"
                             onClick={() =>
-                              showOffcanvasOnEditCategories(category)
+                              showOffcanvasOnEditCategory(category)
                             }
                           >
                             <i className="bi bi-pencil text-primary"></i>
@@ -151,19 +157,19 @@ export default function CategoriesPage() {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
-                  {categorieData ? "Update Categories" : "Add Categories"}
+                  {categorieData ? "Update Category" : "Add Category"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
             <hr className="mt-0" />
             <Offcanvas.Body>
-              <Addcategories
-                AddCategory={onAddcategories}
-                updatedCategories={onUpdateCategories}
+              <AddCategory
+                onAddCategory={addCategory}
+                onUpdateCategory={updateCategory}
                 closePopup={closePopup}
                 categoryData={categorieData}
               >
-              </Addcategories>
+              </AddCategory>
             </Offcanvas.Body>
           </Offcanvas>
           <ToastContainer />

@@ -463,3 +463,67 @@ table tr:nth-child(even) td {
   height: 35px;
   width: 35px;
 }
+.content-contianer{
+  margin-top: 100px;
+}
+.pagination-Div{
+  display:flex;justify-content:space-between;align-items:center;width:100%;
+}
+.pagination-Div .pagination{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.pagination-Div .page-item{list-style:none}
+.pagination-Div .page-link{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:#fff;
+  color:#494949;
+  font-weight:500;
+}
+.pagination-Div .page-item.active .page-link{
+  background:#ff7700;
+  color:#fff;
+  border-color:#ff7700;
+}
+.pagination-Div .page-item.disabled .page-link{
+  opacity:.4;
+  cursor:not-allowed;
+  background:#f3f3f3;
+}
+.pagination-Div .page-link:hover{
+  background:#ff7700;
+  color:#fff;
+}
+
+select.datatable-selector,
+select.form-select,
+select {
+  border: 1px solid rgba(132, 132, 132, 0.25);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  background: transparent;
+  /* background-image: url("..//images/arrow-down-fig.svg") !important; */
+  background-repeat: no-repeat !important;
+  appearance: none;
+  margin-bottom: 0 !important;
+}
+html[lang="en"] select.datatable-selector,
+html[lang="en"] select.form-select,
+html[lang="en"] select {
+  background-position: right 5px center !important;
+  padding: 12px 20px 12px 12px !important;
+}
+.datatable-bottom {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+}

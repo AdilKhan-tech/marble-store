@@ -1,4 +1,7 @@
 const { CakeSize, CustomCakeTypes } = require("../models");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
+
 
 class CakeSizeController {
 
@@ -27,8 +30,20 @@ class CakeSizeController {
     }
 
     static async getAllCakeSizes(req, res) {
+        const { page, limit, offset } = getPagination(req);
+        const { keywords } = req.query;
+      
         try {
-          const cakeSizes = await CakeSize.findAll({
+          const whereClause = {};
+      
+          if (keywords) {
+            whereClause.name_en = {
+              [Op.like]: `%${keywords}%`,
+            };
+          }
+      
+          const { count, rows } = await CakeSize.findAndCountAll({
+            where: whereClause,
             include: [
               {
                 model: CustomCakeTypes,
@@ -36,13 +51,27 @@ class CakeSizeController {
                 attributes: ["id", "name_en", "name_ar"],
               },
             ],
+            limit,
+            offset,
+            order: [["id", "DESC"]],
           });
       
-          return res.status(200).json(cakeSizes);
+          const pageCount = Math.ceil(count / limit);
+      
+          return res.status(200).json({
+            pagination: {
+              page,
+              limit,
+              total: count,
+              pageCount,
+            },
+            data: rows,
+          });
         } catch (error) {
-            res.status(500).json({message: "Failed to get cake sizes", error: error.message});
+          return res.status(500).json({ message: "Failed to get cake sizes",error: error.message });
         }
       }
+      
       
 
     static async updateCakeSizeById(req, res) {

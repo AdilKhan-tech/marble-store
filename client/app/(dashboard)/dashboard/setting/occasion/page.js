@@ -123,14 +123,8 @@ function Occasions() {
                   <th onClick={() => handleSort("name_en")}>
                     Name<span>{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("description")}>
-                    Description<span>{renderSortIcon("description")}</span>
-                  </th>
                   <th onClick={() => handleSort("slug")}>
                     Slug<span>{renderSortIcon("slug")}</span>
-                  </th>
-                  <th onClick={() => handleSort("status")}>
-                    Count<span>{renderSortIcon("status")}</span>
                   </th>
                   <th>Action</th>
                 </tr>
@@ -140,9 +134,7 @@ function Occasions() {
                   <tr key={`${occasion.id}-${index}`}>
                     <td>{occasion.id}</td>
                     <td>{occasion.name_en}</td>
-                    <td>{occasion.description || "N/A"}</td>
                     <td>{occasion.slug}</td>
-                    <td>{occasion.count || "N/A"}</td>
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>

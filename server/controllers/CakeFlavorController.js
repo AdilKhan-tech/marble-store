@@ -1,4 +1,6 @@
 const {CakeFlavor, CustomCakeTypes} = require('../models');
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class CakeFlavorController {
     
@@ -26,8 +28,20 @@ class CakeFlavorController {
     }
 
     static async getAllCakeFlavors(req, res) {
+        const { page, limit, offset } = getPagination(req);
+        const { keywords } = req.query;
+      
         try {
-          const cakeFlavors = await CakeFlavor.findAll({
+          const whereClause = {};
+      
+          if (keywords) {
+            whereClause.name_en = {
+              [Op.like]: `%${keywords}%`,
+            };
+          }
+      
+          const { count, rows } = await CakeFlavor.findAndCountAll({
+            where: whereClause,
             include: [
               {
                 model: CustomCakeTypes,
@@ -35,13 +49,26 @@ class CakeFlavorController {
                 attributes: ["id", "name_en", "name_ar"],
               },
             ],
+            limit,
+            offset,
+            order: [["id", "DESC"]],
           });
       
-          return res.status(200).json(cakeFlavors);
+          const pageCount = Math.ceil(count / limit);
+      
+          return res.status(200).json({
+            pagination: {
+              page,
+              limit,
+              total: count,
+              pageCount,
+            },
+            data: rows,
+          });
         } catch (error) {
-            res.status(500).json({message: "Failed to get cake flavors", error: error.message});
+          return res.status(500).json({ message: "Failed to get cake flavors",error: error.message });
         }
-    }
+      }
 
     static async updateCakeFlavorById(req, res) {
         const { id } = req.params;

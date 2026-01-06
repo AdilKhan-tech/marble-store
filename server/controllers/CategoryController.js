@@ -45,6 +45,7 @@ class CategoryController {
             category.slug = slug;
             category.parent_category = parent_category;
             category.display_type = display_type;
+
             await category.save();
             return res.status(200).json({message: "Category updated successfully", category});
         } catch (error) {

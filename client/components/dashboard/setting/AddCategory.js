@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { UpdateCategoriesById, createCategories } from "@/utils/apiRoutes";
 
-const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCategories,}) => {
+const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCategory}) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -15,6 +15,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
     parent_category: "",
     display_type: "",
   });
+
   useEffect(() => {
     if (categoryData) {
       setFormData({
@@ -30,7 +31,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-  // validation
+  
   const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
@@ -40,6 +41,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
     if (!formData.display_type) errors.push("Display Type is required.");
     return errors;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -57,25 +59,27 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
         const response = await axios.put(UpdateCategoriesById(categoryData.id),payload);
         if (response.status === 200 || response.status === 201) {
           toast.success("Category updated successfully!", {autoClose: 1000,onClose: closePopup,});
-          updatedCategories(response.data);
+            onUpdateCategory(response.data);
         }
       } else {
         const response = await axios.post(createCategories, payload);
         if (response.status === 200 || response.status === 201) {
           toast.success("Category created successfully!", {autoClose: 1000,onClose: closePopup,});
-          AddCategory(response.data);
+          onAddCategory(response.data);
         }
       }
     } catch (error) {
       setErrors([error?.response?.data?.message || "Something went wrong!"]);
     }
   };
+
   useEffect(() => {
     if (errors.length > 0) {
       errors.forEach((err) => toast.error(err));
       setErrors([]);
     }
   }, [errors]);
+
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group mt-3">
@@ -92,6 +96,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           }
         />
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Name Arabic
@@ -106,6 +111,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           }
         />
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Slug
@@ -118,6 +124,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
         />
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Parent Category
@@ -138,6 +145,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           <option value="Bonus">Bonus</option>
         </select>
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Display Type
@@ -157,6 +165,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           <option value="Both">Both</option>
         </select>
       </div>
+
       <div className="col-md-12 px-1 mt-2">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           File Attachment
@@ -184,6 +193,7 @@ const AddCategory = ({closePopup, categoryData = null, AddCategory, updatedCateg
           </span>
         </div>
       </div>
+
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"

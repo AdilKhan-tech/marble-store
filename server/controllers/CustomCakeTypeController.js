@@ -1,4 +1,4 @@
-const CustomCakeTypes = require("../models/CustomCakeTypes");
+const CustomCakeTypes = require("../models/CustomCakeType");
 
 class CustomCakeTypesController {
 

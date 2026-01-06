@@ -49,25 +49,25 @@ const Product = sequelize.define(
       },
     },
 
-    Product_category_id: {
+    product_category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isInt: { msg: "Product Category ID must be an integer" },
-        notNull: { msg: "Product Category ID is required" },
+        isInt: { msg: "Product Category must be an integer" },
+        notNull: { msg: "Product Category is required" },
       },
     },
 
-    Product_branch_id: {
+    product_branch_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isInt: { msg: "Branch ID must be an integer" },
-        notNull: { msg: "Branch ID is required" },
+        isInt: { msg: "Branch must be an integer" },
+        notNull: { msg: "Branch is required" },
       },
     },
 
-    Product_tag: {
+    product_tag: {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
@@ -80,39 +80,13 @@ const Product = sequelize.define(
       },
     },
 
-    cookie_box_type_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cookie Box Type ID is required" },
-        isInt: { msg: "Cookie Box Type ID must be a number" },
-      },
-    },
-
-    cookie_box_size_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cookie Box Size ID is required" },
-        isInt: { msg: "Cookie Box Size ID must be a number" },
-      },
-    },
-
-    cookies_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cookie ID is required" },
-        isInt: { msg: "Cookie ID must be a number" },
-      },
-    },
 
     occasions_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notNull: { msg: "Occasion ID is required" },
-        isInt: { msg: "Occasion ID must be a number" },
+        notNull: { msg: "Occasion is required" },
+        isInt: { msg: "Occasion must be a number" },
       },
     },
 
@@ -120,82 +94,11 @@ const Product = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notNull: { msg: "Gender ID is required" },
-        isInt: { msg: "Gender ID must be a number" },
+        notNull: { msg: "Gender is required" },
+        isInt: { msg: "Gender must be a number" },
       },
     },
 
-    icecream_bucket_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Ice Cream Bucket ID is required" },
-        isInt: { msg: "Ice Cream Bucket ID must be a number" },
-      },
-    },
-
-    icecream_addons_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Ice Cream Addon ID is required" },
-        isInt: { msg: "Ice Cream Addon ID must be a number" },
-      },
-    },
-
-    cake_portion_size_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cake Portion Size ID is required" },
-        isInt: { msg: "Cake Portion Size ID must be a number" },
-      },
-    },
-
-    cake_size_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cake Size ID is required" },
-        isInt: { msg: "Cake Size ID must be a number" },
-      },
-    },
-
-    cake_flavor_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Cake Flavor ID is required" },
-        isInt: { msg: "Cake Flavor ID must be a number" },
-      },
-    },
-
-    custom_cake_type_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Custom Cake Type ID is required" },
-        isInt: { msg: "Custom Cake Type ID must be a number" },
-      },
-    },
-
-    custom_cake_size_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Custom Cake Size ID is required" },
-        isInt: { msg: "Custom Cake Size ID must be a number" },
-      },
-    },
-
-    custom_cake_flavor_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Custom Cake Flavor ID is required" },
-        isInt: { msg: "Custom Cake Flavor ID must be a number" },
-      },
-    },
 
     regular_price: {
       type: DataTypes.FLOAT,
@@ -245,6 +148,16 @@ const Product = sequelize.define(
         },
       },
     },
+    created_at:{
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    },
+  updated_at:{
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
   },
   {
     tableName: "products",

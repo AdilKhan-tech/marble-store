@@ -136,9 +136,6 @@ export default function Cookies() {
                   <th onClick={() => handleSort("slug")}>
                     slug<span>{renderSortIcon("slug")}</span>
                   </th>
-                  <th onClick={() => handleSort("sort")}>
-                    sort<span>{renderSortIcon("sort")}</span>
-                  </th>
                   <th onClick={() => handleSort("status")}>
                     status<span>{renderSortIcon("status")}</span>
                   </th>
@@ -152,7 +149,6 @@ export default function Cookies() {
                     <td>{cookie?.name_en}</td>
                     <td>{cookie?.type?.name_en}</td>
                     <td>{cookie?.slug}</td>
-                    <td>{cookie?.sort}</td>
                     <td>
                       <div
                         className={cookie?.status === "active"? "blue-status": "red-status"}>
