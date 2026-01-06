@@ -39,7 +39,7 @@ export default function CakeSizePage() {
 
       setCakeSizes(response.data.data);
       setTotalEntries(response.data.pagination.pagination);
-      setPageCount(response.data.pagination);
+      setPageCount(response.data.pagination.limit);
 
     } catch (error) {
       console.error("Error fetching cake sizes", error);

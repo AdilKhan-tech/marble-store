@@ -466,73 +466,42 @@ table tr:nth-child(even) td {
 .content-contianer{
   margin-top: 100px;
 }
-.pagination-Div {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
+.pagination-Div{
+  display:flex;justify-content:space-between;align-items:center;width:100%;
 }
-.pagination {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  gap: 12px;
+.pagination-Div .pagination{
+  display:flex;
+  gap:10px;
+  align-items:center;
 }
-.page-item {
-  margin: 0 2px;
+.pagination-Div .page-item{list-style:none}
+.pagination-Div .page-link{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:#fff;
+  color:#494949;
+  font-weight:500;
+}
+.pagination-Div .page-item.active .page-link{
+  background:#ff7700;
+  color:#fff;
+  border-color:#ff7700;
+}
+.pagination-Div .page-item.disabled .page-link{
+  opacity:.4;
+  cursor:not-allowed;
+  background:#f3f3f3;
+}
+.pagination-Div .page-link:hover{
+  background:#ff7700;
+  color:#fff;
+}
 
-  border-radius: 8px;
-}
-.page-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #e0e0e000;
-  background-color: #ffffff00;
-  color: #494949 !important;
-  text-decoration: none;
-  cursor: pointer !important;
-  padding: 0;
-  font-size: 14px;
-  border-radius: 6px;
-  opacity: 1;
-  font-weight: 500;
-}
-.page-link.pg-icon {
-  border: 1px solid #e0e0e0;
-}
-.page-item.active {
-  border-radius: 8px;
-}
-.page-item.disabled .page-link,
-.page-link.pg-icon {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background-color: #f8f8f8;
-  width: 20px;
-  height: 20px;
-}
-.page-item.active .page-link,
-.page-item .page-link:not(.pg-icon):hover {
-  background-color: #ff7700;
-  border-color: #ff7700;
-  color: white !important;
-  font-weight: bold;
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  opacity: 1;
-}
-.page-link:not([disabled]):hover {
-  background-color: #f0f0f0;
-}
-.page-link:focus {
-  box-shadow: none;
-}
 select.datatable-selector,
 select.form-select,
 select {
@@ -541,7 +510,7 @@ select {
   font-size: 14px;
   line-height: 20px;
   background: transparent;
-  background-image: url("..//images/arrow-down-fig.svg") !important;
+  /* background-image: url("..//images/arrow-down-fig.svg") !important; */
   background-repeat: no-repeat !important;
   appearance: none;
   margin-bottom: 0 !important;

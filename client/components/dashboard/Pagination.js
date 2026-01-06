@@ -62,7 +62,7 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
                                 if (currentPage > 1) onPageChange(currentPage - 1);
                             }}
                         >
-                            <i className="bi bi-chevron-left"></i>
+                            <i className="bi bi-chevron-left position-absolute"></i>
                         </a>
                     </li>
 
@@ -81,7 +81,7 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
                                 if (currentPage < pageCount) onPageChange(currentPage + 1);
                             }}
                         >
-                            <i className="bi bi-chevron-right"></i>
+                            <i className="bi bi-chevron-right position-absolute"></i>
                         </a>
                     </li>
                 </ul>
