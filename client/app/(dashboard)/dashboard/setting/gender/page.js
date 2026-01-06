@@ -75,7 +75,7 @@ export default function GenderPage() {
   };
 
   return (
-    <section className="" style={{ marginTop: "100px" }}>
+    <section className="content-contianer">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Genders</p>
         <div className="d-flex justify-content-between mt-4">

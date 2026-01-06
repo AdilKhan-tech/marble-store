@@ -133,7 +133,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
   const fetchAllCustomCakeType = async () => {
     try {
       const response = await axios.get(getAllCustomCakeTypes)
-      setCustomCakeTypes(response.data)
+      setCustomCakeTypes(response.data.data)
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -146,7 +146,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+        <label className="form-label text-secondary">
           Name English
         </label>
         <input
@@ -159,7 +159,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+        <label className="form-label text-secondary">
           Name Arabic
         </label>
         <input
@@ -172,20 +172,20 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+        <label className="form-label text-secondary">
           Slug
         </label>
         <input
           name="slug"
           type="text"
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
+          className="form-control text-secondary"
           value={formData.slug} 
           onChange={(e)=>setFormData({...formData,slug:e.target.value})}
         />
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+        <label className="form-label text-secondary">
           Cake Type
         </label>
         <select
@@ -220,7 +220,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
       </div>
 
       <div className="col-md-12 px-1 mt-3">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+        <label className="form-label text-secondary">
           File Attachment
         </label>
         <div className="">

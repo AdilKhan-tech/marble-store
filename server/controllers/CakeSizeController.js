@@ -7,7 +7,7 @@ class CakeSizeController {
 
     static async createCakeSize(req, res) {
         try {
-            const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,symbol,calories,status } = req.body
+            const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,calories,status } = req.body
 
             const image_url = req.file?.path || null;
             
@@ -18,7 +18,6 @@ class CakeSizeController {
                 slug,
                 scoop_size,
                 additional_price,
-                symbol,
                 calories,
                 status,
                 image_url,
@@ -30,47 +29,48 @@ class CakeSizeController {
     }
 
     static async getAllCakeSizes(req, res) {
-        const { page, limit, offset } = getPagination(req);
-        const { keywords } = req.query;
-      
-        try {
-          const whereClause = {};
-      
-          if (keywords) {
-            whereClause.name_en = {
-              [Op.like]: `%${keywords}%`,
-            };
-          }
-      
-          const { count, rows } = await CakeSize.findAndCountAll({
-            where: whereClause,
-            include: [
-              {
-                model: CustomCakeTypes,
-                as: "customCakeType",
-                attributes: ["id", "name_en", "name_ar"],
-              },
-            ],
-            limit,
-            offset,
-            order: [["id", "DESC"]],
-          });
-      
-          const pageCount = Math.ceil(count / limit);
-      
-          return res.status(200).json({
-            pagination: {
-              page,
-              limit,
-              total: count,
-              pageCount,
-            },
-            data: rows,
-          });
-        } catch (error) {
-          return res.status(500).json({ message: "Failed to get cake sizes",error: error.message });
+      const { page, limit, offset } = getPagination(req);
+      const { keywords } = req.query;
+    
+      try {
+        const whereClause = {};
+
+        if (keywords) {
+          whereClause[Op.or] = [
+            { name_en: { [Op.like]: `%${keywords}%` } },
+            { name_ar: { [Op.like]: `%${keywords}%` } },
+          ];
         }
+    
+        const { count, rows } = await CakeSize.findAndCountAll({
+          where: whereClause,
+          include: [
+            {
+              model: CustomCakeTypes,
+              as: "customCakeType",
+              attributes: ["id", "name_en", "name_ar"],
+            },
+          ],
+          limit,
+          offset,
+          order: [["id", "DESC"]],
+        });
+    
+        const pageCount = Math.ceil(count / limit);
+    
+        return res.status(200).json({
+          pagination: {
+            page,
+            limit,
+            total: count,
+            pageCount,
+          },
+          data: rows,
+        });
+      } catch (error) {
+        return res.status(500).json({ message: "Failed to get cake sizes",error: error.message });
       }
+    }
       
       
 
@@ -88,7 +88,6 @@ class CakeSizeController {
                 slug,
                 scoop_size,
                 additional_price,
-                symbol,
                 calories,
                 status
             } = req.body;
@@ -96,16 +95,15 @@ class CakeSizeController {
             const image_url = req.file?.path || cakesizes.image_url;
 
             await cakesizes.update({
-                name_en: name_en ?? cakesizes.name_en,
-                name_ar: name_ar ?? cakesizes.name_ar,
-                custom_cake_type_id: custom_cake_type_id ?? cakesizes.custom_cake_type_id,
-                slug: slug ?? cakesizes.slug,
-                scoop_size: scoop_size ?? cakesizes.scoop_size,
-                additional_price: additional_price ?? cakesizes.additional_price,
-                symbol: symbol ?? cakesizes.symbol,
-                calories: calories ?? cakesizes.calories,
-                status: status ?? cakesizes.status,
-                image_url: image_url
+              name_en: name_en ?? cakesizes.name_en,
+              name_ar: name_ar ?? cakesizes.name_ar,
+              custom_cake_type_id: custom_cake_type_id ?? cakesizes.custom_cake_type_id,
+              slug: slug ?? cakesizes.slug,
+              scoop_size: scoop_size ?? cakesizes.scoop_size,
+              additional_price: additional_price ?? cakesizes.additional_price,
+              calories: calories ?? cakesizes.calories,
+              status: status ?? cakesizes.status,
+              image_url: image_url
             });
     
             return res.status(200).json({

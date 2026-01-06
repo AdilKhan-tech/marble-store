@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import { getAllCustomCakeTypes, deleteCustomCakeTypeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+
 export default function CustomCakeTypePage() {
   
   const {token} = useAxiosConfig();
@@ -17,10 +20,24 @@ export default function CustomCakeTypePage() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(2);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+
   const fetchCustomCakeTypes = async () => {
     try {
-      const response = await axios.get(getAllCustomCakeTypes);
-      setCustomCakeTypes(response.data);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+      }
+      const response = await axios.get(getAllCustomCakeTypes, { params });
+      setCustomCakeTypes(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount)
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
@@ -29,7 +46,7 @@ export default function CustomCakeTypePage() {
   useEffect(() => {
     if (!token) return;
     fetchCustomCakeTypes();
-  }, [token]);
+  }, [currentPage, pageLimit, keywords, token]);
 
   const showOffcanvasAddCustomCakeType = () => {
     setCustomCakeTypeData(null);
@@ -43,6 +60,15 @@ export default function CustomCakeTypePage() {
 
   const closePopup = () => {
     setShowOffcanvas(false);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleDelete = async (customeCakeTypeId) => {
@@ -96,7 +122,7 @@ export default function CustomCakeTypePage() {
 
   return (
     <>
-    <section className='' style={{ marginTop:"100px"}}>
+    <section className='content-contianer'>
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -106,7 +132,7 @@ export default function CustomCakeTypePage() {
               type="text" 
               className="form-control border rounded-start-0 border-start-0" 
               placeholder="Search here..." 
-              style={{height:"46px", width:"300px"}}
+              onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <div style={{marginInlineEnd:"20px"}}>
@@ -128,18 +154,18 @@ export default function CustomCakeTypePage() {
               <thead className=''>
                 <tr className=''>
                   <th onClick={() => handleSort("id")}>
-                    ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
+                    ID <span>{renderSortIcon("id")}</span>
                   </th>
                   <th onClick={() => handleSort("name_en")}>
-                    Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
+                    Name <span>{renderSortIcon("name_en")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
-                    Slug <span className="fs-12 text-secondary">{renderSortIcon("slug")}</span>
+                    Slug <span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
-                    Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
+                    Status <span>{renderSortIcon("status")}</span>
                   </th>
-                  <th className="fw-16 fnt-color">Action</th>
+                  <th>Action</th>
                 </tr>
               </thead>
 
@@ -191,6 +217,20 @@ export default function CustomCakeTypePage() {
         <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
     </>
   )
 }

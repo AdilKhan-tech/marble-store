@@ -39,7 +39,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
   const fetchCustomCakeTypes = async () => {
     try {
       const response = await axios.get(getAllCustomCakeTypes);
-        setCustomCakeTypes(response.data)
+        setCustomCakeTypes(response.data.data)
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -161,22 +161,22 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
   return (
     <form className="component-form" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name English</label>
+        <label className="form-label text-secondary">Name English</label>
         <input 
           name="name_en" 
           type="text" 
-          className="form-control textarea-hover-dark"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.name_en} 
           onChange={handleChange}
         />
       </div>
 
       <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Name Arabic</label>
+        <label className="form-label text-secondary">Name Arabic</label>
         <input 
           name="name_ar" 
           type="text" 
-          className="form-control textarea-hover-dark"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.name_ar} 
           onChange={handleChange}
         />
@@ -203,33 +203,33 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       </div>
 
       <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Slug</label>
+        <label className="form-label text-secondary">Slug</label>
         <input 
           name="slug" 
           type="text" 
-          className="form-control textarea-hover-dark"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.slug} 
           onChange={handleChange}
         />
       </div>
 
       <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Additional Price</label>
+        <label className="form-label text-secondary">Additional Price</label>
         <input 
           name="additional_price" 
           type="text" 
-          className="form-control textarea-hover-dark"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.additional_price} 
           onChange={handleChange}
         />
       </div>
 
       <div className="form-group mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">Symbol</label>
+        <label className="form-label text-secondary">Symbol</label>
         <input 
           name="symbol" 
           type="text" 
-          className="form-control textarea-hover-dark"
+          className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.symbol} 
           onChange={handleChange}
         />
@@ -254,11 +254,11 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       </div>
 
       <div className="col-md-12 px-1 mt-3">
-        <label className="fs-14 fw-bold fnt-color opacity-75 mb-1">File Attachment</label>
+        <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
             type="file" 
-            className="form-control textarea-hover-dark bg-light" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary bg-light" 
             id="fileInput"
             multiple 
             onChange={handleFileChange}
