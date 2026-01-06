@@ -6,7 +6,7 @@ class CategoryController {
         try {
             const { name_en, name_ar, slug, parent_category, display_type } = req.body;
 
-            const image_url = req.files?.[0]?.path || null;
+            const image_url = req.file?.path || null;
 
             const category = await Category.create({
                 name_en,
@@ -26,7 +26,7 @@ class CategoryController {
     static async getAllCategories(req, res) {
         try {
             const categories = await Category.findAll();
-            return res.status(200).json({ categories });
+            return res.status(200).json( categories );
         } catch (error) {
             return res.status(500).json({ message: "Failed to fetch categories", error: error.message });
         }
@@ -44,7 +44,8 @@ class CategoryController {
             category.name_ar = name_ar;
             category.slug = slug;
             category.parent_category = parent_category;
-            category.display_type = display_type,
+            category.display_type = display_type;
+
             await category.save();
             return res.status(200).json({message: "Category updated successfully", category});
         } catch (error) {

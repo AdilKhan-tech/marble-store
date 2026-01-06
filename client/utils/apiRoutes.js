@@ -67,5 +67,22 @@ export const createCustomCakeFlavor = `${host}/cakes/customflavor`
 export const updateCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
 export const deleteCustomCakeFlavorById = (customCakeFlavorId) => `${host}/cakes/customFlavor/${customCakeFlavorId}`
 
+<<<<<<< HEAD
 export const getAllProducts = `${host}/products/`
 export const deleteProductByIdRoute = (productId) => `${host}/products/delete/${productId}`
+=======
+export const getAllProducts = `${host}/products`
+
+export const getAllCategories = `${host}/categories`
+export const createCategories = `${host}/categories/create`
+export const UpdateCategoriesById = (categoryId) => `${host}/categories/update/${categoryId}`
+export const deleteCategoriesById = (categoryId) => `${host}/categories/delete/${categoryId}`
+
+export const getAllIceCreamBuckets = `${host}/icecreams/buckets`
+export const createIceCreamBucket = `${host}/icecreams/buckets`
+export const deleteIceCreamBucketById =(icecreamId)=> `${host}/icecreams/buckets/${icecreamId}`;
+export const updateIceCreamBucketById =(icecreamId)=> `${host}/icecreams/buckets/${icecreamId}`;
+
+export const deleteProductByIdRoute = (productId) => `${host}/products/delete/${productId}`
+
+>>>>>>> main
