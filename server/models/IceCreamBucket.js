@@ -70,15 +70,6 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
     }
   },
 
-  symbol: {
-    type: DataTypes.STRING(10),
-    allowNull: false,
-    defaultValue: "PKR",
-    validate: {
-      notEmpty: { msg: "Currency symbol cannot be empty" },
-    },
-  },
-
   calories: {
     type: DataTypes.INTEGER,
     allowNull: true,

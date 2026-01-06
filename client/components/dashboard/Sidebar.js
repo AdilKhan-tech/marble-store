@@ -177,8 +177,18 @@ export default function SidebarLayout() {
                   >
                     <span className="sidebar-label">Ice Cream Addons</span>
                   </Link>
+                  <Link
+                    href="/dashboard/icecream/iceCreamBucket"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="sidebar-label">Ice Cream Bucket</span>
+                  </Link>
                 </div>
               )}
+
             </li>
 
             <li className="sidebar-menu-item">
@@ -285,6 +295,21 @@ export default function SidebarLayout() {
                     <span className="sidebar-label">Gender</span>
                   </Link>
                 </div>
+            )}
+           {activeSubMenu === "setting" && (
+                <div className="sidebar-submenu ms-3">
+                  <Link
+                    href="/dashboard/setting/categories"
+                    className={`sidebar-submenu-link ${
+                      isActive("/dashboard/setting/categories") ? "active" : ""
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className=""></span>
+                    <span className="sidebar-label">Categories</span>
+                  </Link>
+                </div>
+           
               )}
             </li>
           </ul>

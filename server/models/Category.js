@@ -41,15 +41,13 @@ const Category = sequelize.define("Category",{
       },
     },
   },
-  description: {
-    type: DataTypes.TEXT,
+  parent_category: {
+    type: DataTypes.STRING(100),
     allowNull: true,
-    validate: {
-      len: {
-        args: [0, 500],
-        msg: "Description must not exceed 500 characters",
-      },
-    },
+  },
+  display_type: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
   },
   image_url: {
     type: DataTypes.TEXT,
