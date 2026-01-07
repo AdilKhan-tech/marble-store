@@ -4,6 +4,8 @@ function EntriesPerPageSelector({ pageLimit, onPageLimitChange }) {
     // const translations = useTranslation(langCode, "entriesPerpage");
     return (
       <div className="datatable-dropdown mob-donw ms-2">
+      <div className=" d-flex align-items-center">
+        <span className="me-2 showperpage">Show per page</span>
         <label>
           <select
             className="datatable-selector"
@@ -17,6 +19,7 @@ function EntriesPerPageSelector({ pageLimit, onPageLimitChange }) {
             <option value={200}>200</option>
           </select>
         </label>
+        </div>
       </div>
     );
   }

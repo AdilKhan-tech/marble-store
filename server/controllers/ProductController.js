@@ -1,33 +1,56 @@
-const { Category, Gender, Product, ProductBranch } = require("../models");
+const { Category, Gender, Product, ProductBranch, ProductCategory } = require("../models");
 const Branch = require("../models/Branch");
-
 class ProductController {
 
     static async createProduct(req, res) {
     try {
         const {
-            name_en, name_ar, description,
-            product_category_id, product_branch_id, product_branch_ids,
-            product_tag, occasions_id, genders_id,
-            regular_price, sale_price, tax_status, tax_class
+            name_en,
+            name_ar,
+            description,
+            category_id,
+            product_tag,
+            occasion_id,
+            gender_id,
+            regular_price,
+            sale_price,
+            tax_status,
+            tax_class,
+            branch_ids,
+            category_ids
         } = req.body;
 
         const image_url = req.file?.path || null;
 
         const product = await Product.create({
-            name_en, name_ar, description,
-            product_category_id, product_branch_id,
-            product_tag, occasions_id, genders_id,
-            regular_price, sale_price, tax_status, tax_class,
-            image_url
+            name_en,
+            name_ar,
+            description,
+            category_id,
+            product_tag,
+            occasion_id,
+            gender_id,
+            regular_price,
+            sale_price,
+            tax_status,
+            tax_class,
+            image_url,
         });
 
-        if (Array.isArray(product_branch_ids) && product_branch_ids.length > 0) {
-            const branchesToInsert = product_branch_ids.map(branch_id => ({
+        if (branch_ids && Array.isArray(branch_ids)) {
+            const productBranches = branch_ids.map(branch_id => ({
                 product_id: product.id,
-                branch_id
+                branch_id: branch_id,
             }));
-            await ProductBranch.bulkCreate(branchesToInsert);
+            await ProductBranch.bulkCreate(productBranches);
+        }
+
+        if (category_ids && Array.isArray(category_ids)) {
+            const productCategory = category_ids.map(category_id => ({
+                product_id: product.id,
+                category_id: category_id,
+            }));
+            await ProductCategory.bulkCreate(productCategory);
         }
 
         return res.status(201).json(product);
@@ -35,6 +58,7 @@ class ProductController {
         return res.status(500).json({ message: "Failed to create product", error: error.message });
     }
 }
+
 
     static async getAllProducts (req, res) {
         try{

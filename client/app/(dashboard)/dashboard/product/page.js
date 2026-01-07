@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import {getAllProducts, deleteProductByIdRoute} from "@/utils/apiRoutes"
+import {getAllProductsRoute, deleteProductByIdRoute} from "@/utils/apiRoutes"
 import { ToastContainer, toast } from "react-toastify";
 import useAxiosConfig from '@/hooks/useAxiosConfig';
 import axios from "axios";
@@ -13,9 +13,9 @@ export default function CakeFlavourPage() {
   const [products, setProducts] = useState([]);
   const {token} = useAxiosConfig();
 
-  const fetchAllProduct = async () => {
+  const fetchAllProducts = async () => {
     try {
-      const response = await axios.get(getAllProducts);
+      const response = await axios.get(getAllProductsRoute);
       setProducts(response?.data);
     } catch (error) {
       console.error("Error fetching Products", error);
@@ -24,7 +24,7 @@ export default function CakeFlavourPage() {
 
   useEffect(() => {
     if (!token) return;
-    fetchAllProduct();
+    fetchAllProducts();
   }, [token]);
 
   const handleSort = (field) => {
