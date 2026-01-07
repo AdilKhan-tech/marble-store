@@ -19,7 +19,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     slug: "",
     scoop_size: "",
     additional_price: "",
-    symbol: "",
     calories: "",
     status: "active",
   });
@@ -34,7 +33,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         slug: cakeSizeData.slug || "",
         scoop_size: cakeSizeData.scoop_size || "",
         additional_price: cakeSizeData.additional_price || "",
-        symbol: cakeSizeData.symbol || "",
         calories: cakeSizeData.calories || "",
         status: cakeSizeData.status || "active",
       });
@@ -44,7 +42,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
   const fetchCustomCakeTypes = async () => {
     try {
       const response = await axios.get(getAllCustomCakeTypes);
-      setCustomCakeTypes(response.data)
+      setCustomCakeTypes(response.data.data)
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -73,7 +71,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.symbol) errors.push("Symbol is required.");
     return errors;
   };
 
@@ -164,7 +161,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
+        <label className="form-label text-secondary">Name English</label>
         <input 
           name="name_en" 
           type="text" 
@@ -174,8 +171,8 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         />
       </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
+      <div className="form-group mt-3">
+        <label className="form-label text-secondary">Name Arabic</label>
         <input 
           name="name_ar" 
           type="text" 
@@ -185,39 +182,42 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         />
       </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Cake Type
-        </label>
-        <select
-          name="custom_cake_type_id"
-          className="form-select textarea-hover-dark text-secondary"
-          value={formData.custom_cake_type_id}
-          onChange={handleChange}
-        >
-          <option value="">Select Cake Type</option>
 
-          {customCakeTypes.map((type) => (
-            <option key={type.id} value={type.id}>
-              {type.name_en}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="form-group mt-4">
+          <label className="form-label text-secondary">
+            Cake Type
+          </label>
+          <select
+            name="custom_cake_type_id"
+            className="form-select textarea-hover-dark text-secondary"
+            value={formData.custom_cake_type_id}
+            onChange={handleChange}
+          >
+            <option value="">Select Cake Type</option>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
-        <input 
-          name="slug" 
-          type="text" 
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} 
-          onChange={handleChange}
-        />
-      </div>
+            {customCakeTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name_en}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Scoop Size</label>
+
+        <div className="row">
+        <div className="form-group mt-4 col-md-6">
+          <label className="form-label text-secondary">Slug</label>
+          <input 
+            name="slug" 
+            type="text" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary"
+            value={formData.slug} 
+            onChange={handleChange}
+          />
+        </div>
+
+      <div className="form-group mt-4 col-md-6">
+        <label className="form-label text-secondary">Scoop Size</label>
         <input 
           name="scoop_size" 
           type="text" 
@@ -227,36 +227,29 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         />
       </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Additional Price</label>
-        <input 
-          name="additional_price" 
-          type="text" 
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.additional_price} onChange={handleChange}
-        />
       </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Symbol</label>
-        <input 
-          name="symbol" 
-          type="text" 
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.symbol} 
-          onChange={handleChange}
-        />
-      </div>
+      <div className="row">
+        <div className="form-group mt-4 col-md-6">
+          <label className="form-label text-secondary">Additional Price</label>
+          <input 
+            name="additional_price" 
+            type="text" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary"
+            value={formData.additional_price} onChange={handleChange}
+          />
+        </div>
 
-      <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Calories</label>
-        <input 
-          name="calories" 
-          type="text" 
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.calories} 
-          onChange={handleChange}
-        />
+        <div className="form-group mt-4 col-md-6">
+          <label className="form-label text-secondary">Calories</label>
+          <input 
+            name="calories" 
+            type="text" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary"
+            value={formData.calories} 
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
       <div className="col-md-12 mt-3">
@@ -278,8 +271,8 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         </div>
       </div>
       
-      <div className="col-md-12 px-1 mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
+      <div className="col-md-12 px-1 mt-4">
+        <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
             type="file" 
@@ -288,7 +281,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             multiple onChange={handleFileChange}
           />
         </div>
-        <ul className="mt-2">
+        <ul className="mt-4">
           {selectedFiles.map((file, index) => (
             <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File Size: {file.size} KB</span></li>
           ))}

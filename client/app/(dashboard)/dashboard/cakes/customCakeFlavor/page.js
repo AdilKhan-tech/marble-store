@@ -10,24 +10,58 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+
 function page() {
+  const { token } = useAxiosConfig();
   const [customCakeFlavors, setCustomCakeFlavors] = useState([]);
   const [customCakeFlavorData, setCustomCakeFlavorData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const { token } = useAxiosConfig();
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(2);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+
 
   const fetchAllCustomCakeFlavor = async () => {
     try {
-      const response = await axios.get(getAllCustomCakeFlavor);
-      setCustomCakeFlavors(response.data);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+      }
+      const response = await axios.get(getAllCustomCakeFlavor, { params });
+      setCustomCakeFlavors(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount)
     } catch (error) {
       console.error("Error fetching Custom Cake Flavor", error);
     }
   };
+
   useEffect(() => {
     if (!token) return;
     fetchAllCustomCakeFlavor();
-  }, [token]);
+  }, [currentPage, pageLimit, keywords, token]);
+
+  const closePopup = () => {
+    setShowOffcanvas(false);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const handleDelete = async (customCakeFlavorId) => {
     try {
@@ -68,10 +102,6 @@ function page() {
     setShowOffcanvas(true);
   };
 
-  const closePopup = () => {
-    setShowOffcanvas(false);
-  };
-
   const addCustomCakeFlavor = (newCustomCakeFlavor) => {
     setCustomCakeFlavors(prev => [newCustomCakeFlavor, ...prev]);
     setShowOffcanvas(false);
@@ -85,8 +115,21 @@ function page() {
     );
     setShowOffcanvas(false);
   };
+
+  const handleSort = (field) => {
+    const newOrder =
+      sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+
   return (
-    <section style={{ marginTop: "100px" }}>
+    <>
+    <section className='content-contianer'>
       <div className="">
         <p className="pagetitle mb-0 tnt-color">Custom Cake Flavor</p>
         <div className="d-flex justify-content-between mt-4">
@@ -95,7 +138,9 @@ function page() {
             <input
               type="text"
               className="form-control form-control-lg px-5 text-dark-custom"
-              placeholder="Search here..."/>
+              placeholder="Search here..."
+              onChange={(e) => setKeywords(e.target.value)}
+            />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
             <button
@@ -115,7 +160,9 @@ function page() {
             <table className="table datatable datatable-table">
               <thead>
                 <tr className="">
-                  <th>Id</th>
+                  <th onClick={() => handleSort("id")}>
+                    Id<span>{renderSortIcon("id")}</span>
+                  </th>
                   <th>Name</th>
                   <th>Slug</th>
                   <th>Cake Type</th>
@@ -183,6 +230,21 @@ function page() {
         <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
   );
 }
 

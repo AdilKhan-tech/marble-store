@@ -65,17 +65,6 @@ const CakeSize = sequelize.define("CakeSize", {
     defaultValue: 0,
   },
 
-  symbol: {
-    type: DataTypes.STRING(55),
-    allowNull: true,
-    validate: {
-      len: {
-        args: [0, 55],
-        msg: "Symbol must be less than 55 characters",
-      },
-    }
-  },
-
   calories: {
     type: DataTypes.STRING(55),
     allowNull: true,

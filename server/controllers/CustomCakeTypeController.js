@@ -1,4 +1,6 @@
 const CustomCakeTypes = require("../models/CustomCakeType");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class CustomCakeTypesController {
 
@@ -26,15 +28,44 @@ class CustomCakeTypesController {
   }
 
   static async getAllCustomCakeTypes(req, res) {
+    const { page, limit, offset } = getPagination(req);
+    const { keywords } = req.query;
     try {
-      const customcaketypes = await CustomCakeTypes.findAll();
+      const whereClause = {};
 
-      return res.status(200).json(customcaketypes);
+      if (keywords) {
+        whereClause[Op.or] = [
+          { name_en: { [Op.like]: `%${keywords}%` } },
+          { name_ar: { [Op.like]: `%${keywords}%` } },
+        ];
+      }
 
+      const { count, rows } = await CustomCakeTypes.findAndCountAll({
+        where: whereClause,
+        limit,
+        offset,
+        order: [["id", "DESC"]],
+      });
+
+      const pageCount = Math.ceil(count / limit);
+
+      return res.status(200).json({
+        pagination: {
+          page,
+          limit,
+          total: count,
+          pageCount,
+        },
+        data: rows,
+      });
     } catch (error) {
-      return res.status(500).json({message: "Failed to retrieve custom cake types",error: error.message,});
+      return res.status(500).json({
+        message: "Failed to retrieve custom cake types",
+        error: error.message,
+      });
     }
   }
+
 
   static async updateCustomCakeTypeById(req, res) {
     const { id } = req.params;

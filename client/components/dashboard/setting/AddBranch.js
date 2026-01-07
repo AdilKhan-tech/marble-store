@@ -102,7 +102,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
     return (
         <form className="mt-0" onSubmit={handleSubmit}>
         <div className="form-group">
-            <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
+            <label className="form-label text-secondary">Name English</label>
             <input 
                 name="name_en" 
                 type="text" 
@@ -113,7 +113,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
+            <label className="form-label text-secondary">Name Arabic</label>
             <input 
                 name="name_ar" 
                 type="text" 
@@ -124,7 +124,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
+            <label className="form-label text-secondary">Slug</label>
             <input 
                 name="slug" 
                 type="text" 
@@ -135,7 +135,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">City</label>
+            <label className="form-label text-secondary">City</label>
             <input
                 name="city"
                 type="text"
@@ -146,7 +146,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-secondary">Address</label>
+        <label className="form-label text-secondary">Address</label>
         <textarea
             name="address"
             rows="2"
@@ -157,7 +157,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">Latitude</label>
+            <label className="form-label text-secondary">Latitude</label>
             <input
                 name="latitude"
                 type="number"
@@ -169,7 +169,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">Longitude</label>
+            <label className="form-label text-secondary">Longitude</label>
             <input
                 name="longitude"
                 type="number"
@@ -181,7 +181,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">Number</label>
+            <label className="form-label text-secondary">Number</label>
             <input
                 name="number"
                 type="text"
@@ -192,7 +192,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">Timing</label>
+            <label className="form-label text-secondary">Timing</label>
             <input
                 name="timing"
                 type="text"
@@ -204,7 +204,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-2">
-            <label className="form-label fs-14 fw-bold text-secondary">Branch Store Id</label>
+            <label className="form-label text-secondary">Branch Store Id</label>
             <input
                 name="branch_store_id"
                 type="number"
@@ -215,7 +215,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         </div>
 
         <div className="form-group mt-3">
-            <label className="form-label fs-14 fw-bold text-secondary">
+            <label className="form-label text-secondary">
                 Status
             </label>
             <select

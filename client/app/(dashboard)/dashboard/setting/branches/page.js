@@ -93,7 +93,7 @@ export default function BranchPage() {
   };
 
   return (
-    <section className="" style={{ marginTop: "100px" }}>
+    <section className="content-contianer">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Branches</p>
         <div className="d-flex justify-content-between mt-4">
@@ -156,13 +156,13 @@ export default function BranchPage() {
                     <td>
                       <div className="d-flex gap-1">
                         <button
-                          className="btn btn-sm btn-light p-2"
+                          className="action-btn"
                           onClick={() => showOffcanvasOnEditBranch(branch)}
                         >
                           <i className="bi bi-pencil text-primary"></i>
                         </button>
                         <button
-                          className="btn btn-sm btn-light p-2"
+                          className="action-btn"
                           onClick={() => showDeleteConfirmation(branch.id)}
                         >
                           <i className="bi bi-trash3 text-danger"></i>

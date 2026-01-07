@@ -35,9 +35,10 @@ class CakeFlavorController {
           const whereClause = {};
       
           if (keywords) {
-            whereClause.name_en = {
-              [Op.like]: `%${keywords}%`,
-            };
+            whereClause[Op.or] = [
+              { name_en: { [Op.like]: `%${keywords}%` } },
+              { name_ar: { [Op.like]: `%${keywords}%` } },
+            ];
           }
       
           const { count, rows } = await CakeFlavor.findAndCountAll({

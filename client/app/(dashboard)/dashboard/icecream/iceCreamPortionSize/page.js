@@ -82,17 +82,16 @@ export default function IceCreamPortionSizePage() {
 
   return (
     <>
-      <section className="" style={{ marginTop: "100px" }}>
+      <section className="content-contianer">
         <div className="">
           <p className="pagetitle fnt-color">IceCream Sizes</p>
           <div className="d-flex justify-content-between mt-4">
             <div className="d-flex">
-              <i className="bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0"></i>
+              <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
-                className="form-control border rounded-start-0 border-start-0"
+                className="form-control form-control-lg px-5 text-dark-custom"
                 placeholder="Search here..."
-                style={{ height: "46px", width: "300px" }}
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>

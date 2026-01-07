@@ -144,7 +144,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label text-dark-custom text-secondary">Slug</label>
+        <label className="form-label text-secondary">Slug</label>
         <input
           name="slug" 
           type="text"
@@ -155,7 +155,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label text-dark-custom text-secondary">Sort</label>
+        <label className="form-label text-secondary">Sort</label>
         <input
           name="sort" 
           type="number"
@@ -166,7 +166,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       </div>
 
       <div className="col-md-12 mt-3">
-        <label className="form-label text-dark-custom text-secondary">Status</label>
+        <label className="form-label text-secondary">Status</label>
         <div className="form-check form-switch m-3">
           <input 
             className="form-check-input fs-4" 
@@ -185,7 +185,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       </div>
       
       <div className="col-md-12 px-1 mt-2">
-        <label className="form-label text-dark-custom text-secondary">File Attachment</label>
+        <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
             type="file" 

@@ -455,8 +455,8 @@ table tr:nth-child(even) td {
 .form-label {
   display: flex;
   align-items: center;
-  color: var(--Color, rgba(73, 73, 73, 1)) !important;
-  font-size: 13px;
+  /* color: var(--Color, rgba(73, 73, 73, 1)) !important; */
+  font-size: 15px;
   font-weight: 600;
 }
 .image-fluid {

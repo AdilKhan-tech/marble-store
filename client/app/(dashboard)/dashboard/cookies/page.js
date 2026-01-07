@@ -93,7 +93,7 @@ export default function Cookies() {
   };
 
   return (
-    <section style={{ marginTop: "100px" }}>
+    <section className="content-contianer">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
         <div className="d-flex justify-content-between mt-4">

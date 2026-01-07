@@ -38,8 +38,8 @@ export default function CakeSizePage() {
       const response = await axios.get(getAllCakesSizes, { params });
 
       setCakeSizes(response.data.data);
-      setTotalEntries(response.data.pagination.pagination);
-      setPageCount(response.data.pagination.limit);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
 
     } catch (error) {
       console.error("Error fetching cake sizes", error);
@@ -70,6 +70,7 @@ export default function CakeSizePage() {
     setPageLimit(newLimit);
     setCurrentPage(1);
   };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -123,7 +124,7 @@ export default function CakeSizePage() {
 
   return (
     <>
-    <section className='content-container' style={{ marginTop:"100px"}}>
+    <section className='content-contianer'>
       <div className=""> 
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -133,7 +134,6 @@ export default function CakeSizePage() {
               type="text" 
               className="form-control form-control-lg px-5 text-dark-custom" 
               placeholder="Search here..." 
-              style={{height:"46px", width:"300px"}}
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
@@ -156,24 +156,24 @@ export default function CakeSizePage() {
                 <thead className="">
                   <tr className=''>
                     <th onClick={() => handleSort("id")}>
-                      ID <span className="fs-12 text-secondary">{renderSortIcon("id")}</span>
+                      ID <span>{renderSortIcon("id")}</span>
                     </th>
                     <th onClick={() => handleSort("name_en")}>
-                      Name <span className="fs-12 text-secondary">{renderSortIcon("name_en")}</span>
+                      Name <span>{renderSortIcon("name_en")}</span>
                     </th>
                     <th onClick={() => handleSort("custom_cake_type_id")}>
-                      Cake Type <span className="fs-12 text-secondary">{renderSortIcon("custom_cake_type_id")}</span>
+                      Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
                     </th>
                     <th onClick={() => handleSort("scoop_size")}>
-                      Scope <span className="fs-12 text-secondary">{renderSortIcon("scoop_size")}</span>
+                      Scope <span>{renderSortIcon("scoop_size")}</span>
                     </th>
                     <th onClick={() => handleSort("additional_price")}>
-                      Additional Price <span className="fs-12 text-secondary">{renderSortIcon("additional_price")}</span>
+                      Additional Price <span>{renderSortIcon("additional_price")}</span>
                     </th>
                     <th onClick={() => handleSort("status")}>
-                      Status <span className="fs-12 text-secondary">{renderSortIcon("status")}</span>
+                      Status <span>{renderSortIcon("status")}</span>
                     </th>
-                    <th className="">Action</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
 

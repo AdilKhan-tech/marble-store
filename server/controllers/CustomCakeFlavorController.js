@@ -1,4 +1,6 @@
 const { CustomCakeFlavor, CustomCakeTypes} = require("../models");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class CustomCakeFlavorController {
 
@@ -23,19 +25,46 @@ class CustomCakeFlavorController {
   }
 
   static async getAllCustomCakeFlavor(req, res) {
+    const { page, limit, offset } = getPagination(req);
+    const { keywords } = req.query;
+  
     try {
-      const customCakeFlavor = await CustomCakeFlavor.findAll({
+      const whereClause = {};
+  
+      if (keywords) {
+        whereClause[Op.or] = [
+          { name_en: { [Op.like]: `%${keywords}%` } },
+          { name_ar: { [Op.like]: `%${keywords}%` } },
+        ];
+      }
+  
+      const { count, rows } = await CustomCakeFlavor.findAndCountAll({
+        where: whereClause,
         include: [
-              {
-                model: CustomCakeTypes,
-                as: "customCakeType",
-                attributes: ["id", "name_en", "name_ar"],
-              },
-            ],
+          {
+            model: CustomCakeTypes,
+            as: "customCakeType",
+            attributes: ["id", "name_en", "name_ar"],
+          },
+        ],
+        limit,
+        offset,
+        order: [["id", "DESC"]],
       });
-      return res.status(200).json(customCakeFlavor);
+  
+      const pageCount = Math.ceil(count / limit);
+  
+      return res.status(200).json({
+        pagination: {
+          page,
+          limit,
+          total: count,
+          pageCount,
+        },
+        data: rows,
+      });
     } catch (error) {
-      return res.status(500).json({message: "Failed to get Custom Cake Flavor",error: error.message,});
+      return res.status(500).json({ message: "Failed to get Custom Cake Flavor",error: error.message });
     }
   }
 

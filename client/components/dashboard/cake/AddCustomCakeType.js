@@ -109,7 +109,7 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name English</label>
+        <label className="form-label text-secondary">Name English</label>
         <input 
           name="name_en" 
           type="text" 
@@ -120,7 +120,7 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Name Arabic</label>
+        <label className="form-label text-secondary">Name Arabic</label>
         <input 
           name="name_ar" 
           type="text" 
@@ -131,7 +131,7 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       </div>
 
       <div className="form-group mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">Slug</label>
+        <label className="form-label text-secondary">Slug</label>
         <input 
           name="slug" 
           type="text" 
@@ -161,7 +161,7 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       </div>
       
       <div className="col-md-12 px-1 mt-2">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">File Attachment</label>
+        <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
             type="file" 
