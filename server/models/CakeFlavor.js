@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const CakeFlavor = sequelize.define('CakeFlavor', {
-
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -76,20 +75,8 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
 
     },
     image_url: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(255),
         allowNull: true,
-        validate: {
-            isValid(value) {
-              if (!value) return;
-        
-              const isUrl = /^https?:\/\/.+/.test(value);
-              const isLocalPath = /^uploads\/.+/.test(value);
-        
-              if (!isUrl && !isLocalPath) {
-                throw new Error("Image must be a valid URL or a local upload path");
-              }
-            },
-        },
     },
     created_at: {
         type: DataTypes.DATE,

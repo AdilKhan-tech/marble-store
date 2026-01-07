@@ -17,7 +17,7 @@ export default function IceCreamBucketPage() {
   const fetchAllIceCreamBucket = async () => {
     try {
       const response = await axios.get(getAllIceCreamBuckets);
-      setIceCreamBucket(response.data.iceCreamBucket);
+      setIceCreamBucket(response.data.data);
     } catch (error) {
       console.error("Error fetching Ice Cream Buckets", error);
     }

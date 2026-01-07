@@ -18,7 +18,7 @@ export default function IceCreamAddon () {
   const fetchIceCreamAddon = async () => {
     try {
       const response = await axios.get(getIcecreamAddons);
-      setIceCreamAddons(response.data)
+      setIceCreamAddons(response.data.data)
     } catch (error) {
       console.error("Error fetching icecream Addon", error);
     }

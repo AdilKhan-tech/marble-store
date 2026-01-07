@@ -19,7 +19,7 @@ export default function BranchPage() {
   const fetchBranches = async () => {
     try {
       const response = await axios.get(getAllBranches);
-      setBranches(response.data);
+      setBranches(response.data.data);
     } catch (error) {
       console.error("Error fetching cake sizes", error);
     }

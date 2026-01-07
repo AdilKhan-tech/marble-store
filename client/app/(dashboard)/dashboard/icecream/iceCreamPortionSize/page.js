@@ -17,7 +17,7 @@ export default function IceCreamPortionSizePage() {
   const fetchIceCreamPortionSizes = async () => {
     try {
       const response = await axios.get(getAllIceCreamPortionSizes);
-      setIceCreamPortionSizes(response.data);
+      setIceCreamPortionSizes(response.data.data);
     } catch (error) {
       console.error("Error fetching icecream Portion Sizes", error);
     }

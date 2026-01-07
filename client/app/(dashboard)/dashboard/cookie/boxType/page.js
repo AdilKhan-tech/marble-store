@@ -20,7 +20,7 @@ export default function CookieBoxTypePage() {
 const fetchCookieBoxTypes = async () => {
   try {
     const response = await axios.get(getCookieBoxTypes)
-    setCookieBoxType(response?.data);
+    setCookieBoxType(response?.data?.data);
   }catch (error){
     console.error("Error fetching Cookie Box Types", error);
   }

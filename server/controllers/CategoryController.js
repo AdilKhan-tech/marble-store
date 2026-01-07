@@ -1,4 +1,6 @@
 const Category = require("../models/Category");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class CategoryController {
 
@@ -24,11 +26,54 @@ class CategoryController {
     }
 
     static async getAllCategories(req, res) {
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
+
         try {
-            const categories = await Category.findAll();
-            return res.status(200).json( categories );
+            const whereClause = {};
+
+            if (keywords) {
+                whereClause[Op.or] = [
+                    { name_en: { [Op.like]: `%${keywords}%` } },
+                    { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
+
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "slug",
+                "display_type",
+                "parent_category",
+            ];
+
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+            const { count, rows } = await Category.findAndCountAll({
+                where: whereClause,
+                limit,
+                offset,
+                order: [[finalSortField, finalSortOrder]],
+            });
+
+            const pageCount = Math.ceil(count / limit);
+
+            return res.status(200).json({
+                pagination: {
+                    page,
+                    limit,
+                    total: count,
+                    pageCount,
+                },
+                data: rows,
+            });
+
         } catch (error) {
-            return res.status(500).json({ message: "Failed to fetch categories", error: error.message });
+            return res.status(500).json({
+                message: "Failed to fetch categories",
+                error: error.message
+            });
         }
     }
 

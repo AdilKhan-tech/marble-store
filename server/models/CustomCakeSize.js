@@ -94,20 +94,8 @@ const CustomCakeSize = sequelize.define(
       },
     },
     image_url: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: true,
-      validate: {
-        isValid(value) {
-          if (!value) return;
-
-          const isUrl = /^https?:\/\/.+/.test(value);
-          const isLocalPath = /^uploads\/.+/.test(value);
-
-          if (!isUrl && !isLocalPath) {
-            throw new Error("Image must be a valid URL or a local upload path");
-          }
-        },
-      },
     },
     created_at: {
       type: DataTypes.DATE,

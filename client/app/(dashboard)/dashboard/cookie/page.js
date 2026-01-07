@@ -19,7 +19,7 @@ export default function Cookies() {
   const fetchCookies = async () => {
     try {
       const response = await axios.get(getAllCookies);
-      setCookies(response?.data);
+      setCookies(response?.data?.data);
     } catch (error) {
       console.error("Error fetching Cookie", error);
     }

@@ -29,26 +29,37 @@ class CustomCakeTypesController {
 
   static async getAllCustomCakeTypes(req, res) {
     const { page, limit, offset } = getPagination(req);
-    const { keywords } = req.query;
+    const { keywords, sortField, sortOrder } = req.query;
+  
     try {
       const whereClause = {};
-
+  
       if (keywords) {
         whereClause[Op.or] = [
           { name_en: { [Op.like]: `%${keywords}%` } },
           { name_ar: { [Op.like]: `%${keywords}%` } },
         ];
       }
-
+  
+      const allowedSortFields = [
+        "id",
+        "name_en",
+        "name_ar",
+        "status",
+      ];
+  
+      const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+  
       const { count, rows } = await CustomCakeTypes.findAndCountAll({
         where: whereClause,
         limit,
         offset,
-        order: [["id", "DESC"]],
+        order: [[finalSortField, finalSortOrder]],
       });
-
+  
       const pageCount = Math.ceil(count / limit);
-
+  
       return res.status(200).json({
         pagination: {
           page,
@@ -65,6 +76,7 @@ class CustomCakeTypesController {
       });
     }
   }
+  
 
 
   static async updateCustomCakeTypeById(req, res) {

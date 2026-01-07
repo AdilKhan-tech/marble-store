@@ -1,14 +1,16 @@
-const CookiesBoxTypes = require('../models/CookiesBoxTypes');
+const CookieBoxType = require('../models/CookieBoxType');
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
-class CookiesTypesController {
+class CookieBoxTypeController {
 
-    static async createCookieType (req, res){
+    static async createCookieBoxType (req, res){
         try {
             const {name_en, name_ar, slug, sort, status} = req.body;
 
             const image_url = req.file?.path || null;
 
-            const cookiesTypes = await CookiesBoxTypes.create({
+            const cookiesTypes = await CookieBoxType.create({
                 name_en,
                 name_ar,
                 slug,
@@ -26,21 +28,61 @@ class CookiesTypesController {
         }
     }
 
-    static async getAllCookiesTypes (req, res) {
+    static async getAllCookieBoxTypes(req, res) {
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
+
         try {
-            const cookiesTypes = await CookiesBoxTypes.findAll();
+            const whereClause = {};
 
-            return res.status(200).json(cookiesTypes);
+            if (keywords) {
+                whereClause[Op.or] = [
+                    { name_en: { [Op.like]: `%${keywords}%` } },
+                    { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
 
-        } catch(error) {
-            res.status(500).json({message: "Failed to get Cookies Types", error: error.message});
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "sort",
+                "status",
+            ];
+
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+            const { count, rows } = await CookieBoxType.findAndCountAll({
+                where: whereClause,
+                limit,
+                offset,
+                order: [[finalSortField, finalSortOrder]],
+            });
+
+            const pageCount = Math.ceil(count / limit);
+
+            return res.status(200).json({
+                pagination: {
+                    page,
+                    limit,
+                    total: count,
+                    pageCount,
+                },
+                data: rows,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Failed to fetch Cookies Types",
+                error: error.message
+            });
         }
     }
 
-    static async updateCookieTypeById(req, res) {
+    static async updateCookieBoxTypeById(req, res) {
         const { id } = req.params;
         try {
-            const cookiesTypes = await CookiesBoxTypes.findByPk(id);
+            const cookiesTypes = await CookieBoxType.findByPk(id);
             if (!cookiesTypes) {
                 return res.status(404).json({ message: "Cookies Types not found" });
             }
@@ -65,11 +107,11 @@ class CookiesTypesController {
         }
     }
 
-    static async deleteCookieTypeById(req, res) {
+    static async deleteCookieBoxTypeById(req, res) {
         try {
             const { id } = req.params;
     
-            const cookiesTypes = await CookiesBoxTypes.findByPk(id);
+            const cookiesTypes = await CookieBoxType.findByPk(id);
     
             if (!cookiesTypes) {
                 return res.status(404).json({
@@ -102,4 +144,4 @@ class CookiesTypesController {
     }
     
 }
-module.exports = CookiesTypesController;    
+module.exports = CookieBoxTypeController;    
