@@ -90,7 +90,7 @@ function Occasions() {
     }
   };
   return (
-    <section className="content-contianer">
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Occasions</p>
         <div className="d-flex justify-content-between mt-4">
@@ -138,7 +138,7 @@ function Occasions() {
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button className="action-btn" onClick={() => showDeleteConfirmation(occasion.id)}>
                           <i className="bi bi-trash3 text-danger"></i>

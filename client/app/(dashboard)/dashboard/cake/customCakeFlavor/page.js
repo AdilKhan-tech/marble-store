@@ -23,7 +23,7 @@ function page() {
   
   // PAGINATION STATES 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(2);
+  const [pageLimit, setPageLimit] = useState(25);
   const [keywords, setKeywords] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -129,7 +129,7 @@ function page() {
 
   return (
     <>
-    <section className='content-contianer'>
+    <section className='mt-10'>
       <div className="">
         <p className="pagetitle mb-0 tnt-color">Custom Cake Flavor</p>
         <div className="d-flex justify-content-between mt-4">
@@ -137,14 +137,14 @@ function page() {
             <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
-              className="form-control form-control-lg px-5 text-dark-custom"
+              className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
             <button
-              className="btn org-btn w-100 py-2 px-4 rounded-3"
+              className="btn-orange"
               onClick={showOffcanvasOnAddCustomCakeFlavor}
               role="button">
               <i className="bi bi-plus-circle ms-1"></i>
@@ -163,11 +163,19 @@ function page() {
                   <th onClick={() => handleSort("id")}>
                     Id<span>{renderSortIcon("id")}</span>
                   </th>
-                  <th>Name</th>
-                  <th>Slug</th>
-                  <th>Cake Type</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th onClick={() => handleSort("name_en")}>
+                  Name <span>{renderSortIcon("name_en")}</span>
+                  </th>
+                  <th onClick={() => handleSort("slug")}>
+                  Slug <span>{renderSortIcon("slug")}</span>
+                  </th>
+                  <th onClick={() => handleSort("custom_cake_type_id")}>
+                  Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
+                  </th>
+                  <th onClick={() => handleSort("status")}>
+                  Status <span>{renderSortIcon("status")}</span>
+                  </th>
+                  <th onClick={() => handleSort("id")}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -188,7 +196,7 @@ function page() {
                         <button
                           className="action-btn"
                           onClick={() =>showOffcanvasOnEditCustomCakeFlavor(customCakeFlavor)}>
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
                           className="action-btn"

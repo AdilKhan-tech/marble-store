@@ -99,7 +99,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label text-secondary">
+        <label className="form-label text-secondary mb-1">
           Name English
         </label>
         <input
@@ -111,8 +111,8 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label text-secondary">
+      <div className="form-group mt-3">
+        <label className="form-label text-secondary mb-1">
           Name Arabic
         </label>
         <input
@@ -124,8 +124,8 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label text-secondary">
+      <div className="form-group mt-3">
+        <label className="form-label text-secondary mb-1">
           Select Icecream Bucket
         </label>
         <select
@@ -153,8 +153,8 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         </select>
       </div>
 
-      <div className="form-group">
-        <label className="form-label text-secondary">
+      <div className="form-group mt-3">
+        <label className="form-label text-secondary mb-1">
           Slug
         </label>
         <input
@@ -166,8 +166,10 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label text-secondary">
+      <div className="row">
+
+      <div className="form-group col-md-6 mt-3">
+        <label className="form-label text-secondary mb-1">
           Additional Price
         </label>
         <input
@@ -179,8 +181,8 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         />
       </div>
 
-      <div className="form-group">
-        <label className="form-label text-secondary">
+      <div className="form-group col-md-6 mt-3">
+        <label className="form-label text-secondary mb-1">
           Calories
         </label>
         <input
@@ -192,7 +194,10 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         />
       </div>
 
+      </div>
+
       <div className="col-md-12 mt-3">
+      <label className="form-label text-secondary mb-1">Status</label>
         <div className="form-check form-switch">
           <input
             className="form-check-input"
@@ -214,7 +219,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       </div>
 
       <div className="col-md-12 px-1 mt-2">
-        <label className="form-label text-secondary">
+        <label className="form-label text-secondary mb-1">
           File Attachment
         </label>
         <div className="">

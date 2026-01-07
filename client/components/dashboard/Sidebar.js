@@ -102,36 +102,36 @@ export default function SidebarLayout() {
               {activeSubMenu === "cakes" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/cakes/size"
+                    href="/dashboard/cake/cakeSize"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cakes/size") ? "active" : ""
+                      isActive("/dashboard/cake/cakeSize") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Cake Size</span>
                   </Link>
                   <Link
-                    href="/dashboard/cakes/flavour"
+                    href="/dashboard/cake/cakeFlavour"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cakes/flavour") ? "active" : ""
+                      isActive("/dashboard/cake/cakeFlavour") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Cake Flavour</span>
                   </Link>
                   <Link
-                    href="/dashboard/cakes/customCakeType"
+                    href="/dashboard/cake/customCakeType"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cakes/customCakeType") ? "active" : ""
+                      isActive("/dashboard/cake/customCakeType") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Custom Cake Type</span>
                   </Link>
                   <Link
-                    href="/dashboard/cakes/customCakeFlavor"
+                    href="/dashboard/cake/customCakeFlavor"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cakes/customCakeFlavor") ? "active" : ""
+                      isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >

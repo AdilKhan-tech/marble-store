@@ -75,7 +75,7 @@ export default function GenderPage() {
   };
 
   return (
-    <section className="content-contianer">
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Genders</p>
         <div className="d-flex justify-content-between mt-4">
@@ -126,7 +126,7 @@ export default function GenderPage() {
                           className="action-btn"
                           onClick={() => showOffcanvasOnEditGender(gender)}
                         >
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
                           className="action-btn"

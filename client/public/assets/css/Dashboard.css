@@ -63,9 +63,6 @@ body * {
   font-size: 24px;
   font-weight: bold;
 }
-.bg-brown-light{
-  background-color: rgba(78, 69, 68, 0.473);
-}
 .footer{
   margin-left: 260px;
   width: calc(100% - 260px);
@@ -97,31 +94,33 @@ body * {
   margin-right: -20px;
 }
 .org-btn {
-  background: #ff7900 !important;
-  color: white !important;
-  font-size: 14px !important;
-  font-weight: 400;
-  border: none !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  place-self: flex-end;
-  gap: 8px;
-  height: 43px;
+  width: 160px;
+  height: 36px;
+  border-radius: 10px;
+  padding: 2px 4px;
+  gap: 10px;
+  background: rgba(255, 121, 0, 1);
+  opacity: 1;
+  border: none;
+  color: white;
+  font-size: 14px;
 }
 .org-btn:hover {
-  background: #fad1ac !important;
-  color: #ff7900 !important;
-  transition: all 0.5s ease;
-  height: 43px;
+  background: rgba(230, 110, 0, 1);
 }
 .cancle-btn{
   background-color: #ffffff;
+  width: 160px;
+  height: 36px;
+  border: 1px solid rgb(160, 160, 160);
+  padding: 2px 4px;
+  opacity: 1;
+  font-size: 14px;
 }
 .cancle-btn:hover{
-  background-color: #ff6e21 opacity(0.8);
-  border-color: #ff6e21 !important;
-  color: #ff6e21 !important;
+  border: 1px solid #ff6e21;
+  color: #ff6e21;
+  background: #ff6e21 opacity(0.8);
   transition: all 0.5s ease;
 }
 .sidebar-overlay {
@@ -424,7 +423,7 @@ table tr:nth-child(even) td {
   font-size: 24px;
 }
 .sidebar-open .sidebar-icon {
-  font-size: 22px;
+  font-size: 20px;
 }
 .sidebar-closed .sidebar-chevron {
   margin-inline-start: 170px;
@@ -463,7 +462,7 @@ table tr:nth-child(even) td {
   height: 35px;
   width: 35px;
 }
-.content-contianer{
+.mt-10{
   margin-top: 100px;
 }
 .pagination-Div{
@@ -529,4 +528,19 @@ html[lang="en"] select {
   color: #90908f;
   font-size: 14px;
   width: max-content;
+}
+.datatable-wrapper thead span {
+  gap: 8px;
+  font-size: 14px;
+  color: var(--Color, rgba(82, 82, 82, 0.63)) !important;
+  font-weight: 400;
+}
+.btn-orange {
+  border: 1px solid rgba(211, 135, 65, 0.25) !important;
+  border-radius: 12px !important;
+  background-color: rgb(250, 134, 1) !important;
+  font-size: 14px;
+  color: white;
+  line-height: 20px;
+  padding: 12px;
 }

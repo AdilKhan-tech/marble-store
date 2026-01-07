@@ -183,7 +183,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       </div>
 
 
-        <div className="form-group mt-4">
+        <div className="form-group mt-3">
           <label className="form-label text-secondary">
             Cake Type
           </label>
@@ -205,7 +205,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
 
 
         <div className="row">
-        <div className="form-group mt-4 col-md-6">
+        <div className="form-group mt-3 col-md-6">
           <label className="form-label text-secondary">Slug</label>
           <input 
             name="slug" 
@@ -216,7 +216,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
           />
         </div>
 
-      <div className="form-group mt-4 col-md-6">
+      <div className="form-group mt-3 col-md-6">
         <label className="form-label text-secondary">Scoop Size</label>
         <input 
           name="scoop_size" 
@@ -230,7 +230,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       </div>
 
       <div className="row">
-        <div className="form-group mt-4 col-md-6">
+        <div className="form-group mt-3 col-md-6">
           <label className="form-label text-secondary">Additional Price</label>
           <input 
             name="additional_price" 
@@ -240,7 +240,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
           />
         </div>
 
-        <div className="form-group mt-4 col-md-6">
+        <div className="form-group mt-3 col-md-6">
           <label className="form-label text-secondary">Calories</label>
           <input 
             name="calories" 
@@ -253,9 +253,10 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       </div>
 
       <div className="col-md-12 mt-3">
-        <div className="form-check form-switch m-2">
+      <label className="form-label text-secondary me-3">Status</label>
+        <div className="form-check form-switch ms-3">
           <input 
-            className="form-check-input fs-5" 
+            className="form-check-input fs-4" 
             type="checkbox"
             role="switch" 
             checked={formData.status === "active"} 
@@ -270,8 +271,8 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
           </label>
         </div>
       </div>
-      
-      <div className="col-md-12 px-1 mt-4">
+
+      <div className="col-md-12 px-1 mt-3">
         <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
@@ -281,9 +282,9 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             multiple onChange={handleFileChange}
           />
         </div>
-        <ul className="mt-4">
+        <ul className="mt-2">
           {selectedFiles.map((file, index) => (
-            <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File Size: {file.size} KB</span></li>
+            <li className="list-unstyled text-muted mt-2 fnt-color opacity-50 fs-16 fw-normal" key={index}>File Size: {file.size} KB</li>
           ))}
         </ul>
         <div className="text-danger">
@@ -293,8 +294,8 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       </div>
 
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
-        <button type="button" className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>Cancel</button>
-        <button type="submit" className="org-btn py-2 d-flex justify-content-center rounded-3 fs-16 fw-normal border-0 w-100">Save</button>
+        <button type="button" className="cancle-btn rounded-3 w-100" onClick={closePopup}>Cancel</button>
+        <button type="submit" className="org-btn w-100">Save</button>
        </div>
 
     </form>

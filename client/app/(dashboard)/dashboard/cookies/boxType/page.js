@@ -92,7 +92,7 @@ const fetchCookieBoxTypes = async () => {
   };
 
   return (
-    <section className='content-contianer'>
+    <section className='mt-10'>
       <div className=''>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Type</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -104,10 +104,9 @@ const fetchCookieBoxTypes = async () => {
             placeholder='Search here...'/>
         </div>
         <div style={{marginInlineEnd:"20px"}}>
-          <button className='btn org-btn w-100 py-2 px-4 rounded-3'
+          <button className='btn-orange'
             role='button' onClick={showOffcanvasOnAddCookieType}>
-            <i className='bi bi-plus-circle ms-1'></i>
-            <span className='ms-2'>Create</span>
+            <i className='bi bi-plus-circle me-2'></i>Create
           </button>
         </div>
       </div>
@@ -147,7 +146,7 @@ const fetchCookieBoxTypes = async () => {
                     </td>
                     <td className='d-flex gap-2'>
                       <div className='action-btn' onClick={() => showOffcanvasOnEditCookieType(type)}>
-                        <i className="bi bi-pencil text-primary"></i></div>
+                        <i className="bi bi-pencil-square text-primary"></i></div>
                       <div className='action-btn' onClick={() => showDeleteConfirmation(type.id)}>
                         <i className="bi bi-trash text-danger"></i></div>
                     </td>

@@ -122,22 +122,22 @@ export default function CustomCakeTypePage() {
 
   return (
     <>
-    <section className='content-contianer'>
+    <section className='mt-10'>
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
-            <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+            <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
-              className="form-control border rounded-start-0 border-start-0" 
+              className="form-control px-5 text-dark-custom" 
               placeholder="Search here..." 
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <div style={{marginInlineEnd:"20px"}}>
             <div 
-              className='org-btn py-2 px-4 rounded-3' 
+              className='btn-orange' 
               onClick={showOffcanvasAddCustomCakeType} 
               role='button'
             >
@@ -182,7 +182,7 @@ export default function CustomCakeTypePage() {
                     </td>
                     <td className='d-flex gap-2'>
                       <div className='action-btn' onClick={() => showOffcanvasOnEditCakeTypes(customeCakeType)}>
-                        <i className="bi bi-pencil text-primary"></i></div>
+                        <i className="bi bi-pencil-square text-primary"></i></div>
                       <div className='action-btn' onClick={() => showDeleteConfirmation(customeCakeType.id)}>
                         <i className="bi bi-trash text-danger"></i></div>
                     </td>
@@ -200,7 +200,7 @@ export default function CustomCakeTypePage() {
             <Offcanvas.Header closeButton>
             <Offcanvas.Title>
               <div className='fs-24 fnt-color'>
-                {customCakeTypeData ? "Update Cake Type" : "Add Cake Type"}
+                {customCakeTypeData ? "Update Custom Cake Type" : "Add Custom Cake Type"}
               </div>
             </Offcanvas.Title>
             </Offcanvas.Header>

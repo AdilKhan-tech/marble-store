@@ -67,34 +67,34 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
 
 //Category Belong to Product
 Branch.hasMany(Product, {
-  foreignKey: "product_branch_id",
+  foreignKey: "branch_id",
   as: "product",
 });
 
 Product.belongsTo(Branch, {
-  foreignKey: "product_branch_id",
+  foreignKey: "branch_id",
   as: "productBranch",
 });
 
 //gender Belong to Product
 Gender.hasMany(Product, {
-  foreignKey: "genders_id",
+  foreignKey: "gender_id",
   as: "product",
 });
 
 Product.belongsTo(Gender, {
-  foreignKey: "genders_id",
+  foreignKey: "gender_id",
   as: "productGender",
 });
 
 //Category Belong to Product
 Category.hasMany(Product, {
-  foreignKey: "product_category_id",
+  foreignKey: "category_id",
   as: "product",
 });
 
 Product.belongsTo(Category, {
-  foreignKey: "product_category_id",
+  foreignKey: "category_id",
   as: "productCategory",
 });
 

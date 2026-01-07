@@ -93,7 +93,7 @@ export default function BranchPage() {
   };
 
   return (
-    <section className="content-contianer">
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Branches</p>
         <div className="d-flex justify-content-between mt-4">
@@ -159,7 +159,7 @@ export default function BranchPage() {
                           className="action-btn"
                           onClick={() => showOffcanvasOnEditBranch(branch)}
                         >
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
                           className="action-btn"

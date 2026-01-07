@@ -2,7 +2,7 @@
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
-import AddCakeSize from "@/components/dashboard/cake/AddCakesSize";
+import AddCakeSize from "@/components/dashboard/cake/AddCakeSize";
 import { useEffect, useState } from 'react';
 import { getAllCakesSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -135,7 +135,7 @@ export default function CakeSizePage() {
 
   return (
     <>
-    <section className='content-contianer'>
+    <section className='mt-10'>
       <div className=""> 
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -143,7 +143,7 @@ export default function CakeSizePage() {
             <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
-              className="form-control form-control-lg px-5 text-dark-custom" 
+              className="form-control px-5 text-dark-custom" 
               placeholder="Search here..." 
               onChange={(e) => setKeywords(e.target.value)}
             />
@@ -151,7 +151,7 @@ export default function CakeSizePage() {
 
           <div style={{marginInlineEnd:"20px"}}>
             <div 
-              className='org-btn py-2 px-4 rounded-3' 
+              className='btn-orange' 
               onClick={showOffcanvasOnAddCakesSize} 
               role='button'
             >
@@ -203,7 +203,7 @@ export default function CakeSizePage() {
                       </td>
                       <td className='d-flex gap-2'>
                         <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cakeSize)}>
-                          <i className="bi bi-pencil text-primary"></i></div>
+                          <i className="bi bi-pencil-square text-primary"></i></div>
                         <div className='action-btn' onClick={() => showDeleteConfirmation(cakeSize.id)}>
                           <i className="bi bi-trash text-danger"></i></div>
                       </td>

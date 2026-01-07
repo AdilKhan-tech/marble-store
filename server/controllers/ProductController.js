@@ -8,7 +8,6 @@ class ProductController {
             name_en,
             name_ar,
             description,
-            category_id,
             product_tag,
             occasion_id,
             gender_id,
@@ -26,7 +25,6 @@ class ProductController {
             name_en,
             name_ar,
             description,
-            category_id,
             product_tag,
             occasion_id,
             gender_id,
@@ -71,14 +69,16 @@ class ProductController {
               },
               {
                 model: Branch,
-                as: "productBranch",
+                as: "branches", // ✅ correct alias
                 attributes: ["id", "name_en", "name_ar"],
+                through: { attributes: [] } // join table ka data nahi chahiye
               },
               {
                 model: Category,
-                as: "productCategory",
+                as: "categories", // ✅ correct alias
                 attributes: ["id", "name_en", "name_ar"],
-              }
+                through: { attributes: [] }
+              },
             ],
           });
             return res.status(200).json(product)

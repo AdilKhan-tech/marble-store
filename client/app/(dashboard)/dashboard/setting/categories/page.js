@@ -79,7 +79,7 @@ export default function CategoryPage() {
 
   return (
     <>
-      <section className="content-container">
+      <section className="mt-10">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Categories</p>
           <div className="d-flex justify-content-between mt-4">
@@ -133,7 +133,7 @@ export default function CategoryPage() {
                               showOffcanvasOnEditCategory(category)
                             }
                           >
-                            <i className="bi bi-pencil text-primary"></i>
+                            <i className="bi bi-pencil-square text-primary"></i>
                           </button>
                           <button
                             className="action-btn"
