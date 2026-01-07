@@ -1,5 +1,4 @@
 'use client';
-import React from 'react'
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
@@ -7,21 +6,19 @@ import AddCakeSize from "@/components/dashboard/cake/AddCakesSize";
 import { useEffect, useState } from 'react';
 import { getAllCakesSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CakeSizePage() {
+
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeSizeData, setCakeSizeData] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-
-  // PAGINATION STATES 
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(2);
+  const [pageLimit, setPageLimit] = useState(25);
   const [keywords, setKeywords] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -33,6 +30,8 @@ export default function CakeSizePage() {
         page: currentPage,
         limit: pageLimit,
         keywords: keywords,
+        sortOrder,
+        sortField,
       };
 
       const response = await axios.get(getAllCakesSizes, { params });
@@ -47,9 +46,16 @@ export default function CakeSizePage() {
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchCakeSizes();
-  }, [currentPage, pageLimit, keywords, token]);
+      if (keywords != "") {
+        if (keywords.trim() == "") return;
+        const delay = setTimeout(() => {
+          fetchCakeSizes();
+        }, 500);
+        return () => clearTimeout(delay);
+      } else {
+        fetchCakeSizes();
+      }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
   
   const showOffcanvasOnAddCakesSize = () => {
     setCakeSizeData(null);
@@ -112,14 +118,19 @@ export default function CakeSizePage() {
   };
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
