@@ -36,6 +36,7 @@ const AddProduct = () => {
     tax_class:"Taxable",
     image_url:"",
   })
+  const safeCategories = Array.isArray(categories) ? categories : [];
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -61,7 +62,7 @@ const AddProduct = () => {
   const fetchAllCategoriesRoute = async () => {
     try {
       const response = await axios.get(getCategory);
-      setCategories(response?.data?.categories);
+      setCategories(response?.data?.data);      
     } catch (error) {
       console.error("Error fetching Categories", error);
     }
@@ -128,14 +129,14 @@ const AddProduct = () => {
   };
 
   const toggleAllCategories = () => {
-    if (categoryId.length === categories.length) {
+    if (categoryId.length === safeCategories.length) {
       setCategoryId([]);
     } else {
-      setCategoryId(categories.map((b) => b.id));
+      setCategoryId(safeCategories.map((b) => b.id));
     }
   };
 
-  const selectedCategoryNames = categories
+  const selectedCategoryNames = safeCategories
   .filter(b => categoryId.includes(b.id))
   .map(b => b.name_en);
 
@@ -233,12 +234,12 @@ const AddProduct = () => {
                   <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
                     
                     <div className="form-check border-bottom pb-1">
-                      <input type="checkbox" checked={categoryId.length === categories.length}
+                      <input type="checkbox" checked={categoryId.length === safeCategories.length}
                         onChange={toggleAllCategories}/>
                       <label className="ps-2 fs-14 fw-bold">Select All</label>
                     </div>
 
-                     {categories.map((b) => (
+                     {safeCategories.map((b) => (
                       <div key={b.id} className="form-check py-1">
                         <input
                           type="checkbox"
