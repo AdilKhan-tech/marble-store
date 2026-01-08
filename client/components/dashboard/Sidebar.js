@@ -6,310 +6,520 @@ import { usePathname } from "next/navigation";
 export default function SidebarLayout() {
   const pathname = usePathname();
   const [open, setOpen] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
-  // Add class to body when sidebar is open/closed
   useEffect(() => {
-    if (open) {
-      document.body.classList.remove("sidebar-closed");
+    if (open && !collapsed) {
       document.body.classList.add("sidebar-open");
+      document.body.classList.remove("sidebar-collapsed", "sidebar-closed");
+    } else if (collapsed) {
+      document.body.classList.add("sidebar-collapsed");
+      document.body.classList.remove("sidebar-open", "sidebar-closed");
     } else {
-      document.body.classList.remove("sidebar-open");
       document.body.classList.add("sidebar-closed");
+      document.body.classList.remove("sidebar-open", "sidebar-collapsed");
     }
-  }, [open]);
+  }, [open, collapsed]);
+
+  const toggleFull = () => setOpen(!open);
+  const toggleCollapse = () => setCollapsed(!collapsed);
 
   const toggleSubMenu = (menu) => {
     setActiveSubMenu((prev) => (prev === menu ? null : menu));
   };
+
+  const toggleDropdown = (menu) => {
+    setDropdownOpen((prev) => (prev === menu ? null : menu));
+  };
+
+  const closeMobile = () => setOpen(false);
 
   const isActive = (path) => pathname === path;
   const isActiveParent = (path) => pathname.startsWith(path);
 
   return (
     <>
-      {/* Toggle Button - Only show when sidebar is closed */}
-      {!open && (
-        <button className="toggle-btn" onClick={() => setOpen(true)}>
-          <i className="bi bi-list"></i>
+      {/* Toggle button when fully closed */}
+      {!open && !collapsed && (
+        <button className="toggle-btn full-toggle" onClick={toggleFull}>
+          <i className="bi bi-list fs-3 text-muted"></i>
         </button>
       )}
 
-      {/* Overlay */}
-      {open && (
-        <div
-          className="sidebar-overlay fade-in"
-          onClick={() => setOpen(false)}
-        />
+      {/* Toggle button when collapsed */}
+      {collapsed && (
+        <button className="toggle-btn collapse-toggle" onClick={toggleCollapse}>
+          <i className="bi bi-arrow-bar-right fs-3 text-muted"></i>
+        </button>
       )}
 
+      {/* Overlay for mobile */}
+      {open && <div className="sidebar-overlay" onClick={toggleFull} />}
+
       {/* Sidebar */}
-      <aside className={`sidebar ${open ? "open" : ""}`}>
-        <div className="sidebar-header">
-          <Link href="/dashboard" className="text-decoration-none">
-            <h4 className="text-orange">Dashboard</h4>
+      <aside
+        className={`sidebar ${open ? "open" : ""} ${
+          collapsed ? "collapsed" : ""
+        }`}
+      >
+        <div className="sidebar-header d-flex align-items-center justify-content-between p-3">
+          <Link
+            href="/dashboard"
+            className="text-decoration-none d-flex align-items-center gap-2"
+          >
+            <i className="bi bi-grid-fill fs-4 text-orange"></i>
+            <h5
+              className={`mb-0 text-dark fw-semibold ${
+                collapsed ? "d-none" : ""
+              }`}
+            >
+              Dashboard
+            </h5>
           </Link>
-          <button className="btn btn-light me-2" onClick={() => setOpen(false)}>
-            <i className="bi bi-x-lg"></i>
-          </button>
+          <div className="d-flex gap-2">
+            <button className="btn btn-sm btn-light me-3" onClick={toggleFull}>
+              <i className="bi bi-arrow-left text-muted"></i>
+            </button>
+          </div>
         </div>
-        <nav className="sidebar-nav">
-          <ul className="sidebar-menu">
-            <li className="sidebar-menu-item">
+
+        <nav className="sidebar-nav px-3" style={{marginTop:"60px"}}>
+          <ul className="sidebar-menu list-unstyled">
+            {/* Dashboard */}
+            <li className="sidebar-menu-item mb-2">
               <Link
                 href="/dashboard"
-                className={`sidebar-link ${
+                className={`sidebar-link d-flex align-items-center gap-3 px-3 py-2 ${
                   isActive("/dashboard") ? "active" : ""
                 }`}
-                onClick={() => setOpen(false)}
+                onClick={closeMobile}
               >
-                <span className="">
-                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Dashboard
+                <i className="bi bi-speedometer2 sidebar-icon text-muted"></i>
+                <span
+                  className={`sidebar-text fw-medium ${
+                    collapsed ? "d-none" : ""
+                  }`}
+                >
+                  Dashboard
                 </span>
               </Link>
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Product */}
+            <li className="sidebar-menu-item mb-2">
               <Link
                 href="/dashboard/product"
-                className={`sidebar-link ${
+                className={`sidebar-link d-flex align-items-center gap-3  px-3 py-2 ${
                   isActive("/dashboard/product") ? "active" : ""
                 }`}
-                onClick={() => setOpen(false)}
+                onClick={closeMobile}
               >
-                <span className="">
-                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Product
+                <i className="bi bi-box-seam sidebar-icon text-muted"></i>
+                <span
+                  className={`sidebar-text fw-medium ${
+                    collapsed ? "d-none" : ""
+                  }`}
+                >
+                  Product
                 </span>
               </Link>
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Cakes */}
+            <li className="sidebar-menu-item mb-2 position-relative">
               <div
-                className={`sidebar-submenu-header ${
-                  isActiveParent("/dashboard/cakes") ? "active" : ""
+                className={`sidebar-link sidebar-submenu-header d-flex align-items-center justify-content-between gap-3 px-3 py-2 ${
+                  isActiveParent("/dashboard/cake") ? "active" : ""
                 }`}
-                onClick={() => toggleSubMenu("cakes")}
+                onClick={() =>
+                  collapsed ? toggleDropdown("cakes") : toggleSubMenu("cakes")
+                }
               >
-                <span className="">
-                  <i className="bi bi-cake2 me-1  sidebar-icon"></i>Cakes
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "cakes" ? "up" : "down"
-                  }`}
-                ></i>
+                <div className="d-flex align-items-center gap-3">
+                  <i className="bi bi-cake2 sidebar-icon text-muted"></i>
+                  <span
+                    className={`sidebar-text fw-medium ${
+                      collapsed ? "d-none" : ""
+                    }`}
+                  >
+                    Cakes
+                  </span>
+                </div>
+                {!collapsed && (
+                  <i
+                    className={`sidebar-chevron bi bi-chevron-${
+                      activeSubMenu === "cakes" ? "up" : "down"
+                    } text-muted`}
+                  ></i>
+                )}
               </div>
-              {activeSubMenu === "cakes" && (
-                <div className="sidebar-submenu ms-3">
+
+              {!collapsed && activeSubMenu === "cakes" && (
+                <div className="sidebar-submenu mt-2 ps-4">
                   <Link
                     href="/dashboard/cake/cakeSize"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link mt-3 d-block py-1 ${
                       isActive("/dashboard/cake/cakeSize") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Cake Size</span>
+                    Cake Size
                   </Link>
                   <Link
                     href="/dashboard/cake/cakeFlavour"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
                       isActive("/dashboard/cake/cakeFlavour") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Cake Flavour</span>
+                    Cake Flavour
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeType"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link d-block mt-1 py-1 ${
                       isActive("/dashboard/cake/customCakeType") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Custom Cake Type</span>
+                    Custom Cake Type
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeFlavor"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
+                      isActive("/dashboard/cake/customCakeFlavor")
+                        ? "active"
+                        : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Custom Cake Flavor</span>
+                    Custom Cake Flavor
+                  </Link>
+                </div>
+              )}
+
+              {collapsed && dropdownOpen === "cakes" && (
+                <div className="collapsed-dropdown rounded shadow">
+                  <Link
+                    href="/dashboard/cake/cakeSize"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Cake Size
+                  </Link>
+                  <Link
+                    href="/dashboard/cake/cakeFlavour"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Cake Flavour
+                  </Link>
+                  <Link
+                    href="/dashboard/cake/customCakeType"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Custom Cake Type
+                  </Link>
+                  <Link
+                    href="/dashboard/cake/customCakeFlavor"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Custom Cake Flavor
                   </Link>
                 </div>
               )}
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Ice Cream */}
+            <li className="sidebar-menu-item mb-2 position-relative">
               <div
-                className={`sidebar-submenu-header ${
+                className={`sidebar-link sidebar-submenu-header d-flex align-items-center justify-content-between gap-3 px-3 py-2 ${
                   isActiveParent("/dashboard/icecream") ? "active" : ""
                 }`}
-                onClick={() => toggleSubMenu("icecream")}
+                onClick={() =>
+                  collapsed
+                    ? toggleDropdown("icecream")
+                    : toggleSubMenu("icecream")
+                }
               >
-                <span className="">
-                  <i className="fa fa-ice-cream me-1  sidebar-icon"></i>Ice Cream
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "icecream" ? "up" : "down"
-                  }`}
-                ></i>
+                <div className="d-flex align-items-center gap-3">
+                  <i className="bi bi-cone-striped sidebar-icon text-muted"></i>
+                  <span
+                    className={`sidebar-text fw-medium ${
+                      collapsed ? "d-none" : ""
+                    }`}
+                  >
+                    Ice Cream
+                  </span>
+                </div>
+                {!collapsed && (
+                  <i
+                    className={`sidebar-chevron bi bi-chevron-${
+                      activeSubMenu === "icecream" ? "up" : "down"
+                    } text-muted`}
+                  ></i>
+                )}
               </div>
-              {activeSubMenu === "icecream" && (
-                <div className="sidebar-submenu ms-3">
+
+              {!collapsed && activeSubMenu === "icecream" && (
+                <div className="sidebar-submenu mt-2 ps-4">
                   <Link
                     href="/dashboard/icecream/iceCreamPortionSize"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/iceCreamPortionSize") ? "active" : ""
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
+                      isActive("/dashboard/icecream/iceCreamPortionSize")
+                        ? "active"
+                        : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Ice Cream Size</span>
+                    Ice Cream Size
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamAddon"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
+                      isActive("/dashboard/icecream/iceCreamAddon")
+                        ? "active"
+                        : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Ice Cream Addons</span>
+                    Ice Cream Addons
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamBucket"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
+                      isActive("/dashboard/icecream/iceCreamBucket")
+                        ? "active"
+                        : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Ice Cream Bucket</span>
+                    Ice Cream Bucket
                   </Link>
                 </div>
               )}
 
+              {collapsed && dropdownOpen === "icecream" && (
+                <div className="collapsed-dropdown rounded shadow">
+                  <Link
+                    href="/dashboard/icecream/iceCreamPortionSize"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Ice Cream Size
+                  </Link>
+                  <Link
+                    href="/dashboard/icecream/iceCreamAddon"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Ice Cream Addons
+                  </Link>
+                  <Link
+                    href="/dashboard/icecream/iceCreamBucket"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Ice Cream Bucket
+                  </Link>
+                </div>
+              )}
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Cookies */}
+            <li className="sidebar-menu-item mb-2 position-relative">
               <div
-                className={`sidebar-submenu-header ${
-                  isActiveParent("/dashboard/icecream") ? "active" : ""
+                className={`sidebar-link sidebar-submenu-header d-flex align-items-center justify-content-between gap-3 px-3 py-2 ${
+                  isActiveParent("/dashboard/cookie") ? "active" : ""
                 }`}
-                onClick={() => toggleSubMenu("cookie")}
+                onClick={() =>
+                  collapsed ? toggleDropdown("cookie") : toggleSubMenu("cookie")
+                }
               >
-                <span className="">
-                  <i className="bi bi-cookie me-1  sidebar-icon"></i>Cookies
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "cookie" ? "up" : "down"
-                  }`}
-                ></i>
+                <div className="d-flex align-items-center gap-3">
+                  <i className="bi bi-cookie sidebar-icon text-muted"></i>
+                  <span
+                    className={`sidebar-text fw-medium ${
+                      collapsed ? "d-none" : ""
+                    }`}
+                  >
+                    Cookies
+                  </span>
+                </div>
+                {!collapsed && (
+                  <i
+                    className={`sidebar-chevron bi bi-chevron-${
+                      activeSubMenu === "cookie" ? "up" : "down"
+                    } text-muted`}
+                  ></i>
+                )}
               </div>
-              {activeSubMenu === "cookie" && (
-                <div className="sidebar-submenu ms-3">
+
+              {!collapsed && activeSubMenu === "cookie" && (
+                <div className="sidebar-submenu mt-2 ps-4">
                   <Link
                     href="/dashboard/cookie/"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookie/cookie") ? "active" : ""
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
+                      isActive("/dashboard/cookie/") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Cookies</span>
+                    Cookies
                   </Link>
                   <Link
                     href="/dashboard/cookie/boxSize"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
                       isActive("/dashboard/cookie/boxSize") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Cookies Size</span>
+                    Cookie Box Size
                   </Link>
                   <Link
                     href="/dashboard/cookie/boxType"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link mt-1 d-block py-1 ${
                       isActive("/dashboard/cookie/boxType") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Cookies Type</span>
+                    Cookie Box Type
+                  </Link>
+                </div>
+              )}
+
+              {collapsed && dropdownOpen === "cookie" && (
+                <div className="collapsed-dropdown rounded shadow">
+                  <Link
+                    href="/dashboard/cookie/"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Cookies
+                  </Link>
+                  <Link
+                    href="/dashboard/cookie/boxSize"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Box Size
+                  </Link>
+                  <Link
+                    href="/dashboard/cookie/boxType"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Box Type
                   </Link>
                 </div>
               )}
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Settings */}
+            <li className="sidebar-menu-item mb-2 position-relative">
               <div
-                className={`sidebar-submenu-header
-               ${isActiveParent("/dashboard/icecream") ? "active" : ""}`}
-                onClick={() => toggleSubMenu("setting")}
+                className={`sidebar-link sidebar-submenu-header d-flex align-items-center justify-content-between gap-3 px-3 py-2 ${
+                  isActiveParent("/dashboard/setting") ? "active" : ""
+                }`}
+                onClick={() =>
+                  collapsed
+                    ? toggleDropdown("setting")
+                    : toggleSubMenu("setting")
+                }
               >
-                <span className="">
-                  <i className="bi bi-gear me-1 sidebar-icon"></i>Settings
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "setting" ? "up" : "down"
-                  }`}
-                ></i>
+                <div className="d-flex align-items-center gap-3">
+                  <i className="bi bi-gear sidebar-icon text-muted"></i>
+                  <span
+                    className={`sidebar-text fw-medium ${
+                      collapsed ? "d-none" : ""
+                    }`}
+                  >
+                    Settings
+                  </span>
+                </div>
+                {!collapsed && (
+                  <i
+                    className={`sidebar-chevron bi bi-chevron-${
+                      activeSubMenu === "setting" ? "up" : "down"
+                    } text-muted`}
+                  ></i>
+                )}
               </div>
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
+
+              {!collapsed && activeSubMenu === "setting" && (
+                <div className="sidebar-submenu mt-2 ps-4">
                   <Link
                     href="/dashboard/setting/branches"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link d-block py-1 ${
                       isActive("/dashboard/setting/branches") ? "active" : ""
-
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Branches</span>
+                    Branches
                   </Link>
-                </div>
-              )}
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
                   <Link
                     href="/dashboard/setting/occasion"
-                    className={`sidebar-submenu-link ${
+                    className={`sidebar-submenu-link d-block py-1 ${
                       isActive("/dashboard/setting/occasion") ? "active" : ""
                     }`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobile}
                   >
-                    <span className="sidebar-label">Ocassion</span>
+                    Occasion
+                  </Link>
+                  <Link
+                    href="/dashboard/setting/gender"
+                    className={`sidebar-submenu-link d-block py-1 ${
+                      isActive("/dashboard/setting/gender") ? "active" : ""
+                    }`}
+                    onClick={closeMobile}
+                  >
+                    Gender
+                  </Link>
+                  <Link
+                    href="/dashboard/setting/categories"
+                    className={`sidebar-submenu-link d-block py-1 ${
+                      isActive("/dashboard/setting/categories") ? "active" : ""
+                    }`}
+                    onClick={closeMobile}
+                  >
+                    Categories
                   </Link>
                 </div>
               )}
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
+
+              {collapsed && dropdownOpen === "setting" && (
+                <div className="collapsed-dropdown rounded shadow">
+                  <Link
+                    href="/dashboard/setting/branches"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Branches
+                  </Link>
+                  <Link
+                    href="/dashboard/setting/occasion"
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
+                  >
+                    Occasion
+                  </Link>
                   <Link
                     href="/dashboard/setting/gender"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/gender") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
                   >
-                    <span className=""></span>
-                    <span className="sidebar-label">Gender</span>
+                    Gender
                   </Link>
-                </div>
-            )}
-           {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
                   <Link
                     href="/dashboard/setting/categories"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/categories") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className="dropdown-item py-2 px-3"
+                    onClick={closeMobile}
                   >
-                    <span className=""></span>
-                    <span className="sidebar-label">Categories</span>
+                    Categories
                   </Link>
                 </div>
-           
               )}
             </li>
           </ul>

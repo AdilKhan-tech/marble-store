@@ -70,12 +70,11 @@ export default function CakeFlavourPage() {
                 type="text"
                 className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
-                style={{ height: "43px", width: "300px" }}
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
             <Link href="/dashboard/product/add" className="text-decoration-none">
-              <div className="org-btn py-2 px-4 rounded-3" role="button">
+              <div className="btn-orange" role="button">
                 <i className="bi bi-plus-circle ms-2"></i>
                 <span className="ms-1">Create</span>
               </div>

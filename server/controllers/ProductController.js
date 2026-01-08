@@ -1,5 +1,6 @@
 const { Category, Gender, Product, ProductBranch, ProductCategory } = require("../models");
 const Branch = require("../models/Branch");
+
 class ProductController {
 
     static async createProduct(req, res) {

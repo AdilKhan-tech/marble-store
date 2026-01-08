@@ -2,8 +2,6 @@ import "@/public/assets/css/Dashboard.css";
 import Providers from "@/components/Provider"
 import Dashboard from "@/layouts/Dashboard";
 import Sidebar from "../../components/dashboard/Sidebar";
-import Header from "../../components/dashboard/Header";
-import Footer from "../../components/dashboard/Footer";
 
 export const metadata = {
   title: "Marble Dashboard",

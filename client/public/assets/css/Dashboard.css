@@ -424,6 +424,7 @@ table tr:nth-child(even) td {
 }
 .sidebar-open .sidebar-icon {
   font-size: 20px;
+  width: 10px;
 }
 .sidebar-closed .sidebar-chevron {
   margin-inline-start: 170px;
