@@ -13,6 +13,8 @@ export default function IceCreamPortionSizePage() {
   const [iceCreamPortionSizes, setIceCreamPortionSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [iceCreamPortionData, setIceCreamPortionSizeData] = useState(null);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchIceCreamPortionSizes = async () => {
     try {
@@ -80,27 +82,38 @@ export default function IceCreamPortionSizePage() {
     setShowOffcanvas(false);
   };
 
+  const handleSort = (field) => {
+    const newOrder =
+      sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newOrder);
+  };
+
+  const renderSortIcon = (field) => {
+    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+  };
+
   return (
     <>
-      <section className="content-contianer">
+      <section className="mt-10">
         <div className="">
-          <p className="pagetitle fnt-color">IceCream Sizes</p>
+          <p className="pagetitle fnt-color">Ice Cream Portion Sizes</p>
           <div className="d-flex justify-content-between mt-4">
             <div className="d-flex">
               <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
-                className="form-control form-control-lg px-5 text-dark-custom"
+                className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
               <div
-                className="org-btn py-2 px-4 rounded-3"
+                className="btn-orange"
                 onClick={showOffcanvasOnAddCakesSize}
                 role="button"
               >
-                <i className="bi bi-plus-circle ms-2"></i>
+                <i className="bi bi-plus-circle me-2"></i>
                 <span>Create</span>
               </div>
             </div>
@@ -112,13 +125,21 @@ export default function IceCreamPortionSizePage() {
               <table className="table datatable datatable-table">
                 <thead className="">
                   <tr className="">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Icecream Bucket </th>
-                    <th>Slug</th>
-                    <th>Additional Price</th>
-                    <th>Calorie</th>
-                    <th>Status</th>
+                    <th onClick={() => handleSort("id")}>
+                    ID <span>{renderSortIcon("id")}</span>
+                    </th>
+                    <th onClick={() => handleSort("name_en")}>
+                    Name <span>{renderSortIcon("name_en")}</span>
+                    </th>
+                    <th onClick={() => handleSort("icecream_bucket_id")}>
+                    Icecream Bucket <span>{renderSortIcon("icecream_bucket_id")}</span>
+                    </th>
+                    <th onClick={() => handleSort("slug")}>
+                    Slug <span>{renderSortIcon("slug")}</span>
+                    </th>
+                    <th onClick={() => handleSort("status")}>
+                    Status <span>{renderSortIcon("status")}</span>
+                    </th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -130,8 +151,6 @@ export default function IceCreamPortionSizePage() {
                       <td>{icecream.name_en}</td>
                       <td>{icecream.icecream_bucket_id}</td>
                       <td>{icecream.slug}</td>
-                      <td>{icecream.additional_price}</td>
-                      <td>{icecream.calories}</td>
                       <td>
                         <div className={icecream?.status === "active"? "blue-status": "red-status"}>
                           {icecream?.status === "active"? "Active": "Inactive"}
@@ -146,7 +165,7 @@ export default function IceCreamPortionSizePage() {
                               showOffcanvasOnEditCakesSize(icecream)
                             }
                           >
-                            <i className="bi bi-pencil text-primary"></i>
+                            <i className="bi bi-pencil-square text-primary"></i>
                           </button>
                           <button
                             className="action-btn"

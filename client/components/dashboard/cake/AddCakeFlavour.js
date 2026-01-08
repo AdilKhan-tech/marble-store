@@ -182,7 +182,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Cake Type
         </label>
@@ -202,7 +202,8 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         </select>
       </div>
 
-      <div className="form-group mt-3">
+      <div className="row">
+      <div className="form-group mt-3 col-md-6">
         <label className="form-label text-secondary">Slug</label>
         <input 
           name="slug" 
@@ -213,15 +214,16 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         />
       </div>
 
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">Additional Price</label>
+      <div className="form-group mt-3 col-md-6">
+        <label className="form-label text-secondary">Price</label>
         <input 
           name="additional_price" 
-          type="text" 
+          type="number" 
           className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.additional_price} 
           onChange={handleChange}
         />
+      </div>
       </div>
 
       <div className="form-group mt-3">
@@ -267,7 +269,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
 
         <ul className="mt-2">
           {selectedFiles.map((file, index) => (
-            <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File flavour: {file.size} KB</span></li>
+            <li className="list-unstyled text-muted  mt-2 fnt-color opacity-50 fs-16 fw-normal" key={index}>File flavour: {file.size} KB</li>
           ))}
         </ul>
         <div className="text-danger">
@@ -277,8 +279,8 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       </div>
 
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
-        <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-100">Save</button>
-        <button type="button" className="cancle-btn rounded-3 border-1 fs-16 py-2 fw-bold w-100" onClick={closePopup}>Cancel</button>
+        <button type="button" className="cancle-btn rounded-3 w-100" onClick={closePopup}>Cancel</button>
+        <button type="submit" className="org-btn w-100">Save</button>
       </div>
     </form>
   );

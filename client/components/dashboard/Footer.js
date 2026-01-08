@@ -1,15 +1,15 @@
-import React from 'react'
+// import React from 'react'
 
-function Footer() {
-  return (
-    <footer className='footer bg-brown-light p-5'>
-      <div className=''>
-        <div className='text-dark d-flex justify-content-center'>
-          © Marble Store is Proudly Owned by CodEnterprise
-        </div>
-      </div>
-    </footer>
-  )
-}
+// function Footer() {
+//   return (
+//     <footer className='footer bg-brown-light p-5'>
+//       <div className=''>
+//         <div className='text-dark d-flex justify-content-center'>
+//           © Marble Store is Proudly Owned by CodEnterprise
+//         </div>
+//       </div>
+//     </footer>
+//   )
+// }
 
-export default Footer
+// export default Footer

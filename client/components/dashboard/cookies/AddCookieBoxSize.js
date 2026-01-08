@@ -183,7 +183,9 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
         </select>
       </div>
 
-      <div className="form-group mt-3">
+      <div className="row mt-3">
+
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Slug</label>
         <input 
           name="slug" type="text" 
@@ -193,7 +195,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
         />
       </div>
 
-      <div className="form-group mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Price</label>
         <input
           name="price" 
@@ -203,8 +205,10 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
           onChange={(e)=>setFormData({...formData,price:e.target.value})}
         />
       </div>
-
-      <div className="form-group mt-3">
+      </div>
+      
+      <div className="row mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Portion Size</label>
         <input 
           name="portion_size" 
@@ -215,7 +219,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
         />
       </div>
 
-      <div className="form-group mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Symbol</label>
         <input 
           name="symbol" 
@@ -224,6 +228,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
           value={formData.symbol} 
           onChange={(e)=>setFormData({...formData,symbol:e.target.value})}
         />
+      </div>
       </div>
 
       <div className="form-group mt-3">

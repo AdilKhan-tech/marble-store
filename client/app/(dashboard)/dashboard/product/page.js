@@ -60,7 +60,7 @@ export default function CakeFlavourPage() {
 
   return (
     <>
-      <section className="content-contianer">
+      <section className="mt-10">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Products</p>
           <div className="d-flex justify-content-between mt-4">
@@ -168,14 +168,14 @@ export default function CakeFlavourPage() {
                     <td>{product?.sku || "N/A"}</td>
                     <td>{product?.stock || "In Stock"}</td>
                     <td>{product?.regular_price}</td>
-                    <td>{product?.product_category_id}</td>
+                    <td>{product?.category_id}</td>
                     <td>{product?.created_at}</td>
-                    <td>{product?.product_branch_id}</td>
+                    <td>{product?.branch_id}</td>
                     <td className="d-flex gap-2">
                       <div
                         className="action-btn"
                       >
-                        <i className="bi bi-pencil text-primary"></i>
+                        <i className="bi bi-pencil-square text-primary"></i>
                       </div>
                       <div className="action-btn" onClick={() => showDeleteConfirmation(product?.id)}>
                         <i className="bi bi-trash text-danger"></i>

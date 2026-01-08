@@ -166,7 +166,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">Name Arabic</label>
         <input
           name="name_ar" 
@@ -177,11 +177,11 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">Cookie Type</label>
         <select
           name="cookie_type_id"
-          className="form-select textarea-hover-dark text-secondary"
+          className="form-select text-secondary"
           value={formData.cookie_type_id}
           onChange={(e)=>setFormData({...formData,cookie_type_id:e.target.value})}
         >
@@ -195,7 +195,8 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
         </select>
       </div>
 
-      <div className="form-group mt-2">
+      <div className="row mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-dark-custom text-secondary">Slug</label>
         <input
           name="slug" type="text"
@@ -205,7 +206,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group col-md-6">
         <label className="form-label text-dark-custom text-secondary">Sort</label>
         <input
           name="sort" 
@@ -214,6 +215,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
           value={formData.sort} 
           onChange={handleChange}
         />
+      </div>
       </div>
 
       <div className="col-md-12 mt-3">
@@ -235,7 +237,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
         </div>
       </div>
       
-      <div className="col-md-12 px-1 mt-2">
+      <div className="col-md-12 px-1 mt-3">
         <label className="form-label text-dark-custom text-secondary">File Attachment</label>
         <div className="">
           <input 
@@ -246,7 +248,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
             onChange={handleFileChange}
           />
         </div>
-        <ul className="mt-2">
+        <ul className="mt-3">
           {selectedFiles.map((file, index) => (
             <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File Size: {file.size} KB</span></li>
           ))}

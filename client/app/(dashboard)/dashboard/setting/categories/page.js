@@ -79,7 +79,7 @@ export default function CategoryPage() {
 
   return (
     <>
-      <section className="content-container">
+      <section className="mt-10">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Categories</p>
           <div className="d-flex justify-content-between mt-4">
@@ -87,13 +87,13 @@ export default function CategoryPage() {
               <i className="bi bi-search fs-5 px-3 py-2 text-secondary position-absolute"></i>
               <input
                 type="text"
-                className="form-control form-control-lg px-5 text-dark-custom"
+                className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
               <div
-                className="org-btn py-2 px-4 rounded-3"
+                className="btn-orange"
                 role="button"
                 onClick={showOffcanvasOnAddCategory}
               >
@@ -133,7 +133,7 @@ export default function CategoryPage() {
                               showOffcanvasOnEditCategory(category)
                             }
                           >
-                            <i className="bi bi-pencil text-primary"></i>
+                            <i className="bi bi-pencil-square text-primary"></i>
                           </button>
                           <button
                             className="action-btn"

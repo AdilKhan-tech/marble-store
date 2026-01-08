@@ -132,7 +132,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">Name Arabic</label>
         <input
           name="name_ar" 
@@ -143,7 +143,8 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="row mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Slug</label>
         <input
           name="slug" 
@@ -154,7 +155,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Sort</label>
         <input
           name="sort" 
@@ -164,9 +165,10 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
           onChange={handleChange}
         />
       </div>
+      </div>
 
       <div className="col-md-12 mt-3">
-        <label className="form-label text-secondary">Status</label>
+        <label className="form-label text-secondary mb-1">Status</label>
         <div className="form-check form-switch m-3">
           <input 
             className="form-check-input fs-4" 
@@ -184,7 +186,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
         </div>
       </div>
       
-      <div className="col-md-12 px-1 mt-2">
+      <div className="col-md-12 px-1 mt-3">
         <label className="form-label text-secondary">File Attachment</label>
         <div className="">
           <input 
@@ -195,7 +197,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
             onChange={handleFileChange}
           />
         </div>
-        <ul className="mt-2">
+        <ul className="mt-3">
           {selectedFiles.map((file, index) => (
             <li className="list-unstyled text-muted" key={index}><span className="fs-12 fw-bold">File Size: {file.size} KB</span></li>
           ))}

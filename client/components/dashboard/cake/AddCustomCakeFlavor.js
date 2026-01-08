@@ -158,7 +158,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">
           Name Arabic
         </label>
@@ -171,7 +171,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">
           Slug
         </label>
@@ -184,7 +184,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
         />
       </div>
 
-      <div className="form-group mt-2">
+      <div className="form-group mt-3">
         <label className="form-label text-secondary">
           Cake Type
         </label>
@@ -249,12 +249,12 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"
-          className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100" onClick={closePopup}>
+          className="cancle-btn rounded-3 w-100" onClick={closePopup}>
           Cancel
         </button>
         <button
           type="submit"
-          className="org-btn py-2 d-flex justify-content-center rounded-3 fs-16 fw-normal border-0 w-100"
+          className="org-btn w-100"
         >
           Save
         </button>

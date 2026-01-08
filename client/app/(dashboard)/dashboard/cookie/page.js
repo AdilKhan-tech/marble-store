@@ -93,7 +93,7 @@ export default function Cookies() {
   };
 
   return (
-    <section className="content-contianer">
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
         <div className="d-flex justify-content-between mt-4">
@@ -101,18 +101,18 @@ export default function Cookies() {
             <i className="bi bi-search fs-5 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
-              className="form-control form-control-lg px-5 text-dark-custom"
+              className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
             />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
             <button
-              className="btn org-btn w-100 py-2 px-4 rounded-3"
+              className="btn-orange"
               role="button"
               onClick={showOffcanvasOnAddCookies}
             >
               <i className="bi bi-plus-circle ms-1"></i>
-              <span className="ms-2">Create</span>
+              <span className="me-2">Create</span>
             </button>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function Cookies() {
                         className="action-btn"
                         onClick={() => showOffcanvasOnEditCookies(cookie)}
                       >
-                        <i className="bi bi-pencil text-primary"></i>
+                        <i className="bi bi-pencil-square text-primary"></i>
                       </div>
                       <div
                         className="action-btn"

@@ -97,16 +97,16 @@ export default function IceCreamAddon () {
 
   return (
     <>
-    <section className='' style={{ marginTop:"100px"}}>
+    <section className='mt-10'>
       <div className=""> 
       <p className="pagetitle mb-0 fnt-color">Ice Cream Addons</p>
       <div className='d-flex justify-content-between mt-4'>
         <div className='d-flex'>
         <i className='bi bi-search fs-20 px-3 py-1 text-secondary position-absolute'></i>
-            <input type="text" className="form-control form-control-lg px-5 text-dark-custom" placeholder="Search here..." style={{height:"46px", width:"300px"}}/>
+            <input type="text" className="form-control px-5 text-dark-custom" placeholder="Search here..."/>
             </div>
             <div style={{marginInlineEnd:"20px"}}>
-              <div className='org-btn py-2 px-4 rounded-3' onClick={showOffcanvasOnAddicecreamsSize} role='button'><i className='bi bi-plus-circle ms-2'></i>Create</div>
+              <div className='btn-orange' onClick={showOffcanvasOnAddicecreamsSize} role='button'><i className='bi bi-plus-circle me-2'></i>Create</div>
             </div>
         </div>
         </div>
@@ -148,7 +148,7 @@ export default function IceCreamAddon () {
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn" onClick={() => showOffcanvasOnEditicecreamsSize(icecream)}>
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button className="action-btn" onClick={() => showDeleteConfirmation(icecream.id)}>
                           <i className="bi bi-trash3 text-danger"></i>

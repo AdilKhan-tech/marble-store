@@ -90,7 +90,7 @@ function Occasions() {
     }
   };
   return (
-    <section className="content-contianer">
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Occasions</p>
         <div className="d-flex justify-content-between mt-4">
@@ -98,16 +98,16 @@ function Occasions() {
             <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
-              className="form-control form-control-lg px-5 text-dark-custom"
+              className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
             />
           </div>
           <button
             style={{ marginInlineEnd: "20px" }}
-            className="btn org-btn py-2 px-4 rounded-3 d-flex"
+            className="btn-orange"
             onClick={showOffcanvasOnAddOcassion}
           >
-            <i className="bi bi-plus-circle"></i>Create
+            <i className="bi bi-plus-circle me-2"></i>Create
           </button>
         </div>
       </div>
@@ -138,7 +138,7 @@ function Occasions() {
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button className="action-btn" onClick={() => showDeleteConfirmation(occasion.id)}>
                           <i className="bi bi-trash3 text-danger"></i>

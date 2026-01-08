@@ -27,9 +27,9 @@ const AddProduct = () => {
     product_tag :"",
     description:"",
     category_id:"",
-    product_branch_id:"",
+    branch_id:"",
     occasions_id:"",
-    genders_id:"",
+    gender_id:"",
     regular_price:"",
     sale_price:"",
     tax_status:"Active for Both",
@@ -143,7 +143,7 @@ const AddProduct = () => {
 
 
   return (
-    <form className="content-contianer">
+    <form className="mt-10">
       <div className="card p-4 rounded-4">
         <div className="row">
           <div className="col-md-5">

@@ -121,21 +121,24 @@ export default function CakeFlavourPage() {
 
   return (
     <>
-    <section className='content-contianer'>
+    <section className='mt-10'>
       <div className=""> 
         <p className="pagetitle mb-0 fnt-color">Cakes Flavours</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
-              <i className='bi bi-search fs-20 py-1 px-2 text-secondary bg-light rounded-3 border rounded-end-0 border-end-0'></i>
+              <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
               <input 
                 type="text" 
-                className="form-control border rounded-start-0 border-start-0" 
+                className="form-control px-5 text-dark-custom" 
                 placeholder="Search here..."
                 onChange={(e) => setKeywords(e.target.value)}
               />
               </div>
               <div style={{marginInlineEnd:"20px"}}>
-                <div className='org-btn py-2 px-4 rounded-3' onClick={showOffcanvasOnAddCakesFlavour} role='button'><i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span></div>
+                <div className='btn-orange' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
+                <i className='bi bi-plus-circle ms-2'></i>
+                <span className='ms-1'>Create</span>
+                </div>
               </div>
           </div>
       </div>
@@ -183,7 +186,7 @@ export default function CakeFlavourPage() {
                     <td>
                       <div className="d-flex gap-1">
                         <button className="action-btn " onClick={() => showOffcanvasOnEditCakesFlavour(cakeFlavor)}>
-                          <i className="bi bi-pencil text-primary"></i>
+                          <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button className="action-btn " onClick={() => showDeleteConfirmation(cakeFlavor.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
