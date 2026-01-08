@@ -87,13 +87,13 @@ export default function CategoryPage() {
               <i className="bi bi-search fs-5 px-3 py-2 text-secondary position-absolute"></i>
               <input
                 type="text"
-                className="form-control form-control-lg px-5 text-dark-custom"
+                className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
               <div
-                className="org-btn py-2 px-4 rounded-3"
+                className="btn-orange"
                 role="button"
                 onClick={showOffcanvasOnAddCategory}
               >

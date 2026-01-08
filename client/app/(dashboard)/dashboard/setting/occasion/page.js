@@ -98,16 +98,16 @@ function Occasions() {
             <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
-              className="form-control form-control-lg px-5 text-dark-custom"
+              className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
             />
           </div>
           <button
             style={{ marginInlineEnd: "20px" }}
-            className="btn org-btn py-2 px-4 rounded-3 d-flex"
+            className="btn-orange"
             onClick={showOffcanvasOnAddOcassion}
           >
-            <i className="bi bi-plus-circle"></i>Create
+            <i className="bi bi-plus-circle me-2"></i>Create
           </button>
         </div>
       </div>
