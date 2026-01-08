@@ -500,24 +500,6 @@ table tr:nth-child(even) td {
   background:#ff7700;
   color:#fff;
 }
-
-select.datatable-selector,
-select.form-select,
-select {
-  border: 1px solid rgba(132, 132, 132, 0.25);
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 20px;
-  background: transparent;
-  background-repeat: no-repeat !important;
-  margin-bottom: 0 !important;
-}
-html[lang="en"] select.datatable-selector,
-html[lang="en"] select.form-select,
-html[lang="en"] select {
-  background-position: right 5px center !important;
-  padding: 12px 20px 12px 12px !important;
-}
 .datatable-bottom {
   display: flex;
   align-items: center;

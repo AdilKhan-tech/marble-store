@@ -112,7 +112,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group mt-3">
             <label className="form-label text-secondary">Name Arabic</label>
             <input 
                 name="name_ar" 
@@ -123,7 +123,8 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className='row mt-3'>
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">Slug</label>
             <input 
                 name="slug" 
@@ -134,7 +135,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">City</label>
             <input
                 name="city"
@@ -144,8 +145,9 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
                 onChange={handleChange}
             />
         </div>
+        </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group mt-3">
         <label className="form-label text-secondary">Address</label>
         <textarea
             name="address"
@@ -156,7 +158,8 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="row mt-3">
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">Latitude</label>
             <input
                 name="latitude"
@@ -168,7 +171,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">Longitude</label>
             <input
                 name="longitude"
@@ -179,8 +182,9 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
                 onChange={handleChange}
             />
         </div>
+        </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group mt-3">
             <label className="form-label text-secondary">Number</label>
             <input
                 name="number"
@@ -191,7 +195,8 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className='row mt-3'>
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">Timing</label>
             <input
                 name="timing"
@@ -203,7 +208,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group col-md-6">
             <label className="form-label text-secondary">Branch Store Id</label>
             <input
                 name="branch_store_id"
@@ -212,6 +217,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
                 value={formData.branch_store_id}
                 onChange={handleChange}
             />
+        </div>
         </div>
 
         <div className="form-group mt-3">
