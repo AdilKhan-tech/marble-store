@@ -1,6 +1,8 @@
-const {CookiesBoxSizes, CookiesBoxTypes } = require ("../models")
+const {CookieBoxSize, CookieBoxType } = require ("../models")
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
-class CookiesBoxSizesController {
+class CookieBoxSizeController {
     
     static async createCookieBoxSize (req, res) {
         try {
@@ -8,7 +10,7 @@ class CookiesBoxSizesController {
 
             const image_url = req.file?.path || null;
 
-            const cookiesBoxSize = await CookiesBoxSizes.create({
+            const cookiesBoxSize = await CookieBoxSize.create({
                 name_en,
                 name_ar,
                 cookies_types_id,
@@ -30,22 +32,61 @@ class CookiesBoxSizesController {
         }
     }
 
-    static async getAllCookiesBoxSizes (req, res) {
-        try {
-            const cookiesBoxSize = await CookiesBoxSizes.findAll({
-            include: [
-              {
-                model: CookiesBoxTypes,
-                as: "type",
-                attributes: ["id", "name_en", "name_ar"],
-              },
-            ],
-          });
-            return res.status(200).json(cookiesBoxSize);
+    static async getAllCookieBoxSizes(req, res) {
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
 
-        }catch(error) {
+        try {
+            const whereClause = {};
+
+            if (keywords) {
+                whereClause[Op.or] = [
+                    { name_en: { [Op.like]: `%${keywords}%` } },
+                    { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
+
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "portion_size",
+                "price",
+                "status",
+                "cookies_types_id",
+            ];
+
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+            const { count, rows } = await CookieBoxSize.findAndCountAll({
+                where: whereClause,
+                include: [
+                    {
+                        model: CookieBoxType,
+                        as: "type",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                ],
+                limit,
+                offset,
+                order: [[finalSortField, finalSortOrder]],
+            });
+
+            const pageCount = Math.ceil(count / limit);
+
+            return res.status(200).json({
+                pagination: {
+                    page,
+                    limit,
+                    total: count,
+                    pageCount,
+                },
+                data: rows,
+            });
+
+        } catch (error) {
             return res.status(500).json({
-                message: "Failed to create Cookies",
+                message: "Failed to fetch Cookies Box Sizes",
                 error: error.message
             });
         }
@@ -54,7 +95,7 @@ class CookiesBoxSizesController {
     static async updateCookieBoxSizeById(req, res) {
         const { id } = req.params;
         try {
-            const cookiesBoxSize = await CookiesBoxSizes.findByPk(id);
+            const cookiesBoxSize = await CookieBoxSize.findByPk(id);
             if (!cookiesBoxSize) {
                 return res.status(404).json({ message: "Cookies box size not found" });
             }
@@ -97,7 +138,7 @@ class CookiesBoxSizesController {
         try {
             const { id } = req.params;
     
-            const cookiesBoxSize = await CookiesBoxSizes.findByPk(id);
+            const cookiesBoxSize = await CookieBoxSize.findByPk(id);
     
             if (!cookiesBoxSize) {
                 return res.status(404).json({
@@ -130,4 +171,4 @@ class CookiesBoxSizesController {
     }
 }
 
-module.exports = CookiesBoxSizesController;
+module.exports = CookieBoxSizeController;

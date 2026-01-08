@@ -18,7 +18,7 @@ export default function CategoryPage() {
   const fetchAllCategories = async () => {
     try {
       const response = await axios.get(getAllCategories);
-      setCategories(response.data);
+      setCategories(response.data.data);
     } catch (error) {
       console.error("Error fetching categories", error);
     }

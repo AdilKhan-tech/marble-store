@@ -1,4 +1,6 @@
 const Branch = require("../models/Branch");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class BranchController {
     
@@ -29,15 +31,75 @@ class BranchController {
         }
     }
 
-    static async getAllBranches(req, res) {
-        try {
-          const branch = await Branch.findAll();
+    // static async getAllBranches(req, res) {
+    //     try {
+    //       const branch = await Branch.findAll();
       
-          return res.status(200).json(branch);
+    //       return res.status(200).json(branch);
+    //     } catch (error) {
+    //         res.status(500).json({message: "Failed to get Branches", error: error.message});
+    //     }
+    // }
+
+    static async getAllBranches(req, res) {
+
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
+    
+        try {
+    
+          const whereClause = {};
+    
+          if (keywords) {
+            whereClause[Op.or] = [
+              { name_en: { [Op.like]: `%${keywords}%` } },
+              { name_ar: { [Op.like]: `%${keywords}%` } },
+              { city: { [Op.like]: `%${keywords}%` } },
+              { address: { [Op.like]: `%${keywords}%` } },
+            ];
+          }
+    
+          const allowedSortFields = [
+            "id",
+            "name_en",
+            "city",
+            "status",
+            "branch_store_id"
+          ];
+    
+          const finalSortField = allowedSortFields.includes(sortField)
+            ? sortField
+            : "id";
+    
+          const finalSortOrder =
+            sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+    
+          const { count, rows } = await Branch.findAndCountAll({
+            where: whereClause,
+            limit,
+            offset,
+            order: [[finalSortField, finalSortOrder]],
+          });
+    
+          const pageCount = Math.ceil(count / limit);
+    
+          return res.status(200).json({
+            pagination: {
+              page,
+              limit,
+              total: count,
+              pageCount,
+            },
+            data: rows,
+          });
+    
         } catch (error) {
-            res.status(500).json({message: "Failed to get Branches", error: error.message});
+          return res.status(500).json({
+            message: "Failed to get branches",
+            error: error.message
+          });
         }
-      }
+    }
 
     static async updateBranchById(req, res) {
         const { id } = req.params;

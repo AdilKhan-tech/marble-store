@@ -28,48 +28,70 @@ class CakeFlavorController {
     }
 
     static async getAllCakeFlavors(req, res) {
-        const { page, limit, offset } = getPagination(req);
-        const { keywords } = req.query;
-      
-        try {
-          const whereClause = {};
-      
-          if (keywords) {
-            whereClause[Op.or] = [
-              { name_en: { [Op.like]: `%${keywords}%` } },
-              { name_ar: { [Op.like]: `%${keywords}%` } },
-            ];
-          }
-      
-          const { count, rows } = await CakeFlavor.findAndCountAll({
-            where: whereClause,
-            include: [
-              {
-                model: CustomCakeTypes,
-                as: "customCakeType",
-                attributes: ["id", "name_en", "name_ar"],
-              },
-            ],
-            limit,
-            offset,
-            order: [["id", "DESC"]],
-          });
-      
-          const pageCount = Math.ceil(count / limit);
-      
-          return res.status(200).json({
-            pagination: {
-              page,
-              limit,
-              total: count,
-              pageCount,
-            },
-            data: rows,
-          });
-        } catch (error) {
-          return res.status(500).json({ message: "Failed to get cake flavors",error: error.message });
+
+      const { page, limit, offset } = getPagination(req);
+      const { keywords, sortField, sortOrder } = req.query;
+  
+      try {
+  
+        const whereClause = {};
+  
+        if (keywords) {
+          whereClause[Op.or] = [
+            { name_en: { [Op.like]: `%${keywords}%` } },
+            { name_ar: { [Op.like]: `%${keywords}%` } },
+            { symbol: { [Op.like]: `%${keywords}%` } },
+          ];
         }
+  
+        const allowedSortFields = [
+          "id",
+          "name_en",
+          "additional_price",
+          "status",
+          "custom_cake_type_id"
+        ];
+  
+        const finalSortField = allowedSortFields.includes(sortField)
+          ? sortField
+          : "id";
+  
+        const finalSortOrder =
+          sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+  
+        const { count, rows } = await CakeFlavor.findAndCountAll({
+          where: whereClause,
+          include: [
+            {
+              model: CustomCakeTypes,
+              as: "customCakeType",
+              attributes: ["id", "name_en", "name_ar"],
+            },
+          ],
+          limit,
+          offset,
+          order: [[finalSortField, finalSortOrder]],
+        });
+  
+        const pageCount = Math.ceil(count / limit);
+  
+        return res.status(200).json({
+          pagination: {
+            page,
+            limit,
+            total: count,
+            pageCount,
+          },
+          data: rows,
+        });
+  
+      } catch (error) {
+        return res.status(500).json({
+          message: "Failed to get cake flavors",
+          error: error.message
+        });
       }
+    }
 
     static async updateCakeFlavorById(req, res) {
         const { id } = req.params;

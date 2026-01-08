@@ -26,18 +26,28 @@ class CustomCakeFlavorController {
 
   static async getAllCustomCakeFlavor(req, res) {
     const { page, limit, offset } = getPagination(req);
-    const { keywords } = req.query;
-  
+    const { keywords, sortField, sortOrder } = req.query;
+
     try {
       const whereClause = {};
-  
+
       if (keywords) {
         whereClause[Op.or] = [
           { name_en: { [Op.like]: `%${keywords}%` } },
           { name_ar: { [Op.like]: `%${keywords}%` } },
         ];
       }
-  
+
+      const allowedSortFields = [
+        "id",
+        "name_en",
+        "status",
+        "custom_cake_type_id",
+      ];
+
+      const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
       const { count, rows } = await CustomCakeFlavor.findAndCountAll({
         where: whereClause,
         include: [
@@ -49,11 +59,11 @@ class CustomCakeFlavorController {
         ],
         limit,
         offset,
-        order: [["id", "DESC"]],
+        order: [[finalSortField, finalSortOrder]],
       });
-  
+
       const pageCount = Math.ceil(count / limit);
-  
+
       return res.status(200).json({
         pagination: {
           page,
@@ -63,10 +73,15 @@ class CustomCakeFlavorController {
         },
         data: rows,
       });
+
     } catch (error) {
-      return res.status(500).json({ message: "Failed to get Custom Cake Flavor",error: error.message });
+      return res.status(500).json({
+        message: "Failed to get Custom Cake Flavor",
+        error: error.message,
+      });
     }
   }
+
 
   static async updateCustomCakeFlavorById(req, res) {
     const { id } = req.params;

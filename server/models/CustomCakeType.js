@@ -26,7 +26,7 @@ const CustomCakeTypes = sequelize.define("CustomCakeTypes",{
     defaultValue: "active",
   },
   image_url: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: true,
   },
   created_at: {

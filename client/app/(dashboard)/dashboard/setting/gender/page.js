@@ -17,7 +17,7 @@ export default function GenderPage() {
   const fetchAllGenders = async () => {
     try {
       const response = await axios.get(getAllGenders);
-      setGenders(response.data);
+      setGenders(response.data.data);
     } catch (error) {
       console.error("Error fetching genders", error);
     }
