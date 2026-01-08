@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { UpdateCategoriesById, createCategories } from "@/utils/apiRoutes";
+import { UpdateCategoryById, createCategory } from "@/utils/apiRoutes";
 
 const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCategory}) => {
 
@@ -56,13 +56,13 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
         payload.append("image_url", selectedFiles[0]);
       }
       if (categoryData) {
-        const response = await axios.put(UpdateCategoriesById(categoryData.id),payload);
+        const response = await axios.put(UpdateCategoryById(categoryData.id),payload);
         if (response.status === 200 || response.status === 201) {
           toast.success("Category updated successfully!", {autoClose: 1000,onClose: closePopup,});
             onUpdateCategory(response.data);
         }
       } else {
-        const response = await axios.post(createCategories, payload);
+        const response = await axios.post(createCategory, payload);
         if (response.status === 200 || response.status === 201) {
           toast.success("Category created successfully!", {autoClose: 1000,onClose: closePopup,});
           onAddCategory(response.data);

@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddCakeSize from "@/components/dashboard/cake/AddCakeSize";
 import { useEffect, useState } from 'react';
-import { getAllCakesSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
+import { getAllCakeSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
@@ -34,7 +34,7 @@ export default function CakeSizePage() {
         sortField,
       };
 
-      const response = await axios.get(getAllCakesSizes, { params });
+      const response = await axios.get(getAllCakeSizes, { params });
 
       setCakeSizes(response.data.data);
       setTotalEntries(response.data.pagination.total);

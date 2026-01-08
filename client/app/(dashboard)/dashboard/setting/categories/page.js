@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import AddCategory from "@/components/dashboard/setting/AddCategory";
 import { useEffect, useState } from "react";
-import { getAllCategories, deleteCategoriesById } from "@/utils/apiRoutes";
+import { getAllCategories, deleteCategoryById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 export default function CategoryPage() {
@@ -45,7 +45,7 @@ export default function CategoryPage() {
 
   const handleDelete = async (categoryId) => {
     try {
-      const response = await axios.delete(deleteCategoriesById(categoryId));
+      const response = await axios.delete(deleteCategoryById(categoryId));
       if (response.status === 200) {
         toast.success("Categories deleted successfully!", { autoClose: 1000 });
         setCategories((prev) =>

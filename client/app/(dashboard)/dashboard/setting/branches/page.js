@@ -7,28 +7,54 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import axios from "axios";
 import AddBranch from '@/components/dashboard/setting/AddBranch';
 import { getAllBranches, deleteBranchById } from "@/utils/apiRoutes";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function BranchPage() {
   const { token } = useAxiosConfig();
   const [branches, setBranches] = useState([]);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [branchData, setBranchData] = useState(null);
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
+
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   const fetchBranches = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllBranches);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllBranches, { params });
       setBranches(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching cake sizes", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchBranches();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchBranches();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchBranches();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnEditBranch = (branch) => {
     setBranchData(branch);
@@ -42,6 +68,15 @@ export default function BranchPage() {
 
   const closePopup = () => {
     setShowOffcanvas(false);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleDelete = async (branchId) => {
@@ -82,17 +117,23 @@ export default function BranchPage() {
   
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
+    <>
     <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Branches</p>
@@ -103,6 +144,7 @@ export default function BranchPage() {
               type="text"
               className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
+              onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
@@ -200,6 +242,21 @@ export default function BranchPage() {
         <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
   );
 }
 
