@@ -210,27 +210,27 @@ export default function SidebarLayout() {
               {activeSubMenu === "cookie" && (
                 <div className="sidebar-submenu ms-3">
                   <Link
-                    href="/dashboard/cookies/"
+                    href="/dashboard/cookie/"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/cookie") ? "active" : ""
+                      isActive("/dashboard/cookie/cookie") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Cookies</span>
                   </Link>
                   <Link
-                    href="/dashboard/cookies/boxSize"
+                    href="/dashboard/cookie/boxSize"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/boxSize") ? "active" : ""
+                      isActive("/dashboard/cookie/boxSize") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >
                     <span className="sidebar-label">Cookies Size</span>
                   </Link>
                   <Link
-                    href="/dashboard/cookies/boxType"
+                    href="/dashboard/cookie/boxType"
                     className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookies/boxType") ? "active" : ""
+                      isActive("/dashboard/cookie/boxType") ? "active" : ""
                     }`}
                     onClick={() => setOpen(false)}
                   >

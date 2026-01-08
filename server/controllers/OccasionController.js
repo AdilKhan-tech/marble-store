@@ -1,4 +1,6 @@
 const Occasion = require ("../models/Occasion");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class OccasionController {
 
@@ -22,13 +24,55 @@ class OccasionController {
         }
     }
 
-    static async getAllOccasions (req, res) {
-        try{
-            const occasions = await Occasion.findAll();
-            return res.status(200).json({ occasions })
+    static async getAllOccasions(req, res) {
 
-        }catch (error) {
-            return res.status(500).json({ message: "Failed to fetch occasions", error: error.message });
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
+    
+        try {
+    
+          const whereClause = {};
+    
+          if (keywords) {
+            whereClause[Op.or] = [
+              { name_en: { [Op.like]: `%${keywords}%` } },
+              { name_ar: { [Op.like]: `%${keywords}%` } },
+            ];
+          }
+    
+          const allowedSortFields = [
+            "id",
+            "name_en",
+            "parent_ocassion",
+          ];
+    
+          const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+          const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+    
+          const { count, rows } = await Occasion.findAndCountAll({
+            where: whereClause,
+            limit,
+            offset,
+            order: [[finalSortField, finalSortOrder]],
+          });
+    
+          const pageCount = Math.ceil(count / limit);
+    
+          return res.status(200).json({
+            pagination: {
+              page,
+              limit,
+              total: count,
+              pageCount,
+            },
+            data: rows,
+          });
+    
+        } catch (error) {
+          return res.status(500).json({
+            message: "Failed to fetch occasions",
+            error: error.message
+          });
         }
     }
 

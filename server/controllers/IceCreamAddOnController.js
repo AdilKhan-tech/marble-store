@@ -1,4 +1,6 @@
 const IceCreamAddOn = require("../models/IceCreamAddOn");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class IceCreamAddOnController {
   static async createIceCreamAddOn(req, res) {
@@ -22,12 +24,52 @@ class IceCreamAddOnController {
   }
 
   static async getAllIceCreamAddOns(req, res) {
-    try {
-      const iceCreamaddon = await IceCreamAddOn.findAll();
+    const { page, limit, offset } = getPagination(req);
+    const { keywords, sortField, sortOrder } = req.query;
 
-      return res.status(200).json(iceCreamaddon);
+    try {
+      const whereClause = {};
+
+      if (keywords) {
+        whereClause[Op.or] = [
+          { name_en: { [Op.like]: `%${keywords}%` } },
+          { name_ar: { [Op.like]: `%${keywords}%` } },
+        ];
+      }
+
+      const allowedSortFields = [
+        "id",
+        "name_en",
+        "type",
+        "status",
+      ];
+
+      const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+      const { count, rows } = await IceCreamAddOn.findAndCountAll({
+        where: whereClause,
+        limit,
+        offset,
+        order: [[finalSortField, finalSortOrder]],
+      });
+
+      const pageCount = Math.ceil(count / limit);
+
+      return res.status(200).json({
+        pagination: {
+          page,
+          limit,
+          total: count,
+          pageCount,
+        },
+        data: rows,
+      });
     } catch (error) {
-      return res.status(500).json({ message: "Failed to retrieve  IceCream AddOn", error: error.message });
+      return res.status(500).json({
+        message: "Failed to retrieve IceCream AddOns",
+        error: error.message,
+      });
     }
   }
 

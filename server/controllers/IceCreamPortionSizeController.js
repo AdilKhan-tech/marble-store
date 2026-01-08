@@ -1,4 +1,6 @@
 const IceCreamPortionSize = require("../models/IceCreamPortionSize");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class IceCreamPortionSizeController {
   static async createIceCreamPortionSize(req, res) {
@@ -25,12 +27,55 @@ class IceCreamPortionSizeController {
   }
 
   static async getAllIceCreamPortionSize(req, res) {
+
+    const { page, limit, offset } = getPagination(req);
+    const { keywords, sortField, sortOrder } = req.query;
+
     try {
-      const iceCreamPortionSize = await IceCreamPortionSize.findAll();
-      return res.status(200).json(iceCreamPortionSize);
+
+      const whereClause = {};
+
+      if (keywords) {
+        whereClause[Op.or] = [
+          { name_en: { [Op.like]: `%${keywords}%` } },
+          { name_ar: { [Op.like]: `%${keywords}%` } },
+        ];
+      }
+
+      const allowedSortFields = [
+        "id",
+        "name_en",
+        "additional_price",
+        "calories",
+        "status",
+        "icecream_bucket_id",
+      ];
+
+      const finalSortField = allowedSortFields.includes(sortField)? sortField : "id";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+      const { count, rows } = await IceCreamPortionSize.findAndCountAll({
+        where: whereClause,
+        limit,
+        offset,
+        order: [[finalSortField, finalSortOrder]],
+      });
+
+      const pageCount = Math.ceil(count / limit);
+
+      return res.status(200).json({
+        pagination: {
+          page,
+          limit,
+          total: count,
+          pageCount,
+        },
+        data: rows,
+      });
+
     } catch (error) {
       return res.status(500).json({
-        message: "Failde to create IceCream Portion Size ",
+        message: "Failed to get IceCream Portion Sizes",
         error: error.message,
       });
     }

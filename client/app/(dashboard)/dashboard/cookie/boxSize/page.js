@@ -20,7 +20,7 @@ export default function CookieBoxSizePage() {
   const fetchCookieBoxSizes = async () => {
     try {
       const response = await axios.get(getCookieBoxSizes);
-      setCookieBoxSizes(response.data);
+      setCookieBoxSizes(response.data.data);
     } catch (error) {
       console.error("Error fetching Cookie box sizes", error);
     }

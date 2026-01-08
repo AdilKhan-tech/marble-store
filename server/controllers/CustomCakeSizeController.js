@@ -32,27 +32,39 @@ class CustomCakeSizeController {
 
   static async getAllCustomCakeSize(req, res) {
     const { page, limit, offset } = getPagination(req);
-    const { keywords } = req.query;
-  
+    const { keywords, sortField, sortOrder } = req.query;
+
     try {
       const whereClause = {};
-  
+
       if (keywords) {
         whereClause[Op.or] = [
           { name_en: { [Op.like]: `%${keywords}%` } },
           { name_ar: { [Op.like]: `%${keywords}%` } },
         ];
       }
-  
+
+      const allowedSortFields = [
+        "id",
+        "name_en",
+        "portion_size",
+        "sort",
+        "status",
+        "cake_type_id",
+      ];
+
+      const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
       const { count, rows } = await CustomCakeSize.findAndCountAll({
         where: whereClause,
         limit,
         offset,
-        order: [["id", "DESC"]],
+        order: [[finalSortField, finalSortOrder]],
       });
-  
+
       const pageCount = Math.ceil(count / limit);
-  
+
       return res.status(200).json({
         pagination: {
           page,
@@ -62,6 +74,7 @@ class CustomCakeSizeController {
         },
         data: rows,
       });
+
     } catch (error) {
       return res.status(500).json({
         message: "Failed to get Custom Cake Size",

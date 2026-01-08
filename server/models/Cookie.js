@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Cookies = sequelize.define("Cookies",{
+const Cookie = sequelize.define("Cookie",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -72,20 +72,8 @@ const Cookies = sequelize.define("Cookies",{
         },
     },
     image_url: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(255),
         allowNull: true,
-        validate: {
-            isValid(value) {
-              if (!value) return;
-        
-              const isUrl = /^https?:\/\/.+/.test(value);
-              const isLocalPath = /^uploads\/.+/.test(value);
-        
-              if (!isUrl && !isLocalPath) {
-                throw new Error("Image must be a valid URL or a local upload path");
-              }
-            },
-        },
     },
     created_at: {
         type: DataTypes.DATE,
@@ -104,4 +92,4 @@ const Cookies = sequelize.define("Cookies",{
 }
 );
 
-module.exports = Cookies;
+module.exports = Cookie;
