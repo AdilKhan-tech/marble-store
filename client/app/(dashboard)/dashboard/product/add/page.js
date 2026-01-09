@@ -45,7 +45,7 @@ const AddProduct = () => {
   const fetchAllGenders = async () => {
     try {
       const response = await axios.get(getAllGenders);
-      setGenders(response?.data);  
+      setGenders(response?.data?.data);  
     } catch (error) {
       console.error("Error fetching Genders", error);
     }
@@ -53,7 +53,7 @@ const AddProduct = () => {
   const fetchAllBranchesRoute = async () => {
     try {
       const response = await axios.get(getAllBranches);
-      setBranches(response?.data);  
+      setBranches(response?.data?.data);  
     } catch (error) {
       console.error("Error fetching Branches", error);
     }
@@ -71,7 +71,7 @@ const AddProduct = () => {
   const fetchAllOccasionsRoute = async () => {
     try {
       const response = await axios.get(getAllOcassions);
-      setOccasions(response?.data?.occasions);      
+      setOccasions(response?.data?.data);      
     } catch (error) {
       console.error("Error fetching Occasions", error);
     }

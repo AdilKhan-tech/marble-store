@@ -3,313 +3,388 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function SidebarLayout() {
+export default function Sidebar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
-  const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // Add class to body when sidebar is open/closed
-  useEffect(() => {
-    if (open) {
-      document.body.classList.remove("sidebar-closed");
-      document.body.classList.add("sidebar-open");
-    } else {
-      document.body.classList.remove("sidebar-open");
-      document.body.classList.add("sidebar-closed");
-    }
-  }, [open]);
-
-  const toggleSubMenu = (menu) => {
-    setActiveSubMenu((prev) => (prev === menu ? null : menu));
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+    setActiveDropdown(null);
   };
 
+  useEffect(() => {
+    if (isCollapsed) {
+      document.body.classList.add("sidebar-collapsed");
+      document.body.classList.remove("sidebar-open");
+    } else {
+      document.body.classList.add("sidebar-open");
+      document.body.classList.remove("sidebar-collapsed");
+    }
+  }, [isCollapsed]);
+
   const isActive = (path) => pathname === path;
-  const isActiveParent = (path) => pathname.startsWith(path);
 
   return (
     <>
-      {/* Toggle Button - Only show when sidebar is closed */}
-      {!open && (
-        <button className="toggle-btn" onClick={() => setOpen(true)}>
-          <i className="bi bi-list"></i>
+      {/* Floating Toggle Button when collapsed */}
+      {isCollapsed && (
+        <button 
+          onClick={toggleCollapse} 
+          className="sidebar-toggle-btn btn"
+          aria-label="Expand sidebar"
+        >
+          <i className="bi bi-arrow-right fs-4"></i>
         </button>
       )}
 
-      {/* Overlay */}
-      {open && (
-        <div
-          className="sidebar-overlay fade-in"
-          onClick={() => setOpen(false)}
-        />
-      )}
-
       {/* Sidebar */}
-      <aside className={`sidebar ${open ? "open" : ""}`}>
+      <aside className="dashboard-sidebar">
         <div className="sidebar-header">
-          <Link href="/dashboard" className="text-decoration-none">
-            <h4 className="text-orange">Dashboard</h4>
+          <Link href="/dashboard" className="logo-link text-decoration-none">
+            {isCollapsed ? (
+              <div className="logo-collapsed"></div>
+            ) : (
+              <div className="logo-full"></div>
+            )}
           </Link>
-          <button className="btn btn-light me-2" onClick={() => setOpen(false)}>
-            <i className="bi bi-x-lg"></i>
-          </button>
+
+          {!isCollapsed && (
+            <button 
+              onClick={toggleCollapse} 
+              className="sidebar-close-btn btn"
+              aria-label="Collapse sidebar"
+            >
+              <i className="bi bi-arrow-left"></i>
+            </button>
+          )}
         </div>
+
         <nav className="sidebar-nav">
-          <ul className="sidebar-menu">
-            <li className="sidebar-menu-item">
+          <ul className="list-unstyled">
+            {/* Dashboard */}
+            <li>
               <Link
                 href="/dashboard"
-                className={`sidebar-link ${
-                  isActive("/dashboard") ? "active" : ""
-                }`}
-                onClick={() => setOpen(false)}
+                className={`d-flex align-items-center ${isActive("/dashboard") ? "active" : ""}`}
               >
-                <span className="">
-                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Dashboard
-                </span>
+                <i className="bi bi-speedometer fs-5"></i>
+                {!isCollapsed && <span className="ms-2">Dashboard</span>}
               </Link>
             </li>
 
-            <li className="sidebar-menu-item">
+            {/* Product */}
+            <li>
               <Link
                 href="/dashboard/product"
-                className={`sidebar-link ${
-                  isActive("/dashboard/product") ? "active" : ""
-                }`}
-                onClick={() => setOpen(false)}
+                className={`d-flex align-items-center ${isActive("/dashboard/product") ? "active" : ""}`}
               >
-                <span className="">
-                  <i className="bi bi-building-dash me-1 sidebar-icon"></i>Product
-                </span>
+                <i className="bi bi-box fs-5"></i>
+                {!isCollapsed && <span className="ms-2">Product</span>}
               </Link>
             </li>
 
-            <li className="sidebar-menu-item">
-              <div
-                className={`sidebar-submenu-header ${
-                  isActiveParent("/dashboard/cakes") ? "active" : ""
-                }`}
-                onClick={() => toggleSubMenu("cakes")}
+            {/* Cakes */}
+            <li>
+              <button
+                className={`dropdown-toggle ${activeDropdown === "Cakes" ? 'active' : ''}`}
+                onClick={() => setActiveDropdown(activeDropdown === "Cakes" ? null : "Cakes")}
+                aria-expanded={activeDropdown === "Cakes"}
               >
-                <span className="">
-                  <i className="bi bi-cake2 me-1  sidebar-icon"></i>Cakes
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "cakes" ? "up" : "down"
-                  }`}
-                ></i>
-              </div>
-              {activeSubMenu === "cakes" && (
-                <div className="sidebar-submenu ms-3">
+                <i className="bi bi-cake2 fs-4"></i>
+                {!isCollapsed && (
+                  <>
+                    <span className="ms-2">Cakes</span>
+                    <i
+                      className={`bi bi-chevron-${activeDropdown === "Cakes" ? "up" : "down"} ms-auto`}
+                    ></i>
+                  </>
+                )}
+              </button>
+
+              {/* Submenu when expanded */}
+              {!isCollapsed && activeDropdown === "Cakes" && (
+                <div className="submenu">
                   <Link
                     href="/dashboard/cake/cakeSize"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cake/cakeSize") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Cake Size</span>
+                    Cake Sizes
                   </Link>
                   <Link
                     href="/dashboard/cake/cakeFlavour"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cake/cakeFlavour") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeFlavour") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Cake Flavour</span>
-                  </Link>
-                  <Link
-                    href="/dashboard/cake/customCakeType"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cake/customCakeType") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="sidebar-label">Custom Cake Type</span>
+                    Cake Flavors
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeFlavor"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Custom Cake Flavor</span>
+                    Custom Cake Sizes
+                  </Link>
+                  <Link
+                    href="/dashboard/cake/customCakeType"
+                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeType") ? "active" : ""}`}
+                  >
+                    Custom Cake Types
+                  </Link>
+                </div>
+              )}
+
+              {/* Collapsed dropdown */}
+              {isCollapsed && activeDropdown === "Cakes" && (
+                <div className="collapse-dropdown">
+                  <div className="dropdown-header">Cakes</div>
+                  <Link 
+                    href="/dashboard/cake/cakeSize" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Cake Sizes
+                  </Link>
+                  <Link 
+                    href="/dashboard/cake/cakeFlavour" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Cake Flavors
+                  </Link>
+                  <Link 
+                    href="/dashboard/cake/customCakeFlavor" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Custom Cake Sizes
+                  </Link>
+                  <Link 
+                    href="/dashboard/cake/customCakeType" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Custom Cake Types
                   </Link>
                 </div>
               )}
             </li>
 
-            <li className="sidebar-menu-item">
-              <div
-                className={`sidebar-submenu-header ${
-                  isActiveParent("/dashboard/icecream") ? "active" : ""
-                }`}
-                onClick={() => toggleSubMenu("icecream")}
+            {/* Ice Cream */}
+            <li>
+              <button
+                className={`dropdown-toggle ${activeDropdown === "IceCream" ? 'active' : ''}`}
+                onClick={() => setActiveDropdown(activeDropdown === "IceCream" ? null : "IceCream")}
+                aria-expanded={activeDropdown === "IceCream"}
               >
-                <span className="">
-                  <i className="fa fa-ice-cream me-1  sidebar-icon"></i>Ice Cream
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "icecream" ? "up" : "down"
-                  }`}
-                ></i>
-              </div>
-              {activeSubMenu === "icecream" && (
-                <div className="sidebar-submenu ms-3">
-                  <Link
-                    href="/dashboard/icecream/iceCreamPortionSize"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/iceCreamPortionSize") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="sidebar-label">Ice Cream Size</span>
-                  </Link>
+                <i className="bi bi-cone-streaked fs-4"></i>
+                {!isCollapsed && (
+                  <>
+                    <span className="ms-2">Ice Cream</span>
+                    <i
+                      className={`bi bi-chevron-${activeDropdown === "IceCream" ? "up" : "down"} ms-auto`}
+                    ></i>
+                  </>
+                )}
+              </button>
+
+              {!isCollapsed && activeDropdown === "IceCream" && (
+                <div className="submenu">
                   <Link
                     href="/dashboard/icecream/iceCreamAddon"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Ice Cream Addons</span>
+                    Ice Cream Addons
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamBucket"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Ice Cream Bucket</span>
+                    Ice Cream Buckets
+                  </Link>
+                  <Link
+                    href="/dashboard/icecream/iceCreamPortionSize"
+                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamPortionSize") ? "active" : ""}`}
+                  >
+                    Portion Sizes
                   </Link>
                 </div>
               )}
 
+              {isCollapsed && activeDropdown === "IceCream" && (
+                <div className="collapse-dropdown">
+                  <div className="dropdown-header">Ice Cream</div>
+                  <Link 
+                    href="/dashboard/icecream/iceCreamAddon" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Ice Cream Addons
+                  </Link>
+                  <Link 
+                    href="/dashboard/icecream/iceCreamBucket" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Ice Cream Buckets
+                  </Link>
+                  <Link 
+                    href="/dashboard/icecream/iceCreamPortionSize" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Portion Sizes
+                  </Link>
+                </div>
+              )}
             </li>
 
-            <li className="sidebar-menu-item">
-              <div
-                className={`sidebar-submenu-header ${
-                  isActiveParent("/dashboard/icecream") ? "active" : ""
-                }`}
-                onClick={() => toggleSubMenu("cookie")}
+            {/* Cookies */}
+            <li>
+              <button
+                className={`dropdown-toggle ${activeDropdown === "Cookies" ? 'active' : ''}`}
+                onClick={() => setActiveDropdown(activeDropdown === "Cookies" ? null : "Cookies")}
+                aria-expanded={activeDropdown === "Cookies"}
               >
-                <span className="">
-                  <i className="bi bi-cookie me-1  sidebar-icon"></i>Cookies
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "cookie" ? "up" : "down"
-                  }`}
-                ></i>
-              </div>
-              {activeSubMenu === "cookie" && (
-                <div className="sidebar-submenu ms-3">
-                  <Link
-                    href="/dashboard/cookie/"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookie/cookie") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="sidebar-label">Cookies</span>
-                  </Link>
+                <i className="bi bi-cookie fs-4"></i>
+                {!isCollapsed && (
+                  <>
+                    <span className="ms-2">Cookies</span>
+                    <i
+                      className={`bi bi-chevron-${activeDropdown === "Cookies" ? "up" : "down"} ms-auto`}
+                    ></i>
+                  </>
+                )}
+              </button>
+
+              {!isCollapsed && activeDropdown === "Cookies" && (
+                <div className="submenu">
                   <Link
                     href="/dashboard/cookie/boxSize"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookie/boxSize") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Cookies Size</span>
+                    Cookie Box Size
                   </Link>
                   <Link
                     href="/dashboard/cookie/boxType"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/cookie/boxType") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxType") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Cookies Type</span>
+                    Cookie Box Type
+                  </Link>
+                  <Link
+                    href="/dashboard/cookie"
+                    className={`d-flex align-items-center ${isActive("/dashboard/cookie") ? "active" : ""}`}
+                  >
+                    Cookie List
+                  </Link>
+                </div>
+              )}
+
+              {isCollapsed && activeDropdown === "Cookies" && (
+                <div className="collapse-dropdown">
+                  <div className="dropdown-header">Cookies</div>
+                  <Link 
+                    href="/dashboard/cookie/boxSize" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Cookie Box Size
+                  </Link>
+                  <Link 
+                    href="/dashboard/cookie/boxType" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Cookie Box Type
+                  </Link>
+                  <Link 
+                    href="/dashboard/cookie" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Cookie List
                   </Link>
                 </div>
               )}
             </li>
 
-            <li className="sidebar-menu-item">
-              <div
-                className={`sidebar-submenu-header
-               ${isActiveParent("/dashboard/icecream") ? "active" : ""}`}
-                onClick={() => toggleSubMenu("setting")}
+            {/* Settings */}
+            <li>
+              <button
+                className={`dropdown-toggle ${activeDropdown === "Settings" ? 'active' : ''}`}
+                onClick={() => setActiveDropdown(activeDropdown === "Settings" ? null : "Settings")}
+                aria-expanded={activeDropdown === "Settings"}
               >
-                <span className="">
-                  <i className="bi bi-gear me-1 sidebar-icon"></i>Settings
-                </span>
-                <i
-                  className={`sidebar-chevron bi bi-chevron-${
-                    activeSubMenu === "setting" ? "up" : "down"
-                  }`}
-                ></i>
-              </div>
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
+                <i className="bi bi-gear fs-4"></i>
+                {!isCollapsed && (
+                  <>
+                    <span className="ms-2">Settings</span>
+                    <i
+                      className={`bi bi-chevron-${activeDropdown === "Settings" ? "up" : "down"} ms-auto`}
+                    ></i>
+                  </>
+                )}
+              </button>
+
+              {!isCollapsed && activeDropdown === "Settings" && (
+                <div className="submenu">
                   <Link
                     href="/dashboard/setting/branches"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/branches") ? "active" : ""
-
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/branches") ? "active" : ""}`}
                   >
-                    <span className="sidebar-label">Branches</span>
+                    Branches
                   </Link>
-                </div>
-              )}
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
-                  <Link
-                    href="/dashboard/setting/occasion"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/occasion") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="sidebar-label">Ocassion</span>
-                  </Link>
-                </div>
-              )}
-              {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
-                  <Link
-                    href="/dashboard/setting/gender"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/gender") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className=""></span>
-                    <span className="sidebar-label">Gender</span>
-                  </Link>
-                </div>
-            )}
-           {activeSubMenu === "setting" && (
-                <div className="sidebar-submenu ms-3">
                   <Link
                     href="/dashboard/setting/categories"
-                    className={`sidebar-submenu-link ${
-                      isActive("/dashboard/setting/categories") ? "active" : ""
-                    }`}
-                    onClick={() => setOpen(false)}
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/categories") ? "active" : ""}`}
                   >
-                    <span className=""></span>
-                    <span className="sidebar-label">Categories</span>
+                    Categories
+                  </Link>
+                  <Link
+                    href="/dashboard/setting/gender"
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/gender") ? "active" : ""}`}
+                  >
+                    Gender
+                  </Link>
+                  <Link
+                    href="/dashboard/setting/occasion"
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/occasion") ? "active" : ""}`}
+                  >
+                    Occasion
                   </Link>
                 </div>
-           
+              )}
+
+              {isCollapsed && activeDropdown === "Settings" && (
+                <div className="collapse-dropdown">
+                  <div className="dropdown-header">Settings</div>
+                  <Link 
+                    href="/dashboard/setting/branches" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Branches
+                  </Link>
+                  <Link 
+                    href="/dashboard/setting/categories" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Categories
+                  </Link>
+                  <Link 
+                    href="/dashboard/setting/gender" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Gender
+                  </Link>
+                  <Link 
+                    href="/dashboard/setting/occasion" 
+                    className="dropdown-link"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Occasion
+                  </Link>
+                </div>
               )}
             </li>
           </ul>
