@@ -123,10 +123,10 @@ export default function Sidebar() {
                       onClick={() => setActiveDropdown(activeDropdown === item.key ? null : item.key)}
                       aria-expanded={activeDropdown === item.key}
                     >
-                      <i className={`${item.icon} fs-3`}></i>
+                      <i className={`${item.icon} fs-4`}></i>
                       {!isCollapsed && (
                         <>
-                          <span className="ms-2 fs-5 fw-normal">{item.label}</span>
+                          <span className="ms-2">{item.label}</span>
                           <i
                             className={`bi bi-chevron-${activeDropdown === item.key ? "up" : "down"} ms-auto`}
                           ></i>

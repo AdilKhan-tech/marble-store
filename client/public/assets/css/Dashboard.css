@@ -21,7 +21,7 @@ body * {
   margin-inline-start: 100px;
 }
 body.sidebar-collapsed .header{
-  margin-inline-start: 100px;
+  margin-inline-start: 110px;
   transition: 0.5s ease;
 }
 body.sidebar-open .header{
@@ -468,7 +468,7 @@ table tr:nth-child(even) td {
 }
 
 body.sidebar-collapsed .dashboard-sidebar {
-  width: 80px;
+  width: 100px;
 }
 
 /* Floating Toggle Button */
@@ -480,14 +480,14 @@ body.sidebar-collapsed .dashboard-sidebar {
   background: #FF6E21;
   color: white;
   border: none;
-  width: 40px;
+  width: 50px;
   height: 40px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(255, 110, 33, 0.3);
+  /* box-shadow: 0 2px 8px rgba(255, 110, 33, 0.3); */
 }
 
 /* Sidebar Header */
