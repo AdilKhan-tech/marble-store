@@ -348,7 +348,7 @@ table tr:nth-child(even) td {
   font-size: 24px;
 }
 .sidebar-open .sidebar-icon {
-  font-size: 24px;
+  font-size: 20px;
   width: 10px;
 }
 .sidebar-closed .sidebar-chevron {
@@ -468,7 +468,7 @@ table tr:nth-child(even) td {
 }
 
 body.sidebar-collapsed .dashboard-sidebar {
-  width: 100px;
+  width: 90px;
 }
 
 /* Floating Toggle Button */
