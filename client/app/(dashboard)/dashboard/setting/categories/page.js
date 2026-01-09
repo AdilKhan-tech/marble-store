@@ -12,7 +12,7 @@ export default function CategoryPage() {
 
   const { token } = useAxiosConfig();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [categorieData, setCategorieData] = useState(null);
+  const [categoryData, setCategoryData] = useState(null);
   const [categories, setCategories] = useState([]);
 
   const fetchAllCategories = async () => {
@@ -30,12 +30,12 @@ export default function CategoryPage() {
   }, [token]);
 
   const showOffcanvasOnAddCategory = () => {
-    setCategorieData(null);
+    setCategoryData(null);
     setShowOffcanvas(true);
   };
 
   const showOffcanvasOnEditCategory = (category) => {
-    setCategorieData(category);
+    setCategoryData(category);
     setShowOffcanvas(true);
   };
 
@@ -157,7 +157,7 @@ export default function CategoryPage() {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
-                  {categorieData ? "Update Category" : "Add Category"}
+                  {categoryData ? "Update Category" : "Add Category"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
@@ -167,7 +167,7 @@ export default function CategoryPage() {
                 onAddCategory={addCategory}
                 onUpdateCategory={updateCategory}
                 closePopup={closePopup}
-                categoryData={categorieData}
+                categoryData={categoryData}
               >
               </AddCategory>
             </Offcanvas.Body>

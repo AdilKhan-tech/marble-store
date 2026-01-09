@@ -179,16 +179,16 @@ function page() {
                     Id<span>{renderSortIcon("id")}</span>
                   </th>
                   <th onClick={() => handleSort("name_en")}>
-                  Name <span>{renderSortIcon("name_en")}</span>
+                    Name <span>{renderSortIcon("name_en")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
-                  Slug <span>{renderSortIcon("slug")}</span>
+                    Slug <span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("custom_cake_type_id")}>
-                  Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
+                    Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
-                  Status <span>{renderSortIcon("status")}</span>
+                    Status <span>{renderSortIcon("status")}</span>
                   </th>
                   <th onClick={() => handleSort("id")}>Action</th>
                 </tr>

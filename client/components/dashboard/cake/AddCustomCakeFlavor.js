@@ -193,7 +193,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
           type="select"
           className="form-select textarea-hove-dark text-secondary"
           value={formData.custom_cake_type_id} onChange={(e)=>setFormData({...formData,custom_cake_type_id:e.target.value})}>
-          <option value="Cookie Cake">Select Custom Cake Type</option>
+          <option>Select Custom Cake Type</option>
             {customCakeTypes.map((type) => (
               <option key={type.id} value={type.id}>
                 {type.name_en}
