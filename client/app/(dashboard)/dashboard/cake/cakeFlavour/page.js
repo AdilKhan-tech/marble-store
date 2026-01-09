@@ -5,40 +5,40 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddCakeFlavour from "@/components/dashboard/cake/AddCakeFlavour";
 import { useEffect, useState } from 'react';
-import { getAllCakeFlavours, deleteCakeFlavourById } from '@/utils/apiRoutes';
-
+import { getAllCakeFlavors, deleteCakeFlavorById } from '@/utils/apiRoutes';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
-
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function CakeFlavourPage() {
-
   const {token} = useAxiosConfig();
   const [cakeFlavors, setCakeFlavors] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeFlavorData, setCakeFlavorData] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
 
   // PAGINATION STATES 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(2);
+  const [pageLimit, setPageLimit] = useState(25);
   const [keywords, setKeywords] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
   const fetchCakeFlavors = async () => {
+    if (!token) return;
     try {
       const params = {
         page: currentPage,
         limit: pageLimit,
         keywords: keywords,
+        sortOrder,
+        sortField,
       }
-      const response = await axios.get(getAllCakeFlavours, { params });
+      const response = await axios.get(getAllCakeFlavors, { params });
       setCakeFlavors(response.data.data);
       setTotalEntries(response.data.pagination.total);
-      setPageCount(response.data.pagination.pageCount)
+      setPageCount(response.data.pagination.pageCount);
 
     } catch (error) {
       console.error("Error fetching cake Flavors", error);
@@ -46,9 +46,16 @@ export default function CakeFlavourPage() {
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchCakeFlavors();
-  }, [currentPage, pageLimit, keywords, token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchCakeFlavors();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchCakeFlavors();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnAddCakesFlavour = () => {
     setCakeFlavorData(null);
@@ -75,7 +82,7 @@ export default function CakeFlavourPage() {
 
   const handleDelete = async (flavorId) => {
     try {
-      const response = await axios.delete(deleteCakeFlavourById(flavorId));
+      const response = await axios.delete(deleteCakeFlavorById(flavorId));
       if(response.status === 200) {
         toast.success("Cake flavour deleted successfully!", {autoClose: 1000});
         setCakeFlavors((prev) =>
@@ -110,13 +117,19 @@ export default function CakeFlavourPage() {
   };
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
+
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
@@ -205,7 +218,7 @@ export default function CakeFlavourPage() {
           placement="end">
           <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            <div className='fs-24'>
+            <div className='fs-24 fnt-color'>
               {cakeFlavorData ? "Update Cake Flavour" : "Add Cake Flavour"}
             </div>
           </Offcanvas.Title>
@@ -238,6 +251,5 @@ export default function CakeFlavourPage() {
       />
     </div>
     </>
-    
   )
 }

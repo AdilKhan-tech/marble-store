@@ -7,28 +7,55 @@ import AddIceCreamSize from "@/components/dashboard/icecream/AddIceCreamPortionS
 import { useEffect, useState } from "react";
 import { getAllIceCreamPortionSizes, deleteIceCreamPortionSizeById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function IceCreamPortionSizePage() {
   const { token } = useAxiosConfig();
   const [iceCreamPortionSizes, setIceCreamPortionSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [iceCreamPortionData, setIceCreamPortionSizeData] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
+
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   const fetchIceCreamPortionSizes = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllIceCreamPortionSizes);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllIceCreamPortionSizes, { params });
       setIceCreamPortionSizes(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
+
     } catch (error) {
       console.error("Error fetching icecream Portion Sizes", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchIceCreamPortionSizes();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchIceCreamPortionSizes();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchIceCreamPortionSizes();
+    }
+}, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnAddCakesSize = () => {
     setIceCreamPortionSizeData(null);
@@ -42,6 +69,15 @@ export default function IceCreamPortionSizePage() {
 
   const closePopup = () => {
     setShowOffcanvas(false);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleDelete = async (iceCreamId) => {
@@ -83,14 +119,19 @@ export default function IceCreamPortionSizePage() {
   };
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
@@ -105,6 +146,7 @@ export default function IceCreamPortionSizePage() {
                 type="text"
                 className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
+                onChange={(e) => setKeywords(e.target.value)}
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
@@ -208,6 +250,20 @@ export default function IceCreamPortionSizePage() {
           <ToastContainer />
         </div>
       </section>
+      <hr/>
+      <div className='datatable-bottom'>
+        <Pagination
+          currentPage={currentPage}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          pageLimit={pageLimit}
+          totalEntries={totalEntries}
+        />
+        <EntriesPerPageSelector
+          pageLimit={pageLimit}
+          onPageLimitChange={handleLimitChange}
+        />
+      </div>
     </>
   );
 }

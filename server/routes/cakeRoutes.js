@@ -31,7 +31,7 @@ router.delete('/customTypes/:id', CustomCakeTypeController.deleteCustomCakeTypeB
 router.post('/customFlavor', upload.single('image_url'), CustomCakeFlavorController.createCustomCakeFlavor)
 router.get('/customFlavors', CustomCakeFlavorController.getAllCustomCakeFlavor)
 router.delete('/customflavor/:id', CustomCakeFlavorController.deleteCustomCakeFlavorById)
-router.put('/customFlavor/:id', CustomCakeFlavorController.updateCustomCakeFlavorById)
+router.put('/customFlavor/:id', upload.single('image_url'), CustomCakeFlavorController.updateCustomCakeFlavorById)
 
 router.post('/customSize', upload.single('image_url'), CustomCakeSizeController.createCustomCakeSize)
 router.get('/', CustomCakeSizeController.getAllCustomCakeSize)

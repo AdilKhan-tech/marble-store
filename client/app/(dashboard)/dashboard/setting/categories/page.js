@@ -5,14 +5,14 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import AddCategory from "@/components/dashboard/setting/AddCategory";
 import { useEffect, useState } from "react";
-import { getAllCategories, deleteCategoriesById } from "@/utils/apiRoutes";
+import { getAllCategories, deleteCategoryById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 export default function CategoryPage() {
 
   const { token } = useAxiosConfig();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [categorieData, setCategorieData] = useState(null);
+  const [categoryData, setCategoryData] = useState(null);
   const [categories, setCategories] = useState([]);
 
   const fetchAllCategories = async () => {
@@ -30,12 +30,12 @@ export default function CategoryPage() {
   }, [token]);
 
   const showOffcanvasOnAddCategory = () => {
-    setCategorieData(null);
+    setCategoryData(null);
     setShowOffcanvas(true);
   };
 
   const showOffcanvasOnEditCategory = (category) => {
-    setCategorieData(category);
+    setCategoryData(category);
     setShowOffcanvas(true);
   };
 
@@ -45,7 +45,7 @@ export default function CategoryPage() {
 
   const handleDelete = async (categoryId) => {
     try {
-      const response = await axios.delete(deleteCategoriesById(categoryId));
+      const response = await axios.delete(deleteCategoryById(categoryId));
       if (response.status === 200) {
         toast.success("Categories deleted successfully!", { autoClose: 1000 });
         setCategories((prev) =>
@@ -157,7 +157,7 @@ export default function CategoryPage() {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
-                  {categorieData ? "Update Category" : "Add Category"}
+                  {categoryData ? "Update Category" : "Add Category"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
@@ -167,7 +167,7 @@ export default function CategoryPage() {
                 onAddCategory={addCategory}
                 onUpdateCategory={updateCategory}
                 closePopup={closePopup}
-                categoryData={categorieData}
+                categoryData={categoryData}
               >
               </AddCategory>
             </Offcanvas.Body>

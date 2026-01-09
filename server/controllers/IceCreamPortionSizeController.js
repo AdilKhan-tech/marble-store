@@ -1,4 +1,4 @@
-const IceCreamPortionSize = require("../models/IceCreamPortionSize");
+const { IceCreamBucket, IceCreamPortionSize } = require("../models");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -56,6 +56,13 @@ class IceCreamPortionSizeController {
 
       const { count, rows } = await IceCreamPortionSize.findAndCountAll({
         where: whereClause,
+        include: [
+          {
+            model: IceCreamBucket,
+            as: "iceCreamBucket",
+            attributes: ["id", "name_en", "name_ar"],
+          },
+        ],
         limit,
         offset,
         order: [[finalSortField, finalSortOrder]],

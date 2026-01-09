@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import {
-  getAllCustomCakeFlavor,
+  getAllCustomCakeFlavors,
   deleteCustomCakeFlavorById,
 } from "@/utils/apiRoutes";
 import AddCustomCakeFlavor from "@/components/dashboard/cake/AddCustomCakeFlavor";
@@ -18,8 +18,8 @@ function page() {
   const [customCakeFlavors, setCustomCakeFlavors] = useState([]);
   const [customCakeFlavorData, setCustomCakeFlavorData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
   
   // PAGINATION STATES 
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,13 +30,16 @@ function page() {
 
 
   const fetchAllCustomCakeFlavor = async () => {
+    if (!token) return;
     try {
       const params = {
         page: currentPage,
         limit: pageLimit,
         keywords: keywords,
+        sortOrder,
+        sortField,
       }
-      const response = await axios.get(getAllCustomCakeFlavor, { params });
+      const response = await axios.get(getAllCustomCakeFlavors, { params });
       setCustomCakeFlavors(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount)
@@ -46,9 +49,16 @@ function page() {
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchAllCustomCakeFlavor();
-  }, [currentPage, pageLimit, keywords, token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchAllCustomCakeFlavor();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchAllCustomCakeFlavor();
+    }
+}, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const closePopup = () => {
     setShowOffcanvas(false);
@@ -117,14 +127,19 @@ function page() {
   };
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
@@ -164,16 +179,16 @@ function page() {
                     Id<span>{renderSortIcon("id")}</span>
                   </th>
                   <th onClick={() => handleSort("name_en")}>
-                  Name <span>{renderSortIcon("name_en")}</span>
+                    Name <span>{renderSortIcon("name_en")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
-                  Slug <span>{renderSortIcon("slug")}</span>
+                    Slug <span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("custom_cake_type_id")}>
-                  Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
+                    Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
-                  Status <span>{renderSortIcon("status")}</span>
+                    Status <span>{renderSortIcon("status")}</span>
                   </th>
                   <th onClick={() => handleSort("id")}>Action</th>
                 </tr>

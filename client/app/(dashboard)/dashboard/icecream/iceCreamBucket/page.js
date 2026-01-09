@@ -6,6 +6,8 @@ import axios from "axios";
 import AddIceCreamBucket from "@/components/dashboard/icecream/AddIceCreamBucket";
 import { useEffect, useState } from "react";
 import { getAllIceCreamBuckets, deleteIceCreamBucketById,} from "@/utils/apiRoutes";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 export default function IceCreamBucketPage() {
@@ -13,31 +15,70 @@ export default function IceCreamBucketPage() {
   const [iceCreamBucket, setIceCreamBucket] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [iceCreamBucketData, setIceCreamBucketData] = useState(null);
+    const [sortField, setSortField] = useState("id");
+    const [sortOrder, setSortOrder] = useState("DESC")
+  
+    // PAGINATION STATES 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageLimit, setPageLimit] = useState(25);
+    const [keywords, setKeywords] = useState("");
+    const [totalEntries, setTotalEntries] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
 
   const fetchAllIceCreamBucket = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllIceCreamBuckets);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllIceCreamBuckets, { params });
       setIceCreamBucket(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching Ice Cream Buckets", error);
     }
   };
+
   useEffect(() => {
-    if (!token) return;
-    fetchAllIceCreamBucket();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchAllIceCreamBucket();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchAllIceCreamBucket();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnAddIceCreamBucket = () => {
     setIceCreamBucketData(null);
     setShowOffcanvas(true);
   };
+
   const showOffcanvasOnEditIceCreamBucket = (icecream) => {
     setIceCreamBucketData(icecream);
     setShowOffcanvas(true);
   };
+
   const closePopup = () => {
     setShowOffcanvas(false);
   };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   const handleDelete = async (iceCreamId) => {
     try {
       const response = await axios.delete(deleteIceCreamBucketById(iceCreamId));
@@ -52,16 +93,19 @@ export default function IceCreamBucketPage() {
       toast.error("Failed to delete Ice Cream Bucket.");
     }
   };
+
   const showDeleteConfirmation = (iceCreamId) => {
     const confirm = window.confirm("Are you sure you want to delete this Ice Cream Bucket?" );
     if (confirm) {
       handleDelete(iceCreamId);
     }
   };
+
   const addIceCreamBucket = (newIceCream) => {
     setIceCreamBucket((prev) => [newIceCream, ...prev]);
     setShowOffcanvas(false);
   };
+
   const updateIceCreamBucket = (updatedIceCream) => {
     setIceCreamBucket((prev) =>
       prev.map((item) =>
@@ -70,6 +114,23 @@ export default function IceCreamBucketPage() {
     );
     setShowOffcanvas(false);
   };
+
+  const handleSort = (field) => {
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
+  };
+
+  const renderSortIcon = (field) => {
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
+  };
+  
   return (
     <>
       <section className="mt-10">
@@ -82,6 +143,7 @@ export default function IceCreamBucketPage() {
                 type="text"
                 className="form-control px-5 text-dark-custom"
                 placeholder="Search here..."
+                onChange={(e) => setKeywords(e.target.value)}
               />
             </div>
             <div style={{ marginInlineEnd: "20px" }}>
@@ -102,12 +164,24 @@ export default function IceCreamBucketPage() {
               <table className="table datatable datatable-table">
                 <thead className="">
                   <tr className="">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Slug</th>
-                    <th>Size</th>
-                    <th>Price</th>
-                    <th>Status</th>
+                    <th onClick={() => handleSort("id")}>
+                      ID<span>{renderSortIcon("id")}</span>
+                    </th>
+                    <th onClick={() => handleSort("name_en")}>
+                      Name<span>{renderSortIcon("name_en")}</span>
+                    </th>
+                    <th onClick={() => handleSort("slug")}>
+                      Slug<span>{renderSortIcon("slug")}</span>
+                    </th>
+                    <th onClick={() => handleSort("size")}>
+                      Size<span>{renderSortIcon("size")}</span>
+                    </th>
+                    <th onClick={() => handleSort("price")}>
+                      Price<span>{renderSortIcon("price")}</span>
+                    </th>
+                    <th onClick={() => handleSort("status")}>
+                      Status<span>{renderSortIcon("status")}</span>
+                    </th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -176,6 +250,20 @@ export default function IceCreamBucketPage() {
           <ToastContainer />
         </div>
       </section>
+      <hr/>
+      <div className='datatable-bottom'>
+        <Pagination
+          currentPage={currentPage}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          pageLimit={pageLimit}
+          totalEntries={totalEntries}
+        />
+        <EntriesPerPageSelector
+          pageLimit={pageLimit}
+          onPageLimitChange={handleLimitChange}
+        />
+      </div>
     </>
   );
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookiesSizes, updateCookiesSizes ,getCookieBoxTypes } from "@/utils/apiRoutes";
+import { createCookieBoxSize, updateCookieBoxSizeById, getAllCookieBoxTypes } from "@/utils/apiRoutes";
 
 const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBoxSize, onUpdateCookieBoxSize }) => {
   const [errors, setErrors] = useState([]);
@@ -77,7 +77,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       }
   
       if (cookieBoxSizeData) {
-        const res = await axios.put(updateCookiesSizes(cookieBoxSizeData.id), payload);
+        const res = await axios.put(updateCookieBoxSizeById(cookieBoxSizeData.id), payload);
   
         if (res.status === 200) {
           toast.success("Cookie Box Size updated successfully!", {
@@ -97,7 +97,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       }
       //  CREATE
       else {
-        const res = await axios.post(createCookiesSizes, payload);
+        const res = await axios.post(createCookieBoxSize, payload);
   
         if (res.status === 201 || res.status === 200) {
           const selectedType = cookiesBoxTypes.find(
@@ -131,8 +131,8 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
 
   const fetchCookieBoxTypes = async () => {
     try {
-      const response = await axios.get(getCookieBoxTypes);
-      setCookiesBoxTypes(response?.data);
+      const response = await axios.get(getAllCookieBoxTypes);
+      setCookiesBoxTypes(response?.data?.data);
     } catch (error) {
       console.error("Error fetching cookie box types", error);
     }

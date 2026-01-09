@@ -2,39 +2,65 @@
 import React from 'react'
 import { useState , useEffect } from 'react'
 import axios from 'axios';
-import { getCookieBoxSizes ,deleteCookieBoxSizes } from '@/utils/apiRoutes';
+import { getAllCookieBoxSizes ,deleteCookieBoxSizeById } from '@/utils/apiRoutes';
 import {ToastContainer, toast} from "react-toastify";
 import AddCookieBoxSize from "@/components/dashboard/cookies/AddCookieBoxSize";
 import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CookieBoxSizePage() {
   const [cookieBoxSizes, setCookieBoxSizes] = useState([]);
   const {token} = useAxiosConfig();
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cookieBoxSizeData, setCookieBoxSizeData] = useState(null);
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
 
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   const fetchCookieBoxSizes = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getCookieBoxSizes);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllCookieBoxSizes, { params });
       setCookieBoxSizes(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching Cookie box sizes", error);
     }
   }
 
   useEffect(() => {
-    if(!token) return;
-    fetchCookieBoxSizes();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchCookieBoxSizes();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchCookieBoxSizes();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnEditCookieBoxSize = (boxSize) => {
     setCookieBoxSizeData(boxSize);
     setShowOffcanvas(true);
   }
+
   const showOffcanvasOnAddCookieBoxSize = () => {
     setCookieBoxSizeData();
     setShowOffcanvas(true);
@@ -58,38 +84,52 @@ export default function CookieBoxSizePage() {
     setShowOffcanvas(false);
   };
 
-    const showDeleteConfirmation = (boxSizeId) => {
-      const confirmed = window.confirm("Are you sure you want to delete this cookie box size?");
-      if(confirmed){
-        handleDelete(boxSizeId)
-      }
-    };
-
-    const handleDelete = async (boxSizeId) => {
-      try {
-          const response = await axios.delete(deleteCookieBoxSizes(boxSizeId));
-          if(response.status === 200){
-            toast.success("Cookie box Size deleted successfully!", { autoClose: 1000 });
-            setCookieBoxSizes((prev) => prev.filter((boxSize) => boxSize.id !== boxSizeId));
-          }
-    }catch (error){
-        toast.error("Failed to delete Cookie Box Size.");
-      }
+  const showDeleteConfirmation = (boxSizeId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this cookie box size?");
+    if(confirmed){
+      handleDelete(boxSizeId)
     }
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleDelete = async (boxSizeId) => {
+    try {
+        const response = await axios.delete(deleteCookieBoxSizeById(boxSizeId));
+        if(response.status === 200){
+          toast.success("Cookie box Size deleted successfully!", { autoClose: 1000 });
+          setCookieBoxSizes((prev) => prev.filter((boxSize) => boxSize.id !== boxSizeId));
+        }
+  }catch (error){
+      toast.error("Failed to delete Cookie Box Size.");
+    }
+  }
 
   const handleSort = (field) => {
-    const newOrder =
-    sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
-
   return (
+    <>
     <section className='mt-10'>
       <div className=''>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Size</p>
@@ -99,13 +139,18 @@ export default function CookieBoxSizePage() {
             <input
               type='text'
               className='form-control px-5 text-dark-custom'
-              placeholder='Search here...'/>
+              placeholder='Search here...'
+              onChange={(e) => setKeywords(e.target.value)}
+            />
           </div>
           <div style={{marginInlineEnd:"20px"}}>
-            <button className='btn-orange'
+            <button 
+              className='btn-orange'
               onClick={showOffcanvasOnAddCookieBoxSize}
               role='button'>
-              <i className='bi bi-plus-circle me-2'></i>Create
+              <i className='bi bi-plus-circle me-2'
+            ></i>
+            Create
             </button>
           </div>
         </div>
@@ -141,10 +186,9 @@ export default function CookieBoxSizePage() {
               <tbody>
                 {cookieBoxSizes.map((boxSize, index) => (
                   <tr key={`${boxSize.id}-${index}`}>
-
                     <td>{boxSize.id}</td>
                     <td>{boxSize.name_en}</td>
-                    <td>{boxSize.cookies_types_id}</td>
+                    <td>{boxSize.type.name_en}</td>
                     <td>{boxSize.slug}</td>
                     <td>
                     <div className={boxSize.status === "active" ? "blue-status" : "red-status"}>
@@ -190,9 +234,24 @@ export default function CookieBoxSizePage() {
             />
           </Offcanvas.Body>
         </Offcanvas>
-    <ToastContainer />
+        <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
   )
 }
 

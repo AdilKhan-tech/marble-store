@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakeFlavour, updateCakeFlavourById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
+import { createCakeFlavor, updateCakeFlavorById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
 
 const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
@@ -93,7 +93,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       // ================= UPDATE =================
       if (cakeFlavorData) {
         const res = await axios.put(
-          updateCakeFlavourById(cakeFlavorData.id),
+          updateCakeFlavorById(cakeFlavorData.id),
           payload
         );
   
@@ -121,7 +121,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
   
       // ================= CREATE =================
       else {
-        const res = await axios.post(createCakeFlavour, payload);
+        const res = await axios.post(createCakeFlavor, payload);
   
         if (res.status === 201 || res.status === 200) {
           const selectedType = customCakeTypes.find(

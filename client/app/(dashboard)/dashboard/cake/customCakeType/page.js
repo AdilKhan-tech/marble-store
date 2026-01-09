@@ -17,36 +17,46 @@ export default function CustomCakeTypePage() {
   const [customeCakeTypes, setCustomCakeTypes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [customCakeTypeData, setCustomCakeTypeData] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
 
   // PAGINATION STATES 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(2);
+  const [pageLimit, setPageLimit] = useState(25);
   const [keywords, setKeywords] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
   const fetchCustomCakeTypes = async () => {
+    if (!token) return;
     try {
       const params = {
         page: currentPage,
         limit: pageLimit,
         keywords: keywords,
+        sortOrder,
+        sortField,
       }
       const response = await axios.get(getAllCustomCakeTypes, { params });
       setCustomCakeTypes(response.data.data);
       setTotalEntries(response.data.pagination.total);
-      setPageCount(response.data.pagination.pageCount)
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching cakes", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchCustomCakeTypes();
-  }, [currentPage, pageLimit, keywords, token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchCustomCakeTypes();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchCustomCakeTypes();
+    }
+}, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasAddCustomCakeType = () => {
     setCustomCakeTypeData(null);
@@ -110,14 +120,19 @@ export default function CustomCakeTypePage() {
   };
 
   const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (

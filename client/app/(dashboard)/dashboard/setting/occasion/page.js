@@ -1,34 +1,60 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
+import AddOccasion from "@/components/dashboard/setting/AddOccasion";
 import { getAllOcassions, deleteOccasionById } from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import AddOccasion from "@/components/dashboard/setting/AddOccasion";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 function Occasions() {
   const { token } = useAxiosConfig();
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
   const [occasions, setOccasions] = useState([]);
   const [occasionData, setOccasionData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
+
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);  
 
   const fetchOccasions = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllOcassions);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllOcassions, { params });
       setOccasions(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching occasion", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchOccasions();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchOccasions();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchOccasions();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const showOffcanvasOnAddOcassion = () => {
     setOccasionData(null);
@@ -43,12 +69,39 @@ function Occasions() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
   };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleDelete = async (occasionId) => {
+    try {
+      const response = await axios.delete(deleteOccasionById(occasionId));
+      if (response.status === 200) {
+        toast.success("Ocassion deleted successfully!", { autoClose: 1000 });
+        setOccasions((prev) =>
+          prev.filter((occasion) => occasion.id !== occasionId)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting Ocassion.", error);
+      toast.error("Failed to delete Ocassion.");
+    }
+  };
+
+  const showDeleteConfirmation = (occasionId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this Ocassion?"
+    );
+    if (confirmed) {
+      handleDelete(occasionId);
+    }
+  };
+
   const onAddOccasion = (newOccasion) => {
     setOccasions(prev => [newOccasion, ...prev]);
     setShowOffcanvas(false);
@@ -62,34 +115,25 @@ function Occasions() {
     );
     setShowOffcanvas(false);
   };
+
+  const handleSort = (field) => {
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
+  };
+
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
-
-  const handleDelete = async (occasionId) => {
-    try {
-      const response = await axios.delete(deleteOccasionById(occasionId));
-      if (response.status === 200) {
-        toast.success("Ocassion deleted successfully!", { autoClose: 1000 });
-        setOccasions((prev) =>
-          prev.filter((occasion) => occasion.id !== occasionId)
-        );
-      }
-    } catch (error) {
-      console.error("Error deleting Cake size:", error);
-      toast.error("Failed to delete Cake size.");
-    }
-  };
-
-  const showDeleteConfirmation = (occasionId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this Cake size?"
-    );
-    if (confirmed) {
-      handleDelete(occasionId);
-    }
-  };
+  
   return (
+    <>
     <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Occasions</p>
@@ -100,6 +144,7 @@ function Occasions() {
               type="text"
               className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
+              onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <button
@@ -177,6 +222,21 @@ function Occasions() {
         <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
   );
 }
 

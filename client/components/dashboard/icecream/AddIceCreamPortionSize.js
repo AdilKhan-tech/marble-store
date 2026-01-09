@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createIcecreamSizes, updateIcecreamSizes } from "@/utils/apiRoutes";
+import { createIceCreamPortionSize, updateIceCreamPortionSizeById } from "@/utils/apiRoutes";
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -73,13 +73,13 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       }
 
       if (iceCreamPortionData) {
-        const res = await axios.put(updateIcecreamSizes(iceCreamPortionData.id), payload);
+        const res = await axios.put(updateIceCreamPortionSizeById(iceCreamPortionData.id), payload);
         if (res.status === 200 || res.status === 201) {
           toast.success("IceCream Portion Size updated successfully!", { autoClose: 1000, onClose: closePopup });
           onUpdateIceCreamPortionSize(res.data);
         }
       } else {
-        const res = await axios.post(createIcecreamSizes, payload);
+        const res = await axios.post(createIceCreamPortionSize, payload);
         if (res.status === 200 || res.status === 201) {
           toast.success("IceCream Portion Size added successfully!", { autoClose: 1000, onClose: closePopup });
           onAddIceCreamPortionSize(res.data);

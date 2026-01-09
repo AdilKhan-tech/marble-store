@@ -3,7 +3,7 @@ import React, { use } from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookiesTypes, updateCookiesTypesById } from "@/utils/apiRoutes";
+import { createCookieBoxType, updateCookieTypeById } from "@/utils/apiRoutes";
 
 const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBoxType, onUpdateCookieBoxType }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -74,7 +74,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       }
 
       if (cookieBoxTypeData) {
-        const res = await axios.put(updateCookiesTypesById(cookieBoxTypeData.id), payload);
+        const res = await axios.put(updateCookieTypeById(cookieBoxTypeData.id), payload);
 
         if (res.status === 200) {
           toast.success("Cookie box type updated successfully!", {
@@ -94,7 +94,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       }
       //  CREATE
       else {
-        const res = await axios.post(createCookiesTypes, payload);
+        const res = await axios.post(createCookieBoxType, payload);
   
         if (res.status === 201 || res.status === 200) {
 

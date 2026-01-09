@@ -7,26 +7,55 @@ import { useEffect, useState } from "react";
 import { getAllGenders,deleteGenderById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import AddGender from "@/components/dashboard/setting/AddGender";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function GenderPage() {
   const { token } = useAxiosConfig();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [genderData , setGenderData] = useState(null)
   const [genders, setGenders] = useState([]);
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
+
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   const fetchAllGenders = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllGenders);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllGenders, { params });
       setGenders(response.data.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
     } catch (error) {
       console.error("Error fetching genders", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchAllGenders();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchAllGenders();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchAllGenders();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+
 
   const showOffcanvasOnAddGender = () => {
     setGenderData(null);
@@ -40,6 +69,15 @@ export default function GenderPage() {
 
   const closePopup = () => {
     setShowOffcanvas(false);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleDelete = async (genderId) => {
@@ -74,7 +112,24 @@ export default function GenderPage() {
     setShowOffcanvas(false);
   };
 
+  const handleSort = (field) => {
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
+  };
+
+  const renderSortIcon = (field) => {
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
+  };
+
   return (
+    <>
     <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 fnt-color">Genders</p>
@@ -85,6 +140,7 @@ export default function GenderPage() {
               type="text"
               className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
+              onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
           <div style={{ marginInlineEnd: "20px" }}>
@@ -105,10 +161,18 @@ export default function GenderPage() {
             <table className="table datatable datatable-table">
               <thead className="">
                 <tr className="">
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Parent Gender</th>
-                  <th>Slug</th>
+                  <th onClick={() => handleSort("id")}>
+                    ID<span>{renderSortIcon("id")}</span>
+                  </th>
+                  <th onClick={() => handleSort("name_en")}>
+                    Name<span>{renderSortIcon("name_en")}</span>
+                  </th>
+                  <th onClick={() => handleSort("parent_gender")}>
+                    Parent Gender<span>{renderSortIcon("parent_gender")}</span>
+                  </th>
+                  <th onClick={() => handleSort("slug")}>
+                    Slug<span>{renderSortIcon("slug")}</span>
+                  </th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -167,5 +231,20 @@ export default function GenderPage() {
         <ToastContainer />
       </div>
     </section>
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
   );
 }
