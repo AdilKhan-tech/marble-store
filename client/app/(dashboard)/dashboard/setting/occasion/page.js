@@ -148,7 +148,7 @@ function Occasions() {
             />
           </div>
           <button
-            style={{ marginInlineEnd: "20px" }}
+           
             className="btn-orange"
             onClick={showOffcanvasOnAddOcassion}
           >
@@ -182,10 +182,10 @@ function Occasions() {
                     <td>{occasion.slug}</td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={()=>showOffcanvasOnEditOcassion(occasion)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
-                        <button className="action-btn" onClick={() => showDeleteConfirmation(occasion.id)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(occasion.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>

@@ -137,8 +137,8 @@ export default function CustomCakeTypePage() {
 
   return (
     <>
-    <section className='mt-10'>
-      <div className="">
+    <section className="mt-10">
+      <div className="mt-10">
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
@@ -150,7 +150,7 @@ export default function CustomCakeTypePage() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{marginInlineEnd:"20px"}}>
+          <div >
             <div 
               className='btn-orange' 
               onClick={showOffcanvasAddCustomCakeType} 
@@ -196,9 +196,9 @@ export default function CustomCakeTypePage() {
                       </div>
                     </td>
                     <td className='d-flex gap-2'>
-                      <div className='action-btn' onClick={() => showOffcanvasOnEditCakeTypes(customeCakeType)}>
+                      <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakeTypes(customeCakeType)}>
                         <i className="bi bi-pencil-square text-primary"></i></div>
-                      <div className='action-btn' onClick={() => showDeleteConfirmation(customeCakeType.id)}>
+                      <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showDeleteConfirmation(customeCakeType.id)}>
                         <i className="bi bi-trash text-danger"></i></div>
                     </td>
                   </tr>

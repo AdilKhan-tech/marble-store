@@ -122,8 +122,8 @@ export default function IceCreamAddon () {
 
   return (
     <>
-    <section className='mt-10'>
-      <div className=""> 
+    <section >
+      <div className="mt-10"> 
         <p className="pagetitle mb-0 fnt-color">Ice Cream Addons</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
@@ -135,7 +135,7 @@ export default function IceCreamAddon () {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{marginInlineEnd:"20px"}}>
+          <div >
             <div 
               className='btn-orange' 
               onClick={showOffcanvasOnAddicecreamsSize} 
@@ -189,10 +189,10 @@ export default function IceCreamAddon () {
                     </td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn" onClick={() => showOffcanvasOnEditicecreamsSize(icecream)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showOffcanvasOnEditicecreamsSize(icecream)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
-                        <button className="action-btn" onClick={() => showDeleteConfirmation(icecream.id)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(icecream.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>

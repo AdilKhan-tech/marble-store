@@ -143,7 +143,7 @@ const AddProduct = () => {
 
 
   return (
-    <form className="mt-10">
+    <form>
       <div className="card p-4 rounded-4">
         <div className="row">
           <div className="col-md-5">

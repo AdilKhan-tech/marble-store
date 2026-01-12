@@ -147,7 +147,7 @@ export default function BranchPage() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{ marginInlineEnd: "20px" }}>
+          <div>
             <button
               className="btn-orange"
               onClick={showOffcanvasOnAddBranch}
@@ -198,13 +198,13 @@ export default function BranchPage() {
                     <td>
                       <div className="d-flex gap-1">
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() => showOffcanvasOnEditBranch(branch)}
                         >
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() => showDeleteConfirmation(branch.id)}
                         >
                           <i className="bi bi-trash3 text-danger"></i>

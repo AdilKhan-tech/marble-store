@@ -91,7 +91,7 @@ export default function CategoryPage() {
                 placeholder="Search here..."
               />
             </div>
-            <div style={{ marginInlineEnd: "20px" }}>
+            <div>
               <div
                 className="btn-orange"
                 role="button"
@@ -128,7 +128,7 @@ export default function CategoryPage() {
                       <td>
                         <div className="d-flex gap-1">
                           <button
-                            className="action-btn"
+                            className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                             onClick={() =>
                               showOffcanvasOnEditCategory(category)
                             }
@@ -136,7 +136,7 @@ export default function CategoryPage() {
                             <i className="bi bi-pencil-square text-primary"></i>
                           </button>
                           <button
-                            className="action-btn"
+                            className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                             onClick={() => showDeleteConfirmation(category.id)}
                           >
                             <i className="bi bi-trash text-danger"></i>
