@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCookies, updateCookieById, getCookieBoxTypes } from "@/utils/apiRoutes";
+import { createCookie, updateCookieById, getAllCookieBoxTypes } from "@/utils/apiRoutes";
 
 const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
   const { token } = useAxiosConfig();
@@ -46,8 +46,8 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
 
   const fetchCookieBoxTypes = async () => {
     try {
-      const response = await axios.get(getCookieBoxTypes);
-      setCookieBoxTypes(response?.data);
+      const response = await axios.get(getAllCookieBoxTypes);
+      setCookieBoxTypes(response?.data?.data);
     }catch(error){
       console.error("Error fetching cookie", error)
     }
@@ -121,7 +121,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       
       //  CREATE
       else {
-        const res = await axios.post(createCookies, payload);
+        const res = await axios.post(createCookie, payload);
 
         if (res.status === 201 || res.status === 200) {
           const selectedType = cookieBoxTypes.find(

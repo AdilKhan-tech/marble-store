@@ -6,7 +6,9 @@ import useAxiosConfig from '@/hooks/useAxiosConfig';
 import AddCookieBoxType from '@/components/dashboard/cookies/AddCookieBoxType';
 import { ToastContainer, toast } from "react-toastify";
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getCookieBoxTypes, deleteCookieBoxTypesById } from '@/utils/apiRoutes';
+import { getAllCookieBoxTypes, deleteCookieBoxTypeById } from '@/utils/apiRoutes';
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CookieBoxTypePage() {
 
@@ -14,42 +16,74 @@ export default function CookieBoxTypePage() {
   const [cookieBoxType, setCookieBoxType] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cookieBoxTypeData, setCookieBoxTypeData] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC")
 
-const fetchCookieBoxTypes = async () => {
-  try {
-    const response = await axios.get(getCookieBoxTypes)
-    setCookieBoxType(response?.data?.data);
-  }catch (error){
-    console.error("Error fetching Cookie Box Types", error);
+  // PAGINATION STATES 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(25);
+  const [keywords, setKeywords] = useState("");
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+
+  const fetchCookieBoxTypes = async () => {
+    if (!token) return;
+    try {
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      }
+      const response = await axios.get(getAllCookieBoxTypes, { params })
+      setCookieBoxType(response?.data?.data);
+      setTotalEntries(response.data.pagination.total);
+      setPageCount(response.data.pagination.pageCount);
+    }catch (error){
+      console.error("Error fetching Cookie Box Types", error);
+    }
   }
-}
 
   useEffect(() => {
-    if (!token) return;
-    fetchCookieBoxTypes();
-  }, [token]);
-  
-    const showOffcanvasOnAddCookieType = () => {
-      setCookieBoxTypeData(null);
-      setShowOffcanvas(true);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchCookieBoxTypes();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchCookieBoxTypes();
     }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
   
-    const showOffcanvasOnEditCookieType = (cookieBoxType) => {
-      setCookieBoxTypeData(cookieBoxType);
-      setShowOffcanvas(true);
-    }
-  
-    const closePopup = () => {
-      setShowOffcanvas(false);
-      
-    };
+  const showOffcanvasOnAddCookieType = () => {
+    setCookieBoxTypeData(null);
+    setShowOffcanvas(true);
+  }
 
+  const showOffcanvasOnEditCookieType = (cookieBoxType) => {
+    setCookieBoxTypeData(cookieBoxType);
+    setShowOffcanvas(true);
+  }
 
-      const handleDelete = async (typeId) => {
+  const closePopup = () => {
+    setShowOffcanvas(false);
+    
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleDelete = async (typeId) => {
     try {
-      const response = await axios.delete(deleteCookieBoxTypesById(typeId));
+      const response = await axios.delete(deleteCookieBoxTypeById(typeId));
       if(response.status === 200) {
         toast.success("Cookie box Type deleted successfully!", { autoClose: 1000 });
         setCookieBoxType((prev) => prev.filter((type) => type.id !== typeId));
@@ -66,7 +100,7 @@ const fetchCookieBoxTypes = async () => {
     }
   }
 
-    const addCookieBoxType = (newCookie) => {
+  const addCookieBoxType = (newCookie) => {
     setCookieBoxType(prev => [newCookie, ...prev]);
     setShowOffcanvas(false);
   };
@@ -80,18 +114,24 @@ const fetchCookieBoxTypes = async () => {
     setShowOffcanvas(false);
   };
 
-    const handleSort = (field) => {
-    const newOrder =
-    sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
+  const handleSort = (field) => {
+    setCurrentPage(1);
+
+    if (sortField === field) {
+      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortField(field);
+      setSortOrder("ASC");
+    }
   };
 
   const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
+    if (sortField !== field) return "⇅";
+    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
+    <>
     <section className='mt-10'>
       <div className=''>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Type</p>
@@ -101,11 +141,16 @@ const fetchCookieBoxTypes = async () => {
           <input
             type='text'
             className='form-control form-control-lg px-5 text-dark-custom'
-            placeholder='Search here...'/>
+            placeholder='Search here...'
+            onChange={(e) => setKeywords(e.target.value)}
+          />
         </div>
         <div style={{marginInlineEnd:"20px"}}>
-          <button className='btn-orange'
-            role='button' onClick={showOffcanvasOnAddCookieType}>
+          <button 
+            className='btn-orange'
+            role='button' 
+            onClick={showOffcanvasOnAddCookieType}
+          >
             <i className='bi bi-plus-circle me-2'></i>Create
           </button>
         </div>
@@ -119,16 +164,16 @@ const fetchCookieBoxTypes = async () => {
               <thead className=''>
                 <tr className=''>
                   <th onClick={() => handleSort("id")}>
-                  ID<span>{renderSortIcon("id")}</span>
+                    ID<span>{renderSortIcon("id")}</span>
                   </th>
                   <th onClick={() => handleSort("name_en")}>
-                  Name<span>{renderSortIcon("name_en")}</span>
+                    Name<span>{renderSortIcon("name_en")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
-                  Slug<span>{renderSortIcon("slug")}</span>
+                    Slug<span>{renderSortIcon("slug")}</span>
                   </th>
                   <th onClick={() => handleSort("status")}>
-                  Status<span>{renderSortIcon("status")}</span>
+                    Status<span>{renderSortIcon("status")}</span>
                   </th>
                   <th>Action</th>
                 </tr>
@@ -181,5 +226,20 @@ const fetchCookieBoxTypes = async () => {
         <ToastContainer />
       </div>
     </section>
-    )
+    <hr/>
+    <div className='datatable-bottom'>
+      <Pagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+        pageLimit={pageLimit}
+        totalEntries={totalEntries}
+      />
+      <EntriesPerPageSelector
+        pageLimit={pageLimit}
+        onPageLimitChange={handleLimitChange}
+      />
+    </div>
+    </>
+  )
 }
