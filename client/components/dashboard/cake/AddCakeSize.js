@@ -150,7 +150,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     }
   };
   
-
   useEffect(() => {
     if (errors.length) {
       errors.forEach((err) => toast.error(err));

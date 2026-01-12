@@ -11,6 +11,7 @@ export default function CakeFlavourPage() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [products, setProducts] = useState([]);
+  console.log("ppppppppppppp",products)
   const {token} = useAxiosConfig();
 
   const fetchAllProducts = async () => {
@@ -167,9 +168,17 @@ export default function CakeFlavourPage() {
                     <td>{product?.sku || "N/A"}</td>
                     <td>{product?.stock || "In Stock"}</td>
                     <td>{product?.regular_price}</td>
-                    <td>{product?.category_id}</td>
+                    <td>
+                      {product?.categories?.length
+                        ? product.categories.map(cat => cat.name_en).join(", ")
+                        : "N/A"}
+                    </td>
                     <td>{product?.created_at}</td>
-                    <td>{product?.branch_id}</td>
+                    <td>
+                      {product?.branches?.length
+                        ? product.branches.map(cat => cat.name_en).join(", ")
+                        : "N/A"}
+                    </td>
                     <td className="d-flex gap-2">
                       <div
                         className="action-btn"

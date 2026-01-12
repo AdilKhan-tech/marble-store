@@ -13,9 +13,14 @@ const Category = require("./Category")
 const Branch = require("./Branch");
 const ProductCategory = require("./ProductCategory");
 const IceCreamPortionSize = require("./IceCreamPortionSize");
-const IceCreamBucket = require("./IceCreamBucket")
+const IceCreamBucket = require("./IceCreamBucket");
+const Occasion = require("./Occasion");
+const ProductOccasion = require("./ProductOccasion");
 
-// IceCream Bucket → Portion Sizes
+// ==================================================
+// Ice Cream Relations
+// ==================================================
+
 IceCreamBucket.hasMany(IceCreamPortionSize, {
   foreignKey: "icecream_bucket_id",
   as: "portionSizes",
@@ -26,7 +31,10 @@ IceCreamPortionSize.belongsTo(IceCreamBucket, {
   as: "iceCreamBucket",
 });
 
-// Cake Sizes Relations
+// ==================================================
+// Custom Cake Relations
+// ==================================================
+
 CustomCakeTypes.hasMany(CakeSize, {
   foreignKey: "custom_cake_type_id",
   as: "sizes",
@@ -37,8 +45,6 @@ CakeSize.belongsTo(CustomCakeTypes, {
   as: "customCakeType",
 });
 
-
-//   Cake Flavors Relations 
 CustomCakeTypes.hasMany(CakeFlavor, {
   foreignKey: "custom_cake_type_id",
   as: "flavors",
@@ -49,24 +55,6 @@ CakeFlavor.belongsTo(CustomCakeTypes, {
   as: "customCakeType",
 });
 
-//  Cookies Box Relations
-CookieBoxType.hasMany(CookieBoxSize, {
-  foreignKey: "cookies_types_id",
-  as: "sizes",
-});
-
-CookieBoxSize.belongsTo(CookieBoxType, {
-  foreignKey: "cookies_types_id",
-  as: "type",
-});
-
-// Cookies belongs to CookieBoxType
-Cookie.belongsTo(CookieBoxType, {
-  foreignKey: "cookie_type_id",
-  as: "type",
-});
-
-//Custom Cake Size Belong to Custom Cake Flavor
 CustomCakeTypes.hasMany(CustomCakeFlavor, {
   foreignKey: "custom_cake_type_id",
   as: "customCakeflavor",
@@ -77,19 +65,29 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
   as: "customCakeType",
 });
 
-
-//Category Belong to Product
-Branch.hasMany(Product, {
-  foreignKey: "branch_id",
-  as: "product",
+// ==================================================
+// Cookie Relations
+// ==================================================
+CookieBoxType.hasMany(CookieBoxSize, {
+  foreignKey: "cookies_types_id",
+  as: "sizes",
 });
 
-Product.belongsTo(Branch, {
-  foreignKey: "branch_id",
-  as: "productBranch",
+CookieBoxSize.belongsTo(CookieBoxType, {
+  foreignKey: "cookies_types_id",
+  as: "type",
 });
 
-//gender Belong to Product
+Cookie.belongsTo(CookieBoxType, {
+  foreignKey: "cookie_type_id",
+  as: "type",
+});
+
+// ==================================================
+// Product Core Relations
+// ==================================================
+
+// Gender → Product (ONE TO MANY)
 Gender.hasMany(Product, {
   foreignKey: "gender_id",
   as: "product",
@@ -100,37 +98,53 @@ Product.belongsTo(Gender, {
   as: "productGender",
 });
 
-//Category Belong to Product
-Category.hasMany(Product, {
-  foreignKey: "category_id",
-  as: "product",
-});
-
-Product.belongsTo(Category, {
-  foreignKey: "category_id",
-  as: "productCategory",
-});
-
-
-// Product ka relation branch ke saath
-Product.belongsToMany(Branch, { 
+// ==================================================
+// Product ↔ Branch (MANY TO MANY)
+// ==================================================
+Product.belongsToMany(Branch, {
   through: ProductBranch,
-  as: "branches"
- })
-Branch.belongsToMany(Product, { 
-  through: ProductBranch, 
-  as: "branchProduct" 
-})
+  foreignKey: "product_id",
+  otherKey: "branch_id",
+  as: "branches",
+});
 
-// category ka relation branch ke saath
-Product.belongsToMany(Category, { 
+Branch.belongsToMany(Product, {
+  through: ProductBranch,
+  foreignKey: "branch_id",
+  otherKey: "product_id",
+  as: "products",
+});
+
+// ==================================================
+// 🗂 Product ↔ Category (MANY TO MANY)
+// ==================================================
+Product.belongsToMany(Category, {
   through: ProductCategory,
-  as: "categories"
- })
-Category.belongsToMany(Product, { 
-  through: ProductCategory, 
-  as: "categoryProduct" 
-})
+  foreignKey: "product_id",
+  otherKey: "category_id",
+  as: "categories",
+});
+
+Category.belongsToMany(Product, {
+  through: ProductCategory,
+  foreignKey: "category_id",
+  otherKey: "product_id",
+  as: "products",
+});
+
+Product.belongsToMany(Occasion, {
+  through: ProductOccasion,
+  foreignKey: "product_id",
+  otherKey: "occasion_id",
+  as: "occasions",
+});
+
+Occasion.belongsToMany(Product, {
+  through: ProductOccasion,
+  foreignKey: "occasion_id",
+  otherKey: "product_id",
+  as: "products",
+});
 
 
 
@@ -155,5 +169,7 @@ module.exports = {
 
   IceCreamPortionSize,
   IceCreamBucket,
+
+  ProductOccasion
 
 };

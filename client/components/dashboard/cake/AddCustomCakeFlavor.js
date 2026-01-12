@@ -17,7 +17,6 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
     slug: "",
     custom_cake_type_id: "",
     status: "active",
-    image_url: "",
   });
 
   useEffect(() => {
