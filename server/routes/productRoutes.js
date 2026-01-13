@@ -10,5 +10,6 @@ router.use(authenticateToken);
 router.post('/create', upload.single('image_url'), ProductController.createProduct);
 router.get('/', ProductController.getAllProducts)
 router.delete('/delete/:id', ProductController.deleteProductById);
+router.get('/:id', ProductController.getProductById);
 
 module.exports = router;

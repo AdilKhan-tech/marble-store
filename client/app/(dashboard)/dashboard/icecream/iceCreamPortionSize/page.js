@@ -137,7 +137,7 @@ export default function IceCreamPortionSizePage() {
   return (
     <>
       <section>
-        <div className="mt-10">
+        <div className="mt-5">
           <p className="pagetitle fnt-color">Ice Cream Portion Sizes</p>
           <div className="d-flex justify-content-between mt-4">
             <div className="d-flex">

@@ -45,7 +45,7 @@ export default function Sidebar() {
             {isCollapsed ? (
               <div className="text-dark org-btn w-100"><i className="bi bi-list fs-3"></i></div>
             ) : (
-              <div className="d-flex text-dark fs-24">
+              <div className="d-flex text-dark gap-1 fs-24">
               <i className="bi bi-grid text-orange"></i>
               Dashboard</div>
             )}
