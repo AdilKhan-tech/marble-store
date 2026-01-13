@@ -130,8 +130,8 @@ export default function CookieBoxSizePage() {
 
   return (
     <>
-    <section className='mt-10'>
-      <div className=''>
+    <section >
+      <div className='mt-10'>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Size</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
@@ -143,7 +143,7 @@ export default function CookieBoxSizePage() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{marginInlineEnd:"20px"}}>
+          <div >
             <button 
               className='btn-orange'
               onClick={showOffcanvasOnAddCookieBoxSize}
@@ -198,10 +198,10 @@ export default function CookieBoxSizePage() {
 
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn" onClick={() => showOffcanvasOnEditCookieBoxSize(boxSize)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showOffcanvasOnEditCookieBoxSize(boxSize)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
-                        <button className="action-btn" onClick={() => showDeleteConfirmation(boxSize.id)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(boxSize.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>

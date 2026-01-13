@@ -11,7 +11,6 @@ export default function CakeFlavourPage() {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [products, setProducts] = useState([]);
-  console.log("ppppppppppppp",products)
   const {token} = useAxiosConfig();
 
   const fetchAllProducts = async () => {
@@ -73,7 +72,7 @@ export default function CakeFlavourPage() {
                 placeholder="Search here..."
               />
             </div>
-            <div style={{ marginInlineEnd: "20px" }}>
+            <div>
             <Link href="/dashboard/product/add" className="text-decoration-none">
               <div className="btn-orange" role="button">
                 <i className="bi bi-plus-circle ms-2"></i>
@@ -181,11 +180,11 @@ export default function CakeFlavourPage() {
                     </td>
                     <td className="d-flex gap-2">
                       <div
-                        className="action-btn"
+                        className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                       >
                         <i className="bi bi-pencil-square text-primary"></i>
                       </div>
-                      <div className="action-btn" onClick={() => showDeleteConfirmation(product?.id)}>
+                      <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(product?.id)}>
                         <i className="bi bi-trash text-danger"></i>
                       </div>
                     </td>

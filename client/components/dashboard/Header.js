@@ -9,7 +9,7 @@ function Header() {
   };
 
   return (
-    <header className="header p-2 rounded-3" id="header">
+    <header className="header mb-0 p-2" id="header">
       <div className="container-fluid">
         <div className="row align-items-center">
           <div className="col-md-6">

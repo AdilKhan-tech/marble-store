@@ -31,28 +31,30 @@ export default function Sidebar() {
       {isCollapsed && (
         <button 
           onClick={toggleCollapse} 
-          className="sidebar-toggle-btn btn"
+          className="sidebar-toggle-btn border-none d-flex align-items-center position-fixed justify-content-center text-dark org-btn"
           aria-label="Expand sidebar"
         >
-          <i className="bi bi-arrow-right fs-4"></i>
+          <i className="bi bi-list fs-4"></i>
         </button>
       )}
 
       {/* Sidebar */}
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
+      <aside className="dashboard-sidebar position-fixed bg-white">
+        <div className="sidebar-header bg-white position-sticky d-flex align-items-center justify-content-between p-4">
           <Link href="/dashboard" className="logo-link text-decoration-none">
             {isCollapsed ? (
-              <div className="logo-collapsed"></div>
+              <div className="text-dark org-btn w-100"><i className="bi bi-list fs-3"></i></div>
             ) : (
-              <div className="logo-full"></div>
+              <div className="d-flex text-dark fs-24">
+              <i className="bi bi-grid text-orange"></i>
+              Dashboard</div>
             )}
           </Link>
 
           {!isCollapsed && (
             <button 
               onClick={toggleCollapse} 
-              className="sidebar-close-btn btn"
+              className="bg-light border-none p-2 btn"
               aria-label="Collapse sidebar"
             >
               <i className="bi bi-arrow-left"></i>
@@ -61,14 +63,14 @@ export default function Sidebar() {
         </div>
 
         <nav className="sidebar-nav">
-          <ul className="list-unstyled">
+          <ul className="list-unstyled m-0 p-2">
             {/* Dashboard */}
-            <li>
+            <li className="mb-2 position-relative">
               <Link
                 href="/dashboard"
                 className={`d-flex align-items-center ${isActive("/dashboard") ? "active" : ""}`}
               >
-                <i className="bi bi-speedometer fs-5"></i>
+                <i className="bi bi-speedometer text-center fs-5"></i>
                 {!isCollapsed && <span className="ms-2">Dashboard</span>}
               </Link>
             </li>
@@ -85,7 +87,7 @@ export default function Sidebar() {
             </li>
 
             {/* Cakes */}
-            <li>
+            <li className="mb-2 position-relative">
               <button
                 className={`dropdown-toggle ${activeDropdown === "Cakes" ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "Cakes" ? null : "Cakes")}
@@ -102,9 +104,9 @@ export default function Sidebar() {
                 )}
               </button>
 
-              {/* Submenu when expanded */}
+              {/* submenu*/}
               {!isCollapsed && activeDropdown === "Cakes" && (
-                <div className="submenu">
+                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cake/cakeSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
@@ -134,32 +136,32 @@ export default function Sidebar() {
 
               {/* Collapsed dropdown */}
               {isCollapsed && activeDropdown === "Cakes" && (
-                <div className="collapse-dropdown">
-                  <div className="dropdown-header">Cakes</div>
+                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
+                  <div className="dropdown-header p-2">Cakes</div>
                   <Link 
                     href="/dashboard/cake/cakeSize" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Cake Sizes
                   </Link>
                   <Link 
                     href="/dashboard/cake/cakeFlavour" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Cake Flavors
                   </Link>
                   <Link 
                     href="/dashboard/cake/customCakeFlavor" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Custom Cake Sizes
                   </Link>
                   <Link 
                     href="/dashboard/cake/customCakeType" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Custom Cake Types
@@ -169,13 +171,13 @@ export default function Sidebar() {
             </li>
 
             {/* Ice Cream */}
-            <li>
+            <li className="mb-2 position-relative">
               <button
                 className={`dropdown-toggle ${activeDropdown === "IceCream" ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "IceCream" ? null : "IceCream")}
                 aria-expanded={activeDropdown === "IceCream"}
               >
-                <i className="bi bi-cone-streaked fs-4"></i>
+                <i className="bi bi-cone fs-4"></i>
                 {!isCollapsed && (
                   <>
                     <span className="ms-2">Ice Cream</span>
@@ -187,7 +189,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "IceCream" && (
-                <div className="submenu">
+                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/icecream/iceCreamAddon"
                     className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
@@ -210,25 +212,25 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "IceCream" && (
-                <div className="collapse-dropdown">
+                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
                   <div className="dropdown-header">Ice Cream</div>
                   <Link 
                     href="/dashboard/icecream/iceCreamAddon" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Ice Cream Addons
                   </Link>
                   <Link 
                     href="/dashboard/icecream/iceCreamBucket" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Ice Cream Buckets
                   </Link>
                   <Link 
                     href="/dashboard/icecream/iceCreamPortionSize" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Portion Sizes
@@ -238,7 +240,7 @@ export default function Sidebar() {
             </li>
 
             {/* Cookies */}
-            <li>
+            <li className="mb-2 position-relative">
               <button
                 className={`dropdown-toggle ${activeDropdown === "Cookies" ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "Cookies" ? null : "Cookies")}
@@ -256,7 +258,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "Cookies" && (
-                <div className="submenu">
+                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cookie/boxSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
@@ -279,25 +281,25 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "Cookies" && (
-                <div className="collapse-dropdown">
+                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
                   <div className="dropdown-header">Cookies</div>
                   <Link 
                     href="/dashboard/cookie/boxSize" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Cookie Box Size
                   </Link>
                   <Link 
                     href="/dashboard/cookie/boxType" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Cookie Box Type
                   </Link>
                   <Link 
                     href="/dashboard/cookie" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Cookie List
@@ -307,7 +309,7 @@ export default function Sidebar() {
             </li>
 
             {/* Settings */}
-            <li>
+            <li className="mb-2 position-relative">
               <button
                 className={`dropdown-toggle ${activeDropdown === "Settings" ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "Settings" ? null : "Settings")}
@@ -325,7 +327,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "Settings" && (
-                <div className="submenu">
+                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/setting/branches"
                     className={`d-flex align-items-center ${isActive("/dashboard/setting/branches") ? "active" : ""}`}
@@ -354,32 +356,32 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "Settings" && (
-                <div className="collapse-dropdown">
+                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
                   <div className="dropdown-header">Settings</div>
                   <Link 
                     href="/dashboard/setting/branches" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Branches
                   </Link>
                   <Link 
                     href="/dashboard/setting/categories" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Categories
                   </Link>
                   <Link 
                     href="/dashboard/setting/gender" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Gender
                   </Link>
                   <Link 
                     href="/dashboard/setting/occasion" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Occasion

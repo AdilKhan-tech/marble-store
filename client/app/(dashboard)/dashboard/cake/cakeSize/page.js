@@ -135,7 +135,7 @@ export default function CakeSizePage() {
 
   return (
     <>
-    <section className='mt-10'>
+    <section className="mt-10">
       <div className=""> 
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -149,7 +149,7 @@ export default function CakeSizePage() {
             />
           </div>
 
-          <div style={{marginInlineEnd:"20px"}}>
+          <div >
             <div 
               className='btn-orange' 
               onClick={showOffcanvasOnAddCakesSize} 
@@ -202,9 +202,9 @@ export default function CakeSizePage() {
                         </div>
                       </td>
                       <td className='d-flex gap-2'>
-                        <div className='action-btn' onClick={() => showOffcanvasOnEditCakesSize(cakeSize)}>
+                        <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakesSize(cakeSize)}>
                           <i className="bi bi-pencil-square text-primary"></i></div>
-                        <div className='action-btn' onClick={() => showDeleteConfirmation(cakeSize.id)}>
+                        <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showDeleteConfirmation(cakeSize.id)}>
                           <i className="bi bi-trash text-danger"></i></div>
                       </td>
                     </tr>

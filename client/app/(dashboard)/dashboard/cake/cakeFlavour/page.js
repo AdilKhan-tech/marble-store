@@ -134,8 +134,8 @@ export default function CakeFlavourPage() {
 
   return (
     <>
-    <section className='mt-10'>
-      <div className=""> 
+    <section >
+      <div className="mt-10"> 
         <p className="pagetitle mb-0 fnt-color">Cakes Flavours</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
@@ -147,7 +147,7 @@ export default function CakeFlavourPage() {
                 onChange={(e) => setKeywords(e.target.value)}
               />
               </div>
-              <div style={{marginInlineEnd:"20px"}}>
+              <div >
                 <div className='btn-orange' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
                 <i className='bi bi-plus-circle ms-2'></i>
                 <span className='ms-1'>Create</span>
@@ -198,10 +198,10 @@ export default function CakeFlavourPage() {
                     </td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn " onClick={() => showOffcanvasOnEditCakesFlavour(cakeFlavor)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2 " onClick={() => showOffcanvasOnEditCakesFlavour(cakeFlavor)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
-                        <button className="action-btn " onClick={() => showDeleteConfirmation(cakeFlavor.id)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2 " onClick={() => showDeleteConfirmation(cakeFlavor.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -237,7 +237,7 @@ export default function CakeFlavourPage() {
       </div>
     </section>
     <hr/>
-    <div className='datatable-bottom'>
+    <div className='d-flex justify-content-between align-items-center mt-3'>
       <Pagination
         currentPage={currentPage}
         pageCount={pageCount}
