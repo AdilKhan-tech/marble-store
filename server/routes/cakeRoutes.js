@@ -40,6 +40,10 @@ router.get('/', CustomCakeSizeController.getAllCustomCakeSize)
 router.delete('/customSize/:id', CustomCakeSizeController.deleteCustomCakeSizeById)
 router.put('/customSize/:id', upload.single('image_url'), CustomCakeSizeController.updateCustomCakeSizeById);
 
-router.post('/portionSize', upload.single('image_url'), CakePortionSizeController.createCakePortionSize);  
+router.post('/portionSize', upload.single('image_url'), CakePortionSizeController.createCakePortionSize); 
+router.get('/portionSize', CakePortionSizeController.getAllCakePortionSizes);
+router.put('/portionSize/:id', upload.single('image_url'), CakePortionSizeController.updateCakePortionSizeById); 
+router.delete('/portionSize/:id', CakePortionSizeController.deleteCakePortionSizeById);
+
 
 module.exports = router;
