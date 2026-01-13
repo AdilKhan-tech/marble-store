@@ -143,7 +143,7 @@ export default function GenderPage() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{ marginInlineEnd: "20px" }}>
+          <div>
             <div
               className="btn-orange"
               role="button"
@@ -187,13 +187,13 @@ export default function GenderPage() {
                     <td>
                       <div className="d-flex gap-1">
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() => showOffcanvasOnEditGender(gender)}
                         >
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() => showDeleteConfirmation(gender.id)}
                         >
                           <i className="bi bi-trash text-danger"></i>

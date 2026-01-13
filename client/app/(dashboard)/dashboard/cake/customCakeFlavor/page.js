@@ -144,7 +144,7 @@ function page() {
 
   return (
     <>
-    <section className='mt-10'>
+    <section className="mt-10">
       <div className="">
         <p className="pagetitle mb-0 tnt-color">Custom Cake Flavor</p>
         <div className="d-flex justify-content-between mt-4">
@@ -157,7 +157,7 @@ function page() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{ marginInlineEnd: "20px" }}>
+          <div>
             <button
               className="btn-orange"
               onClick={showOffcanvasOnAddCustomCakeFlavor}
@@ -209,12 +209,12 @@ function page() {
                     <td>
                       <div className="d-flex gap-1">
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() =>showOffcanvasOnEditCustomCakeFlavor(customCakeFlavor)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
                         <button
-                          className="action-btn"
+                          className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() =>showDeleteConfirmation(customCakeFlavor?.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>

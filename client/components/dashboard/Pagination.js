@@ -18,8 +18,8 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
     const renderPageNumber = (pageNumber, index) => {
         if (pageNumber === 'start-ellipsis' || pageNumber === 'end-ellipsis') {
             return (
-                <li key={`ellipsis-${index}`} className="page-item disabled">
-                    <span className="page-link">...</span>
+                <li key={`ellipsis-${index}`} className="page-item disabled d-flex align-items-center justify-content-center bg-white fw-500">
+                    <span className="page-link d-flex align-items-center justify-content-center bg-white fw-500">...</span>
                 </li>
             );
         }
@@ -27,11 +27,11 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
         return (
             <li
                 key={`page-${pageNumber}`}
-                className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                className={`page-item d-flex align-items-center justify-content-center bg-white fw-500 ${currentPage === pageNumber ? 'active' : ''}`}
                 aria-current={currentPage === pageNumber ? "page" : undefined}
             >
                 <a
-                    className="page-link"
+                    className="page-link d-flex align-items-center justify-content-center bg-white fw-500"
                     href="#"
                     onClick={(e) => {
                         e.preventDefault();
@@ -52,10 +52,10 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
             </div>
 
             <nav aria-label="Page navigation">
-                <ul className="pagination mb-0">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <ul className="d-flex justify-content-between gap-3 mb-0">
+                    <li className={`page-item d-flex align-items-center justify-content-center bg-white fw-500 ${currentPage === 1 ? 'disabled' : ''}`}>
                         <a
-                            className="page-link"
+                            className="page-link rounded-2 d-flex align-items-center justify-content-center bg-white fw-500"
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();
@@ -72,9 +72,9 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
                     )}
                     {currentPage < pageCount && renderPageNumber(pageCount)}
 
-                    <li className={`page-item ${currentPage === pageCount ? 'disabled' : ''}`}>
+                    <li className={`page-item d-flex align-items-center justify-content-center bg-white fw-500 ${currentPage === pageCount ? 'disabled' : ''}`}>
                         <a
-                            className="page-link"
+                            className="page-link rounded-2 d-flex align-items-center justify-content-center bg-white fw-500"
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();

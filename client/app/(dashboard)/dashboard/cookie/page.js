@@ -134,8 +134,8 @@ export default function Cookies() {
 
   return (
     <>
-    <section className="mt-10">
-      <div className="">
+    <section>
+      <div className="mt-10">
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
         <div className="d-flex justify-content-between mt-4">
           <div className="d-flex gap-5">
@@ -147,7 +147,7 @@ export default function Cookies() {
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div style={{ marginInlineEnd: "20px" }}>
+          <div>
             <button
               className="btn-orange"
               role="button"
@@ -199,13 +199,13 @@ export default function Cookies() {
                     </td>
                     <td className="d-flex gap-2">
                       <div
-                        className="action-btn"
+                        className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                         onClick={() => showOffcanvasOnEditCookies(cookie)}
                       >
                         <i className="bi bi-pencil-square text-primary"></i>
                       </div>
                       <div
-                        className="action-btn"
+                        className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                         onClick={() => showDeleteConfirmation(cookie?.id)}
                       >
                         <i className="bi bi-trash text-danger"></i>

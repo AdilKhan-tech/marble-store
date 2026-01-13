@@ -132,7 +132,7 @@ export default function CookieBoxTypePage() {
 
   return (
     <>
-    <section className='mt-10'>
+    <section >
       <div className=''>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Type</p>
         <div className='d-flex justify-content-between mt-4'>
@@ -145,7 +145,7 @@ export default function CookieBoxTypePage() {
             onChange={(e) => setKeywords(e.target.value)}
           />
         </div>
-        <div style={{marginInlineEnd:"20px"}}>
+        <div >
           <button 
             className='btn-orange'
             role='button' 
@@ -190,9 +190,9 @@ export default function CookieBoxTypePage() {
                       </div>
                     </td>
                     <td className='d-flex gap-2'>
-                      <div className='action-btn' onClick={() => showOffcanvasOnEditCookieType(type)}>
+                      <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCookieType(type)}>
                         <i className="bi bi-pencil-square text-primary"></i></div>
-                      <div className='action-btn' onClick={() => showDeleteConfirmation(type.id)}>
+                      <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showDeleteConfirmation(type.id)}>
                         <i className="bi bi-trash text-danger"></i></div>
                     </td>
                   </tr>
