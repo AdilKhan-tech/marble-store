@@ -79,22 +79,25 @@ class CategoryController {
 
     static async updateCategoryById(req, res) {
         const { id } = req.params;
-        const { name_en, name_ar, slug, parent_category, display_type } = req.body;
         try {
             const category = await Category.findByPk(id);
             if (!category) {
                 return res.status(404).json({ message: "Category not found" });
             }
-            category.name_en = name_en;
-            category.name_ar = name_ar;
-            category.slug = slug;
-            category.parent_category = parent_category;
-            category.display_type = display_type;
+            const { name_en, name_ar, slug, parent_category, display_type } = req.body;
+            const image_url = req.file?.path || category.image_url;
 
-            await category.save();
-            return res.status(200).json({message: "Category updated successfully", category});
+             await category.update({
+                name_en: name_en ?? category.name_en,
+                name_ar: name_ar ?? category.name_ar,
+                slug: slug ?? category.slug,
+                parent_category: parent_category ?? category.parent_category,
+                display_type: display_type ?? category.display_type,
+                image_url: image_url
+            });
+               return res.status(200).json(category);
         } catch (error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).json({message: "Failed to update Category",error: error.message});
         }
     }
 

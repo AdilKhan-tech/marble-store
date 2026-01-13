@@ -4,10 +4,12 @@ const CakeSizeController = require('../controllers/CakeSizeController');
 const CakeFlavorController = require('../controllers/CakeFlavorController');
 const CustomCakeTypeController = require('../controllers/CustomCakeTypeController');
 const CustomCakeFlavorController = require('../controllers/CustomCakeFlavorController')
+const CakePortionSizeController = require('../controllers/CakePortionSizeController');
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
 const CustomCakeSizeController = require("../controllers/CustomCakeSizeController");
+const { route } = require("./userRoutes");
 
 router.use(authenticateToken);
 
@@ -37,5 +39,7 @@ router.post('/customSize', upload.single('image_url'), CustomCakeSizeController.
 router.get('/', CustomCakeSizeController.getAllCustomCakeSize)
 router.delete('/customSize/:id', CustomCakeSizeController.deleteCustomCakeSizeById)
 router.put('/customSize/:id', upload.single('image_url'), CustomCakeSizeController.updateCustomCakeSizeById);
+
+router.post('/portionSize', upload.single('image_url'), CakePortionSizeController.createCakePortionSize);  
 
 module.exports = router;
