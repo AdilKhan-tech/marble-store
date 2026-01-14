@@ -83,6 +83,7 @@ export const updateGenderById = (id) => `${host}/genders/update/${id}`
 // Products
 export const createProductRoute = `${host}/products/create`
 export const getAllProductsRoute = `${host}/products/`
+export const getProductByIdRoute = (id) => `${host}/products/${id}`
 export const deleteProductByIdRoute = (id) => `${host}/products/delete/${id}`
 
 // Categories

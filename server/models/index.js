@@ -17,10 +17,6 @@ const IceCreamBucket = require("./IceCreamBucket");
 const Occasion = require("./Occasion");
 const ProductOccasion = require("./ProductOccasion");
 
-// ==================================================
-// Ice Cream Relations
-// ==================================================
-
 IceCreamBucket.hasMany(IceCreamPortionSize, {
   foreignKey: "icecream_bucket_id",
   as: "portionSizes",
@@ -30,10 +26,6 @@ IceCreamPortionSize.belongsTo(IceCreamBucket, {
   foreignKey: "icecream_bucket_id",
   as: "iceCreamBucket",
 });
-
-// ==================================================
-// Custom Cake Relations
-// ==================================================
 
 CustomCakeTypes.hasMany(CakeSize, {
   foreignKey: "custom_cake_type_id",
@@ -65,9 +57,6 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
   as: "customCakeType",
 });
 
-// ==================================================
-// Cookie Relations
-// ==================================================
 CookieBoxType.hasMany(CookieBoxSize, {
   foreignKey: "cookies_types_id",
   as: "sizes",
@@ -83,10 +72,6 @@ Cookie.belongsTo(CookieBoxType, {
   as: "type",
 });
 
-// ==================================================
-// Product Core Relations
-// ==================================================
-
 // Gender → Product (ONE TO MANY)
 Gender.hasMany(Product, {
   foreignKey: "gender_id",
@@ -98,14 +83,12 @@ Product.belongsTo(Gender, {
   as: "productGender",
 });
 
-// ==================================================
-// Product ↔ Branch (MANY TO MANY)
-// ==================================================
 Product.belongsToMany(Branch, {
   through: ProductBranch,
   foreignKey: "product_id",
   otherKey: "branch_id",
   as: "branches",
+  onDelete: "CASCADE",
 });
 
 Branch.belongsToMany(Product, {
@@ -113,16 +96,15 @@ Branch.belongsToMany(Product, {
   foreignKey: "branch_id",
   otherKey: "product_id",
   as: "products",
+  onDelete: "CASCADE",
 });
 
-// ==================================================
-// 🗂 Product ↔ Category (MANY TO MANY)
-// ==================================================
 Product.belongsToMany(Category, {
   through: ProductCategory,
   foreignKey: "product_id",
   otherKey: "category_id",
   as: "categories",
+  onDelete: "CASCADE",
 });
 
 Category.belongsToMany(Product, {
@@ -130,6 +112,7 @@ Category.belongsToMany(Product, {
   foreignKey: "category_id",
   otherKey: "product_id",
   as: "products",
+  onDelete: "CASCADE",
 });
 
 Product.belongsToMany(Occasion, {
@@ -137,6 +120,7 @@ Product.belongsToMany(Occasion, {
   foreignKey: "product_id",
   otherKey: "occasion_id",
   as: "occasions",
+  onDelete: "CASCADE",
 });
 
 Occasion.belongsToMany(Product, {
@@ -144,9 +128,8 @@ Occasion.belongsToMany(Product, {
   foreignKey: "occasion_id",
   otherKey: "product_id",
   as: "products",
+  onDelete: "CASCADE",
 });
-
-
 
 module.exports = {
   CakeSize,
