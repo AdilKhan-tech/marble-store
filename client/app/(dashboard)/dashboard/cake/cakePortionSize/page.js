@@ -3,7 +3,7 @@ import React from "react";
 function page() {
   return (
     <>
-      <section className="mt-10">
+      <section className="mt-5">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Cake Portion Sizes</p>
           <div className="dd-flex justify-content-between mt-4">

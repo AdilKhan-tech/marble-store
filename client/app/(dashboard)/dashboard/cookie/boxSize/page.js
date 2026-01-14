@@ -131,7 +131,7 @@ export default function CookieBoxSizePage() {
   return (
     <>
     <section >
-      <div className='mt-10'>
+      <div className='mt-5'>
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Size</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>

@@ -3,8 +3,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import {getAllProductsRoute, deleteProductByIdRoute} from "@/utils/apiRoutes"
 import { ToastContainer, toast } from "react-toastify";
+import Common from "@/utils/Common";
 import useAxiosConfig from '@/hooks/useAxiosConfig';
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function CakeFlavourPage() {
@@ -12,6 +14,7 @@ export default function CakeFlavourPage() {
   const [sortOrder, setSortOrder] = useState("asc");
   const [products, setProducts] = useState([]);
   const {token} = useAxiosConfig();
+  const router = useRouter();
 
   const fetchAllProducts = async () => {
     try {
@@ -60,7 +63,7 @@ export default function CakeFlavourPage() {
 
   return (
     <>
-      <section className="mt-10">
+      <section className="mt-5">
         <div className="">
           <p className="pagetitle mb-0 fnt-color">Products</p>
           <div className="d-flex justify-content-between mt-4">
@@ -89,66 +92,44 @@ export default function CakeFlavourPage() {
               <table className="table datatable-wrapper">
                 <thead>
                   <tr className="">
-                    <th>
-                      <div className="form-check fs-5">
-                        <input className="form-check-input" type="checkbox" />
-                      </div>
-                    </th>
-
                     <th onClick={() => handleSort("id")}>
                       Id
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("id")}
-                      </span>
+                      <span>{renderSortIcon("id")}</span>
                     </th>
 
                     <th onClick={() => handleSort("name_en")}>
                       Name
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("name_en")}
-                      </span>
+                      <span>{renderSortIcon("name_en")}</span>
                     </th>
 
                     <th onClick={() => handleSort("sku")}>
                       SKU
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("sku")}
-                      </span>
+                      <span>{renderSortIcon("sku")}</span>
                     </th>
 
                     <th onClick={() => handleSort("stock")}>
                       Stock
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("stock")}
-                      </span>
+                      <span>{renderSortIcon("stock")}</span>
                     </th>
 
                     <th onClick={() => handleSort("price")}>
                       Price
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("price")}
-                      </span>
+                      <span>{renderSortIcon("price")}</span>
                     </th>
 
                     <th onClick={() => handleSort("category")}>
                       Categories
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("category")}
-                      </span>
+                      <span>{renderSortIcon("category")}</span>
                     </th>
 
                     <th onClick={() => handleSort("date")}>
                       Date
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("date")}
-                      </span>
+                      <span>{renderSortIcon("date")}</span>
                     </th>
 
                     <th onClick={() => handleSort("branches")}>
                       Branches
-                      <span className="fs-12 text-secondary">
-                        {renderSortIcon("branches")}
-                      </span>
+                      <span>{renderSortIcon("branches")}</span>
                     </th>
 
                     <th>Action</th>
@@ -157,11 +138,6 @@ export default function CakeFlavourPage() {
                 <tbody>
                   {products.map((product, index) => (
                   <tr key={product.id || product.id || index}>
-                    <td>
-                      <div className="form-check fs-5">
-                        <input className="form-check-input" type="checkbox" />
-                      </div>
-                    </td>
                     <td>{product?.id}</td>
                     <td>{product?.name_en}</td>
                     <td>{product?.sku || "N/A"}</td>
@@ -169,20 +145,20 @@ export default function CakeFlavourPage() {
                     <td>{product?.regular_price}</td>
                     <td>
                       {product?.categories?.length
-                        ? product.categories.map(cat => cat.name_en).join(", ")
+                        ? Common.truncateText(product.categories.map(cat => cat.name_en).join(", "),10)
                         : "N/A"}
                     </td>
-                    <td>{product?.created_at}</td>
+                    <td>{Common.dateFormat(product?.created_at)}</td>
                     <td>
                       {product?.branches?.length
-                        ? product.branches.map(cat => cat.name_en).join(", ")
+                        ? Common.truncateText(product.branches.map(b => b.name_en).join(", "),10)
                         : "N/A"}
                     </td>
                     <td className="d-flex gap-2">
                       <div
                         className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                       >
-                        <i className="bi bi-pencil-square text-primary"></i>
+                        <i className="bi bi-three-dots-vertical fs-4 text-primary" onClick={() => router.push(`/dashboard/product/${product.id}/view`)}></i>
                       </div>
                       <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(product?.id)}>
                         <i className="bi bi-trash text-danger"></i>

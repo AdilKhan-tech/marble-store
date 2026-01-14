@@ -2,10 +2,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {getAllGenders, getAllBranches, getAllCategories, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) => {
@@ -17,6 +18,7 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
   const [occasions, setOccasions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState([]);
+  const router = useRouter();
   const [branchId, setBranchId] = useState([]);
   const [isBrancheOpen, setIsBrancheOpen] = useState(false);
   const [isOccasionOpen, setIsOccasionOpen] = useState(false);
@@ -274,14 +276,16 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
         closePopup?.();
       }
 
-      // ============ CREATE ============
       else {
-        const res = await axios.post(createProductRoute, payload);
+        await axios.post(createProductRoute, payload);
 
         toast.success("Product added successfully!", {
-          autoClose: 1000,
-          onClose: closePopup,
+          autoClose: 500,
+          onClose: () => {
+          setTimeout(() => router.push("/dashboard/product"), 500);
+          },
         });
+
 
         if (onAddProduct) onAddProduct(res.data);
       }
@@ -300,7 +304,7 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
   }, [errors]);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10">
+    <form onSubmit={handleSubmit} className="mt-5">
       <div className="card p-4 rounded-4">
         <div className="row">
           <div className="col-md-5">
@@ -599,6 +603,7 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
         <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-25">Save</button>
       </div>
       </div>
+      <ToastContainer />
     </form>
   );
 };

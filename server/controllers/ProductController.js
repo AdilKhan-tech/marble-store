@@ -111,6 +111,33 @@ class ProductController {
         }
     }
 
+    static async getProductById (req, res) {
+        const { id } = req.params;
+        try {
+            const product = await Product.findByPk(id, {
+                include: [
+                    {
+                        model: Gender,
+                        as: "productGender",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                    {
+                        model: Branch,
+                        as: "branches",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                    {
+                        model: Category,
+                        as: "categories",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                ],
+            });
+            return res.status(200).json(product);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = ProductController;
