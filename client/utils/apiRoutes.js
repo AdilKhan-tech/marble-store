@@ -26,6 +26,12 @@ export const createCustomCakeType = `${host}/cakes/customTypes`;
 export const deleteCustomCakeTypeById =(id)=> `${host}/cakes/customTypes/${id}`;
 export const updateCustomCakeTypeById =(id)=> `${host}/cakes/customTypes/${id}`;
 
+// CakePortionSizes
+export const getAllCakePortionSizes = `${host}/cakes/portionSize`
+export const createCakePortionSize = `${host}/cakes/portionSize`
+export const updateCakePortionSizeById = (id) => `${host}/cakes/portionSize/${id}`
+export const deleteCakePortionSizeById = (id) => `${host}/cakes/portionSize/${id}`
+
 // IceCreamPortionSizes
 export const getAllIceCreamPortionSizes = `${host}/icecreams/portions`
 export const createIceCreamPortionSize = `${host}/icecreams/portions`
