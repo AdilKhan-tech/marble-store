@@ -120,10 +120,16 @@ export default function Sidebar() {
                     Cake Flavors
                   </Link>
                   <Link
+                    href="/dashboard/cake/customCakeSize"
+                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeSize") ? "active" : ""}`}
+                  >
+                    Custom Cake Sizes
+                  </Link>
+                  <Link
                     href="/dashboard/cake/customCakeFlavor"
                     className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""}`}
                   >
-                    Custom Cake Sizes
+                    Custom Cake Flavors
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeType"
@@ -159,11 +165,18 @@ export default function Sidebar() {
                     Cake Flavors
                   </Link>
                   <Link 
-                    href="/dashboard/cake/customCakeFlavor" 
+                    href="/dashboard/cake/customCakeSize" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     Custom Cake Sizes
+                  </Link>
+                  <Link 
+                    href="/dashboard/cake/customCakeFlavor" 
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Custom Cake Flavors
                   </Link>
                   <Link 
                     href="/dashboard/cake/customCakeType" 
