@@ -90,3 +90,9 @@ export const getAllBranches = `${host}/branches`;
 export const createBranch = `${host}/branches/create`;
 export const deleteBranchById =(id)=> `${host}/branches/delete/${id}`;
 export const updateBranchById =(id)=> `${host}/branches/update/${id}`;
+
+// CustomCakeSizes
+export const getAllCustomCakeSizes = `${host}/cakes`;
+export const deleteCustomCakeSizeById =(id)=> `${host}/cakes/customSize/${id}`;
+export const updateCustomCakeSizeById =(id)=> `${host}/cakes/customSize/${id}`;
+export const createCustomCakeSize = `${host}/cakes/customSize`;
