@@ -33,7 +33,7 @@ const CookieBoxSize = sequelize.define("CookieBoxSize",{
         },
       },
     },
-    cookies_types_id: {
+    cookie_type_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {

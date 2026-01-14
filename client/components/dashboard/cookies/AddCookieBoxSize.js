@@ -13,7 +13,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [formData, setFormData] = useState({
-    cookies_types_id: "",
+    cookie_type_id: "",
     name_en: "",
     name_ar: "",
     slug: "",
@@ -27,7 +27,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
   useEffect(() => {
     if (cookieBoxSizeData) {
       setFormData({
-        cookies_types_id: cookieBoxSizeData.cookies_types_id || "",
+        cookie_type_id: cookieBoxSizeData.cookie_type_id || "",
         name_en: cookieBoxSizeData.name_en || "",
         name_ar: cookieBoxSizeData.name_ar || "",
         slug: cookieBoxSizeData.slug || "",
@@ -46,7 +46,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.cookies_types_id) errors.push("Cookies types id is required.");
+    if (!formData.cookie_type_id) errors.push("Cookies types id is required.");
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
@@ -101,7 +101,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
   
         if (res.status === 201 || res.status === 200) {
           const selectedType = cookiesBoxTypes.find(
-            (t) => String(t.id) === String(formData.cookies_types_id)
+            (t) => String(t.id) === String(formData.cookie_type_id)
           );
   
           const createdCookie = {
@@ -168,10 +168,10 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       <div className="form-group mt-2">
         <label className="form-label text-secondary">Cookies Type</label>
         <select
-          name="cookies_types_id"
+          name="cookie_type_id"
           className="form-select textarea-hover-dark text-secondary"
-          value={formData.cookies_types_id}
-          onChange={(e)=>setFormData({...formData,cookies_types_id:e.target.value})}
+          value={formData.cookie_type_id}
+          onChange={(e)=>setFormData({...formData,cookie_type_id:e.target.value})}
         >
           <option value="">Select Cookie Type</option>
 

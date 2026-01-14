@@ -109,7 +109,7 @@ class IceCreamAddOnController {
         return res.status(404).json({ message: "IceCream AddOn not found" });
       }
       await iceCreamaddon.destroy();
-      return res.status(201).json({ message: "IceCream AddOn deleted suucessfully" });
+      return res.status(200).json({ message: "IceCream AddOn deleted suucessfully" });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

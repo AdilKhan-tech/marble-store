@@ -3,19 +3,17 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createIceCreamAddOn, updateIceCreamAddOnById } from "@/utils/apiRoutes";
 
-const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
+const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamAddon, onUpdateIceCreamAddon }) => {
   const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [formData, setFormData] = useState({
-    category_id: "",
     name_en: "",
     name_ar: "",
     slug: "",
     type:"",
-    status: "active",
+    status: "Active",
   });
-
   // Load existing data
   useEffect(() => {
     if (IceCreamAddonData) {
@@ -24,7 +22,7 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
         name_ar: IceCreamAddonData.name_ar || "",
         slug: IceCreamAddonData.slug || "",
         type: IceCreamAddonData.type || "",
-        status: IceCreamAddonData.status || "active",
+        status: IceCreamAddonData.status || "Active",
       });
     }
   }, [IceCreamAddonData]);
@@ -43,7 +41,6 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.category_id) errors.push("Category id is required.");
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
@@ -53,32 +50,55 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-
+  
     try {
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        selectedFiles.forEach((file) => {
+          payload.append("image_url", selectedFiles[0]);
+        });
+      }
+
       if (IceCreamAddonData) {
-        const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), formData);
+        const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), payload);
 
         if (res.status === 200) {
-          toast.success("Ice Cream Addon updated successfully!", {
+          toast.success("icecream Addon updated successfully!", {
             autoClose: 1000,
-            onClose: closePopup,
           });
+
+          if (onUpdateIceCreamAddon) {
+            onUpdateIceCreamAddon({
+              ...IceCreamAddonData,
+              ...formData,
+              id: IceCreamAddonData.id,
+            });
+          }
+
+          closePopup();
         }
-      } else {
-        const res = await axios.post(createIceCreamAddOn, formData);
+      }
+      //  CREATE
+      else {
+        const res = await axios.post(createIceCreamAddOn, payload);
 
         if (res.status === 201 || res.status === 200) {
-          const createdIceCreamAddon = res.data.icecreamaddons;
-          toast.success("Ice Cream Addon added successfully!", {
-            autoClose: 1000,
-            onClose: closePopup,
-          });
-           if (onAddCake) onAddCake(createdIceCreamAddon); // update parent state
-        return; // exit so closePopup is not called
+          toast.success("Icecream Addon created successfully!");
+
+          if (onAddIceCreamAddon) {
+            onAddIceCreamAddon(res.data);
+          }
+
+          closePopup();
         }
       }
     } catch (error) {
@@ -86,6 +106,7 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
       setErrors([msg]);
     }
   };
+
 
   useEffect(() => {
     if (errors.length) {
@@ -131,8 +152,12 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
 
       <div className="form-group mt-2">
         <label className="form-label text-secondary">Addon Type</label>
-        <select name="category_id" className="form-select textarea-hover-dark text-secondary"
-          value={formData.type} onChange={handleChange}>
+        <select 
+          name="type" 
+          className="form-select textarea-hover-dark text-secondary"
+          value={formData.type} 
+          onChange={handleChange}
+        >
           <option value="">Select Addon Type</option>
           <option value="Flavor">Flavor</option>
           <option value="Mix-ins">Mix-ins</option>
@@ -187,4 +212,4 @@ const CakeData = ({ closePopup, IceCreamAddonData = null,onAddCake }) => {
   );
 };
 
-export default CakeData;
+export default AddIceCreamAddon;

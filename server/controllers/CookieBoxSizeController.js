@@ -6,14 +6,14 @@ class CookieBoxSizeController {
     
     static async createCookieBoxSize (req, res) {
         try {
-            const {name_en, name_ar, cookies_types_id, slug, portion_size, price, symbol, calories, status} = req.body;
+            const {name_en, name_ar, cookie_type_id, slug, portion_size, price, symbol, calories, status} = req.body;
 
             const image_url = req.file?.path || null;
 
             const cookiesBoxSize = await CookieBoxSize.create({
                 name_en,
                 name_ar,
-                cookies_types_id,
+                cookie_type_id,
                 slug,
                 portion_size,
                 price,
@@ -52,7 +52,7 @@ class CookieBoxSizeController {
                 "portion_size",
                 "price",
                 "status",
-                "cookies_types_id",
+                "cookie_type_id",
             ];
 
             const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
@@ -103,7 +103,7 @@ class CookieBoxSizeController {
             const {
                 name_en,
                 name_ar,
-                cookies_types_id,
+                cookie_type_id,
                 slug,
                 portion_size,
                 price,
@@ -117,7 +117,7 @@ class CookieBoxSizeController {
             await cookiesBoxSize.update({
                 name_en: name_en ?? cookiesBoxSize.name_en,
                 name_ar: name_ar ?? cookiesBoxSize.name_ar,
-                cookies_types_id: cookies_types_id ?? cookiesBoxSize.cookies_types_id,
+                cookie_type_id: cookie_type_id ?? cookiesBoxSize.cookie_type_id,
                 slug: slug ?? cookiesBoxSize.slug,
                 portion_size: portion_size ?? cookiesBoxSize.portion_size,
                 price: price ?? cookiesBoxSize.price,
