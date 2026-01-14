@@ -138,7 +138,7 @@ export default function CustomCakeTypePage() {
   return (
     <>
     <section className="mt-5">
-      <div className="mt-5">
+      <div>
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>

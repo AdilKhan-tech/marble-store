@@ -3,11 +3,12 @@ import axios from "axios";
 import React from "react";
 
 class Common {
-  //truncateText
+  //Truncate Text ====================================
   static truncateText(text, limit = 40) {
     return text?.length > limit ? text.slice(0, limit) + "..." : text || "";
   }
 
+  //date Format =====================================
   static dateFormat(date) {
     if (!date) return "";
     // If the date is not already a Date object, parse it

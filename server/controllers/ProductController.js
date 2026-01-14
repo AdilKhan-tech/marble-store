@@ -125,13 +125,11 @@ class ProductController {
                         model: Branch,
                         as: "branches",
                         attributes: ["id", "name_en", "name_ar"],
-                        through: { attributes: [] }
                     },
                     {
                         model: Category,
                         as: "categories",
                         attributes: ["id", "name_en", "name_ar"],
-                        through: { attributes: [] }
                     },
                 ],
             });
