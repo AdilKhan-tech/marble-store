@@ -42,7 +42,7 @@ export const updateIceCreamPortionSizeById =(id)=> `${host}/icecreams/portions/$
 export const getAllIcecreamAddOns = `${host}/icecreams/addons`
 export const createIceCreamAddOn = `${host}/icecreams/addons`
 export const updateIceCreamAddOnById =(id)=> `${host}/icecreams/addons/${id}`;
-export const deleteIceCreamsAddonById =(id)=> `${host}/icecreams/addons/${id}`;
+export const deleteIceCreamAddonById =(id)=> `${host}/icecreams/addons/${id}`;
 
 // IceCreamBuckets
 export const getAllIceCreamBuckets = `${host}/icecreams/buckets`

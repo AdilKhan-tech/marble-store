@@ -168,8 +168,8 @@ export default function CookieBoxSizePage() {
                   <th onClick={() => handleSort("name_en")}>
                     Name<span>{renderSortIcon("name_en")}</span>
                   </th>
-                  <th onClick={() => handleSort("cookies_types_id")}>
-                    Cookies Type<span>{renderSortIcon("cookies_types_id")}</span>
+                  <th onClick={() => handleSort("cookie_type_id")}>
+                    Cookies Type<span>{renderSortIcon("cookie_type_id")}</span>
                   </th>
                   <th onClick={() => handleSort("slug")}>
                     Slug<span>{renderSortIcon("slug")}</span>

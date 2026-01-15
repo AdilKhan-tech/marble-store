@@ -58,12 +58,12 @@ CustomCakeFlavor.belongsTo(CustomCakeTypes, {
 });
 
 CookieBoxType.hasMany(CookieBoxSize, {
-  foreignKey: "cookies_types_id",
+  foreignKey: "cookie_type_id",
   as: "sizes",
 });
 
 CookieBoxSize.belongsTo(CookieBoxType, {
-  foreignKey: "cookies_types_id",
+  foreignKey: "cookie_type_id",
   as: "type",
 });
 
