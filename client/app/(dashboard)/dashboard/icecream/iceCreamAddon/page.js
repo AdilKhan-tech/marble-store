@@ -5,12 +5,12 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from 'axios';
 import AddIceCreamAddon from "@/components/dashboard/icecream/AddIceCreamAddon";
 import { useEffect, useState } from 'react';
-import { deleteIceCreamsAddonById, getAllIcecreamAddOns } from '@/utils/apiRoutes';
+import { deleteIceCreamAddonById, getAllIcecreamAddOns } from '@/utils/apiRoutes';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-export default function IceCreamAddon () {
+export default function IceCreamAddonPage() {
   const {token} = useAxiosConfig();
   const [iceCreamAddons, setIceCreamAddons] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -56,13 +56,13 @@ export default function IceCreamAddon () {
     }
   }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
-  const showOffcanvasOnAddicecreamsSize = () => {
+  const showOffcanvasOnAddIceCreamAddon = () => {
     setIceCreamAddonData(null);
     setShowOffcanvas(true);
   }
 
-  const showOffcanvasOnEditicecreamsSize = (icecream) => {
-    setIceCreamAddonData(icecream);
+  const showOffcanvasOnEditIceCreamAddon = (iceCreamAddon) => {
+    setIceCreamAddonData(iceCreamAddon);
     setShowOffcanvas(true);
   }
 
@@ -79,12 +79,14 @@ export default function IceCreamAddon () {
     setCurrentPage(newPage);
   };
 
-  const handleDelete = async (iceCreamId) => {
+  const handleDelete = async (iceCreamAddonId) => {
     try {
-      const response = await axios.delete(deleteIceCreamsAddonById(iceCreamId));
+      const response = await axios.delete(deleteIceCreamAddonById(iceCreamAddonId));
       if(response.status === 200) {
-          toast.success("icecream Addon deleted successfully!", {autoClose: 1000});
-          fetchIceCreamAddon();
+        toast.success("Icecream Addon deleted successfully!", {autoClose: 1000});
+        setIceCreamAddons((prev) =>
+          prev.filter((iceCreamAddon) => iceCreamAddon.id !== iceCreamAddonId)
+        );
       }
     } catch (error){
       console.error("Error deleting icecream Addon:", error);
@@ -92,15 +94,26 @@ export default function IceCreamAddon () {
     }
   }
 
-  const showDeleteConfirmation = (iceCreamId) => {
+  const showDeleteConfirmation = (iceCreamAddonId) => {
     const confirmed = window.confirm("Are you sure you want to delete this icecream Addon?");
     if(confirmed){
-      handleDelete(iceCreamId)
+      handleDelete(iceCreamAddonId)
     }
   }
 
-  const addicecreamToState = (newicecream) => {
-    setIceCreamAddons(prev => [newicecream, ...prev]);
+  const addIceCreamAddon = (newIceCreamAddon) => {
+    setIceCreamAddons(prev => [newIceCreamAddon, ...prev]);
+    setShowOffcanvas(false);
+  };
+
+  const updateIceCreamAddon = (updatedIceCreamAddon) => {
+    setIceCreamAddons((prev) =>
+      prev.map((iceCreamAddon) =>
+        iceCreamAddon.id === updatedIceCreamAddon.id
+          ? { ...iceCreamAddon, ...updatedIceCreamAddon }
+          : iceCreamAddon
+      )
+    );
     setShowOffcanvas(false);
   };
 
@@ -138,7 +151,7 @@ export default function IceCreamAddon () {
           <div >
             <div 
               className='btn-orange' 
-              onClick={showOffcanvasOnAddicecreamsSize} 
+              onClick={showOffcanvasOnAddIceCreamAddon} 
               role='button'
             >
               <i className='bi bi-plus-circle me-2'></i>Create
@@ -176,23 +189,23 @@ export default function IceCreamAddon () {
                 </tr>
               </thead>
               <tbody>
-                {iceCreamAddons.map((icecream, index) => (
-                  <tr key={`${icecream.id}-${index}`}>
-                    <td>{icecream.id}</td>
-                    <td>{icecream.name_en}</td>
-                    <td>{icecream.slug}</td>
-                    <td>{icecream.add_on_type}</td>
+                {iceCreamAddons.map((iceCreamAddon, index) => (
+                  <tr key={`${iceCreamAddon.id}-${index}`}>
+                    <td>{iceCreamAddon.id}</td>
+                    <td>{iceCreamAddon.name_en}</td>
+                    <td>{iceCreamAddon.slug}</td>
+                    <td>{iceCreamAddon.add_on_type}</td>
                     <td>
-                      <div className={icecream?.status === "active" ? "blue-status" : "red-status"}>
-                        {icecream?.status === "active" ? "Active" : "Inactive"}
+                      <div className={iceCreamAddon?.status === "Active" ? "blue-status" : "red-status"}>
+                        {iceCreamAddon?.status === "Active" ? "Active" : "Inactive"}
                       </div>
                     </td>
                     <td>
                       <div className="d-flex gap-1">
-                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showOffcanvasOnEditicecreamsSize(icecream)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showOffcanvasOnEditIceCreamAddon(iceCreamAddon)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </button>
-                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(icecream.id)}>
+                        <button className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(iceCreamAddon.id)}>
                           <i className="bi bi-trash3 text-danger"></i>
                         </button>
                       </div>
@@ -219,7 +232,8 @@ export default function IceCreamAddon () {
             <AddIceCreamAddon
               IceCreamAddonData={IceCreamAddonData}
               closePopup={closePopup}
-              onAddicecream={addicecreamToState}
+              onAddIceCreamAddon={addIceCreamAddon}
+              onUpdateIceCreamAddon={updateIceCreamAddon}
             />
           </Offcanvas.Body>
         </Offcanvas>

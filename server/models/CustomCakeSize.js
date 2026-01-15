@@ -38,7 +38,7 @@ const CustomCakeSize = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notNull: { msg: "Cookies Type ID is required" },
+        notNull: { msg: "Cake Type ID is required" },
       },
     },
     slug: {
