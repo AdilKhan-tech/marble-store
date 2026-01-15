@@ -9,6 +9,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { getAllCookies, deleteCookieById } from "@/utils/apiRoutes";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function Cookies() {
   const { token } = useAxiosConfig();
@@ -116,48 +117,36 @@ export default function Cookies() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section>
       <div className="mt-5">
+      <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
-        <div className="d-flex justify-content-between mt-4">
+        <div>
+          <button
+            className="btn-orange"
+            role="button"
+            onClick={showOffcanvasOnAddCookies}
+          >
+            <i className="bi bi-plus-circle me-1"></i>
+            <span className="me-2">Create</span>
+          </button>
+        </div>
+      </div>
           <div className="d-flex gap-5">
             <i className="bi bi-search fs-5 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
               className="form-control px-5 text-dark-custom"
               placeholder="Search here..."
+              style={{height:"44px", width:"300px"}}
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div>
-            <button
-              className="btn-orange"
-              role="button"
-              onClick={showOffcanvasOnAddCookies}
-            >
-              <i className="bi bi-plus-circle ms-1"></i>
-              <span className="me-2">Create</span>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
@@ -166,31 +155,74 @@ export default function Cookies() {
             <table className="table datatable datatable-table">
               <thead className="">
                 <tr className="">
-                  <th onClick={() => handleSort("id")}>
-                    ID<span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name<span>{renderSortIcon("name_en")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"  
+                    onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("cookie_type_id")}>
-                    Cookies Box Type<span>{renderSortIcon("cookie_type_id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"  
+                    onClick={() => handleSortChange("cookie_type_id")}>
+                    Cookies Box Type
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "cookie_type_id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    slug<span>{renderSortIcon("slug")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"  
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "cookie_type_id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    status<span>{renderSortIcon("status")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"  
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>Action</th>
+                  <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {cookies.map((cookie, index) => (
                   <tr key={cookie.id || cookie.id || index}>
-                    <td>{cookie?.id}</td>
-                    <td>{cookie?.name_en}</td>
-                    <td>{cookie?.type?.name_en}</td>
-                    <td>{cookie?.slug}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cookie?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cookie?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cookie?.type?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cookie?.slug}
+                    </td>
                     <td>
                       <div
                         className={cookie?.status === "active"? "blue-status": "red-status"}>

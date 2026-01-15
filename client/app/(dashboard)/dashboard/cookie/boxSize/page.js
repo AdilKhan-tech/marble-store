@@ -9,6 +9,7 @@ import useAxiosConfig from "@/hooks/useAxiosConfig"
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function CookieBoxSizePage() {
   const [cookieBoxSizes, setCookieBoxSizes] = useState([]);
@@ -112,38 +113,16 @@ export default function CookieBoxSizePage() {
     }
   }
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section >
       <div className='mt-5'>
-        <p className='pagetitle mb-0 fnt-color'>Cookie Box Size</p>
-        <div className='d-flex justify-content-between mt-4'>
-          <div className='d-flex'>
-            <i className='bi bi-search fs-20 px-3 py-1 text-secondary position-absolute'></i>
-            <input
-              type='text'
-              className='form-control px-5 text-dark-custom'
-              placeholder='Search here...'
-              onChange={(e) => setKeywords(e.target.value)}
-            />
-          </div>
-          <div >
+      <div className='d-flex justify-content-between mb-3'>
+        <p className='pagetitle fnt-color'>Cookie Box Size</p>
+        <div >
             <button 
               className='btn-orange'
               onClick={showOffcanvasOnAddCookieBoxSize}
@@ -153,8 +132,18 @@ export default function CookieBoxSizePage() {
             Create
             </button>
           </div>
+          </div>
+          <div className='d-flex'>
+            <i className='bi bi-search fs-20 px-3 py-1 text-secondary position-absolute'></i>
+            <input
+              type='text'
+              className='form-control px-5 text-dark-custom'
+              style={{height:"44px", width:"300px"}}
+              placeholder='Search here...'
+              onChange={(e) => setKeywords(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
       <div className='px-0 pt-0 rounded-2 p-0 mt-3'>
 
         <div className='datatable-wrapper'>
@@ -162,22 +151,57 @@ export default function CookieBoxSizePage() {
             <table className='table datatable datatable-table'>
               <thead className=''>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")}>
-                    ID<span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name<span>{renderSortIcon("name_en")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("cookie_type_id")}>
-                    Cookies Type<span>{renderSortIcon("cookie_type_id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("cookie_type_id")}>
+                    Cookies Type
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "cookie_type_id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    Slug<span>{renderSortIcon("slug")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Status<span>{renderSortIcon("status")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>
+                  <th className="fw-bold fs-14 fnt-color nowrap">
                     Action
                   </th>
                 </tr>
@@ -186,10 +210,18 @@ export default function CookieBoxSizePage() {
               <tbody>
                 {cookieBoxSizes.map((boxSize, index) => (
                   <tr key={`${boxSize.id}-${index}`}>
-                    <td>{boxSize.id}</td>
-                    <td>{boxSize.name_en}</td>
-                    <td>{boxSize.type.name_en}</td>
-                    <td>{boxSize.slug}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {boxSize.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {boxSize.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {boxSize.type.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {boxSize.slug}
+                    </td>
                     <td>
                     <div className={boxSize.status === "active" ? "blue-status" : "red-status"}>
                       {boxSize.status === "active" ? "Active" : "Inactive"}

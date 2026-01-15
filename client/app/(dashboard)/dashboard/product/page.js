@@ -30,15 +30,8 @@ export default function CakeFlavourPage() {
     fetchAllProducts();
   }, [token]);
 
-  const handleSort = (field) => {
-    const newOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newOrder);
-  };
-  const renderSortIcon = (field) => {
-    return sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↑↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   const handleDelete = async (productId) => {
     try {
@@ -65,26 +58,26 @@ export default function CakeFlavourPage() {
     <>
       <section className="mt-5">
         <div className="">
+        <div className="d-flex justify-content-between mb-3">
           <p className="pagetitle mb-0 fnt-color">Products</p>
-          <div className="d-flex justify-content-between mt-4">
+          <div>
+            <Link href="/dashboard/product/add" className="text-decoration-none">
+              <div className="btn-orange text-center" role="button">
+                <i className="bi bi-plus-circle ms-2"></i>
+                <span className="ms-1">Create</span>
+              </div>
+            </Link>
+            </div>
+            </div>
             <div className="d-flex">
               <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
                 className="form-control px-5 text-dark-custom"
+                style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
               />
             </div>
-            <div>
-            <Link href="/dashboard/product/add" className="text-decoration-none">
-              <div className="btn-orange" role="button">
-                <i className="bi bi-plus-circle ms-2"></i>
-                <span className="ms-1">Create</span>
-              </div>
-            </Link>
-
-            </div>
-          </div>
         </div>
         <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className="">
@@ -92,7 +85,9 @@ export default function CakeFlavourPage() {
               <table className="table datatable-wrapper">
                 <thead>
                   <tr className="">
-                    <th onClick={() => handleSort("id")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("id")}>
                       Id
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "id" &&
@@ -101,7 +96,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("name_en")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "name_en" &&
@@ -110,7 +107,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("sku")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("sku")}>
                       SKU
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "sku" &&
@@ -119,7 +118,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("stock")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("stock")}>
                       Stock
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "stock" &&
@@ -128,7 +129,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("price")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("price")}>
                       Price
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "price" &&
@@ -137,7 +140,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("category")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("category")}>
                       Categories
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "category" &&
@@ -146,7 +151,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("date")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("date")}>
                       Date
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "date" &&
@@ -155,7 +162,9 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th onClick={() => handleSort("branches")}>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("branches")}>
                       Branches
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "branches" &&
@@ -164,24 +173,39 @@ export default function CakeFlavourPage() {
                       </span>
                     </th>
 
-                    <th>Action</th>
+                    <th className="fw-bold fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.map((product, index) => (
                   <tr key={product.id || product.id || index}>
-                    <td>{product?.id}</td>
-                    <td>{product?.name_en}</td>
-                    <td>{product?.sku || "N/A"}</td>
-                    <td>{product?.stock || "In Stock"}</td>
-                    <td>{product?.regular_price}</td>
-                    <td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {product?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {product?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {product?.sku || "N/A"}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {product?.stock || "In Stock"}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {product?.regular_price}
+                    </td>
+                    <td
+                      className="fw-normal fs-14 fnt-color">
                       {product?.categories?.length
                         ? Common.truncateText(product.categories.map(cat => cat.name_en).join(", "),10)
                         : "N/A"}
                     </td>
-                    <td>{Common.dateFormat(product?.created_at)}</td>
-                    <td>
+                    <td
+                      className="fw-normal fs-14 fnt-color">
+                      {Common.dateFormat(product?.created_at)}
+                    </td>
+                    <td
+                      className="fw-normal fs-14 fnt-color">
                       {product?.branches?.length
                         ? Common.truncateText(product.branches.map(b => b.name_en).join(", "),10)
                         : "N/A"}

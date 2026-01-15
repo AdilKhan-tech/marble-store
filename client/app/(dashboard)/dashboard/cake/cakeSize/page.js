@@ -8,6 +8,7 @@ import { getAllCakeSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function CakeSizePage() {
 
@@ -117,44 +118,36 @@ export default function CakeSizePage() {
     setShowOffcanvas(false);
   };
 
-  const handleSortChange = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section className="mt-5">
       <div className=""> 
+      <div className='d-flex justify-content-between mb-4'>
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
-        <div className='d-flex justify-content-between mt-4'>
+        <div >
+          <div 
+            className='btn-orange text-center' 
+            onClick={showOffcanvasOnAddCakesSize} 
+            role='button'
+          >
+            <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
+          </div>
+        </div>
+        </div>
           <div className='d-flex'>
             <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
               className="form-control px-5 text-dark-custom" 
+              style={{height:"44px", width:"300px"}}
               placeholder="Search here..." 
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-
-          <div >
-            <div 
-              className='btn-orange text-center' 
-              onClick={showOffcanvasOnAddCakesSize} 
-              role='button'
-            >
-              <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
-            </div>
-          </div>
         </div>
-      </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className=" ">
             <div className="data-table">

@@ -88,6 +88,7 @@ export default function CategoryPage() {
               <input
                 type="text"
                 className="form-control px-5 text-dark-custom"
+                style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
               />
             </div>

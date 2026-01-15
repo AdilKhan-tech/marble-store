@@ -283,11 +283,12 @@ table tr:nth-child(even) td {
   border: 1px solid rgba(211, 135, 65, 0.25) !important;
   border-radius: 12px !important;
   background-color: rgb(250, 134, 1) !important;
-  font-size: 14px;
+  font-size: 16px;
   color: white;
   line-height: 20px;
   padding: 12px;
-  width: 120px;
+  margin-top: 19px;
+  width: 140px;
 }
 .dashboard-sidebar {
   width: 300px;

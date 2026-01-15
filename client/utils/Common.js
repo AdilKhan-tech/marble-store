@@ -24,6 +24,20 @@ class Common {
     );
     return localTime.toISOString().split("T")[0];
   }
+
+  //handleSortingChange ==============================
+  static handleSortingChange = (field, setSortField, setSortOrder) => {
+    if (field === Common.sortField) {
+      const newSortOrder = Common.sortOrder === "asc" ? "desc" : "asc";
+      setSortOrder(newSortOrder);
+      Common.sortOrder = newSortOrder;
+    } else {
+      setSortField(field);
+      setSortOrder("desc");
+      Common.sortField = field;
+      Common.sortOrder = "desc";
+    }
+  };
 }
 
 export default Common;

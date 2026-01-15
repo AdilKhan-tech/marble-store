@@ -9,6 +9,7 @@ import { getAllIceCreamBuckets, deleteIceCreamBucketById,} from "@/utils/apiRout
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import Common from "@/utils/Common"
 
 export default function IceCreamBucketPage() {
   const { token } = useAxiosConfig();
@@ -115,44 +116,37 @@ export default function IceCreamBucketPage() {
     setShowOffcanvas(false);
   };
 
-  const handleSortChange = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
   
   return (
     <>
       <section>
         <div className="mt-5">
+         <div className="d-flex justify-content-between mt-4">
           <p className="pagetitle fnt-color">Ice Cream Bucket</p>
-          <div className="d-flex justify-content-between mt-4">
+          <div>
+            <div
+              className="btn-orange text-center"
+              onClick={showOffcanvasOnAddIceCreamBucket}
+              role="button"
+            >
+              <i className="bi bi-plus-circle me-2"></i>
+              <span>Create</span>
+            </div>
+          </div>
+         </div>
             <div className="d-flex">
               <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
                 className="form-control px-5 text-dark-custom"
+                style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
                 onChange={(e) => setKeywords(e.target.value)}
               />
-            </div>
-            <div>
-              <div
-                className="btn-orange text-center"
-                onClick={showOffcanvasOnAddIceCreamBucket}
-                role="button"
-              >
-                <i className="bi bi-plus-circle me-2"></i>
-                <span>Create</span>
-              </div>
-            </div>
-          </div>
         </div>
+      </div>
         <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className="datatable-wrapper">
             <div className="data-table p-2 rounded-4">
@@ -174,7 +168,7 @@ export default function IceCreamBucketPage() {
                       onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "name" &&
+                      {(sortField === "name_en" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>

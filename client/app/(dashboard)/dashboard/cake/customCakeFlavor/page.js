@@ -12,6 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 function page() {
   const { token } = useAxiosConfig();
@@ -126,42 +127,35 @@ function page() {
     setShowOffcanvas(false);
   };
 
-  const handleSortChange = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section className="mt-5">
       <div className="">
+       <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Custom Cake Flavor</p>
-        <div className="d-flex justify-content-between mt-4">
+        <div>
+          <button
+            className="btn-orange"
+            onClick={showOffcanvasOnAddCustomCakeFlavor}
+            role="button">
+            <i className="bi bi-plus-circle ms-1"></i>
+            <span className="ms-2">Create</span>
+          </button>
+        </div>
+        </div>
           <div className="d-flex">
             <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
               className="form-control px-5 text-dark-custom"
+              style={{height:"44px", width:"300px"}}
               placeholder="Search here..."
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div>
-            <button
-              className="btn-orange"
-              onClick={showOffcanvasOnAddCustomCakeFlavor}
-              role="button">
-              <i className="bi bi-plus-circle ms-1"></i>
-              <span className="ms-2">Create</span>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
