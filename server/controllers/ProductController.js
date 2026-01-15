@@ -1,5 +1,6 @@
 const { Category, Gender, Product, ProductBranch, ProductCategory, ProductOccasion } = require("../models");
 const Branch = require("../models/Branch");
+const Occasion = require("../models/Occasion");
 
 class ProductController {
 
@@ -129,6 +130,11 @@ class ProductController {
                     {
                         model: Category,
                         as: "categories",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                    {
+                        model: Occasion,
+                        as: "occasions",
                         attributes: ["id", "name_en", "name_ar"],
                     },
                 ],
