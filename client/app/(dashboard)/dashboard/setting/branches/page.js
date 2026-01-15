@@ -9,6 +9,7 @@ import AddBranch from '@/components/dashboard/setting/AddBranch';
 import { getAllBranches, deleteBranchById } from "@/utils/apiRoutes";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function BranchPage() {
   const { token } = useAxiosConfig();
@@ -116,48 +117,36 @@ export default function BranchPage() {
   };
   
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section className="mt-5">
       <div className="">
+      <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Branches</p>
-        <div className="d-flex justify-content-between mt-4">
+        <div>
+          <button
+            className="btn-orange"
+            onClick={showOffcanvasOnAddBranch}
+            role="button"
+          >
+            <i className="bi bi-plus-circle"></i>
+            <span className="ms-2">Create</span>
+          </button>
+        </div>
+        </div>
           <div className="d-flex">
             <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
             <input
               type="text"
               className="form-control px-5 text-dark-custom"
+              style={{height:"44px", width:"300px"}}
               placeholder="Search here..."
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div>
-            <button
-              className="btn-orange"
-              onClick={showOffcanvasOnAddBranch}
-              role="button"
-            >
-              <i className="bi bi-plus-circle ms-1"></i>
-              <span className="ms-2">Create</span>
-            </button>
-          </div>
-        </div>
       </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
         <div className="datatable-wrapper">
@@ -165,36 +154,90 @@ export default function BranchPage() {
             <table className="table datatable datatable-table">
               <thead className="">
                 <tr className="">
-                  <th onClick={() => handleSort("id")}>
-                    ID<span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name<span>{renderSortIcon("name_en")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    Slug<span>{renderSortIcon("slug")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Status<span>{renderSortIcon("status")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("timing")}>
-                    Timing<span>{renderSortIcon("timing")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("timing")}>
+                    Timing
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "timing" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("city")}>
-                    City<span>{renderSortIcon("city")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("city")}>
+                    City
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "city" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>Action</th>
+                  <th className="fw-bold fs-14 fnt-color nowrap" >Action</th>
                 </tr>
               </thead>
               <tbody>
                 {branches.map((branch, index) => (
                   <tr key={branch?.id}>
-                    <td>{branch?.id}</td>
-                    <td>{branch?.name_en}</td>
-                    <td>{branch?.slug}</td>
-                    <td>{branch?.status}</td>
-                    <td>{branch?.timing}</td>
-                    <td>{branch?.city}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.slug}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.status}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.timing}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {branch?.city}
+                    </td>
                     <td>
                       <div className="d-flex gap-1">
                         <button

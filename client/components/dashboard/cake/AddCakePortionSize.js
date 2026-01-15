@@ -130,8 +130,8 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
           onChange={handleChange}
         />
       </div>
-
-      <div className="form-group mt-3">
+      <div className='row mt-3'>
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Slug</label>
         <input 
           name="slug" 
@@ -142,7 +142,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
         />
       </div>
 
-      <div className="form-group mt-3">
+      <div className="form-group col-md-6">
         <label className="form-label text-secondary">Parent Portion Size</label>
         <input 
           name="parent_portion_size" 
@@ -151,6 +151,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
           value={formData.parent_portion_size} 
           onChange={handleChange}
         />
+      </div>
       </div>
       
       <div className="col-md-12 px-1 mt-3">

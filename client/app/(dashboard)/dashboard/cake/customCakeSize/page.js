@@ -8,6 +8,7 @@ import {getAllCustomCakeSizes,deleteCustomCakeSizeById,} from "@/utils/apiRoutes
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function CustomCakeSize() {
   const { token } = useAxiosConfig();
@@ -116,80 +117,111 @@ export default function CustomCakeSize() {
     );
     setShowOffcanvas(false);
   };
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
       <section className="mt-5">
         <div className="">
+        <div className="d-flex justify-content-between mb-3">
           <p className="pagetitle mb-0 fnt-color">Custom Cakes Sizes</p>
-          <div className="d-flex justify-content-between mt-4">
+          <div>
+            <div
+              className="btn-orange text-center"
+              onClick={showOffcanvasOnAddCustomCakesSize}
+              role="button"
+            >
+              <i className="bi bi-plus-circle ms-2"></i>
+              <span className="ms-1">Create</span>
+          </div>
+        </div>
+        </div>
             <div className="d-flex">
               <i className="bi bi-search fs-5 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
                 className="form-control px-5 text-dark-custom"
+                style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
                 onChange={(e) => setKeywords(e.target.value)}
               />
             </div>
-            <div>
-              <div
-                className="btn-orange"
-                onClick={showOffcanvasOnAddCustomCakesSize}
-                role="button"
-              >
-                <i className="bi bi-plus-circle ms-2"></i>
-                <span className="ms-1">Create</span>
-              </div>
-            </div>
           </div>
-        </div>
         <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className="">
             <div className="data-table">
               <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className="">
-                    <th onClick={() => handleSort("id")}>
-                      ID <span>{renderSortIcon("id")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("id")}>
+                      ID
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "id" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("name_en")}>
-                      Name <span>{renderSortIcon("name_en")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("name_en")}>
+                      Name
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "name_en" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("slug")}>
-                      Slug <span>{renderSortIcon("slug")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("slug")}>
+                      Slug
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "slug" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("cake_type_id")}>
-                      Cake Type <span>{renderSortIcon("cake_type_id")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("cake_type_id")}>
+                      Cake Type
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "cake_type_id" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("status")}>
-                      Status <span>{renderSortIcon("status")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("status")}>
+                      Status
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "status" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
                     </th>
-                    <th>Action</th>
+                    <th className="fw-bold fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {customCakeSizes.map((customCakeSize, index) => (
                     <tr key={customCakeSize?.id}>
-                      <td>{customCakeSize?.id}</td>
-                      <td>{customCakeSize?.name_en}</td>
-                      <td>{customCakeSize?.slug}</td>
-                      <td>{customCakeSize?.cake_type_id}</td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {customCakeSize?.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {customCakeSize?.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {customCakeSize?.slug}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {customCakeSize?.cake_type_id}
+                      </td>
                       <td>
                         <div
                           className={

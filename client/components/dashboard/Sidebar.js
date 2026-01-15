@@ -111,6 +111,7 @@ export default function Sidebar() {
                     href="/dashboard/cake/cakeSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
                   >
+                  <i className="bi bi-arrows-expand"></i>
                     Cake Sizes
                   </Link>
                   <Link
@@ -301,7 +302,7 @@ export default function Sidebar() {
                     href="/dashboard/cookie"
                     className={`d-flex align-items-center ${isActive("/dashboard/cookie") ? "active" : ""}`}
                   >
-                    Cookie List
+                    Cookies
                   </Link>
                 </div>
               )}
@@ -328,7 +329,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Cookie List
+                    Cookies
                   </Link>
                 </div>
               )}

@@ -9,6 +9,7 @@ import { getAllIceCreamBuckets, deleteIceCreamBucketById,} from "@/utils/apiRout
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import Common from "@/utils/Common"
 
 export default function IceCreamBucketPage() {
   const { token } = useAxiosConfig();
@@ -115,84 +116,124 @@ export default function IceCreamBucketPage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
   
   return (
     <>
       <section>
         <div className="mt-5">
+         <div className="d-flex justify-content-between mt-4">
           <p className="pagetitle fnt-color">Ice Cream Bucket</p>
-          <div className="d-flex justify-content-between mt-4">
+          <div>
+            <div
+              className="btn-orange text-center"
+              onClick={showOffcanvasOnAddIceCreamBucket}
+              role="button"
+            >
+              <i className="bi bi-plus-circle me-2"></i>
+              <span>Create</span>
+            </div>
+          </div>
+         </div>
             <div className="d-flex">
               <i className="bi bi-search fs-20 px-3 py-1 text-secondary position-absolute"></i>
               <input
                 type="text"
                 className="form-control px-5 text-dark-custom"
+                style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
                 onChange={(e) => setKeywords(e.target.value)}
               />
-            </div>
-            <div>
-              <div
-                className="btn-orange"
-                onClick={showOffcanvasOnAddIceCreamBucket}
-                role="button"
-              >
-                <i className="bi bi-plus-circle me-2"></i>
-                <span>Create</span>
-              </div>
-            </div>
-          </div>
         </div>
+      </div>
         <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className="datatable-wrapper">
             <div className="data-table p-2 rounded-4">
               <table className="table datatable datatable-table">
                 <thead className="">
                   <tr className="">
-                    <th onClick={() => handleSort("id")}>
-                      ID<span>{renderSortIcon("id")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("id")}>
+                      ID
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("name_en")}>
-                      Name<span>{renderSortIcon("name_en")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("name_en")}>
+                      Name
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("slug")}>
-                      Slug<span>{renderSortIcon("slug")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("slug")}>
+                      Slug
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("size")}>
-                      Size<span>{renderSortIcon("size")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("size")}>
+                      Size
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "size" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("price")}>
-                      Price<span>{renderSortIcon("price")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("price")}>
+                      Price
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "price" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("status")}>
-                      Status<span>{renderSortIcon("status")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("status")}>
+                      Status
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th>Action</th>
+                    <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {iceCreamBucket.map((icecream, index) => (
                     <tr key={`${icecream.id}-${index}`}>
-                      <td>{icecream.id}</td>
-                      <td>{icecream.name_en}</td>
-                      <td>{icecream.slug}</td>
-                      <td>{icecream.size}</td>
-                      <td>{icecream.price}</td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.slug}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.size}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.price}
+                      </td>
                       <td>
                         <div className={icecream?.status === "active"? "blue-status": "red-status"}>
                           {icecream?.status === "active"? "Active": "Inactive"}

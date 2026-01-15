@@ -9,7 +9,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) => {
+const AddProduct = ({ productData, onAddProduct }) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
@@ -255,29 +255,7 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
         payload.append("category_ids[]", id)
       );
 
-      // ============ UPDATE ============
-      if (productData) {
-        const res = await axios.put(
-          updateProductById(productData.id),
-          payload
-        );
-
-        toast.success("Product updated successfully!", {
-          autoClose: 1000,
-        });
-
-        if (onUpdateProduct) {
-          onUpdateProduct({
-            ...productData,
-            ...formData,
-          });
-        }
-
-        closePopup?.();
-      }
-
-      else {
-        await axios.post(createProductRoute, payload);
+         const res = await axios.post(createProductRoute, payload);
 
         toast.success("Product added successfully!", {
           autoClose: 500,
@@ -288,7 +266,6 @@ const AddProduct = ({ productData, onUpdateProduct, onAddProduct, closePopup }) 
 
 
         if (onAddProduct) onAddProduct(res.data);
-      }
     } catch (error) {
       setErrors([
         error?.response?.data?.message || "Something went wrong",

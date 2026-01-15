@@ -8,6 +8,7 @@ import { getAllCakeSizes, deleteCakeSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
+import Common from "@/utils/Common"
 
 export default function CakeSizePage() {
 
@@ -117,91 +118,128 @@ export default function CakeSizePage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section className="mt-5">
       <div className=""> 
+      <div className='d-flex justify-content-between mb-4'>
         <p className="pagetitle mb-0 fnt-color">Cakes Sizes</p>
-        <div className='d-flex justify-content-between mt-4'>
+        <div >
+          <div 
+            className='btn-orange text-center' 
+            onClick={showOffcanvasOnAddCakesSize} 
+            role='button'
+          >
+            <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
+          </div>
+        </div>
+        </div>
           <div className='d-flex'>
             <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
               className="form-control px-5 text-dark-custom" 
+              style={{height:"44px", width:"300px"}}
               placeholder="Search here..." 
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-
-          <div >
-            <div 
-              className='btn-orange' 
-              onClick={showOffcanvasOnAddCakesSize} 
-              role='button'
-            >
-              <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
-            </div>
-          </div>
         </div>
-      </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
           <div className=" ">
             <div className="data-table">
               <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className=''>
-                    <th onClick={() => handleSort("id")}>
-                      ID <span>{renderSortIcon("id")}</span>
+                    <th className="fw-bold fs-14 fnt-color"
+                      onClick={() => handleSortChange("id")}>
+                      ID 
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "id" &&
+                          (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th onClick={() => handleSort("name_en")}>
-                      Name <span>{renderSortIcon("name_en")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color"
+                      onClick={() => handleSortChange("name_en")}>
+                      Name 
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "name_en" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th onClick={() => handleSort("custom_cake_type_id")}>
-                      Cake Type <span>{renderSortIcon("custom_cake_type_id")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color"
+                      onClick={() => handleSortChange("custom_cake_type_id")}>
+                      Cake Type
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "custom_cake_type_id" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th onClick={() => handleSort("scoop_size")}>
-                      Scope <span>{renderSortIcon("scoop_size")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color"
+                      onClick={() => handleSortChange("scoop_size")}>
+                      Scope
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "scoop_size" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th onClick={() => handleSort("additional_price")}>
-                      Additional Price <span>{renderSortIcon("additional_price")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("additional_price")}>
+                      Additional Price
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "additional_price" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th onClick={() => handleSort("status")}>
-                      Status <span>{renderSortIcon("status")}</span>
+                    <th 
+                      className="fw-bold fs-14 fnt-color"
+                      onClick={() => handleSortChange("status")}>
+                      Status
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "status" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
-                    <th>Action</th>
+                    <th className="fw-bold fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody className="d-flex flex-column">
                   {cakeSizes.map((cakeSize, index) => (
                     <tr key={cakeSize?.id}>
-                      <td>{cakeSize?.id}</td>
-                      <td>{cakeSize?.name_en}</td>
-                      <td>{cakeSize?.customCakeType?.name_en}</td>
-                      <td>{cakeSize?.scoop_size}</td>
-                      <td>{cakeSize?.additional_price}</td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakeSize?.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakeSize?.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakeSize?.customCakeType?.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakeSize?.scoop_size}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakeSize?.additional_price}</td>
                       <td>
                         <div className={cakeSize?.status === "active" ? "blue-status" : "red-status"}>
                           {cakeSize?.status === "active" ? "Active" : "Inactive"}
                         </div>
                       </td>
-                      <td className='d-flex gap-2'>
+                      <td className='d-flex gap-2' style={{marginInlineStart:"20px"}}>
                         <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakesSize(cakeSize)}>
                           <i className="bi bi-pencil-square text-primary"></i></div>
                         <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showDeleteConfirmation(cakeSize.id)}>
