@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 
 const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
@@ -45,7 +44,8 @@ app.use('/icecreams', iceCreamRoutes);
 app.use('/cakes', cakeRoutes);
 app.use('/products', productRoutes);
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Static files
+app.use("/uploads", express.static("uploads"));
 
 // Database and server setup
 const sequelize = require("./config/database");

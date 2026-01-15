@@ -116,7 +116,7 @@ export default function CakeFlavourPage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
+  const handleSortChange = (field) => {
     setCurrentPage(1);
 
     if (sortField === field) {
@@ -127,15 +127,10 @@ export default function CakeFlavourPage() {
     }
   };
 
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
-
   return (
     <>
     <section >
-      <div className="mt-10"> 
+      <div className="mt-5"> 
         <p className="pagetitle mb-0 fnt-color">Cakes Flavours</p>
         <div className='d-flex justify-content-between mt-4'>
           <div className='d-flex'>
@@ -148,7 +143,7 @@ export default function CakeFlavourPage() {
               />
               </div>
               <div >
-                <div className='btn-orange' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
+                <div className='btn-orange text-center' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
                 <i className='bi bi-plus-circle ms-2'></i>
                 <span className='ms-1'>Create</span>
                 </div>
@@ -161,36 +156,79 @@ export default function CakeFlavourPage() {
             <table className="table datatable-wrapper">
               <thead>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")}>
-                    ID<span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
 
-                  <th onClick={() => handleSort("name_en")}>
-                    Name<span>{renderSortIcon("name_en")}</span>
+                  <th 
+                    className="fw-bold fs-14 fnt-color nowrap"
+                    onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
 
-                  <th onClick={() => handleSort("custom_cake_type_id")}>
-                    Cake Type<span>{renderSortIcon("custom_cake_type_id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"
+                    onClick={() => handleSortChange("custom_cake_type_id")}>
+                    Cake Type
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "custom_cake_type_id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
 
-                  <th onClick={() => handleSort("slug")}>
-                    Slug<span>{renderSortIcon("slug")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
 
-                  <th onClick={() => handleSort("status")}>
-                    Status<span>{renderSortIcon("status")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
 
-                  <th>Action</th>
+                  <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {cakeFlavors.map((cakeFlavor, index) => (
                   <tr key={cakeFlavor?.id}>
-                    <td>{cakeFlavor?.id}</td>
-                    <td>{cakeFlavor?.name_en}</td>
-                    <td>{cakeFlavor?.customCakeType?.name_en}</td>
-                    <td>{cakeFlavor?.slug}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakeFlavor?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakeFlavor?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakeFlavor?.customCakeType?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakeFlavor?.slug}
+                    </td>
                     <td>
                       <div className={cakeFlavor?.status === "active" ? "blue-status" : "red-status"}>
                         {cakeFlavor?.status === "active" ? "Active" : "Inactive"}

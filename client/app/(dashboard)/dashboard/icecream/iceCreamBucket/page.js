@@ -115,7 +115,7 @@ export default function IceCreamBucketPage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
+  const handleSortChange = (field) => {
     setCurrentPage(1);
 
     if (sortField === field) {
@@ -124,11 +124,6 @@ export default function IceCreamBucketPage() {
       setSortField(field);
       setSortOrder("ASC");
     }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
   };
   
   return (
@@ -148,7 +143,7 @@ export default function IceCreamBucketPage() {
             </div>
             <div>
               <div
-                className="btn-orange"
+                className="btn-orange text-center"
                 onClick={showOffcanvasOnAddIceCreamBucket}
                 role="button"
               >
@@ -164,35 +159,87 @@ export default function IceCreamBucketPage() {
               <table className="table datatable datatable-table">
                 <thead className="">
                   <tr className="">
-                    <th onClick={() => handleSort("id")}>
-                      ID<span>{renderSortIcon("id")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("id")}>
+                      ID
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("name_en")}>
-                      Name<span>{renderSortIcon("name_en")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("name_en")}>
+                      Name
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("slug")}>
-                      Slug<span>{renderSortIcon("slug")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("slug")}>
+                      Slug
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("size")}>
-                      Size<span>{renderSortIcon("size")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("size")}>
+                      Size
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "size" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("price")}>
-                      Price<span>{renderSortIcon("price")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("price")}>
+                      Price
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "price" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th onClick={() => handleSort("status")}>
-                      Status<span>{renderSortIcon("status")}</span>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("status")}>
+                      Status
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                     </th>
-                    <th>Action</th>
+                    <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {iceCreamBucket.map((icecream, index) => (
                     <tr key={`${icecream.id}-${index}`}>
-                      <td>{icecream.id}</td>
-                      <td>{icecream.name_en}</td>
-                      <td>{icecream.slug}</td>
-                      <td>{icecream.size}</td>
-                      <td>{icecream.price}</td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.slug}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.size}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {icecream.price}
+                      </td>
                       <td>
                         <div className={icecream?.status === "active"? "blue-status": "red-status"}>
                           {icecream?.status === "active"? "Active": "Inactive"}

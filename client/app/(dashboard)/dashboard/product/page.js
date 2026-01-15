@@ -94,42 +94,74 @@ export default function CakeFlavourPage() {
                   <tr className="">
                     <th onClick={() => handleSort("id")}>
                       Id
-                      <span>{renderSortIcon("id")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "id" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("name_en")}>
                       Name
-                      <span>{renderSortIcon("name_en")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "name_en" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("sku")}>
                       SKU
-                      <span>{renderSortIcon("sku")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "sku" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("stock")}>
                       Stock
-                      <span>{renderSortIcon("stock")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "stock" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("price")}>
                       Price
-                      <span>{renderSortIcon("price")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "price" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("category")}>
                       Categories
-                      <span>{renderSortIcon("category")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "category" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("date")}>
                       Date
-                      <span>{renderSortIcon("date")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "date" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th onClick={() => handleSort("branches")}>
                       Branches
-                      <span>{renderSortIcon("branches")}</span>
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "branches" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
                     </th>
 
                     <th>Action</th>

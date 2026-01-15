@@ -119,7 +119,7 @@ export default function CustomCakeTypePage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
+  const handleSortChange = (field) => {
     setCurrentPage(1);
 
     if (sortField === field) {
@@ -128,11 +128,6 @@ export default function CustomCakeTypePage() {
       setSortField(field);
       setSortOrder("ASC");
     }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
   };
 
   return (
@@ -152,7 +147,7 @@ export default function CustomCakeTypePage() {
           </div>
           <div >
             <div 
-              className='btn-orange' 
+              className='btn-orange text-center' 
               onClick={showOffcanvasAddCustomCakeType} 
               role='button'
             >
@@ -168,28 +163,60 @@ export default function CustomCakeTypePage() {
             <table className="table datatable datatable-table">
               <thead className=''>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")}>
-                    ID <span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color"
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name <span>{renderSortIcon("name_en")}</span>
+                  <th className="fw-bold fs-14 fnt-color" onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    Slug <span>{renderSortIcon("slug")}</span>
+                  <th
+                    className='fw-bold fs-14 fnt-color'
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Status <span>{renderSortIcon("status")}</span>
+                  <th
+                    className='fw-bold fs-14 fnt-color'
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>Action</th>
+                  <th className='fw-bold fs-14 fnt-color'>Action</th>
                 </tr>
               </thead>
 
               <tbody>
                 {customeCakeTypes.map((customeCakeType, index) => (
                   <tr key={customeCakeType?.id}>
-                    <td>{customeCakeType?.id}</td>
-                    <td>{customeCakeType?.name_en}</td>
-                    <td>{customeCakeType?.slug}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.slug}
+                    </td>
                     <td>
                       <div className={customeCakeType?.status === "active" ? "blue-status" : "red-status"}>
                         {customeCakeType?.status === "active" ? "Active" : "Inactive"}
