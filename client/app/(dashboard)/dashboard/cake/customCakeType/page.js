@@ -7,7 +7,7 @@ import AddCustomCakeType from '@/components/dashboard/cake/AddCustomCakeType';
 import { useEffect, useState } from 'react';
 import { getAllCustomCakeTypes, deleteCustomCakeTypeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
+import Common from "@/utils/Common"
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
@@ -119,48 +119,36 @@ export default function CustomCakeTypePage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
     <section className="mt-5">
       <div>
+      <div className='d-flex justify-content-between mb-3'>
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
-        <div className='d-flex justify-content-between mt-4'>
+        <div >
+          <div 
+            className='btn-orange text-center' 
+            onClick={showOffcanvasAddCustomCakeType} 
+            role='button'
+          >
+            <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
+          </div>
+        </div>
+      </div>
           <div className='d-flex'>
             <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
             <input 
               type="text" 
               className="form-control px-5 text-dark-custom" 
+              style={{height:"44px", width:"300px"}}
               placeholder="Search here..." 
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
-          <div >
-            <div 
-              className='btn-orange' 
-              onClick={showOffcanvasAddCustomCakeType} 
-              role='button'
-            >
-              <i className='bi bi-plus-circle ms-2'></i><span className='ms-1'>Create</span>
-            </div>
-          </div>
         </div>
-      </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
         <div className="datatable-wrapper">
@@ -168,28 +156,60 @@ export default function CustomCakeTypePage() {
             <table className="table datatable datatable-table">
               <thead className=''>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")}>
-                    ID <span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color"
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name <span>{renderSortIcon("name_en")}</span>
+                  <th className="fw-bold fs-14 fnt-color" onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    Slug <span>{renderSortIcon("slug")}</span>
+                  <th
+                    className='fw-bold fs-14 fnt-color'
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("status")}>
-                    Status <span>{renderSortIcon("status")}</span>
+                  <th
+                    className='fw-bold fs-14 fnt-color'
+                    onClick={() => handleSortChange("status")}>
+                    Status
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "status" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>Action</th>
+                  <th className='fw-bold fs-14 fnt-color'>Action</th>
                 </tr>
               </thead>
 
               <tbody>
                 {customeCakeTypes.map((customeCakeType, index) => (
                   <tr key={customeCakeType?.id}>
-                    <td>{customeCakeType?.id}</td>
-                    <td>{customeCakeType?.name_en}</td>
-                    <td>{customeCakeType?.slug}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {customeCakeType?.slug}
+                    </td>
                     <td>
                       <div className={customeCakeType?.status === "active" ? "blue-status" : "red-status"}>
                         {customeCakeType?.status === "active" ? "Active" : "Inactive"}

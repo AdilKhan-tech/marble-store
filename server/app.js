@@ -44,6 +44,9 @@ app.use('/icecreams', iceCreamRoutes);
 app.use('/cakes', cakeRoutes);
 app.use('/products', productRoutes);
 
+// Static files
+app.use("/uploads", express.static("uploads"));
+
 // Database and server setup
 const sequelize = require("./config/database");
 const startServer = async () => {

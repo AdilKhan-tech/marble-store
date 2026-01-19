@@ -2,18 +2,18 @@
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import AddCustomCakeSize from "@/components/dashboard/cake/AddCustomCakeSize";
+import AddCategory from "@/components/dashboard/setting/AddCategory";
 import { useEffect, useState } from "react";
-import {getAllCustomCakeSizes,deleteCustomCakeSizeById,} from "@/utils/apiRoutes";
+import {getAllCategories,deleteCategoryById,} from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 import Common from "@/utils/Common"
 
-export default function CustomCakeSize() {
+export default function Category() {
   const { token } = useAxiosConfig();
-  const [customCakeSizes, setCustomCakeSizes] = useState([]);
-  const [customCakeSizeData, setCustomCakeSizeData] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [categoryData, setCategoryData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sortField, setSortField] = useState("id");
   const [sortOrder, setSortOrder] = useState("DESC");
@@ -23,7 +23,7 @@ export default function CustomCakeSize() {
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-  const fetchCustomCakeSizes = async () => {
+  const fetchCategories = async () => {
     if (!token) return;
     try {
       const params = {
@@ -33,34 +33,34 @@ export default function CustomCakeSize() {
         sortOrder,
         sortField,
       };
-      const response = await axios.get(getAllCustomCakeSizes, { params });
+      const response = await axios.get(getAllCategories, { params });
 
-      setCustomCakeSizes(response.data.data);
+      setCategories(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     } catch (error) {
-      console.error("Error fetching custom cake sizes", error);
+      console.error("Error fetching categories", error);
     }
   };
   useEffect(() => {
     if (keywords != "") {
       if (keywords.trim() == "") return;
       const delay = setTimeout(() => {
-        fetchCustomCakeSizes();
+        fetchCategories();
       }, 500);
       return () => clearTimeout(delay);
     } else {
-      fetchCustomCakeSizes();
+      fetchCategories();
     }
   }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
-  const showOffcanvasOnAddCustomCakesSize = () => {
-    setCustomCakeSizeData(null);
+  const showOffcanvasOnAddCategory = () => {
+    setCategoryData(null);
     setShowOffcanvas(true);
   };
 
-  const showOffcanvasOnEditCustomCakesSize = (customCakeSize) => {
-    setCustomCakeSizeData(customCakeSize);
+  const showOffcanvasOnEditCategory = (category) => {
+    setCategoryData(category);
     setShowOffcanvas(true);
   };
 
@@ -76,43 +76,43 @@ export default function CustomCakeSize() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-  const handleDelete = async (customCakeSizeid) => {
+  const handleDelete = async (categoryid) => {
     try {
       const response = await axios.delete(
-        deleteCustomCakeSizeById(customCakeSizeid)
+        deleteCategoryById(categoryid)
       );
       if (response.status === 200) {
-        toast.success("Custom Cake Size deleted successfully", {
+        toast.success("Category deleted successfully", {
           autoClose: 1000,
         });
-        setCustomCakeSizes((prev) =>
-          prev.filter((item) => item.id !== customCakeSizeid)
+        setCategories((prev) =>
+          prev.filter((item) => item.id !== categoryid)
         );
       }
     } catch (error) {
-      console.error("Error deleting custom cake size", error);
+      console.error("Error deleting category", error);
     }
   };
 
-  const showDeleteConfirmation = (customCakeSizeId) => {
+  const showDeleteConfirmation = (categoryId) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this Custom Cake size?"
+      "Are you sure you want to delete this Category?"
     );
     if (confirmed) {
-      handleDelete(customCakeSizeId);
+      handleDelete(categoryId);
     }
   };
-  const addCustomCakeSize = (newCustomCakeSize) => {
-    setCustomCakeSizes((prev) => [newCustomCakeSize, ...prev]);
+  const addCategory = (newCategory) => {
+    setCategories((prev) => [newCategory, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const updateCustomCakeSize = (updatedCustomCakeSize) => {
-    setCustomCakeSizes((prev) =>
-      prev.map((customCakeSize) =>
-        customCakeSize.id === updatedCustomCakeSize.id
-          ? { ...customCakeSize, ...updatedCustomCakeSize }
-          : customCakeSize
+  const updateCategory = (updatedCategory) => {
+    setCategories((prev) =>
+      prev.map((Category) =>
+        Category.id === updatedCategory.id
+          ? { ...Category, ...updatedCategory }
+          : Category
       )
     );
     setShowOffcanvas(false);
@@ -125,11 +125,11 @@ export default function CustomCakeSize() {
       <section className="mt-5">
         <div className="">
         <div className="d-flex justify-content-between mb-3">
-          <p className="pagetitle mb-0 fnt-color">Custom Cakes Sizes</p>
+          <p className="pagetitle mb-0 fnt-color">Categories</p>
           <div>
             <div
               className="btn-orange text-center"
-              onClick={showOffcanvasOnAddCustomCakesSize}
+              onClick={showOffcanvasOnAddCategory}
               role="button"
             >
               <i className="bi bi-plus-circle ms-2"></i>
@@ -186,20 +186,20 @@ export default function CustomCakeSize() {
                     </th>
                     <th
                       className="fw-bold fs-14 fnt-color nowrap"
-                      onClick={() => handleSortChange("cake_type_id")}>
-                      Cake Type
+                      onClick={() => handleSortChange("parent_category")}>
+                      Parent Category
                       <span className="fs-10 text-secondary ms-1">
-                        {(sortField === "cake_type_id" &&
+                        {(sortField === "parent_category" &&
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                     </span>
                     </th>
                     <th
                       className="fw-bold fs-14 fnt-color nowrap"
-                      onClick={() => handleSortChange("status")}>
-                      Status
+                      onClick={() => handleSortChange("display_type")}>
+                      Display Type
                       <span className="fs-10 text-secondary ms-1">
-                        {(sortField === "status" &&
+                        {(sortField === "display_type" &&
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                     </span>
@@ -208,36 +208,32 @@ export default function CustomCakeSize() {
                   </tr>
                 </thead>
                 <tbody>
-                  {customCakeSizes.map((customCakeSize, index) => (
-                    <tr key={customCakeSize?.id}>
+                  {categories.map((category, index) => (
+                    <tr key={category?.id}>
                       <td className="fw-normal fs-14 fnt-color">
-                        {customCakeSize?.id}
+                        {category?.id}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {customCakeSize?.name_en}
+                        {category?.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {customCakeSize?.slug}
+                        {category?.slug}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {customCakeSize?.cake_type_id}
+                        {category?.parent_category}
                       </td>
-                      <td>
-                        <div
-                          className={
-                            customCakeSize?.status === "active"? "blue-status": "red-status" } > 
-                            {customCakeSize?.status === "active"? "Active": "Inactive"}
-                        </div>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {category?.display_type}
                       </td>
                       <td className="d-flex gap-2">
                         <div
                           className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
-                          onClick={() =>showOffcanvasOnEditCustomCakesSize(customCakeSize)}>
+                          onClick={() =>showOffcanvasOnEditCategory(category)}>
                           <i className="bi bi-pencil-square text-primary"></i>
                         </div>
                         <div
                           className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
-                          onClick={() =>showDeleteConfirmation(customCakeSize?.id) }>
+                          onClick={() =>showDeleteConfirmation(category?.id) }>
                           <i className="bi bi-trash text-danger"></i>
                         </div>
                       </td>
@@ -255,18 +251,18 @@ export default function CustomCakeSize() {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
-                  {customCakeSizeData
-                    ? "Update Custom Cake Size"
-                    : "Add Custom Cake Size"}
+                  {categoryData
+                    ? "Update Category"
+                    : "Add Category"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
             <hr className="mt-0" />
             <Offcanvas.Body>
-              <AddCustomCakeSize
-                customCakeSizeData={customCakeSizeData}
-                onAddCustomCakeSize={addCustomCakeSize}
-                onUpdateCustomCakeSize={updateCustomCakeSize}
+              <AddCategory
+                categoryData={categoryData}
+                onAddCategory={addCategory}
+                onUpdateCategory={updateCategory}
                 closePopup={closePopup}
               />
             </Offcanvas.Body>

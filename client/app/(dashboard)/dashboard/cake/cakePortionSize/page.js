@@ -7,7 +7,7 @@ import AddCakePortionSize from '@/components/dashboard/cake/AddCakePortionSize';
 import { useEffect, useState } from 'react';
 import { getAllCakePortionSizes, deleteCakePortionSizeById } from '@/utils/apiRoutes';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-
+import Common from "@/utils/Common"
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
@@ -119,40 +119,18 @@ export default function CakePortionSizePage() {
     setShowOffcanvas(false);
   };
 
-  const handleSort = (field) => {
-    setCurrentPage(1);
-
-    if (sortField === field) {
-      setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    } else {
-      setSortField(field);
-      setSortOrder("ASC");
-    }
-  };
-
-  const renderSortIcon = (field) => {
-    if (sortField !== field) return "⇅";
-    return sortOrder === "ASC" ? "↑" : "↓";
-  };
+  const handleSortChange = (field) =>
+    Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
-    <section className="mt-10">
-      <div className="mt-10">
-        <p className="pagetitle mb-0 fnt-color">Cake Portion Size</p>
-        <div className='d-flex justify-content-between mt-4'>
-          <div className='d-flex'>
-            <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
-            <input 
-              type="text" 
-              className="form-control px-5 text-dark-custom" 
-              placeholder="Search here..." 
-              onChange={(e) => setKeywords(e.target.value)}
-            />
-          </div>
+    <section className="mt-5">
+      <div>
+        <div className='d-flex justify-content-between mb-3'>
+          <p className="pagetitle mb-0 fnt-color">Cake Portion Sizes</p>
           <div >
             <div 
-              className='btn-orange' 
+              className='btn-orange text-center' 
               onClick={showOffcanvasAddCakePortionSize} 
               role='button'
             >
@@ -160,7 +138,17 @@ export default function CakePortionSizePage() {
             </div>
           </div>
         </div>
-      </div>
+          <div className='d-flex'>
+            <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
+            <input 
+              type="text" 
+              className="form-control px-5 text-dark-custom"
+              style={{height:"44px", width:"300px"}} 
+              placeholder="Search here..." 
+              onChange={(e) => setKeywords(e.target.value)}
+            />
+          </div>
+        </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
 
         <div className="datatable-wrapper">
@@ -168,29 +156,65 @@ export default function CakePortionSizePage() {
             <table className="table datatable datatable-table">
               <thead className=''>
                 <tr className=''>
-                  <th onClick={() => handleSort("id")}>
-                    ID <span>{renderSortIcon("id")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color"
+                    onClick={() => handleSortChange("id")}>
+                    ID
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "id" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("name_en")}>
-                    Name <span>{renderSortIcon("name_en")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color"
+                    onClick={() => handleSortChange("name_en")}>
+                    Name
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "name_en" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("slug")}>
-                    Slug <span>{renderSortIcon("slug")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color"
+                    onClick={() => handleSortChange("slug")}>
+                    Slug
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th onClick={() => handleSort("parent_portion_size")}>
-                    Parent Portion Size <span>{renderSortIcon("parent_portion_size")}</span>
+                  <th
+                    className="fw-bold fs-14 fnt-color" 
+                    onClick={() => handleSortChange("parent_portion_size")}>
+                    Parent Portion Size
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "parent_portion_size" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
-                  <th>Action</th>
+                  <th className="fw-bold fs-14 fnt-color">Action</th>
                 </tr>
               </thead>
 
               <tbody>
                 {cakePortionSizes.map((cakePortionSize, index) => (
                   <tr key={cakePortionSize?.id}>
-                    <td>{cakePortionSize?.id}</td>
-                    <td>{cakePortionSize?.name_en}</td>
-                    <td>{cakePortionSize?.slug}</td>
-                    <td>{cakePortionSize?.parent_portion_size}</td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakePortionSize?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakePortionSize?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakePortionSize?.slug}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      {cakePortionSize?.parent_portion_size}
+                    </td>
                     <td className='d-flex gap-2'>
                       <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakePortionSizes(cakePortionSize)}>
                         <i className="bi bi-pencil-square text-primary"></i></div>

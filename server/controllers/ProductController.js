@@ -1,5 +1,8 @@
 const { Category, Gender, Product, ProductBranch, ProductCategory, ProductOccasion } = require("../models");
 const Branch = require("../models/Branch");
+const Occasion = require("../models/Occasion");
+const getPagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 
 class ProductController {
 
@@ -67,8 +70,34 @@ class ProductController {
 
 
     static async getAllProducts (req, res) {
+
+        const { page, limit, offset } = getPagination(req);
+        const { keywords, sortField, sortOrder } = req.query;
         try{
-            const product = await Product.findAll({
+
+            const whereClause = {};
+
+            if (keywords) {
+                whereClause[Op.or] = [
+                { name_en: { [Op.like]: `%${keywords}%` } },
+                { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
+
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "regular_price",
+                "category_id",
+                "date",
+                "branches",
+            ];
+
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder =sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
+            const { count, rows } = await Product.findAndCountAll({
+            where: whereClause,
             include: [
               {
                 model: Gender,
@@ -88,8 +117,21 @@ class ProductController {
                 through: { attributes: [] }
               },
             ],
+            limit,
+            offset,
+            order: [[finalSortField, finalSortOrder]],
           });
-            return res.status(200).json(product)
+            const pageCount = Math.ceil(count / limit);
+  
+            return res.status(200).json({
+                pagination: {
+                page,
+                limit,
+                total: count,
+                pageCount,
+                },
+                data: rows,
+            });
 
         }catch (error) {
             return res.status(500).json({ message: "Failed to fetch Product", error: error.message });
@@ -129,6 +171,11 @@ class ProductController {
                     {
                         model: Category,
                         as: "categories",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                    {
+                        model: Occasion,
+                        as: "occasions",
                         attributes: ["id", "name_en", "name_ar"],
                     },
                 ],
