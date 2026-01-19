@@ -213,6 +213,7 @@ export default function IceCreamPortionSizePage() {
                 <tbody>
                   {iceCreamPortionSizes.map((icecream, index) => (
                     <tr key={`${icecream.id}-${index}`}>
+
                       <td className="fw-normal fs-14 fnt-color">
                         {icecream.id}
                       </td>
