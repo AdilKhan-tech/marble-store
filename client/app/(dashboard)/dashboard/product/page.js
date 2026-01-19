@@ -8,27 +8,53 @@ import useAxiosConfig from '@/hooks/useAxiosConfig';
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Dropdown } from "react-bootstrap";
+import {FaEllipsisV, FaEye } from "react-icons/fa";
+import Pagination from "@/components/dashboard/Pagination";
+import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CakeFlavourPage() {
   const [sortField, setSortField] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [pageLimit, setPageLimit] = useState(25);
   const [sortOrder, setSortOrder] = useState("asc");
   const [products, setProducts] = useState([]);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [keywords, setKeywords] = useState("");
   const {token} = useAxiosConfig();
   const router = useRouter();
 
   const fetchAllProducts = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(getAllProductsRoute);
-      setProducts(response?.data);
+      const params = {
+        page: currentPage,
+        limit: pageLimit,
+        keywords: keywords,
+        sortOrder,
+        sortField,
+      };
+      const response = await axios.get(getAllProductsRoute, { params });
+      setProducts(response?.data?.data);
+      setPageCount(response.data.pagination.pageCount);
+      setTotalEntries(response.data.pagination.total);
     } catch (error) {
       console.error("Error fetching Products", error);
     }
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchAllProducts();
-  }, [token]);
+    if (keywords != "") {
+      if (keywords.trim() == "") return;
+      const delay = setTimeout(() => {
+        fetchAllProducts();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchAllProducts();
+    }
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
@@ -54,6 +80,16 @@ export default function CakeFlavourPage() {
     }
   };
 
+  const handleLimitChange = (newLimit) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+
   return (
     <>
       <section className="mt-5">
@@ -76,6 +112,7 @@ export default function CakeFlavourPage() {
                 className="form-control px-5 text-dark-custom"
                 style={{height:"44px", width:"300px"}}
                 placeholder="Search here..."
+                onChange={(e) => setKeywords(e.target.value)}
               />
             </div>
         </div>
@@ -211,11 +248,17 @@ export default function CakeFlavourPage() {
                         : "N/A"}
                     </td>
                     <td className="d-flex gap-2">
-                      <div
-                        className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
-                      >
-                        <i className="bi bi-three-dots-vertical fs-4 text-primary" onClick={() => router.push(`/dashboard/product/${product.id}/view`)}></i>
-                      </div>
+                      <Dropdown>
+                        <Dropdown.Toggle as="button" className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
+                          id={`dropdown-${product.id}`}>
+                          <FaEllipsisV className="text-primary"/>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item  onClick={() => router.push(`/dashboard/product/${product.id}/view`)}>
+                            <FaEye className="me-2" />View Product
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
                       <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(product?.id)}>
                         <i className="bi bi-trash text-danger"></i>
                       </div>
@@ -229,6 +272,21 @@ export default function CakeFlavourPage() {
           <ToastContainer/>
         </div>
       </section>
+      <hr />
+      <div className="datatable-bottom">
+        <Pagination
+          currentPage={currentPage}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          pageLimit={pageLimit}
+          totalEntries={totalEntries}
+        />
+
+        <EntriesPerPageSelector
+          pageLimit={pageLimit}
+          onPageLimitChange={handleLimitChange}
+        />
+      </div>
     </>
   );
 }
