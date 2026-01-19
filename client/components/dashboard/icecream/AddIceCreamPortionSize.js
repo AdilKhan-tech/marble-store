@@ -1,11 +1,16 @@
 "use client";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createIceCreamPortionSize, updateIceCreamPortionSizeById } from "@/utils/apiRoutes";
+import { createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCreamBuckets } from "@/utils/apiRoutes";
+
+
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
+  const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [iceCreamBuckets, setIceCreamBuckets] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -38,6 +43,19 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  const fetchIceCreamBuckets = async () => {
+    try {
+      const response = await axios.get(getAllIceCreamBuckets);
+        setIceCreamBuckets(response.data.data)
+    } catch (error) {
+      console.error("Error fetching IceCream Buckets", error);
+    }
+  };
+  useEffect(() => {
+      if (!token) return;
+      fetchIceCreamBuckets();
+  }, [token]);
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -125,31 +143,22 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       </div>
 
       <div className="form-group mt-3">
-        <label className="form-label text-secondary mb-1">
-          Select Icecream Bucket
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          Icecream Bucket
         </label>
         <select
           name="icecream_bucket_id"
-          type="text"
-          className="form-select text-secondary"
+          className="form-select textarea-hover-dark text-secondary"
           value={formData.icecream_bucket_id}
           onChange={handleChange}
         >
-          <option value="">
-            Select Icecream Bucket
-          </option>
-          <option value="1">
-            Big Dipper
-          </option>
-          <option value="2">
-            Pint
-          </option>
-          <option value="3">
-            Quart
-          </option>
-          <option value="4">
-            Regular
-          </option>
+          <option value="">Select Icecream Bucket</option>
+
+          {iceCreamBuckets.map((iceCreamBucket) => (
+            <option key={iceCreamBucket.id} value={iceCreamBucket.id}>
+              {iceCreamBucket.name_en}
+            </option>
+          ))}
         </select>
       </div>
 

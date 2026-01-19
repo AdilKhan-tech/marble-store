@@ -191,7 +191,7 @@ export default function IceCreamPortionSizePage() {
                     <tr key={`${icecream.id}-${index}`}>
                       <td>{icecream.id}</td>
                       <td>{icecream.name_en}</td>
-                      <td>{icecream.icecream_bucket_id}</td>
+                      <td>{icecream.iceCreamBucket.name_en}</td>
                       <td>{icecream.slug}</td>
                       <td>
                         <div className={icecream?.status === "active"? "blue-status": "red-status"}>
