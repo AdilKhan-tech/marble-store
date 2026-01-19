@@ -362,10 +362,10 @@ export default function Sidebar() {
                     Branches
                   </Link>
                   <Link
-                    href="/dashboard/setting/categories"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/categories") ? "active" : ""}`}
+                    href="/dashboard/setting/category"
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/category") ? "active" : ""}`}
                   >
-                    Categories
+                    Category
                   </Link>
                   <Link
                     href="/dashboard/setting/gender"
@@ -393,11 +393,11 @@ export default function Sidebar() {
                     Branches
                   </Link>
                   <Link 
-                    href="/dashboard/setting/categories" 
+                    href="/dashboard/setting/category" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Categories
+                    Category
                   </Link>
                   <Link 
                     href="/dashboard/setting/gender" 

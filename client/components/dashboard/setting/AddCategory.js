@@ -1,11 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { UpdateCategoryById, createCategory } from "@/utils/apiRoutes";
 
-const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCategory}) => {
-
+const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCategory,}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
@@ -15,7 +14,7 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
     parent_category: "",
     display_type: "",
   });
-
+  //load existing data
   useEffect(() => {
     if (categoryData) {
       setFormData({
@@ -27,62 +26,68 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
       });
     }
   }, [categoryData]);
-
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-  
+  // Validation error
   const validateForm = () => {
     const errors = [];
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.slug) errors.push("slug is required.");
+    if (!formData.slug) errors.push("Slug is required.");
     if (!formData.parent_category) errors.push("Parent Category is required.");
     if (!formData.display_type) errors.push("Display Type is required.");
     return errors;
   };
-
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
+    if (validationErrors.lenght > 0) {
       setErrors(validationErrors);
       return;
     }
     try {
       const payload = new FormData();
-      Object.entries(formData).forEach(([key, value]) =>payload.append(key, value));
+      Object.entries(formData).forEach(([key, value]) =>
+        payload.append(key, value)
+      );
       if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
       if (categoryData) {
-        const response = await axios.put(UpdateCategoryById(categoryData.id),payload);
+        const response = await axios.put(UpdateCategoryById(categoryData.id),  payload  );
         if (response.status === 200 || response.status === 201) {
-          toast.success("Category updated successfully!", {autoClose: 1000,onClose: closePopup,});
-            onUpdateCategory(response.data);
+          toast.success("Category updated successfully!", {autoClose: 1000, onClose: closePopup, });
+          if (onUpdateCategory) {
+            onUpdateCategory({
+              ...categoryData,
+              ...formData,
+              id: categoryData.id,
+            });
+          }
         }
       } else {
+        // Create new Custom Cake Size
         const response = await axios.post(createCategory, payload);
         if (response.status === 200 || response.status === 201) {
-          toast.success("Category created successfully!", {autoClose: 1000,onClose: closePopup,});
-          onAddCategory(response.data);
+          toast.success("Custom Cake Size added successfully!", {autoClose: 1000, onClose: closePopup, });
+         onAddCategory (response.data);
         }
       }
     } catch (error) {
-      setErrors([error?.response?.data?.message || "Something went wrong!"]);
+      console.error("Error saving Category:", error);
+      toast.error("Failed to save Category.");
     }
   };
-
   useEffect(() => {
     if (errors.length > 0) {
       errors.forEach((err) => toast.error(err));
       setErrors([]);
     }
   }, [errors]);
-
-  return (
+    return (
     <form className="mt-0" onSubmit={handleSubmit}>
-      <div className="form-group mt-3">
+      <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Name English
         </label>
@@ -96,7 +101,6 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
           }
         />
       </div>
-
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Name Arabic
@@ -111,7 +115,6 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
           }
         />
       </div>
-
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Slug
@@ -124,49 +127,42 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
           onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
         />
       </div>
-
-      <div className="form-group mt-3">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Parent Category
-        </label>
-        <select
-          name="parent_category"
-          type="text"
-          className="form-select textarea-hover-dark text-secondary"
-          value={formData.parent_category}
-          onChange={(e) =>
-            setFormData({ ...formData, parent_category: e.target.value })
-          }
-        >
-          <option value="">Select Parent Category</option>
-          <option value="None">None</option>
-          <option value="Cakes">Cakes</option>
-          <option value="Addons">Addons</option>
-          <option value="Bonus">Bonus</option>
-        </select>
+      <div className="row">
+        <div className="form-group mt-3 col-md-6">
+          <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+            Parent Category
+          </label>
+          <select
+            name="parent_category"
+            type="text"
+            className="form-select textarea-hover-dark text-secondary"
+            value={formData.parent_category}
+            onChange={(e) =>
+              setFormData({ ...formData, parent_category: e.target.value })}>
+            <option value="None">None</option>
+            <option value="Add Ons">Add Ons</option>
+            <option value="Bonus">Bonus</option>
+            <option value="Cakes">Cakes</option>
+          </select>
+        </div>
+        <div className="form-group mt-3 col-md-6">
+          <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+            Display Type
+          </label>
+          <select
+            name="dispaly_type"
+            type="text"
+            className="form-select textarea-hover-dark text-secondary"
+            value={formData.display_type}
+            onChange={(e) =>
+              setFormData({ ...formData, display_type: e.target.value })}>
+            <option value="Default">Default</option>
+            <option value="Subcategories">Subcategories</option>
+            <option value="Both">Both</option>
+          </select>
+        </div>
       </div>
-
-      <div className="form-group mt-3">
-        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Display Type
-        </label>
-        <select
-          name="display_type"
-          className="form-select textarea-hover-dark text-secondary"
-          value={formData.display_type}
-          onChange={(e) =>
-            setFormData({ ...formData, display_type: e.target.value })
-          }
-        >
-          <option value="">Select Display Type</option>
-          <option value="Default">Default</option>
-          <option value="Product">Product</option>
-          <option value="Subcategories">Subcategories</option>
-          <option value="Both">Both</option>
-        </select>
-      </div>
-
-      <div className="col-md-12 px-1 mt-2">
+      <div className="col-md-12 px-1 mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           File Attachment
         </label>
@@ -176,7 +172,7 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
             className="form-control form-control-lg textarea-hover-dark text-secondary"
             id="fileInput"
             multiple
-            onChange={handleFileChange}
+            onChange={handleFileChange} 
           />
         </div>
         <ul className="mt-2">
@@ -193,7 +189,6 @@ const AddCategory = ({closePopup, categoryData = null, onAddCategory, onUpdateCa
           </span>
         </div>
       </div>
-
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"
