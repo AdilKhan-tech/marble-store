@@ -293,6 +293,9 @@ table tr:nth-child(even) td {
 }
 .dashboard-sidebar {
   width: 300px;
+  overflow-y:auto;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
   height: 100vh;
   border-right: 1px solid #eaeaea;
   transition: 0.5s ease;
@@ -392,3 +395,24 @@ body.sidebar-collapsed .main-content-area {
   margin-inline-start: 70px;
 }
 .dropdown-toggle::after { display: none !important; }
+.upload-container {
+  width: 520px;
+  height: auto; /* allow height to grow */
+  border-radius: 1rem;
+  border: 2px dashed rgba(134, 134, 134, 0.36);
+  padding: 20px;
+  opacity: 1;
+  display: flex;
+  flex-direction: column; /* <-- IMPORTANT */
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.upload-container:hover {
+  border-color: rgba(134, 134, 134, 1);
+}
+.upload-container:hover .upload-text {
+  opacity: 1;
+  color: rgba(0, 0, 0, 1);
+}
