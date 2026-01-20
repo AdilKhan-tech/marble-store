@@ -124,9 +124,9 @@ export default function IceCreamAddonPage() {
   return (
     <>
     <section >
-      <div className="mt-5"> 
+      <div className="mt-3"> 
        <div className='d-flex justify-content-between mb-3'>
-        <p className="pagetitle mb-0 fnt-color">Ice Cream Addons</p>
+        <p className="pagetitle mb-0 fnt-color">Ice Cream Add-Ons</p>
         <div >
           <div 
             className='btn-orange text-center' 

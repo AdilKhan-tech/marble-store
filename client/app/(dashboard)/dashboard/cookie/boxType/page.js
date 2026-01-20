@@ -121,9 +121,9 @@ export default function CookieBoxTypePage() {
   return (
     <>
     <section >
-      <div className='mt-5'>
+      <div className='mt-3'>
       <div className='d-flex justify-content-between mb-3'>
-        <p className='pagetitle mb-0 fnt-color'>Cookie Box Type</p>
+        <p className='pagetitle mb-0 fnt-color'>Cookie Box Types</p>
         <div >
           <button 
             className='btn-orange'

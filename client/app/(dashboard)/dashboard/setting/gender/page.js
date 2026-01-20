@@ -118,7 +118,7 @@ export default function GenderPage() {
 
   return (
     <>
-    <section className="mt-5">
+    <section className="mt-3">
       <div className="">
       <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Genders</p>

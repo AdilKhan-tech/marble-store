@@ -1,18 +1,26 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {getAllGenders, getAllBranches, getAllCategories, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { useRef } from "react";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+const MemoJoditEditor = React.memo(JoditEditor);
+
 
 const AddProduct = ({ productData, onAddProduct }) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
+  const descriptionRef = useRef("");
+  const categoryRef = useRef(null);
+  const branchRef = useRef(null);
+  const occasionRef = useRef(null);
   const [genders , setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [occasions, setOccasions] = useState([]);
@@ -124,6 +132,46 @@ const AddProduct = ({ productData, onAddProduct }) => {
       return updated;
     });
   };
+
+  const editorConfig = useMemo(() => ({
+    height: 300,
+  }), []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(event.target)
+      ) {
+        setIsCategoryOpen(false);
+      }
+  
+      if (
+        branchRef.current &&
+        !branchRef.current.contains(event.target)
+      ) {
+        setIsBrancheOpen(false);
+      }
+  
+      if (
+        occasionRef.current &&
+        !occasionRef.current.contains(event.target)
+      ) {
+        setIsOccasionOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const openCategory = () => {
+    setIsCategoryOpen(true);
+    setIsBrancheOpen(false);
+    setIsOccasionOpen(false);
+  };
   
   const toggleAllBranches = () => {
     const updated =
@@ -153,7 +201,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
       return updated;
     });
   };
-  
+
   const toggleAllOccasions = () => {
     const updated =
       occasionId.length === occasions.length
@@ -361,12 +409,18 @@ const AddProduct = ({ productData, onAddProduct }) => {
 
           <div className="form-group mt-3">
             <label className="form-label text-secondary">Description</label>
-            <JoditEditor
+            <MemoJoditEditor
               value={formData.description}
-              config={{ height: 300, readonly: false }}
-              onChange={(content) =>
-                setFormData({ ...formData, description: content })
-              }
+              config={editorConfig}
+              onChange={(content) => {
+                descriptionRef.current = content;
+              }}
+              onBlur={(newContent) => {
+                setFormData(prev => ({
+                  ...prev,
+                  description: newContent
+                }));
+              }}
             />
           </div>
 
@@ -433,7 +487,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
           </div>
             
           <div className="row">
-            <div className="form-group mt-3 col-md-6">
+            <div className="form-group mt-3 col-md-6" ref={categoryRef}>
               <label className="form-label text-secondary">
                 Product Categories 
               </label>
@@ -462,14 +516,14 @@ const AddProduct = ({ productData, onAddProduct }) => {
                     <label className="ps-2 fs-14 fw-bold">Select All</label>
                   </div>
 
-                    {safeCategories.map((b) => (
-                    <div key={b.id} className="form-check py-1">
+                    {safeCategories.map((category) => (
+                    <div key={category.id} className="form-check py-1">
                       <input
                         type="checkbox"
-                        checked={categoryId.includes(b.id)}
-                        onChange={() => toggleCategory(b.id)}
+                        checked={categoryId.includes(category.id)}
+                        onChange={() => toggleCategory(category.id)}
                       />
-                      <label className="ps-2 fs-14">{b.name_en || b.name}</label>
+                      <label className="ps-2 fs-14">{category.name_en || category.name}</label>
                     </div>
                   ))}
                 </div>
@@ -477,7 +531,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
             </div>
 
             {/* ===== Branches Dropdown ===== */}
-            <div className="form-group mt-3 col-md-6">
+            <div className="form-group mt-3 col-md-6"  ref={branchRef}>
               <label className="form-label text-secondary">Product Branches</label>
               <div
                 className="form-control d-flex justify-content-between align-items-center"
@@ -503,14 +557,14 @@ const AddProduct = ({ productData, onAddProduct }) => {
                     <label className="ps-2 fs-14 fw-bold">Select All</label>
                   </div>
 
-                  {branches.map((b) => (
-                    <div key={b.id} className="form-check py-1">
+                  {branches.map((branch) => (
+                    <div key={branch.id} className="form-check py-1">
                       <input
                         type="checkbox"
-                        checked={branchId.includes(b.id)}
-                        onChange={() => toggleBranch(b.id)}
+                        checked={branchId.includes(branch.id)}
+                        onChange={() => toggleBranch(branch.id)}
                       />
-                      <label className="ps-2 fs-14">{b.name_en || b.name}</label>
+                      <label className="ps-2 fs-14">{branch.name_en || branch.name}</label>
                     </div>
                   ))}
                 </div>
@@ -520,7 +574,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
         </div>
 
         <div className="row mt-4">
-          <div className="form-group mt-3 col-md-6">
+          <div className="form-group mt-3 col-md-6"  ref={occasionRef}>
             <label className="form-label text-secondary">Product Occasions</label>
             <div
                   className="form-control d-flex justify-content-between align-items-center"
@@ -541,21 +595,22 @@ const AddProduct = ({ productData, onAddProduct }) => {
                       <input 
                         type="checkbox" 
                         checked={occasionId.length === occasions.length}
-                        onChange={toggleOccasions}
+                        onChange={toggleAllOccasions}
                       />
                       <label className="ps-2 fs-14 fw-bold">Select All</label>
                     </div>
-
-                     {occasions.map((b) => (
-                      <div key={b.id} className="form-check py-1">
-                        <input
-                          type="checkbox"
-                          checked={occasionId.includes(b.id)}
-                          onChange={() => toggleAllOccasions()}
-                        />
-                        <label className="ps-2 fs-14">{b.name_en || b.name}</label>
-                      </div>
-                    ))}
+                      {occasions.map((occasion) => (
+                        <div key={occasion.id} className="form-check py-1">
+                          <input
+                            type="checkbox"
+                            checked={occasionId.includes(occasion.id)}
+                            onChange={() => toggleOccasions(occasion.id)}
+                          />
+                          <label className="ps-2 fs-14">
+                            {occasion.name_en || occasion.name}
+                          </label>
+                        </div>
+                      ))}
                   </div>
                 )}
           </div>

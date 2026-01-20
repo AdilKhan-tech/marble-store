@@ -122,7 +122,7 @@ export default function IceCreamBucketPage() {
   return (
     <>
       <section>
-        <div className="mt-5">
+        <div className="mt-3">
          <div className="d-flex justify-content-between mt-4">
           <p className="pagetitle fnt-color">Ice Cream Bucket</p>
           <div>
