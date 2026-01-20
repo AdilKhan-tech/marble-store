@@ -378,6 +378,12 @@ export default function Sidebar() {
                   >
                     Occasions
                   </Link>
+                  <Link
+                    href="/dashboard/setting/productTags"
+                    className={`d-flex align-items-center ${isActive("/dashboard/setting/productTags") ? "active" : ""}`}
+                  >
+                    Product Tags
+                  </Link>
                 </div>
               )}
 
@@ -411,6 +417,13 @@ export default function Sidebar() {
                     onClick={() => setActiveDropdown(null)}
                   >
                     Occasions
+                  </Link>
+                  <Link 
+                    href="/dashboard/setting/productTags" 
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
+                    onClick={() => setActiveDropdown(null)}
+                  >
+                    Product Tags
                   </Link>
                 </div>
               )}
