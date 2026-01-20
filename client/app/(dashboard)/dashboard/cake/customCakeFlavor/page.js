@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
-import {
-  getAllCustomCakeFlavors,
-  deleteCustomCakeFlavorById,
-} from "@/utils/apiRoutes";
+import {getAllCustomCakeFlavors,deleteCustomCakeFlavorById,} from "@/utils/apiRoutes";
 import AddCustomCakeFlavor from "@/components/dashboard/cake/AddCustomCakeFlavor";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import axios from "axios";

@@ -103,3 +103,10 @@ export const getAllCustomCakeSizes = `${host}/cakes`;
 export const deleteCustomCakeSizeById =(id)=> `${host}/cakes/customSize/${id}`;
 export const updateCustomCakeSizeById =(id)=> `${host}/cakes/customSize/${id}`;
 export const createCustomCakeSize = `${host}/cakes/customSize`;
+
+// ProductTags
+export const getAllProductTags = `${host}/products`;
+export const deleteProductTagById =(id)=> `${host}/products/delete/${id}`;
+
+
+
