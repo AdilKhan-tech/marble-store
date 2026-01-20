@@ -6,14 +6,15 @@ import axios from 'axios';
 
 function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOccasion, occasionData}) {
 
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [formData, setFormData] = useState({
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
     parent_ocassion: "",
     slug: "",
   });
+
   useEffect(() => {
     if (occasionData) {
       setFormData({
@@ -25,7 +26,7 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
     }
   }, [occasionData]);
   
-    const handleFileChange = (e) => {
+  const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
 

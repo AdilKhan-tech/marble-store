@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const CakeSize = require("./CakeSize");
 
-const CustomCakeTypes = sequelize.define("CustomCakeTypes",{
+const CustomCakeType = sequelize.define("CustomCakeType",{
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -45,4 +45,4 @@ const CustomCakeTypes = sequelize.define("CustomCakeTypes",{
 }
 );
 
-module.exports = CustomCakeTypes;
+module.exports = CustomCakeType;

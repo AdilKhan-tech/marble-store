@@ -1,8 +1,8 @@
-const CustomCakeTypes = require("../models/CustomCakeType");
+const CustomCakeType = require("../models/CustomCakeType");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
-class CustomCakeTypesController {
+class CustomCakeTypeController {
 
   static async createCustomCakeType (req, res){
     try {
@@ -10,7 +10,7 @@ class CustomCakeTypesController {
 
         const image_url = req.file?.path || null;
 
-        const customCakeTypes = await CustomCakeTypes.create({
+        const customCakeTypes = await CustomCakeType.create({
             name_en,
             name_ar,
             slug,
@@ -51,7 +51,7 @@ class CustomCakeTypesController {
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
   
-      const { count, rows } = await CustomCakeTypes.findAndCountAll({
+      const { count, rows } = await CustomCakeType.findAndCountAll({
         where: whereClause,
         limit,
         offset,
@@ -83,7 +83,7 @@ class CustomCakeTypesController {
     const { id } = req.params;
   
     try {
-      const customCakeTypes = await CustomCakeTypes.findByPk(id);
+      const customCakeTypes = await CustomCakeType.findByPk(id);
   
       if (!customCakeTypes) {
         return res.status(404).json({ message: "Custom Cake Type not found" });
@@ -117,7 +117,7 @@ class CustomCakeTypesController {
   static async deleteCustomCakeTypeById(req, res) {
     const { id } = req.params;
     try {
-      const customcaketypes = await CustomCakeTypes.findByPk(id);
+      const customcaketypes = await CustomCakeType.findByPk(id);
       if (!customcaketypes) {
         return res.status(404).json({ message: "Custom cake type not found" });
       }
@@ -129,4 +129,4 @@ class CustomCakeTypesController {
   }
 }
 
-module.exports = CustomCakeTypesController;
+module.exports = CustomCakeTypeController;

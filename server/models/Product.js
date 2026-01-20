@@ -23,7 +23,7 @@ const Product = sequelize.define("Product",{
     allowNull: false,
   },
 
-  product_tag: {
+  product_tag_id: {
     type: DataTypes.STRING(50),
     allowNull: false,
   },
