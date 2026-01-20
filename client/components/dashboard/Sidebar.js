@@ -111,7 +111,6 @@ export default function Sidebar() {
                     href="/dashboard/cake/cakeSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
                   >
-                  <i className="bi bi-arrows-expand"></i>
                     Cake Sizes
                   </Link>
                   <Link
@@ -221,7 +220,7 @@ export default function Sidebar() {
                     href="/dashboard/icecream/iceCreamAddon"
                     className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
                   >
-                    Ice Cream Addons
+                    Ice Cream Add-Ons
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamBucket"
@@ -233,7 +232,7 @@ export default function Sidebar() {
                     href="/dashboard/icecream/iceCreamPortionSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamPortionSize") ? "active" : ""}`}
                   >
-                    Portion Sizes
+                    Ice Cream Portion Sizes
                   </Link>
                 </div>
               )}
@@ -246,7 +245,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Ice Cream Addons
+                    Ice Cream Add-Ons
                   </Link>
                   <Link 
                     href="/dashboard/icecream/iceCreamBucket" 
@@ -260,7 +259,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Portion Sizes
+                    Ice Cream Portion Sizes
                   </Link>
                 </div>
               )}
@@ -290,13 +289,13 @@ export default function Sidebar() {
                     href="/dashboard/cookie/boxSize"
                     className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
                   >
-                    Cookie Box Size
+                    Cookie Box Sizes
                   </Link>
                   <Link
                     href="/dashboard/cookie/boxType"
                     className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxType") ? "active" : ""}`}
                   >
-                    Cookie Box Type
+                    Cookie Box Types
                   </Link>
                   <Link
                     href="/dashboard/cookie"
@@ -315,14 +314,14 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Cookie Box Size
+                    Cookie Box Sizes
                   </Link>
                   <Link 
                     href="/dashboard/cookie/boxType" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Cookie Box Type
+                    Cookie Box Types
                   </Link>
                   <Link 
                     href="/dashboard/cookie" 
@@ -365,7 +364,7 @@ export default function Sidebar() {
                     href="/dashboard/setting/category"
                     className={`d-flex align-items-center ${isActive("/dashboard/setting/category") ? "active" : ""}`}
                   >
-                    Category
+                    Categories
                   </Link>
                   <Link
                     href="/dashboard/setting/gender"
@@ -377,7 +376,7 @@ export default function Sidebar() {
                     href="/dashboard/setting/occasion"
                     className={`d-flex align-items-center ${isActive("/dashboard/setting/occasion") ? "active" : ""}`}
                   >
-                    Occasion
+                    Occasions
                   </Link>
                 </div>
               )}
@@ -397,7 +396,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Category
+                    Categories
                   </Link>
                   <Link 
                     href="/dashboard/setting/gender" 
@@ -411,7 +410,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
-                    Occasion
+                    Occasions
                   </Link>
                 </div>
               )}

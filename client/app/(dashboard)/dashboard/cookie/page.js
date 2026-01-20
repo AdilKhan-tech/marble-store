@@ -123,7 +123,7 @@ export default function Cookies() {
   return (
     <>
     <section>
-      <div className="mt-5">
+      <div className="mt-3">
       <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
         <div>
