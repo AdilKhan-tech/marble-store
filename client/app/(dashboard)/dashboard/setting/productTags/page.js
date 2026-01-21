@@ -2,9 +2,9 @@
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import AddProductTag from "@/components/dashboard/setting/AddProductTag";
+import AddTag from "@/components/dashboard/setting/AddTag";
 import { useEffect, useState } from "react";
-import { getAllProductTags, deleteProductTagById } from "@/utils/apiRoutes";
+import { getAllTags, deleteTagById } from "@/utils/apiRoutes";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
@@ -12,8 +12,8 @@ import Common from "@/utils/Common";
 
 export default function productTags() {
   const { token } = useAxiosConfig();
-  const [productTags, setProductTags] = useState([]);
-  const [productTagData, setProductTagData] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [tagData, setTagData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sortField, setSortField] = useState("id");
   const [sortOrder, setSortOrder] = useState("DESC");
@@ -23,7 +23,7 @@ export default function productTags() {
   const [totalEntries, setTotalEntries] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-  const fetchProductTags = async () => {
+  const fetchTags = async () => {
     if (!token) return;
     try {
       const params = {
@@ -33,33 +33,34 @@ export default function productTags() {
         sortOrder,
         sortField,
       };
-      const response = await axios.get(getAllProductTags, { params });
-      setProductTags(response.data.data);
+      const response = await axios.get(getAllTags, { params });
+      setTags(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     } catch (error) {
-      console.error("Error fetching product tags", error);
+      console.error("Error fetching tags", error);
     }
   };
+
   useEffect(() => {
     if (keywords != "") {
       if (keywords.trim() == "") return;
       const delay = setTimeout(() => {
-        fetchProductTags();
+        fetchTags();
       }, 500);
       return () => clearTimeout(delay);
     } else {
-      fetchProductTags();
+      fetchTags();
     }
   }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
-  const showOffcanvasOnAddProductTags = () => {
-    setProductTagData(null);
+  const showOffcanvasOnAddTags = () => {
+    setTagData(null);
     setShowOffcanvas(true);
   };
 
-  const showOffcanvasOnEditProductTags = (productTag) => {
-    setProductTagData(productTag);
+  const showOffcanvasOnEditTags = (tag) => {
+    setTagData(tag);
     setShowOffcanvas(true);
   };
 
@@ -75,51 +76,54 @@ export default function productTags() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-  const handleDelete = async (productTagid) => {
+
+  const handleDelete = async (tagId) => {
     try {
-      const response = await axios.delete(deleteProductTagById(productTagid));
+      const response = await axios.delete(deleteTagById(tagId));
       if (response.status === 200) {
         toast.success("Product Tag deleted successfully", {
           autoClose: 1000,
         });
-        setProductTags((prev) =>
-          prev.filter((item) => item.id !== productTagid)
+        setTags((prev) =>
+          prev.filter((item) => item.id !== tagId)
         );
       }
     } catch (error) {
-      console.error("Error deleting product tag", error);
+      console.error("Error deleting tag", error);
     }
   };
 
-  const showDeleteConfirmation = (productTagId) => {
+  const showDeleteConfirmation = (tagId) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this Product Tag?"
+      "Are you sure you want to delete this Tag?"
     );
     if (confirmed) {
-      handleDelete(productTagId);
+      handleDelete(tagId);
     }
   };
-  const addProductTag = (newProductTag) => {
-    setProductTags((prev) => [newProductTag, ...prev]);
+
+  const addTag = (newTag) => {
+    setTags((prev) => [newTag, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const updateProductTag = (updatedProductTag) => {
-    setProductTags((prev) =>
-      prev.map((productTag) =>
-        productTag.id === updatedProductTag.id
-          ? { ...productTag, ...updatedProductTag }
-          : productTag
+  const updateTag = (updatedTag) => {
+    setTags((prev) =>
+      prev.map((tag) =>
+        tag.id === updatedTag.id
+          ? { ...tag, ...updatedTag }
+          : tag
       )
     );
     setShowOffcanvas(false);
   };
+
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
 
   return (
     <>
-      <section className="mt-5">
+      <section className="mt-3">
         <div className="">
           <div className="d-flex justify-content-between mb-3">
             <p className="pagetitle mb-0 fnt-color">Product Tags</p>
@@ -127,7 +131,7 @@ export default function productTags() {
               <div
                 className="btn-orange text-center"
                 role="button"
-                onClick={showOffcanvasOnAddProductTags}
+                onClick={showOffcanvasOnAddTags}
               >
                 <i className="bi bi-plus-circle ms-2"></i>
                 <span className="ms-1">Create</span>
@@ -162,6 +166,7 @@ export default function productTags() {
                           "↑↓"}
                       </span>
                     </th>
+                    
                     <th
                       className="fw-bold fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("name_en")}
@@ -188,29 +193,29 @@ export default function productTags() {
                   </tr>
                 </thead>
                 <tbody>
-                  {productTags.map((productTag, index) => (
-                    <tr key={productTag?.id}>
+                  {tags.map((tag, index) => (
+                    <tr key={tag?.id}>
                       <td className="fw-normal fs-14 fnt-color">
-                        {productTag?.id}
+                        {tag?.id}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {productTag?.name_en}
+                        {tag?.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {productTag?.slug}
+                        {tag?.slug}
                       </td>
                       <td className="d-flex gap-2">
                         <div
                           className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                           onClick={() =>
-                            showOffcanvasOnEditProductTags(productTag)
+                            showOffcanvasOnEditTags(tag)
                           }
                         >
                           <i className="bi bi-pencil-square text-primary"></i>
                         </div>
                         <div
                           className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
-                          onClick={() => showDeleteConfirmation(productTag?.id)}
+                          onClick={() => showDeleteConfirmation(tag?.id)}
                         >
                           <i className="bi bi-trash text-danger"></i>
                         </div>
@@ -229,16 +234,16 @@ export default function productTags() {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
                 <div className="fs-24 fnt-color">
-                  {productTagData ? "Update Product Tag" : "Add Product Tag"}
+                  {tagData ? "Update Tag" : "Add Tag"}
                 </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
             <hr className="mt-0" />
             <Offcanvas.Body>
-              <AddProductTag
-                productTagData={productTagData}
-                onAddProductTag={addProductTag}
-                onUpdateProductTag={updateProductTag}
+              <AddTag
+                tagData={tagData}
+                onAddTag={addTag}
+                onUpdateTag={updateTag}
                 closePopup={closePopup}
               />
             </Offcanvas.Body>
