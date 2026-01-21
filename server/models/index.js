@@ -16,6 +16,8 @@ const IceCreamPortionSize = require("./IceCreamPortionSize");
 const IceCreamBucket = require("./IceCreamBucket");
 const Occasion = require("./Occasion");
 const ProductOccasion = require("./ProductOccasion");
+const Tag = require("./Tag");
+const ProductTag = require("./ProductTag");
 
 IceCreamBucket.hasMany(IceCreamPortionSize, {
   foreignKey: "icecream_bucket_id",
@@ -72,7 +74,7 @@ Cookie.belongsTo(CookieBoxType, {
   as: "type",
 });
 
-// Gender → Product (ONE TO MANY)
+
 Gender.hasMany(Product, {
   foreignKey: "gender_id",
   as: "product",
@@ -80,7 +82,7 @@ Gender.hasMany(Product, {
 
 Product.belongsTo(Gender, {
   foreignKey: "gender_id",
-  as: "productGender",
+  as: "gender",
 });
 
 Product.belongsToMany(Branch, {
@@ -131,6 +133,22 @@ Occasion.belongsToMany(Product, {
   onDelete: "CASCADE",
 });
 
+Product.belongsToMany(Tag, {
+  through: ProductTag,
+  foreignKey: "product_id",
+  otherKey: "tag_id",
+  as: "tags",
+  onDelete: "CASCADE",
+});
+
+Tag.belongsToMany(Product,{
+  through: ProductTag,
+  foreignKey: "tag_id",
+  otherKey: "product_id",
+  as: "products",
+  onDelete: "CASCADE",
+})
+
 module.exports = {
   CakeSize,
   CakeFlavor,
@@ -153,6 +171,9 @@ module.exports = {
   IceCreamPortionSize,
   IceCreamBucket,
 
-  ProductOccasion
+  ProductOccasion,
+
+  ProductTag,
+  Tag,
 
 };

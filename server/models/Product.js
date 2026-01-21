@@ -22,11 +22,6 @@ const Product = sequelize.define("Product",{
     type: DataTypes.STRING(255),
     allowNull: false,
   },
-
-  product_tag_id: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-  },
   
   gender_id: {
     type: DataTypes.INTEGER,

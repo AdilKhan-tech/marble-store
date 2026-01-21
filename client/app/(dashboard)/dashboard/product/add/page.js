@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {getAllGenders, getAllBranches, getAllCategories, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
+import {getAllGenders, getAllBranches, getAllCategories, getAllTags, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,6 +19,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
   const {token} = useAxiosConfig();
   const descriptionRef = useRef("");
   const categoryRef = useRef(null);
+  const tagRef = useRef(null);
   const branchRef = useRef(null);
   const occasionRef = useRef(null);
   const [genders , setGenders] = useState([]);
@@ -29,6 +30,9 @@ const AddProduct = ({ productData, onAddProduct }) => {
   const router = useRouter();
   const [branchId, setBranchId] = useState([]);
   const [isBrancheOpen, setIsBrancheOpen] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [tagId, setTagId] = useState([]);
+  const [isTagOpen, setIsTagOpen] = useState(false);
   const [isOccasionOpen, setIsOccasionOpen] = useState(false);
   const [occasionId, setOccasionId] = useState([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
@@ -37,7 +41,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
   const [formData, setFormData] = useState({
     name_en:"",
     name_ar:"",
-    product_tag :"",
+    tag_ids: [], 
     description:"",
     occasion_ids: [], 
     gender_id:"",
@@ -57,7 +61,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
         name_en: productData.name_en || "",
         name_ar: productData.name_ar || "",
         description: productData.description || "",
-        product_tag: productData.product_tag || "",
+        branch_ids: productData.tags?.map(t => t.id) || [],
         occasion_ids:  productData.occasions?.map(o => o.id) || [],
         gender_id: productData.gender_id || "",
         regular_price: productData.regular_price || "",
@@ -92,6 +96,15 @@ const AddProduct = ({ productData, onAddProduct }) => {
     }
   };
 
+  const fetchTags = async () => {
+    try {
+      const response = await axios.get(getAllTags);
+      setTags(response?.data?.data);  
+    } catch (error) {
+      console.error("Error fetching Branches", error);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const response = await axios.get(getAllCategories);
@@ -114,12 +127,28 @@ const AddProduct = ({ productData, onAddProduct }) => {
     if (!token) return;
     fetchGenders();
     fetchBranches();
+    fetchTags();
     fetchCategories();
     fetchOccasions();
   }, [token]);
 
   const toggleBranch = (id) => {
     setBranchId((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter(b => b !== id)
+        : [...prev, id];
+  
+      setFormData(prevForm => ({
+        ...prevForm,
+        branch_ids: updated
+      }));
+  
+      return updated;
+    });
+  };
+
+  const toggleTag = (id) => {
+    setTagId((prev) => {
       const updated = prev.includes(id)
         ? prev.filter(b => b !== id)
         : [...prev, id];
@@ -152,6 +181,13 @@ const AddProduct = ({ productData, onAddProduct }) => {
       ) {
         setIsBrancheOpen(false);
       }
+
+      if (
+        tagRef.current &&
+        !tagRef.current.contains(event.target)
+      ) {
+        setIsTagOpen(false);
+      }
   
       if (
         occasionRef.current &&
@@ -170,6 +206,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
   const openCategory = () => {
     setIsCategoryOpen(true);
     setIsBrancheOpen(false);
+    setIsTagOpen(false);
     setIsOccasionOpen(false);
   };
   
@@ -184,8 +221,22 @@ const AddProduct = ({ productData, onAddProduct }) => {
   };
 
   const selectedBranchNames = branches
-  .filter(b => branchId.includes(b.id))
-  .map(b => b.name_en);
+  .filter(t => branchId.includes(t.id))
+  .map(t => t.name_en);
+
+  const toggleAllTags = () => {
+    const updated =
+      tagId.length === tags.length
+        ? []
+        : tags.map(t => t.id);
+  
+    setTagId(updated);
+    setFormData(prev => ({ ...prev, branch_ids: updated }));
+  };
+
+  const selectedTagNames = tags
+  .filter(t => tagId.includes(t.id))
+  .map(t => t.name_en);
 
   const toggleOccasions = (id) => {
     setOccasionId((prev) => {
@@ -293,6 +344,11 @@ const AddProduct = ({ productData, onAddProduct }) => {
         payload.append("branch_ids[]", id)
       );
 
+      // tags
+      formData.tag_ids.forEach(id =>
+        payload.append("tag_ids[]", id)
+      );
+
       // occasions
       formData.occasion_ids.forEach(id =>
         payload.append("occasion_ids[]", id)
@@ -395,15 +451,44 @@ const AddProduct = ({ productData, onAddProduct }) => {
               </div>
             </div>
 
-            <div className="form-group col-md-12 mt-3">
+            <div className="form-group mt-3"  ref={tagRef}>
               <label className="form-label text-secondary">Product Tags</label>
-              <input
-                name="product_tag"
-                type="text"
-                value={formData.product_tag}
-                onChange={(e)=>setFormData({...formData,product_tag:e.target.value})}
-                className="form-control form-control-lg textarea-hover-dark text-secondary"
-              />
+              <div
+                className="form-control d-flex justify-content-between align-items-center"
+                onClick={() => setIsTagOpen(!isTagOpen)}
+                style={{ cursor: "pointer" }}>
+                <div className="d-flex flex-wrap gap-1">
+                  {selectedTagNames.length ? selectedTagNames.map((name, index) => (
+                        <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
+                      )): "Select Branches"}
+                </div>
+
+                <i className={`bi bi-chevron-${isTagOpen ? "up" : "down"}`} />
+              </div>
+              {isTagOpen && (
+                <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
+                  
+                  <div className="form-check border-bottom pb-1">
+                    <input 
+                      type="checkbox" 
+                      checked={tagId.length === tags.length}
+                      onChange={toggleAllTags}
+                    />
+                    <label className="ps-2 fs-14 fw-bold">Select All</label>
+                  </div>
+
+                  {tags.map((tag) => (
+                    <div key={tag.id} className="form-check py-1">
+                      <input
+                        type="checkbox"
+                        checked={tagId.includes(tag.id)}
+                        onChange={() => toggleTag(tag.id)}
+                      />
+                      <label className="ps-2 fs-14">{tag.name_en || tag.name}</label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
