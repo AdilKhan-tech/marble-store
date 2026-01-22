@@ -14,7 +14,6 @@ const MemoJoditEditor = React.memo(JoditEditor);
 
 
 const AddProduct = ({ productData, onAddProduct }) => {
-
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
   const descriptionRef = useRef("");
@@ -51,9 +50,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
     tax_class:"Standard",
     branch_ids: [],
     category_ids: []
-  })
-
-  const safeCategories = Array.isArray(categories) ? categories : [];
+  });
 
   useEffect(() => {
     if (productData) {
@@ -61,7 +58,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
         name_en: productData.name_en || "",
         name_ar: productData.name_ar || "",
         description: productData.description || "",
-        branch_ids: productData.tags?.map(t => t.id) || [],
+        tag_ids: productData.tags?.map(t => t.id) || [],
         occasion_ids:  productData.occasions?.map(o => o.id) || [],
         gender_id: productData.gender_id || "",
         regular_price: productData.regular_price || "",
@@ -147,15 +144,30 @@ const AddProduct = ({ productData, onAddProduct }) => {
     });
   };
 
-  const toggleTag = (id) => {
-    setTagId((prev) => {
+  const toggleCategory = (id) => {
+    setCategoryId((prev) => {
       const updated = prev.includes(id)
-        ? prev.filter(b => b !== id)
+        ? prev.filter(c => c !== id)
         : [...prev, id];
   
       setFormData(prevForm => ({
         ...prevForm,
-        branch_ids: updated
+        category_ids: updated
+      }));
+  
+      return updated;
+    });
+  };
+
+  const toggleTag = (id) => {
+    setTagId((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter(t => t !== id)
+        : [...prev, id];
+  
+      setFormData(prevForm => ({
+        ...prevForm,
+        tag_ids: updated
       }));
   
       return updated;
@@ -209,6 +221,20 @@ const AddProduct = ({ productData, onAddProduct }) => {
     setIsTagOpen(false);
     setIsOccasionOpen(false);
   };
+
+  const selectedCategoryNames = categories
+  .filter(c => categoryId.includes(c.id))
+  .map(c => c.name_en);
+
+  const toggleAllCategories = () => {
+    const updated =
+    categoryId.length === categories.length
+      ? []
+      : categories.map(c => c.id);
+
+      setCategoryId(updated);
+    setFormData(prev => ({ ...prev, category_ids: updated }));
+  };
   
   const toggleAllBranches = () => {
     const updated =
@@ -231,7 +257,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
         : tags.map(t => t.id);
   
     setTagId(updated);
-    setFormData(prev => ({ ...prev, branch_ids: updated }));
+    setFormData(prev => ({ ...prev, tag_ids: updated }));
   };
 
   const selectedTagNames = tags
@@ -262,40 +288,9 @@ const AddProduct = ({ productData, onAddProduct }) => {
     setOccasionId(updated);
     setFormData(prev => ({ ...prev, occasion_ids: updated }));
   };
-  
 
   const selectedOccasionNames = occasions
   .filter(b => occasionId.includes(b.id))
-  .map(b => b.name_en);
-
-
-  const toggleCategory = (id) => {
-    setCategoryId((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter(c => c !== id)
-        : [...prev, id];
-  
-      setFormData(prevForm => ({
-        ...prevForm,
-        category_ids: updated
-      }));
-  
-      return updated;
-    });
-  };
-  
-  const toggleAllCategories = () => {
-    const updated =
-      categoryId.length === safeCategories.length
-        ? []
-        : safeCategories.map(c => c.id);
-  
-    setCategoryId(updated);
-    setFormData(prev => ({ ...prev, category_ids: updated }));
-  };
-
-  const selectedCategoryNames = safeCategories
-  .filter(b => categoryId.includes(b.id))
   .map(b => b.name_en);
 
   const validateForm = () => {
@@ -313,6 +308,9 @@ const AddProduct = ({ productData, onAddProduct }) => {
   
     if (!formData.occasion_ids.length)
       errors.push("At least one occasion is required");
+
+    if (!formData.tag_ids.length)
+      errors.push("At least one tag is required");
   
     return errors;
   };
@@ -329,7 +327,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
 
       // normal fields
       Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "branch_ids" && key !== "category_ids" && key !== "occasion_ids") {
+        if (key !== "branch_ids" && key !== "category_ids" && key !== "tag_ids" && key !== "occasion_ids") {
           payload.append(key, value);
         }
       });
@@ -367,7 +365,6 @@ const AddProduct = ({ productData, onAddProduct }) => {
           setTimeout(() => router.push("/dashboard/product"), 500);
           },
         });
-
 
         if (onAddProduct) onAddProduct(res.data);
     } catch (error) {
@@ -460,7 +457,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
                 <div className="d-flex flex-wrap gap-1">
                   {selectedTagNames.length ? selectedTagNames.map((name, index) => (
                         <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                      )): "Select Branches"}
+                      )): "Select Tags"}
                 </div>
 
                 <i className={`bi bi-chevron-${isTagOpen ? "up" : "down"}`} />
@@ -572,19 +569,18 @@ const AddProduct = ({ productData, onAddProduct }) => {
           </div>
             
           <div className="row">
-            <div className="form-group mt-3 col-md-6" ref={categoryRef}>
-              <label className="form-label text-secondary">
-                Product Categories 
-              </label>
+
+            {/* ===== Categories Dropdown ===== */}
+            <div className="form-group mt-3 col-md-6"  ref={categoryRef}>
+              <label className="form-label text-secondary">Product Categories</label>
               <div
                 className="form-control d-flex justify-content-between align-items-center"
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                style={{ cursor: "pointer" }}
-              >
+                style={{ cursor: "pointer" }}>
                 <div className="d-flex flex-wrap gap-1">
                   {selectedCategoryNames.length ? selectedCategoryNames.map((name, index) => (
-                    <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                  )): "Select Categories"}
+                        <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
+                      )): "Select Categories"}
                 </div>
 
                 <i className={`bi bi-chevron-${isCategoryOpen ? "up" : "down"}`} />
@@ -595,13 +591,13 @@ const AddProduct = ({ productData, onAddProduct }) => {
                   <div className="form-check border-bottom pb-1">
                     <input 
                       type="checkbox" 
-                      checked={categoryId.length === safeCategories.length}
+                      checked={categoryId.length === categories.length}
                       onChange={toggleAllCategories}
                     />
                     <label className="ps-2 fs-14 fw-bold">Select All</label>
                   </div>
 
-                    {safeCategories.map((category) => (
+                  {categories.map((category) => (
                     <div key={category.id} className="form-check py-1">
                       <input
                         type="checkbox"

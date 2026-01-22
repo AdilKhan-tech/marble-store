@@ -9,29 +9,41 @@ const Branch = sequelize.define("Branch", {
   },
 
   name_en: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name english is required" },
-      notEmpty: { msg: "Name english cannot be empty" },
+      notNull: { msg: "Name English is required" },
+      notEmpty: { msg: "Name English cannot be empty" },
       len: {
-        arg: [2, 100],
-        msg: "Name english must be between 2 and 100 charactors",
+        args: [2, 55],
+        msg: "Name English must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\s]+$/,
+        msg: "Name English must contain only letters",
       },
     },
   },
 
   name_ar: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name arabic is required" },
-      notEmpty: {msg: "Name arabic cannot be empty" },
+      notNull: { msg: "Name Arabic is required" },
+      notEmpty: {msg: "Name Arabic cannot be empty" },
+      len: {
+        args: [2, 55],
+        msg: "Name Arabic must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
+        msg: "Name Arabic must contain only Arabic or English letters",
+      },
     },
   },
 
   slug: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: true,
     validate: {
       is: {
@@ -42,7 +54,7 @@ const Branch = sequelize.define("Branch", {
   },
 
   city: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false,
     validate: {
       notNull: { msg: "City is required" },
@@ -90,7 +102,7 @@ const Branch = sequelize.define("Branch", {
   },
 
   number: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(50),
     allowNull: true,
     validate: {
       is: {
@@ -101,7 +113,7 @@ const Branch = sequelize.define("Branch", {
   },
 
   timing: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: true,
     validate: {
       len: {

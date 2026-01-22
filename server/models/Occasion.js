@@ -10,27 +10,27 @@ const Occasion = sequelize.define("Occasion",{
   },
 
   name_en:{
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
       notNull: { msg: "Name English is required" },
       notEmpty: { msg: "Name English cannot be empty" },
       len: {
-        args: [2, 100],
-        msg: "Name English must be between 2 and 100 characters",
+        args: [2, 55],
+        msg: "Name English must be between 2 and 55 characters",
       },
     },
   },
 
   name_ar:{
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
         notNull: { msg: "Name Arabic is required" },
         notEmpty: { msg: "Name Arabic cannot be empty" },
         len: {
-          args: [2, 100],
-          msg: "Name Arabic must be between 2 and 100 characters",
+          args: [2, 55],
+          msg: "Name Arabic must be between 2 and 55 characters",
         },
     },
   },
@@ -48,7 +48,7 @@ const Occasion = sequelize.define("Occasion",{
   },
 
   slug:{
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: true,
     validate: {
         is: {

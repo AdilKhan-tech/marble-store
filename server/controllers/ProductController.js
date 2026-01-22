@@ -189,6 +189,11 @@ class ProductController {
                         attributes: ["id", "name_en", "name_ar"],
                     },
                     {
+                        model: Tag,
+                        as: "tags",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
+                    {
                         model: Branch,
                         as: "branches",
                         attributes: ["id", "name_en", "name_ar"],
