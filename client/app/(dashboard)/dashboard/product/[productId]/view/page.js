@@ -113,7 +113,9 @@ export default function Page() {
 
             <div className="col-md-4 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product.product_tag || "N/A"}
+                {product?.tags?.length
+                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),30)
+                  : "N/A"}
               </p>
               <p className="fs-14 fw-normal">Product Tags</p>
             </div>

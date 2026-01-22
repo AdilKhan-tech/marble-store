@@ -1,4 +1,5 @@
-const { Category, Gender, Product, ProductBranch, ProductCategory, ProductOccasion } = require("../models");
+const { Category, Gender, Product, Tag, ProductTag, ProductBranch, ProductCategory, ProductOccasion } = require("../models");
+const Common = require("../utils/Common");
 const Branch = require("../models/Branch");
 const Occasion = require("../models/Occasion");
 const getPagination = require("../utils/pagination");
@@ -12,7 +13,7 @@ class ProductController {
                 name_en,
                 name_ar,
                 description,
-                product_tag,
+                tag_ids,
                 gender_id,
                 regular_price,
                 sale_price,
@@ -22,14 +23,13 @@ class ProductController {
                 category_ids,
                 occasion_ids
             } = req.body;
-
+    
             const image_url = req.file?.path || null;
-
+    
             const product = await Product.create({
                 name_en,
                 name_ar,
                 description,
-                product_tag,
                 gender_id,
                 regular_price,
                 sale_price,
@@ -37,37 +37,59 @@ class ProductController {
                 tax_class,
                 image_url,
             });
+    
+            // normalize ids
+            const tags = Common.normalizeToArray(tag_ids);
+            const branches = Common.normalizeToArray(branch_ids);
+            const categories = Common.normalizeToArray(category_ids);
+            const occasions = Common.normalizeToArray(occasion_ids);
 
-            if (branch_ids && Array.isArray(branch_ids)) {
-                const productBranches = branch_ids.map(branch_id => ({
-                    product_id: product.id,
-                    branch_id: branch_id,
-                }));
-                await ProductBranch.bulkCreate(productBranches);
+    
+            if (tags.length) {
+                await ProductTag.bulkCreate(
+                    tags.map(tag_id => ({
+                        product_id: product.id,
+                        tag_id
+                    }))
+                );
             }
-
-            if (category_ids && Array.isArray(category_ids)) {
-                const productCategory = category_ids.map(category_id => ({
-                    product_id: product.id,
-                    category_id: category_id,
-                }));
-                await ProductCategory.bulkCreate(productCategory);
+    
+            if (branches.length) {
+                await ProductBranch.bulkCreate(
+                    branches.map(branch_id => ({
+                        product_id: product.id,
+                        branch_id
+                    }))
+                );
             }
-
-            if (occasion_ids && Array.isArray(occasion_ids)) {
-                const productOccasion = occasion_ids.map(occasion_id => ({
-                    product_id: product.id,
-                    occasion_id: occasion_id,
-                }));
-                await ProductOccasion.bulkCreate(productOccasion);
+    
+            if (categories.length) {
+                await ProductCategory.bulkCreate(
+                    categories.map(category_id => ({
+                        product_id: product.id,
+                        category_id
+                    }))
+                );
             }
-
+    
+            if (occasions.length) {
+                await ProductOccasion.bulkCreate(
+                    occasions.map(occasion_id => ({
+                        product_id: product.id,
+                        occasion_id
+                    }))
+                );
+            }
+    
             return res.status(201).json(product);
+
         } catch (error) {
-            return res.status(500).json({ message: "Failed to create product", error: error.message });
+            return res.status(500).json({
+                message: "Failed to create product",
+                error: error.message
+            });
         }
     }
-
 
     static async getAllProducts (req, res) {
 
@@ -99,23 +121,26 @@ class ProductController {
             const { count, rows } = await Product.findAndCountAll({
             where: whereClause,
             include: [
-              {
-                model: Gender,
-                as: "productGender",
-                attributes: ["id", "name_en", "name_ar"],
-              },
-              {
-                model: Branch,
-                as: "branches",
-                attributes: ["id", "name_en", "name_ar"],
-                through: { attributes: [] }
-              },
-              {
-                model: Category,
-                as: "categories",
-                attributes: ["id", "name_en", "name_ar"],
-                through: { attributes: [] }
-              },
+                {
+                    model: Tag,
+                    as: "tags",
+                    attributes: ["id", "name_en", "name_ar"],
+                },
+                {
+                    model: Gender,
+                    as: "gender",
+                    attributes: ["id", "name_en", "name_ar"],
+                },
+                {
+                    model: Branch,
+                    as: "branches",
+                    attributes: ["id", "name_en", "name_ar"],
+                },
+                {
+                    model: Category,
+                    as: "categories",
+                    attributes: ["id", "name_en", "name_ar"],
+                },
             ],
             limit,
             offset,
@@ -160,7 +185,7 @@ class ProductController {
                 include: [
                     {
                         model: Gender,
-                        as: "productGender",
+                        as: "gender",
                         attributes: ["id", "name_en", "name_ar"],
                     },
                     {
