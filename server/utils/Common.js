@@ -1,5 +1,5 @@
 // utils/normalize.js
-class NormalizeUtil {
+class Common {
 
     static normalizeToArray(value) {
         if (value === undefined || value === null) return [];
@@ -8,4 +8,4 @@ class NormalizeUtil {
 
 }
 
-module.exports = NormalizeUtil;
+module.exports = Common;

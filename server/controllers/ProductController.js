@@ -1,5 +1,5 @@
 const { Category, Gender, Product, Tag, ProductTag, ProductBranch, ProductCategory, ProductOccasion } = require("../models");
-const NormalizeUtil = require("../helper/NormalizeToArray");
+const Common = require("../utils/Common");
 const Branch = require("../models/Branch");
 const Occasion = require("../models/Occasion");
 const getPagination = require("../utils/pagination");
@@ -39,10 +39,10 @@ class ProductController {
             });
     
             // normalize ids
-            const tags = NormalizeUtil.normalizeToArray(tag_ids);
-            const branches = NormalizeUtil.normalizeToArray(branch_ids);
-            const categories = NormalizeUtil.normalizeToArray(category_ids);
-            const occasions = NormalizeUtil.normalizeToArray(occasion_ids);
+            const tags = Common.normalizeToArray(tag_ids);
+            const branches = Common.normalizeToArray(branch_ids);
+            const categories = Common.normalizeToArray(category_ids);
+            const occasions = Common.normalizeToArray(occasion_ids);
 
     
             if (tags.length) {
