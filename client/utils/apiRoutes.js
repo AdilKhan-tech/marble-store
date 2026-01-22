@@ -85,6 +85,7 @@ export const createProductRoute = `${host}/products/create`
 export const getAllProductsRoute = `${host}/products/`
 export const getProductByIdRoute = (id) => `${host}/products/${id}`
 export const deleteProductByIdRoute = (id) => `${host}/products/delete/${id}`
+export const updateProductByIdRoute = (id) => `${host}/products/${id}`
 
 // Categories
 export const getAllCategories = `${host}/categories`
