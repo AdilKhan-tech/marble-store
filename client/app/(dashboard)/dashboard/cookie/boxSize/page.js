@@ -214,13 +214,17 @@ export default function CookieBoxSizePage() {
                       {boxSize.id}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {boxSize.name_en}
+                      {boxSize?.name_en?.length
+                        ? Common.truncateText(boxSize.name_en,15)
+                      : "N/A"}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {boxSize.type.name_en}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {boxSize.slug}
+                      {boxSize?.slug?.length
+                        ? Common.truncateText(boxSize.slug,15)
+                      : "N/A"}
                     </td>
                     <td>
                     <div className={boxSize.status === "active" ? "blue-status" : "red-status"}>
