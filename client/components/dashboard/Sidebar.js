@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleCollapse = () => {

@@ -28,11 +28,11 @@ export default function DashboardLayout({ children }) {
       <body suppressHydrationWarning={true}>
         <Providers>
           <Sidebar />
-          <main className="main-content-area">
           <Dashboard>
+          <main className="main-content-area">
             {children}
-            </Dashboard>
           </main>
+            </Dashboard>
         </Providers>
       </body>
     </html>
