@@ -188,6 +188,7 @@ export default function Page() {
           <hr  className="mt-0"/>
           <Offcanvas.Body>
             <ProductUpdate
+            productData = {productData}
             />
           </Offcanvas.Body>
         </Offcanvas>

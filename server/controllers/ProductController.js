@@ -141,6 +141,11 @@ class ProductController {
                     as: "categories",
                     attributes: ["id", "name_en", "name_ar"],
                 },
+                {
+                    model: Occasion,
+                    as: "occasions",
+                    attributes: ["id", "name_en", "name_ar"],
+                },
             ],
             limit,
             offset,
@@ -203,6 +208,11 @@ class ProductController {
                         as: "occasions",
                         attributes: ["id", "name_en", "name_ar"],
                     },
+                    {
+                        model: Tag,
+                        as: "tags",
+                        attributes: ["id", "name_en", "name_ar"],
+                    },
                 ],
             });
             return res.status(200).json(product);
@@ -210,6 +220,57 @@ class ProductController {
             return res.status(500).json({ message: error.message });
         }
     }
+
+    static async updateProductById(req, res) {
+    const { id } = req.params;
+    try {
+        const product = await Product.findByPk(id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        const {
+            name_en,
+            name_ar,
+            description,
+            tag_ids,
+            gender_id,
+            regular_price,
+            sale_price,
+            tax_status,
+            tax_class,
+            branch_ids,
+            category_ids,
+            occasion_ids
+        } = req.body;
+
+        const image_url = req.file?.path || product.image_url;
+
+        await product.update({
+            name_en, name_ar, description, gender_id, regular_price,
+            sale_price, tax_status, tax_class, image_url
+        });
+
+        // normalize ids
+        const tags = Common.normalizeToArray(tag_ids);
+        const branches = Common.normalizeToArray(branch_ids);
+        const categories = Common.normalizeToArray(category_ids);
+        const occasions = Common.normalizeToArray(occasion_ids);
+
+        if (tags.length) await ProductTag.destroy({ where: { product_id: id } });
+        if (branches.length) await ProductBranch.destroy({ where: { product_id: id } });
+        if (categories.length) await ProductCategory.destroy({ where: { product_id: id } });
+        if (occasions.length) await ProductOccasion.destroy({ where: { product_id: id } });
+
+        if (tags.length) await ProductTag.bulkCreate(tags.map(tag_id => ({ product_id: id, tag_id })));
+        if (branches.length) await ProductBranch.bulkCreate(branches.map(branch_id => ({ product_id: id, branch_id })));
+        if (categories.length) await ProductCategory.bulkCreate(categories.map(category_id => ({ product_id: id, category_id })));
+        if (occasions.length) await ProductOccasion.bulkCreate(occasions.map(occasion_id => ({ product_id: id, occasion_id })));
+
+        return res.status(200).json(product);
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to update product", error: error.message });
+    }
+}
+
 }
 
 module.exports = ProductController;
