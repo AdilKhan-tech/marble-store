@@ -35,8 +35,6 @@ export default function Page() {
     setShowOffcanvas(true);
   }
 
-  
-
   if (!product) return <p className="mt-5">Loading...</p>;
 
   return (
@@ -88,10 +86,28 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="col-md-12">
+            <div className="col-md-4 mb-3">
+              <p className="fs-16 fw-bold mb-0 fnt-color">
+                {product?.tags?.length
+                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),30)
+                  : "N/A"}
+              </p>
+              <p className="fs-14 fw-normal">Product Tags</p>
+            </div>
+
+              <div className="row">
+
+            <div className="col-md-6">
               <div className="fs-14 fw-bold mb-0 fnt-color" dangerouslySetInnerHTML={{ __html: product.description }}/>
               <p className="fs-14 fw-normal mt-1">Product Description</p>
             </div>
+            <div className="col-md-6 mb-3">
+                <p className="fs-16 fw-bold mb-0 fnt-color">
+                  {product.gender.name_en}
+                </p>
+                <p className="fs-14 fw-normal">Gender</p>
+              </div>
+              </div>
           </div>
         </div>
 
@@ -111,14 +127,7 @@ export default function Page() {
               <p className="fs-14 fw-normal">Stock</p>
             </div>
 
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product?.tags?.length
-                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),30)
-                  : "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product Tags</p>
-            </div>
+            
           </div>
 
           <div className="row">

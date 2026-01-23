@@ -9,27 +9,35 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
         allowNull: false,
     },
     name_en: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(55),
         allowNull: false,
         validate: {
-            notNull: { msg: "Name english is  required" },
-            notEmpty: { msg: "Name english cannot be empty"},
+            notNull: { msg: "Name English is  required" },
+            notEmpty: { msg: "Name English cannot be empty"},
             len: {
-                args: [2, 100],
-                msg: "Engish name must be between 2 and 100 characters"
-            }
+                args: [2, 55],
+                msg: "Name English must be between 2 and 55 characters"
+            },
+            is: {
+                args: /^[A-Za-z\s]+$/,
+                msg: "Name English must contain only letters",
+            },
         }
     },
     name_ar: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(55),
         allowNull: false,
         validate: {
-            notNull: { msg: "Name arabic is required" },
-            notEmpty: { msg: "Name arabic cannot be empty" },
+            notNull: { msg: "Name Arabic is required" },
+            notEmpty: { msg: "Name Arabic cannot be empty" },
             len: {
-                args: [2, 100],
-                msg: "Name arabic must be between 2 and 100 characters "
-            }
+                args: [2, 55],
+                msg: "Name Arabic must be between 2 and 55 characters "
+            },
+            is: {
+                args: /^[A-Za-z\s]+$/,
+                msg: "Name Arabic must contain only letters",
+            },
         }
     },
     custom_cake_type_id: {
@@ -41,7 +49,7 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
         },
     },
     slug: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(55),
         allowNull: true,
         validate: {
             is: {
@@ -67,12 +75,11 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
         type: DataTypes.ENUM("active", "inactive"),
         defaultValue: "active",
         validate: {
-        isIn: {
-            args: [["active", "inactive"]],
-            msg: "Status must be either active or inactive",
+            isIn: {
+                args: [["active", "inactive"]],
+                msg: "Status must be either active or inactive",
+            }
         }
-        }
-
     },
     image_url: {
         type: DataTypes.STRING(255),
