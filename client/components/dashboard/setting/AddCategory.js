@@ -157,6 +157,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
             onChange={(e) =>
               setFormData({ ...formData, display_type: e.target.value })}>
             <option value="Default">Default</option>
+            <option value="Products">Products</option>
             <option value="Subcategories">Subcategories</option>
             <option value="Both">Both</option>
           </select>
