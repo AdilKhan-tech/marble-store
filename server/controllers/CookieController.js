@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CookieController {
 
-    static async createCookie (req, res){
+    static async createCookie (req, res, next){
         try {
             const {name_en, name_ar, cookie_type_id, slug, sort, status} = req.body;
 
@@ -22,10 +22,7 @@ class CookieController {
             return res.status(201).json(cookie);
 
         } catch(error) {
-            return res.status(500).json({
-                message: "Failed to create Cookie",
-                error: error.message
-            });
+            next(error);
         }
     }
 
@@ -88,7 +85,7 @@ class CookieController {
         }
     }
 
-    static async updateCookieById(req, res) {
+    static async updateCookieById(req, res, next) {
         const { id } = req.params;
         try {
             const cookie = await Cookie.findByPk(id);
@@ -120,7 +117,7 @@ class CookieController {
             return res.status(200).json({message: "Cookie updated successfully",cookie});
     
         } catch (error) {
-            return res.status(500).json({message: "Failed to update Cookie",error: error.message});
+            next(error);
         }
     }
 

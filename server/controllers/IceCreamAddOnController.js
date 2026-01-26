@@ -3,7 +3,7 @@ const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
 class IceCreamAddOnController {
-  static async createIceCreamAddOn(req, res) {
+  static async createIceCreamAddOn(req, res, next) {
     try {
       const { name_en, name_ar, slug, type, status } = req.body;
 
@@ -18,8 +18,8 @@ class IceCreamAddOnController {
         image_url,
       });
       return res.status(201).json(iceCreamaddon);
-    } catch (error) {
-      return res.status(500).json({ message: "Failed to create IceCream AddOn", error: error.message });
+    }catch (error) {
+      next(error);
     }
   }
 
@@ -73,7 +73,7 @@ class IceCreamAddOnController {
     }
   }
 
-  static async updateIceCreamAddOnById(req, res) {
+  static async updateIceCreamAddOnById(req, res, next) {
     const { id } = req.params;
     try {
       const iceCreamaddon = await IceCreamAddOn.findByPk(id);
@@ -97,7 +97,7 @@ class IceCreamAddOnController {
       return res.status(200).json({message: "IceCream AddOn updated successfully",iceCreamaddon});
 
     }catch (error) {
-      return res.status(500).json({message: "Failed to update IceCream AddOn",error: error.message});
+      next(error);
     }
   }
 

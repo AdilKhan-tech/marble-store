@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CategoryController {
 
-    static async createCategory(req, res) {
+    static async createCategory(req, res, next) {
         try {
             const { name_en, name_ar, slug, parent_category, display_type } = req.body;
 
@@ -21,7 +21,7 @@ class CategoryController {
 
             return res.status(201).json(category);
         } catch (error) {
-            return res.status(500).json({ message: "Failed to create category", error: error.message });
+            next(error);
         }
     }
 
@@ -77,7 +77,7 @@ class CategoryController {
         }
     }
 
-    static async updateCategoryById(req, res) {
+    static async updateCategoryById(req, res, next) {
         const { id } = req.params;
         try {
             const category = await Category.findByPk(id);
@@ -97,7 +97,7 @@ class CategoryController {
             });
                return res.status(200).json(category);
         } catch (error) {
-            return res.status(500).json({message: "Failed to update Category",error: error.message});
+            next(error);
         }
     }
 

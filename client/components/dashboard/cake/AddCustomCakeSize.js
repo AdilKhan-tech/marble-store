@@ -5,7 +5,6 @@ import axios from "axios";
 import {updateCustomCakeSizeById,createCustomCakeSize,} from "@/utils/apiRoutes";
 
 const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCakeSize,onUpdateCustomCakeSize,}) => {
-  const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -37,25 +36,10 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-  //validation
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.portion_size) errors.push("Portion Size is required.");
-    if (!formData.sort) errors.push("Sort is required.");
-    if (!formData.calories) errors.push("Calories is required.");
-    if (!formData.cake_type_id) errors.push("Cake Type is required.");
-    return errors;
-  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (validationErrors.lenght > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    
     try {
       const payload = new FormData();
       Object.entries(formData).forEach(([key, value]) =>
@@ -84,17 +68,16 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
          onAddCustomCakeSize(response.data);
         }
       }
-    } catch (error) {
-      console.error("Error saving Custom Cake Size:", error);
-      toast.error("Failed to save Custom Cake Size.");
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-  useEffect(() => {
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
+ 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">

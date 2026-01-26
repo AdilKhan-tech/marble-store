@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class GenderController {
 
-    static async createGender(req, res) {
+    static async createGender(req, res, next) {
         try {
             const { name_en, name_ar, parent_gender, slug } = req.body;
 
@@ -18,8 +18,8 @@ class GenderController {
                 image_url,
             });
             return res.status(201).json(gender);
-        } catch (error) {
-            return res.status(500).json({ message: "Failed to create gender", error: error.message });
+        }catch (error) {
+            next(error)
         }
     }
 
@@ -73,7 +73,7 @@ class GenderController {
         }
     }
 
-    static async updateGenderById(req, res) {
+    static async updateGenderById(req, res, next) {
         const { id } = req.params;
         try {
             const gender = await Gender.findByPk(id);
@@ -95,8 +95,8 @@ class GenderController {
         
             return res.status(200).json(gender);
     
-        } catch (error) {
-            return res.status(500).json({message: "Failed to update Gender",error: error.message});
+        }catch (error) {
+            next(error);
         }
       }
 

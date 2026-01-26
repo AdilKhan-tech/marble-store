@@ -6,7 +6,6 @@ import { UpdateCategoryById, createCategory } from "@/utils/apiRoutes";
 
 const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCategory,}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -14,7 +13,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
     parent_category: "",
     display_type: "",
   });
-  //load existing data
+  
   useEffect(() => {
     if (categoryData) {
       setFormData({
@@ -26,34 +25,24 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
       });
     }
   }, [categoryData]);
+
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-  // Validation error
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.parent_category) errors.push("Parent Category is required.");
-    if (!formData.display_type) errors.push("Display Type is required.");
-    return errors;
-  };
- const handleSubmit = async (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (validationErrors.lenght > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    
     try {
       const payload = new FormData();
+
       Object.entries(formData).forEach(([key, value]) =>
         payload.append(key, value)
       );
       if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
+
       if (categoryData) {
         const response = await axios.put(UpdateCategoryById(categoryData.id),  payload  );
         if (response.status === 200 || response.status === 201) {
@@ -74,18 +63,17 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
          onAddCategory (response.data);
         }
       }
-    } catch (error) {
-      console.error("Error saving Category:", error);
-      toast.error("Failed to save Category.");
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-  useEffect(() => {
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
-    return (
+  
+  return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
@@ -101,6 +89,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           }
         />
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Name Arabic
@@ -115,6 +104,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           }
         />
       </div>
+
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           Slug
@@ -127,6 +117,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
         />
       </div>
+
       <div className="row">
         <div className="form-group mt-3 col-md-6">
           <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
@@ -145,6 +136,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
             <option value="Cakes">Cakes</option>
           </select>
         </div>
+
         <div className="form-group mt-3 col-md-6">
           <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
             Display Type
@@ -162,6 +154,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           </select>
         </div>
       </div>
+
       <div className="col-md-12 px-1 mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
           File Attachment

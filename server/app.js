@@ -49,6 +49,11 @@ app.use('/tags', tagRoutes)
 // Static files
 app.use("/uploads", express.static("uploads"));
 
+
+const errorHandler = require("./middlewares/errorHandler");
+app.use(errorHandler);
+
+
 // Database and server setup
 const sequelize = require("./config/database");
 const startServer = async () => {

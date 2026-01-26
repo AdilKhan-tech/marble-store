@@ -5,7 +5,6 @@ import axios from "axios";
 import { createGender, updateGenderById } from "@/utils/apiRoutes";
 const AddGender = ({ closePopup, genderData = null, onAddGender, onUpdateGender }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -28,23 +27,8 @@ const AddGender = ({ closePopup, genderData = null, onAddGender, onUpdateGender 
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  // validation
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.parent_gender) errors.push("Parent Gender price is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
 
     try {
       const payload = new FormData();
@@ -67,17 +51,15 @@ const AddGender = ({ closePopup, genderData = null, onAddGender, onUpdateGender 
           onAddGender(res.data);
         }
       }
-    } catch (error) {
-      setErrors([error?.response?.data?.message || "Something went wrong!"]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-
-  useEffect(() => {
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
   
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CustomCakeTypeController {
 
-  static async createCustomCakeType (req, res){
+  static async createCustomCakeType (req, res, next){
     try {
         const {name_en, name_ar, slug, status} = req.body;
 
@@ -19,11 +19,8 @@ class CustomCakeTypeController {
         });
         return res.status(201).json(customCakeTypes);
 
-    } catch(error) {
-        return res.status(500).json({
-            message: "Failed to create Cookies",
-            error: error.message
-        });
+    }catch(error) {
+      next(error);
     }
   }
 
@@ -79,7 +76,7 @@ class CustomCakeTypeController {
   
 
 
-  static async updateCustomCakeTypeById(req, res) {
+  static async updateCustomCakeTypeById(req, res, next) {
     const { id } = req.params;
   
     try {
@@ -105,11 +102,8 @@ class CustomCakeTypeController {
         message: "Custom Cake Type updated successfully",
         customCakeTypes,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Failed to update Custom Cake Type",
-        error: error.message,
-      });
+    }catch (error) {
+      next(error);
     }
   }
   
