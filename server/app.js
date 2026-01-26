@@ -10,7 +10,8 @@ const genderRoutes = require('./routes/genderRoutes');
 const cookiesRoutes = require('./routes/cookiesRoutes');
 const iceCreamRoutes = require('./routes/iceCreamRoutes');
 const cakeRoutes = require('./routes/cakeRoutes');
-const productRoutes = require ('./routes/productRoutes')
+const productRoutes = require ('./routes/productRoutes');
+const tagRoutes = require('./routes/tagRoutes')
 
 
 const app = express();
@@ -43,6 +44,7 @@ app.use('/cookies', cookiesRoutes);
 app.use('/icecreams', iceCreamRoutes);
 app.use('/cakes', cakeRoutes);
 app.use('/products', productRoutes);
+app.use('/tags', tagRoutes)
 
 // Static files
 app.use("/uploads", express.static("uploads"));

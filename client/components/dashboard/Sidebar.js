@@ -1,12 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const sidebarRef = useRef(null);
+  const parentActive = (paths) => paths.some(p => pathname.startsWith(p));
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -22,6 +24,17 @@ export default function Sidebar() {
       document.body.classList.remove("sidebar-collapsed");
     }
   }, [isCollapsed]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setActiveDropdown(null); // saare dropdowns close ho jayenge
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const isActive = (path) => pathname === path;
 
@@ -39,7 +52,7 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside className="dashboard-sidebar position-fixed bg-white">
+      <aside ref={sidebarRef} className="dashboard-sidebar position-fixed bg-white">
         <div className="sidebar-header bg-white position-sticky d-flex align-items-center justify-content-between p-4">
           <Link href="/dashboard" className="logo-link text-decoration-none">
             {isCollapsed ? (
@@ -89,7 +102,7 @@ export default function Sidebar() {
             {/* Cakes */}
             <li className="mb-2 position-relative">
               <button
-                className={`dropdown-toggle ${activeDropdown === "Cakes" ? 'active' : ''}`}
+                className={`dropdown-toggle ${parentActive(['/dashboard/cake']) ? 'active' : ''}`}                
                 onClick={() => setActiveDropdown(activeDropdown === "Cakes" ? null : "Cakes")}
                 aria-expanded={activeDropdown === "Cakes"}
               >
@@ -109,38 +122,44 @@ export default function Sidebar() {
                 <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cake/cakeSize"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
                   >
+                  <i className="bi bi-box-seam me-2 fs-5"></i>
                     Cake Sizes
                   </Link>
                   <Link
                     href="/dashboard/cake/cakeFlavour"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/cakeFlavour") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/cakeFlavour") ? "active" : ""}`}
                   >
+                  <i className="bi bi-heart me-2 fs-5"></i>
                     Cake Flavors
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeSize"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeSize") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/customCakeSize") ? "active" : ""}`}
                   >
+                  <i className="bi bi-pencil-square me-2 fs-5"></i>
                     Custom Cake Sizes
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeFlavor"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/customCakeFlavor") ? "active" : ""}`}
                   >
+                  <i className="bi bi-stars me-2 fs-5"></i>
                     Custom Cake Flavors
                   </Link>
                   <Link
                     href="/dashboard/cake/customCakeType"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/customCakeType") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/customCakeType") ? "active" : ""}`}
                   >
+                  <i className="bi bi-list-ul me-2 fs-5"></i>
                     Custom Cake Types
                   </Link>
                   <Link
                     href="/dashboard/cake/cakePortionSize"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cake/cakePortionSize") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cake/cakePortionSize") ? "active" : ""}`}
                   >
+                  <i className="bi bi-stopwatch me-2 fs-5"></i>
                     Cake Portion Sizes
                   </Link>
                 </div>
@@ -155,6 +174,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-box-seam me-2 fs-5"></i>
                     Cake Sizes
                   </Link>
                   <Link 
@@ -162,6 +182,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-heart me-2 fs-5"></i>
                     Cake Flavors
                   </Link>
                   <Link 
@@ -169,6 +190,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-pencil-square me-2 fs-5"></i>
                     Custom Cake Sizes
                   </Link>
                   <Link 
@@ -176,6 +198,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-stars me-2 fs-5"></i>
                     Custom Cake Flavors
                   </Link>
                   <Link 
@@ -183,13 +206,15 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-list-ul me-2 fs-5"></i>
                     Custom Cake Types
                   </Link>
-                   <Link 
+                  <Link 
                     href="/dashboard/cake/cakePortionSize" 
-                    className="dropdown-link"
+                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-stopwatch me-2 fs-5"></i>
                     Cake Portion Sizes
                   </Link>
                 </div>
@@ -199,7 +224,7 @@ export default function Sidebar() {
             {/* Ice Cream */}
             <li className="mb-2 position-relative">
               <button
-                className={`dropdown-toggle ${activeDropdown === "IceCream" ? 'active' : ''}`}
+                className={`dropdown-toggle ${parentActive(['/dashboard/icecream']) ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "IceCream" ? null : "IceCream")}
                 aria-expanded={activeDropdown === "IceCream"}
               >
@@ -218,20 +243,23 @@ export default function Sidebar() {
                 <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/icecream/iceCreamAddon"
-                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
                   >
+                    <i className="bi bi-plus-circle me-2 fs-5"></i>
                     Ice Cream Add-Ons
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamBucket"
-                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/icecream/iceCreamBucket") ? "active" : ""}`}
                   >
+                    <i className="bi bi-bucket me-2 fs-5"></i>
                     Ice Cream Buckets
                   </Link>
                   <Link
                     href="/dashboard/icecream/iceCreamPortionSize"
-                    className={`d-flex align-items-center ${isActive("/dashboard/icecream/iceCreamPortionSize") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/icecream/iceCreamPortionSize") ? "active" : ""}`}
                   >
+                    <i className="bi bi-stopwatch me-2 fs-5"></i>
                     Ice Cream Portion Sizes
                   </Link>
                 </div>
@@ -245,6 +273,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-plus-circle me-2 fs-5"></i>
                     Ice Cream Add-Ons
                   </Link>
                   <Link 
@@ -252,13 +281,15 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-bucket me-2 fs-5"></i>
                     Ice Cream Buckets
                   </Link>
                   <Link 
                     href="/dashboard/icecream/iceCreamPortionSize" 
-                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
+                    className="dropdown-link nowrap d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-stopwatch me-2 fs-5"></i>
                     Ice Cream Portion Sizes
                   </Link>
                 </div>
@@ -268,7 +299,7 @@ export default function Sidebar() {
             {/* Cookies */}
             <li className="mb-2 position-relative">
               <button
-                className={`dropdown-toggle ${activeDropdown === "Cookies" ? 'active' : ''}`}
+                className={`dropdown-toggle ${parentActive(['/dashboard/cookie']) ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "Cookies" ? null : "Cookies")}
                 aria-expanded={activeDropdown === "Cookies"}
               >
@@ -287,20 +318,23 @@ export default function Sidebar() {
                 <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cookie/boxSize"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
                   >
+                    <i className="bi bi-box me-2 fs-5"></i>
                     Cookie Box Sizes
                   </Link>
                   <Link
                     href="/dashboard/cookie/boxType"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cookie/boxType") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cookie/boxType") ? "active" : ""}`}
                   >
+                    <i className="bi bi-list-ul me-2 fs-5"></i>
                     Cookie Box Types
                   </Link>
                   <Link
                     href="/dashboard/cookie"
-                    className={`d-flex align-items-center ${isActive("/dashboard/cookie") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/cookie") ? "active" : ""}`}
                   >
+                    <i className="bi bi-gift me-2 fs-5"></i>
                     Cookies
                   </Link>
                 </div>
@@ -314,6 +348,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-box me-2 fs-5"></i>
                     Cookie Box Sizes
                   </Link>
                   <Link 
@@ -321,6 +356,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-list-ul me-2 fs-5"></i>
                     Cookie Box Types
                   </Link>
                   <Link 
@@ -328,6 +364,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-gift me-2 fs-5"></i>
                     Cookies
                   </Link>
                 </div>
@@ -337,7 +374,7 @@ export default function Sidebar() {
             {/* Settings */}
             <li className="mb-2 position-relative">
               <button
-                className={`dropdown-toggle ${activeDropdown === "Settings" ? 'active' : ''}`}
+                className={`dropdown-toggle ${parentActive(['/dashboard/setting']) ? 'active' : ''}`}
                 onClick={() => setActiveDropdown(activeDropdown === "Settings" ? null : "Settings")}
                 aria-expanded={activeDropdown === "Settings"}
               >
@@ -356,32 +393,37 @@ export default function Sidebar() {
                 <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/setting/branches"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/branches") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/setting/branches") ? "active" : ""}`}
                   >
+                    <i className="bi bi-building-fill me-2 fs-5"></i>
                     Branches
                   </Link>
                   <Link
                     href="/dashboard/setting/category"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/category") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/setting/category") ? "active" : ""}`}
                   >
+                    <i className="bi bi-tags-fill me-2 fs-5"></i>
                     Categories
                   </Link>
                   <Link
                     href="/dashboard/setting/gender"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/gender") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/setting/gender") ? "active" : ""}`}
                   >
+                    <i className="bi bi-gender-ambiguous me-2 fs-5"></i>
                     Gender
                   </Link>
                   <Link
                     href="/dashboard/setting/occasion"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/occasion") ? "active" : ""}`}
-                  >
+                    className={`d-block align-items-center ${isActive("/dashboard/setting/occasion") ? "active" : ""}`}
+                  > 
+                    <i className="bi bi-calendar-event-fill me-2 fs-5"></i>
                     Occasions
                   </Link>
                   <Link
                     href="/dashboard/setting/productTags"
-                    className={`d-flex align-items-center ${isActive("/dashboard/setting/productTags") ? "active" : ""}`}
+                    className={`d-block align-items-center ${isActive("/dashboard/setting/productTags") ? "active" : ""}`}
                   >
+                    <i className="bi bi-bookmarks-fill me-2 fs-5"></i>
                     Product Tags
                   </Link>
                 </div>
@@ -395,6 +437,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-building-fill me-2 fs-5"></i>
                     Branches
                   </Link>
                   <Link 
@@ -402,6 +445,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-tags-fill me-2 fs-5"></i>
                     Categories
                   </Link>
                   <Link 
@@ -409,6 +453,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-gender-ambiguous me-2 fs-5"></i>
                     Gender
                   </Link>
                   <Link 
@@ -416,6 +461,7 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-calendar-event-fill me-2 fs-5"></i>
                     Occasions
                   </Link>
                   <Link 
@@ -423,11 +469,13 @@ export default function Sidebar() {
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
+                    <i className="bi bi-bookmarks-fill me-2 fs-5"></i>
                     Product Tags
                   </Link>
                 </div>
               )}
             </li>
+
           </ul>
         </nav>
       </aside>

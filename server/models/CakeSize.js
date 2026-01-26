@@ -14,10 +14,14 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notEmpty: {msg: "Name english is required"},
+      notEmpty: {msg: "Name English is required"},
       len: {
         args: [2, 55],
-        msg: "Name english must be between 2 and 55 characters",
+        msg: "Name English must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\s]+$/,
+        msg: "Name English must contain only letters",
       },
     },
   },
@@ -26,10 +30,14 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notEmpty: {msg: "Name arabic is required"},
+      notEmpty: {msg: "Name Arabic is required"},
       len: {
         args: [2, 55],
-        msg: "Name arabic must be between 2 and 55 characters",
+        msg: "Name Arabic must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\s]+$/,
+        msg: "Name Arabic must contain only letters",
       },
     },
   },

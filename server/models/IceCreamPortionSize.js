@@ -9,26 +9,26 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     allowNull: false,
   },
   name_en: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
       notNull: { msg: "English name is required" },
       notEmpty: { msg: "English name cannot be empty" },
       len: {
-        args: [2, 100],
-        msg: "English name must be between 2 and 100 characters",
+        args: [2, 55],
+        msg: "English name must be between 2 and 55 characters",
       },
     },
   },
   name_ar: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
       notNull: { msg: "Arabic name is required" },
       notEmpty: { msg: "Arabic name cannot be empty" },
       len: {
-        args: [2, 100],
-        msg: "Arabic name must be between 2 and 100 characters",
+        args: [2, 55],
+        msg: "Arabic name must be between 2 and 55 characters",
       },
     },
   },
@@ -41,7 +41,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     },
   },
   slug: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
       notNull: { msg: "Slug is required" },

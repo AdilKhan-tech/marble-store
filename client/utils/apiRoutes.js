@@ -85,6 +85,7 @@ export const createProductRoute = `${host}/products/create`
 export const getAllProductsRoute = `${host}/products/`
 export const getProductByIdRoute = (id) => `${host}/products/${id}`
 export const deleteProductByIdRoute = (id) => `${host}/products/delete/${id}`
+export const updateProductByIdRoute = (id) => `${host}/products/${id}`
 
 // Categories
 export const getAllCategories = `${host}/categories`
@@ -105,8 +106,10 @@ export const updateCustomCakeSizeById =(id)=> `${host}/cakes/customSize/${id}`;
 export const createCustomCakeSize = `${host}/cakes/customSize`;
 
 // ProductTags
-export const getAllProductTags = `${host}/products`;
-export const deleteProductTagById =(id)=> `${host}/products/delete/${id}`;
+export const getAllTags = `${host}/tags/`;
+export const deleteTagById =(id)=> `${host}/tags/delete/${id}`;
+export const updateTagById =(id)=> `${host}/tags/update/${id}`;
+export const createTag = `${host}/tags/create`;
 
 
 

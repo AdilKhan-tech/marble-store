@@ -8,26 +8,34 @@ const Gender = sequelize.define('Gender', {
     autoIncrement: true
   },
   name_en: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "English name is required" },
-      notEmpty: { msg: "English name cannot be empty" },
+      notNull: { msg: "Name English is required" },
+      notEmpty: { msg: "Name English cannot be empty" },
       len: {
-        args: [2, 50],
-        msg: "English name must be between 2 and 50 characters",
+        args: [2, 55],
+        msg: "Name English must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\s]+$/,
+        msg: "Name English must contain only letters",
       },
     },
   },
   name_ar: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Arabic name is required" },
-      notEmpty: { msg: "Arabic name cannot be empty" },
+      notNull: { msg: "Name Arabic is required" },
+      notEmpty: {msg: "Name Arabic cannot be empty" },
       len: {
-        args: [2, 50],
-        msg: "Arabic name must be between 2 and 50 characters",
+        args: [2, 55],
+        msg: "Name Arabic must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
+        msg: "Name Arabic must contain only Arabic or English letters",
       },
     },
   },
