@@ -7,7 +7,6 @@ import axios from 'axios';
 function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOccasion, occasionData}) {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -30,21 +29,8 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.parent_ocassion) errors.push("Parent Ocassion is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -92,18 +78,16 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
           if (onAddOccasion) onAddOccasion(onAddOccasion);
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
 
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
   return (
     <form className='mt-0' onSubmit={handleSubmit}>
         <div className='form-group'>

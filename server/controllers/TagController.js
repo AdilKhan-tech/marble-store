@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class TagController {
 
-    static async createTag(req, res) {
+    static async createTag(req, res, next) {
         try {
             const { name_en, name_ar, slug } = req.body;
  
@@ -15,8 +15,8 @@ class TagController {
             });
          
             return res.status(201).json(tag);
-        } catch (error) {
-            return res.status(500).json({ message: "Failed to create  Tag", error: error.message});
+        }catch (error) {
+          next(error);
         }
     }
 
@@ -70,7 +70,7 @@ class TagController {
         }
     }
 
-    static async updateTagById(req, res) {
+    static async updateTagById(req, res, next) {
         const { id } = req.params;
 
         try {
@@ -93,10 +93,7 @@ class TagController {
                 tag,
             });
         }catch (error) {
-            return res.status(500).json({
-              message: "Failed to update  Tag",
-              error: error.message,
-            });
+          next(error);
         }
     }
 
@@ -109,8 +106,7 @@ class TagController {
             }
             await tag.destroy();
             return res.status(200).json({ message: " Tag deleted successfully" });
-        }
-        catch (error) {
+        }catch (error) {
             return res.status(500).json({ message: error.message });
         }
     }

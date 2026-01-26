@@ -8,7 +8,6 @@ import { createCakeFlavor, updateCakeFlavorById, getAllCustomCakeTypes } from "@
 
 const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
-  const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
@@ -61,24 +60,8 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.custom_cake_type_id) errors.push("Custom cake type is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.additional_price)errors.push("Additional price is required.");
-    if (!formData.symbol) errors.push("Symbol is required.");
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (validationErrors.length > 0) return;
-  
     try {
       const payload = new FormData();
   
@@ -89,7 +72,6 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       if (selectedFiles && selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
-  
       // ================= UPDATE =================
       if (cakeFlavorData) {
         const res = await axios.put(
@@ -118,7 +100,6 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
           closePopup();
         }
       }
-  
       // ================= CREATE =================
       else {
         const res = await axios.post(createCakeFlavor, payload);
@@ -142,21 +123,15 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
           if (onAddCakeFlavor) onAddCakeFlavor(createdCake);
         }
       }
-    } catch (error) {
-      const msg =
+    }catch (error) {
+      const backendMessage =
         error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
         "Something went wrong!";
-      setErrors([msg]);
+    
+      toast.error(backendMessage);
     }
   };
-  
-
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
 
   return (
     <form className="component-form" onSubmit={handleSubmit}>

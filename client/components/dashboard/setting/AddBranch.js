@@ -5,7 +5,6 @@ import axios from "axios";
 import { createBranch, updateBranchById } from "@/utils/apiRoutes";
 
 const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch }) => {
-    const [errors, setErrors] = useState([]);
 
     const [formData, setFormData] = useState({
         name_en: "",
@@ -48,23 +47,9 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         }));
     };
 
-    const validateForm = () => {
-        const errors = [];
-        if (!formData.name_en) errors.push("Name English is required.");
-        if (!formData.name_ar) errors.push("Name Arabic is required.");
-        if (!formData.slug) errors.push("Slug is required.");
-        if (!formData.status) errors.push("Status is required.");
-        return errors;
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
       
-        const validationErrors = validateForm();
-        if (validationErrors.length > 0) {
-          setErrors(validationErrors);
-          return;
-        }
         try {
           if (branchData) {
             const res = await axios.put(updateBranchById(branchData.id),formData);
@@ -85,19 +70,15 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
       
             onAddBranch(res.data);
           }
-        } catch (error) {
-            toast.error(
-              error?.response?.data?.message || "Something went wrong!"
-            );
-          }          
+        }catch (error) {
+            const backendMessage =
+              error?.response?.data?.message ||
+              error?.response?.data?.errors?.[0] ||
+              "Something went wrong!";
+          
+            toast.error(backendMessage);
+        }        
     };
-
-    useEffect(() => {
-        if (errors.length) {
-          errors.forEach((err) => toast.error(err));
-          setErrors([]);
-        }
-    }, [errors]);
 
     return (
         <form className="mt-0" onSubmit={handleSubmit}>

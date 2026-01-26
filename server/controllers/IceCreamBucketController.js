@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class IceCreamBucketController {
 
-    static async createIceCreamBucket(req, res) {
+    static async createIceCreamBucket(req, res, next) {
         try {
             const {name_en,name_ar,slug,size,price,calories,status} = req.body;
 
@@ -22,22 +22,10 @@ class IceCreamBucketController {
             });
             return res.status(201).json(iceCreamBucket);
     
-        } catch (error) {
-            return res.status(500).json({
-                message: "Failed to create Ice Cream Bucket",
-                error: error.message
-            });
+        }catch (error) {
+            next(error);
         }
     }
-
-    // static async getAllIceCreamBucket(req, res) {
-    //     try {
-    //         const iceCreamBucket = await IceCreamBucket.findAll();
-    //         res.status(200).json({iceCreamBucket})
-    //     } catch(error) {
-    //         res.status(500).json({message: "Failed to get Ice Cream Bucket", error: error.message});
-    //     } 
-    // }
 
     static async getAllIceCreamBucket(req, res) {
         const { page, limit, offset } = getPagination(req);
@@ -91,7 +79,7 @@ class IceCreamBucketController {
         }
     }
 
-    static async updateIceCreamBucketById(req, res) {
+    static async updateIceCreamBucketById(req, res, next) {
         const { id } = req.params;
         try {
             const iceCreamBucket = await IceCreamBucket.findByPk(id);
@@ -124,8 +112,8 @@ class IceCreamBucketController {
 
             return res.status(200).json(iceCreamBucket);
     
-        } catch (error) {
-            return res.status(500).json({message: "Failed to update Ice Cream Bucket",error: error.message});
+        }catch (error) {
+            next(error);
         }
     }
 

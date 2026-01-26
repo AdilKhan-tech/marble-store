@@ -4,9 +4,7 @@ import axios from "axios";
 import { createIceCreamAddOn, updateIceCreamAddOnById } from "@/utils/apiRoutes";
 
 const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamAddon, onUpdateIceCreamAddon }) => {
-  const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -14,7 +12,7 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
     type:"",
     status: "Active",
   });
-  // Load existing data
+  
   useEffect(() => {
     if (IceCreamAddonData) {
       setFormData({
@@ -39,21 +37,8 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.type) errors.push("Ice Cream Addon Type is require")
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -67,7 +52,6 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
           payload.append("image_url", selectedFiles[0]);
         });
       }
-
       if (IceCreamAddonData) {
         const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), payload);
 
@@ -83,7 +67,6 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
               id: IceCreamAddonData.id,
             });
           }
-
           closePopup();
         }
       }
@@ -101,19 +84,15 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
           closePopup();
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-
-
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

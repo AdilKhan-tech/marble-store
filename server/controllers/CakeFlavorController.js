@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CakeFlavorController {
     
-    static async createCakeFlavor(req, res) {
+    static async createCakeFlavor(req, res, next) {
        try {
         const { name_en, name_ar, custom_cake_type_id, slug, additional_price, symbol, status } = req.body
 
@@ -23,7 +23,7 @@ class CakeFlavorController {
         
         return res.status(201).json(cakeflavors);
         } catch (error) {
-            return res.status(500).json({ message: "Failed to create cake flavor", error: error.message});
+          next(error);
         }
     }
 
@@ -93,7 +93,7 @@ class CakeFlavorController {
       }
     }
 
-    static async updateCakeFlavorById(req, res) {
+    static async updateCakeFlavorById(req, res, next) {
         const { id } = req.params;
         try {
             const cakeflavors = await CakeFlavor.findByPk(id);
@@ -120,8 +120,8 @@ class CakeFlavorController {
                 cakeflavors
             });
     
-        } catch (error) {
-            return res.status(500).json({ message: "Failed to update cake flavor", error: error.message });
+        }catch (error) {
+          next(error);
         }
     }
 

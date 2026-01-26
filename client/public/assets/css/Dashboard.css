@@ -298,13 +298,12 @@ table tr:nth-child(even) td {
   scrollbar-width:none;
   -ms-overflow-style:none;
   height: 100vh;
-  border-right: 1px solid #eaeaea;
+  border-right: 1px solid #EAEAEA;
   transition: 0.5s ease;
   z-index: 1000;
   overflow-y: auto;
   overflow-x: hidden;
 }
-
 body.sidebar-collapsed .dashboard-sidebar {
   width: 90px;
 }

@@ -3,7 +3,7 @@ const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
 class IceCreamPortionSizeController {
-  static async createIceCreamPortionSize(req, res) {
+  static async createIceCreamPortionSize(req, res, next) {
     try {
       const {icecream_bucket_id, name_en, name_ar, slug, additional_price, calories, status} = req.body;
 
@@ -21,8 +21,8 @@ class IceCreamPortionSizeController {
       });
       return res.status(201).json(iceCreamPortionSize);
 
-    } catch (error) {
-      return res.status(500).json({ message: "Failed to create IceCream Portion Size", error: error.message });
+    }catch (error) {
+      next(error);
     }
   }
 
@@ -88,7 +88,7 @@ class IceCreamPortionSizeController {
     }
   }
 
-  static async updateIceCreamPortionSize(req, res) {
+  static async updateIceCreamPortionSize(req, res, next) {
     const { id } = req.params;
     try {
       const iceCreamPortionSize = await IceCreamPortionSize.findByPk(id);
@@ -113,8 +113,8 @@ class IceCreamPortionSizeController {
 
       return res.status(200).json(iceCreamPortionSize);
 
-    } catch (error) {
-        return res.status(500).json({message: "Failed to update Ice Cream Portion Size",error: error.message});
+    }catch (error) {
+      next(error);
     }
   }
 

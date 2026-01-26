@@ -9,7 +9,6 @@ import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCustomCakeTyp
 function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdateCustomCakeFlavor , onAddCustomCakeFlavor }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
-  const [errors , setErrors] = useState([]);
   const [customCakeTypes , setCustomCakeTypes] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -35,21 +34,8 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.custom_cake_type_id) errors.push("Custom cake type is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -90,7 +76,6 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
           closePopup();
         }
       }
-  
       // ================= CREATE =================
       else {
         const res = await axios.post(createCustomCakeFlavor, payload);
@@ -115,19 +100,15 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
             onAddCustomCakeFlavor(createdCustomCakeFlavor);
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message ||"Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-  
-
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
 
   const fetchAllCustomCakeType = async () => {
     try {
@@ -141,7 +122,8 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
   useEffect (() =>{
     if (!token) return;
     fetchAllCustomCakeType();
-  },[token])
+  },[token]);
+
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">

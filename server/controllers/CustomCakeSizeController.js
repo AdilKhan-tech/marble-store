@@ -3,7 +3,7 @@ const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
 class CustomCakeSizeController {
-  static async createCustomCakeSize(req, res) {
+  static async createCustomCakeSize(req, res, next) {
     try {
       const {name_en,name_ar,cake_type_id,slug,portion_size,sort,calories,status,} = req.body;
       const image_url = req.file?.path || null;
@@ -21,12 +21,7 @@ class CustomCakeSizeController {
       });
       return res.status(200).json(customCakeSize);
     } catch (error) {
-      return res
-        .status(500)
-        .json({
-          message: "Failed to create Custom Cake Size",
-          error: error.message,
-        });
+      next(error);
     }
   }
 
@@ -97,7 +92,7 @@ class CustomCakeSizeController {
     }
   }
 
-  static async updateCustomCakeSizeById(req, res) {
+  static async updateCustomCakeSizeById(req, res, next) {
     const { id } = req.params;
     try {
       const customCakeSize = await CustomCakeSize.findByPk(id);
@@ -120,8 +115,8 @@ class CustomCakeSizeController {
         image_url: image_url ?? customCakeSize.image_url,
       });
       return res.status(200).json({message: "Custom cake size updated successfully.",customCakeSize,});
-    } catch (error) {
-      return res.status(500).json({message: "Failed to update custom cake size",error: error.message,});
+    }catch (error) {
+      next(error);
     }
   }
 

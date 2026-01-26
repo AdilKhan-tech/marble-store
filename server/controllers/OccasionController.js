@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class OccasionController {
 
-    static async createOccasion (req, res) {
+    static async createOccasion (req, res, next) {
         try{
             const { name_en, name_ar,parent_ocassion, slug} = req.body;
 
@@ -18,9 +18,8 @@ class OccasionController {
                 image_url,
             });
             return res.status(201).json(occasion);
-        }
-        catch (error) {
-            res.status(500).json({message: "Failed to create occasion", error: error.message});
+        }catch (error) {
+          next(error);
         }
     }
 
@@ -76,7 +75,7 @@ class OccasionController {
         }
     }
 
-    static async updateOccasionById(req, res) {
+    static async updateOccasionById(req, res, next) {
         const { id } = req.params;
         try {
           const occasion = await Occasion.findByPk(id);
@@ -97,8 +96,8 @@ class OccasionController {
     
           return res.status(200).json(occasion);
     
-        } catch (error) {
-            return res.status(500).json({ message: error.message });
+        }catch (error) {
+          next(error);
         }
     }
 

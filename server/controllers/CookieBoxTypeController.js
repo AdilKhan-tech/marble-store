@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CookieBoxTypeController {
 
-    static async createCookieBoxType (req, res){
+    static async createCookieBoxType (req, res, next){
         try {
             const {name_en, name_ar, slug, sort, status} = req.body;
 
@@ -21,10 +21,7 @@ class CookieBoxTypeController {
             return res.status(201).json(cookiesTypes);
 
         } catch(error) {
-            return res.status(500).json({
-                message: "Failed to create Cookies Types",
-                error: error.message
-            });
+            next(error);
         }
     }
 
@@ -79,7 +76,7 @@ class CookieBoxTypeController {
         }
     }
 
-    static async updateCookieBoxTypeById(req, res) {
+    static async updateCookieBoxTypeById(req, res, next) {
         const { id } = req.params;
         try {
             const cookiesTypes = await CookieBoxType.findByPk(id);
@@ -103,7 +100,7 @@ class CookieBoxTypeController {
             return res.status(200).json({message: "Cookies Types updated successfully",cookiesTypes});
     
         } catch (error) {
-            return res.status(500).json({message: "Failed to update Cookies Types",error: error.message});
+            next(error);
         }
     }
 

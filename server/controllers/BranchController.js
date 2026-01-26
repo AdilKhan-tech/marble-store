@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class BranchController {
     
-    static async createBranch(req, res) {
+    static async createBranch(req, res, next) {
         try {
             const {name_en, name_ar, slug, city, address, latitude, longitude, number, timing, branch_store_id, status} = req.body;
 
@@ -24,22 +24,9 @@ class BranchController {
 
             return res.status(200).json(branch);
         } catch (error) {
-            return res.status(500).json({
-                message: "Failed to create branch",
-                error: error.message
-            });
+          next(error);
         }
     }
-
-    // static async getAllBranches(req, res) {
-    //     try {
-    //       const branch = await Branch.findAll();
-      
-    //       return res.status(200).json(branch);
-    //     } catch (error) {
-    //         res.status(500).json({message: "Failed to get Branches", error: error.message});
-    //     }
-    // }
 
     static async getAllBranches(req, res) {
 
@@ -101,7 +88,7 @@ class BranchController {
         }
     }
 
-    static async updateBranchById(req, res) {
+    static async updateBranchById(req, res, next) {
         const { id } = req.params;
         try {
             const branch = await Branch.findByPk(id);
@@ -139,7 +126,7 @@ class BranchController {
             return res.status(200).json({message: "Branch updated successfully",branch});
     
         } catch (error) {
-            return res.status(500).json({ message: "Failed to update Branch", error: error.message });
+          next(error);
         }
     }
 

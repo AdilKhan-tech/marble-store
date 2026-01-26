@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 class CookieBoxSizeController {
     
-    static async createCookieBoxSize (req, res) {
+    static async createCookieBoxSize (req, res, next) {
         try {
             const {name_en, name_ar, cookie_type_id, slug, portion_size, price, symbol, calories, status} = req.body;
 
@@ -25,10 +25,7 @@ class CookieBoxSizeController {
 
             return res.status(201).json(cookiesBoxSize);
         } catch(error) {
-            return res.status(500).json({
-                message: "Failed to create Cookies Box Size",
-                error: error.message
-            });
+            next(error);
         }
     }
 
@@ -92,7 +89,7 @@ class CookieBoxSizeController {
         }
     }
 
-    static async updateCookieBoxSizeById(req, res) {
+    static async updateCookieBoxSizeById(req, res, next) {
         const { id } = req.params;
         try {
             const cookiesBoxSize = await CookieBoxSize.findByPk(id);
@@ -130,7 +127,7 @@ class CookieBoxSizeController {
             return res.status(200).json({message: "Cookies box size updated successfully",cookiesBoxSize});
     
         } catch (error) {
-            return res.status(500).json({message: "Failed to update Cookies box size",error: error.message});
+            next(error);
         }
     }
 
