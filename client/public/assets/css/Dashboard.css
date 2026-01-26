@@ -304,7 +304,6 @@ table tr:nth-child(even) td {
   overflow-y: auto;
   overflow-x: hidden;
 }
-
 body.sidebar-collapsed .dashboard-sidebar {
   width: 90px;
 }
