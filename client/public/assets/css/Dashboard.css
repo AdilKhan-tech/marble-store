@@ -294,10 +294,15 @@ table tr:nth-child(even) td {
 }
 .dashboard-sidebar {
   width: 300px;
-  height: auto;
-  overflow-y: visible;
-  transition: 0.5s ease;
+  overflow-y:auto;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  height: 100vh;
   border-right: 1px solid #eaeaea;
+  transition: 0.5s ease;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body.sidebar-collapsed .dashboard-sidebar {

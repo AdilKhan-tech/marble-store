@@ -35,6 +35,11 @@ export default function Page() {
     setShowOffcanvas(true);
   }
 
+  const closePopup = () => {
+    setShowOffcanvas(false);
+    
+  };
+
   if (!product) return <p className="mt-5">Loading...</p>;
 
   return (
@@ -197,6 +202,7 @@ export default function Page() {
           <hr  className="mt-0"/>
           <Offcanvas.Body>
             <ProductUpdate
+            closePopup={closePopup}
             productData = {productData}
             />
           </Offcanvas.Body>
