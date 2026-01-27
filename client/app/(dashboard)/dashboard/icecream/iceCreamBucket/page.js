@@ -282,8 +282,8 @@ export default function IceCreamBucketPage() {
               <AddIceCreamBucket
                 closePopup={closePopup}
                 iceCreamBucketData={iceCreamBucketData}
-                addIceCreamBucket={addIceCreamBucket}
-                updateIceCreamBucket={updateIceCreamBucket}
+                onAddIceCreamBucket={addIceCreamBucket}
+                onUpdateIceCreamBucket={updateIceCreamBucket}
               >
                 </AddIceCreamBucket>
             </Offcanvas.Body>

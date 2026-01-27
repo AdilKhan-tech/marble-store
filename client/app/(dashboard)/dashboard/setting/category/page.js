@@ -110,13 +110,12 @@ export default function Category() {
   const updateCategory = (updatedCategory) => {
     setCategories((prev) =>
       prev.map((Category) =>
-        Category.id === updatedCategory.id
-          ? { ...Category, ...updatedCategory }
-          : Category
+        Category.id === updatedCategory.id ? updatedCategory : Category
       )
     );
     setShowOffcanvas(false);
   };
+
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
 

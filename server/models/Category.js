@@ -12,8 +12,7 @@ const Category = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notNull: { msg: "English name is required" },
-        notEmpty: { msg: "English name cannot be empty" },
+        notEmpty: { msg: "English name is required" },
         len: {
           args: [2, 100],
           msg: "English name must be between 2 and 100 characters",
@@ -28,8 +27,7 @@ const Category = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notNull: { msg: "Name english is required" },
-        notEmpty: { msg: "Name english cannot be empty" },
+        notEmpty: { msg: "Name english is required" },
         len: {
           args: [2, 100],
           msg: "Name arabic must be betwwen 2 and 100 characters",
@@ -57,15 +55,15 @@ const Category = sequelize.define(
     parent_category: {
       type: DataTypes.STRING(100),
       allowNull: true,
-      validate: {
-        isInt: {
-          msg: "Parent category must be a number",
-        },
-        min: {
-          args: [1],
-          msg: "Parent category must be greater than 0",
-        },
-      },
+      // validate: {
+      //   isInt: {
+      //     msg: "Parent category must be a number",
+      //   },
+      //   min: {
+      //     args: [1],
+      //     msg: "Parent category must be greater than 0",
+      //   },
+      // },
     },
     display_type: {
       type: DataTypes.ENUM("Defult", "Products", "Subcategories", "Both"),

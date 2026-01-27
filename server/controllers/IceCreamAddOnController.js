@@ -76,25 +76,25 @@ class IceCreamAddOnController {
   static async updateIceCreamAddOnById(req, res, next) {
     const { id } = req.params;
     try {
-      const iceCreamaddon = await IceCreamAddOn.findByPk(id);
-      if(!iceCreamaddon) {
+      const iceCreamAddOn = await IceCreamAddOn.findByPk(id);
+      if(!iceCreamAddOn) {
         return res.status(404).json({ message: "IceCream AddOn not found" });
       }
 
       const { name_en, name_ar, slug, type, status, } = req.body;
 
-      const image_url = req.file?.path || iceCreamaddon.image_url;
+      const image_url = req.file?.path || iceCreamAddOn.image_url;
 
-      await iceCreamaddon.update({
-        name_en: name_en ?? iceCreamaddon.name_en,
-        name_ar: name_ar ?? iceCreamaddon.name_ar,
-        slug: slug ?? iceCreamaddon.slug,
-        type: type ?? iceCreamaddon.type,
-        status: status ?? iceCreamaddon.status,
+      await iceCreamAddOn.update({
+        name_en: name_en ?? iceCreamAddOn.name_en,
+        name_ar: name_ar ?? iceCreamAddOn.name_ar,
+        slug: slug ?? iceCreamAddOn.slug,
+        type: type ?? iceCreamAddOn.type,
+        status: status ?? iceCreamAddOn.status,
         image_url: image_url
       });
 
-      return res.status(200).json({message: "IceCream AddOn updated successfully",iceCreamaddon});
+      return res.status(200).json({message: "IceCream AddOn updated successfully",iceCreamAddOn});
 
     }catch (error) {
       next(error);

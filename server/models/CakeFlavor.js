@@ -12,40 +12,37 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
         type: DataTypes.STRING(55),
         allowNull: false,
         validate: {
-            notNull: { msg: "Name English is  required" },
-            notEmpty: { msg: "Name English cannot be empty"},
+            notEmpty: { msg: "Name English is required" },
             len: {
-                args: [2, 55],
-                msg: "Name English must be between 2 and 55 characters"
+              args: [2, 55],
+              msg: "Name English must be between 2 and 55 characters",
             },
             is: {
-                args: /^[A-Za-z\s]+$/,
-                msg: "Name English must contain only letters",
+              args: /^[A-Za-z\s]+$/,
+              msg: "Name English must contain only letters",
             },
-        }
+          },
     },
     name_ar: {
         type: DataTypes.STRING(55),
         allowNull: false,
         validate: {
-            notNull: { msg: "Name Arabic is required" },
-            notEmpty: { msg: "Name Arabic cannot be empty" },
+            notEmpty: {msg: "Name Arabic is required" },
             len: {
-                args: [2, 55],
-                msg: "Name Arabic must be between 2 and 55 characters "
+              args: [2, 55],
+              msg: "Name Arabic must be between 2 and 55 characters",
             },
             is: {
-                args: /^[A-Za-z\s]+$/,
-                msg: "Name Arabic must contain only letters",
+              args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
+              msg: "Name Arabic must contain only Arabic or English letters",
             },
-        }
+        },
     },
     custom_cake_type_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            isInt: {msg: "Cake Type ID must be an integer"},
-            notNull: {msg: "Cake Type ID is required"},
+            notEmpty: {msg: "Cake Type is required"},
         },
     },
     slug: {

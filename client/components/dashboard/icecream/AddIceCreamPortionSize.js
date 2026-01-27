@@ -5,11 +5,9 @@ import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
 import { createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCreamBuckets } from "@/utils/apiRoutes";
 
-
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [iceCreamBuckets, setIceCreamBuckets] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -21,7 +19,6 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     status: "active",
   });
 
-  // Load existing data
   useEffect(() => {
     if (iceCreamPortionData) {
       setFormData({
@@ -61,26 +58,8 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.icecream_bucket_id)
-      errors.push("Icecream Bucket ID is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.additional_price)
-      errors.push("Additional price is required.");
-    if (!formData.calories) errors.push("Calories is required.");
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
 
     try {
       const payload = new FormData();
@@ -103,17 +82,16 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
           onAddIceCreamPortionSize(res.data);
         }
       }
-    } catch (error) {
-      setErrors([error?.response?.data?.message || "Something went wrong!"]);
+    }catch (error) {
+          const backendMessage =
+            error?.response?.data?.message ||
+            error?.response?.data?.errors?.[0] ||
+            "Something went wrong!";
+        
+          toast.error(backendMessage);
     }
   };
 
-  useEffect(() => {
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group">

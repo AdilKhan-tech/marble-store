@@ -110,7 +110,7 @@ class IceCreamBucketController {
                 image_url: image_url
             });
 
-            return res.status(200).json(iceCreamBucket);
+            return res.status(200).json({message: "IceCream Bucket updated successfully",iceCreamBucket});
     
         }catch (error) {
             next(error);

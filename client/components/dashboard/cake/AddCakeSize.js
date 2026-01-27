@@ -8,7 +8,6 @@ import { createCakeSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/uti
 
 const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
-  // const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
@@ -23,7 +22,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     status: "active",
   });
 
-  // Load existing data
   useEffect(() => {
     if (cakeSizeData) {
       setFormData({

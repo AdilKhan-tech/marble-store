@@ -6,7 +6,6 @@ import { createCustomCakeType, updateCustomCakeTypeById } from "@/utils/apiRoute
 
 const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomCakeType, onUpdateCustomCakeType }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-
   const [formData, setFormData] = useState({
     id: null,
     name_en: "",
@@ -55,9 +54,9 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       }
 
       //------------ UPDATE 
-      if (formData.id) {
+      if (customCakeTypeData) {
         const res = await axios.put(
-          updateCustomCakeTypeById(formData.id),
+          updateCustomCakeTypeById(customCakeTypeData.id),
           payload
         );
 

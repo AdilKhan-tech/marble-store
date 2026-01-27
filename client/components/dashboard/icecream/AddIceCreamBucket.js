@@ -5,9 +5,8 @@ import axios from "axios";
 import {createIceCreamBucket,updateIceCreamBucketById,} from "@/utils/apiRoutes";
 import React from "react";
 
-const AddIceCreamBucket = ({closePopup,iceCreamBucketData,addIceCreamBucket,updateIceCreamBucket,}) => {
+const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,onUpdateIceCreamBucket}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -17,7 +16,7 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,addIceCreamBucket,upda
     calories: "",
     status: "active",
   });
-  // Load existing data
+  
   useEffect(() => {
     if (iceCreamBucketData) {
       setFormData({
@@ -31,60 +30,65 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,addIceCreamBucket,upda
       });
     }
   }, [iceCreamBucketData]);
+
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-  //validation
-  const validateForm = () => {
-    const errors = [];
-    if (!formData.name_en) errors.push("Name English is required.");
-    if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.size) errors.push("Size is required.");
-    if (!formData.price) errors.push("Price is required.");
-    if (!formData.calories) errors.push("Calories is required.");
-    return errors;
-  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+
     try {
       const payload = new FormData();
-      Object.entries(formData).forEach(([key, value]) =>
-        payload.append(key, value)
-      );
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "id") {
+          payload.append(key, value);
+        }
+      });
+
       if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
+
+      //------------ UPDATE 
       if (iceCreamBucketData) {
-        const res = await axios.put( updateIceCreamBucketById(iceCreamBucketData.id), payload);
-        if (res.status === 200 || res.status === 201) {
-          toast.success("Ice Cream Bucket updated successfully!", { autoClose: 1000,onClose: closePopup, });
-        updateIceCreamBucket(res.data);
-        }
-      } else {
-        // Create new Ice Cream Bucket
-        const response = await axios.post(createIceCreamBucket, payload);
-        if (response.status === 200 || response.status === 201) {
-          toast.success("Ice Cream Bucket added successfully!", { autoClose: 1000, onClose: closePopup,});
-          addIceCreamBucket(response.data);
+        const res = await axios.put(updateIceCreamBucketById(iceCreamBucketData.id), payload);
+
+        if (res.status === 200) {
+          toast.success("IceCream Bucket updated successfully!");
+
+          if (onUpdateIceCreamBucket) {
+            onUpdateIceCreamBucket(res.data.iceCreamBucket);
+          }
+
+          closePopup();
         }
       }
-    } catch (error) {
-      console.error("Error saving Ice Cream Bucket:", error);
-      toast.error("Failed to save Ice Cream Bucket.");
+
+      // ------------CREATE 
+      else {
+        const res = await axios.post(createIceCreamBucket, payload);
+
+        if (res.status === 201 || res.status === 200) {
+          toast.success("IceCream Bucket added successfully!");
+
+          if (onAddIceCreamBucket) {
+            onAddIceCreamBucket(res.data);
+          }
+
+          closePopup();
+        }
+      }
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
-  useEffect(() => {
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
+  
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
       <div className="form-group mt-3">

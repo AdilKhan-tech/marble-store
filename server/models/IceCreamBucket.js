@@ -13,8 +13,7 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name English is required" },
-      notEmpty: { msg: "Name English cannot be empty" },
+      notEmpty: { msg: "Name English is required" },
       len: {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
@@ -30,8 +29,7 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name Arabic is required" },
-      notEmpty: {msg: "Name Arabic cannot be empty" },
+      notEmpty: { msg: "Name Arabic is required" },
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",
@@ -58,8 +56,7 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
     type: DataTypes.STRING(50),
     allowNull: false,
     validate: {
-        notNull: { msg: "Size is required" },
-        notEmpty: { msg: "Size cannot be empty" },
+        notEmpty: { msg: "Size is required" },
     },
   },
 
@@ -67,7 +64,7 @@ const IceCreamBucket = sequelize.define("IceCreamBucket", {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
     validate: {
-      notNull: { msg: "Price is required" },
+      notEmpty: { msg: "Price is required" },
       isDecimal: {
         msg: "Price must be a valid decimal value",
       },

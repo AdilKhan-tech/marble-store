@@ -44,23 +44,31 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
       }
 
       if (categoryData) {
-        const response = await axios.put(UpdateCategoryById(categoryData.id),  payload  );
-        if (response.status === 200 || response.status === 201) {
-          toast.success("Category updated successfully!", {autoClose: 1000, onClose: closePopup, });
+        const res = await axios.put(UpdateCategoryById(categoryData.id), payload);
+
+        if (res.status === 200) {
+          toast.success("Category updated successfully!", {
+            autoClose: 1000,
+          });
+
           if (onUpdateCategory) {
-            onUpdateCategory({
-              ...categoryData,
-              ...formData,
-              id: categoryData.id,
-            });
+            onUpdateCategory(res.data);
           }
+
+          closePopup();
         }
-      } else {
-        // Create new Custom Cake Size
-        const response = await axios.post(createCategory, payload);
-        if (response.status === 200 || response.status === 201) {
-          toast.success("Custom Cake Size added successfully!", {autoClose: 1000, onClose: closePopup, });
-         onAddCategory (response.data);
+      }
+      else {
+        const res = await axios.post(createCategory, payload);
+
+        if (res.status === 201 || res.status === 200) {
+          toast.success("Category added successfully!", {autoClose: 1000, onClose: closePopup, });
+
+          if (onAddCategory) {
+            onAddCategory(res.data);
+          }
+
+          closePopup();
         }
       }
     }catch (error) {

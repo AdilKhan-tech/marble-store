@@ -123,7 +123,7 @@ class BranchController {
                 status: status ?? branch.status,
             });
     
-            return res.status(200).json({message: "Branch updated successfully",branch});
+            return res.status(200).json(branch);
     
         } catch (error) {
           next(error);

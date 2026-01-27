@@ -63,7 +63,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
           toast.success("Cake Portion Size updated successfully!");
 
           if (onUpdateCakePortionSize) {
-            onUpdateCakePortionSize(res.data.cakePortionSize);
+            onUpdateCakePortionSize(res.data);
           }
 
           closePopup();

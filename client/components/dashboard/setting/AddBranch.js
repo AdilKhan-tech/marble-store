@@ -59,7 +59,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
               onClose: closePopup,
             });
       
-            onUpdateBranch(res.data.branch);
+            onUpdateBranch(res.data);
           } else {
             const res = await axios.post(createBranch, formData);
       

@@ -48,25 +48,20 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
+        if (selectedFiles.length > 0) {
           payload.append("image_url", selectedFiles[0]);
-        });
+        }
       }
       if (IceCreamAddonData) {
         const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), payload);
 
         if (res.status === 200) {
-          toast.success("icecream Addon updated successfully!", {
-            autoClose: 1000,
-          });
+          toast.success("Icecream Addon updated successfully!");
 
           if (onUpdateIceCreamAddon) {
-            onUpdateIceCreamAddon({
-              ...IceCreamAddonData,
-              ...formData,
-              id: IceCreamAddonData.id,
-            });
+            onUpdateIceCreamAddon(res.data.iceCreamAddOn);
           }
+
           closePopup();
         }
       }

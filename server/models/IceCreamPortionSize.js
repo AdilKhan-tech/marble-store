@@ -12,8 +12,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "English name is required" },
-      notEmpty: { msg: "English name cannot be empty" },
+      notEmpty: { msg: "English name is required" },
       len: {
         args: [2, 55],
         msg: "English name must be between 2 and 55 characters",
@@ -24,11 +23,14 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Arabic name is required" },
-      notEmpty: { msg: "Arabic name cannot be empty" },
+      notEmpty: { msg: "Name arabic is required" },
       len: {
         args: [2, 55],
-        msg: "Arabic name must be between 2 and 55 characters",
+        msg: "Name arabic must be between 2 and 55 characters",
+      },
+      is: {
+        args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
+        msg: "Name Arabic must contain only Arabic or English letters",
       },
     },
   },
@@ -36,7 +38,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
-      notNull: { msg: "Ice cream bucket ID is required" },
+      notEmpty: { msg: "Ice cream bucket is required" },
       isInt: { msg: "Ice cream bucket ID must be an integer" },
     },
   },
@@ -44,8 +46,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Slug is required" },
-      notEmpty: { msg: "Slug cannot be empty" },
+      notEmpty: { msg: "Slug is required" },
       is: {
         args: /^[a-z0-9-]+$/i,
         msg: "Slug must contain only letters, numbers and hyphens",
@@ -57,7 +58,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     allowNull: false,
     defaultValue: 0,
     validate: {
-      notNull: { msg: "Additional price is required" },
+      notEmpty: { msg: "Additional price is required" },
       min: {
         args: [0],
         msg: "Additional price must be greater than or equal to 0",

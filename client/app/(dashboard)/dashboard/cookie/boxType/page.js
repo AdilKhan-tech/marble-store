@@ -14,7 +14,7 @@ import Common from "@/utils/Common"
 export default function CookieBoxTypePage() {
 
   const {token} = useAxiosConfig();
-  const [cookieBoxType, setCookieBoxType] = useState([]);
+  const [cookieBoxType, setCookieBoxTypes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cookieBoxTypeData, setCookieBoxTypeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -38,7 +38,7 @@ export default function CookieBoxTypePage() {
         sortField,
       }
       const response = await axios.get(getAllCookieBoxTypes, { params })
-      setCookieBoxType(response?.data?.data);
+      setCookieBoxTypes(response?.data?.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     }catch (error){
@@ -87,7 +87,7 @@ export default function CookieBoxTypePage() {
       const response = await axios.delete(deleteCookieBoxTypeById(typeId));
       if(response.status === 200) {
         toast.success("Cookie box Type deleted successfully!", { autoClose: 1000 });
-        setCookieBoxType((prev) => prev.filter((type) => type.id !== typeId));
+        setCookieBoxTypes((prev) => prev.filter((type) => type.id !== typeId));
       }
     }catch (error){
       toast.error("Failed to delete Cookie box type.");
@@ -102,14 +102,14 @@ export default function CookieBoxTypePage() {
   }
 
   const addCookieBoxType = (newCookie) => {
-    setCookieBoxType(prev => [newCookie, ...prev]);
+    setCookieBoxTypes(prev => [newCookie, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const updateCookieBoxType = (updatedCookie) => {
-    setCookieBoxType((prev) =>
-      prev.map((cookie) =>
-        cookie.id === updatedCookie.id ? { ...cookie, ...updatedCookie } : cookie
+  const updateCookieBoxType = (updatedCookieBoxTypes) => {
+    setCookieBoxTypes((prev) =>
+      prev.map((cookieBoxType) =>
+        cookieBoxType.id === updatedCookieBoxTypes.id ? updatedCookieBoxTypes : cookieBoxType
       )
     );
     setShowOffcanvas(false);

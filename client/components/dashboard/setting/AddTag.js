@@ -31,7 +31,7 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
           autoClose: 1000,
           onClose: closePopup,
         });
-        onUpdateTag(res.data.tag);
+        onUpdateTag(res.data);
       } else {
         const res = await axios.post(createTag, formData);
         toast.success("Tag created successfully", {
