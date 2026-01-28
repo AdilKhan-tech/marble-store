@@ -12,8 +12,7 @@ const Branch = sequelize.define("Branch", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name English is required" },
-      notEmpty: { msg: "Name English cannot be empty" },
+      notEmpty: { msg: "Name English is required" },
       len: {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
@@ -29,8 +28,7 @@ const Branch = sequelize.define("Branch", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name Arabic is required" },
-      notEmpty: {msg: "Name Arabic cannot be empty" },
+      notEmpty: {msg: "Name Arabic is required" },
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",
@@ -57,8 +55,7 @@ const Branch = sequelize.define("Branch", {
     type: DataTypes.STRING(100),
     allowNull: false,
     validate: {
-      notNull: { msg: "City is required" },
-      notEmpty: {msg: "City cannot be empty" },
+      notEmpty: {msg: "City is required" },
     },
   },
 
@@ -66,8 +63,7 @@ const Branch = sequelize.define("Branch", {
     type: DataTypes.TEXT,
     allowNull: false,
     validate: {
-      notNull: { msg: "Address is required" },
-      notEmpty: { msg: "Address cannot be empty" },
+      notEmpty: { msg: "Address is required" },
     } 
   },
 

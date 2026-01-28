@@ -8,8 +8,8 @@ import { createCakeSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/uti
 
 const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
-  // const [errors, setErrors] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -23,7 +23,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     status: "active",
   });
 
-  // Load existing data
   useEffect(() => {
     if (cakeSizeData) {
       setFormData({
@@ -65,8 +64,31 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.custom_cake_type_id)
+      errors.push("Cake type is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.scoop_size) errors.push("Scoop size is required.");
+    if (!formData.additional_price)
+      errors.push("Additional price is required.");
+    if (!formData.calories) errors.push("Calories is required.");
+    if (!formData.status) errors.push("Status is required.");
+  
+    return errors;
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
+
     try {
       const payload = new FormData();
   
@@ -139,6 +161,13 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

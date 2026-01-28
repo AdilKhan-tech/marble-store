@@ -10,7 +10,7 @@ class CakeFlavorController {
 
         const image_url = req.file?.path || null;
 
-        const cakeflavors = await CakeFlavor.create({
+        const cakeFlavor = await CakeFlavor.create({
             name_en,
             name_ar,
             custom_cake_type_id,
@@ -21,7 +21,7 @@ class CakeFlavorController {
             image_url,
         });
         
-        return res.status(201).json(cakeflavors);
+        return res.status(201).json(cakeFlavor);
         } catch (error) {
           next(error);
         }
@@ -96,28 +96,28 @@ class CakeFlavorController {
     static async updateCakeFlavorById(req, res, next) {
         const { id } = req.params;
         try {
-            const cakeflavors = await CakeFlavor.findByPk(id);
-            if (!cakeflavors) {
+            const cakeFlavor = await CakeFlavor.findByPk(id);
+            if (!cakeFlavor) {
                 return res.status(404).json({ message: "Cake flavor not found" });
             }
             const {name_en,name_ar,custom_cake_type_id,slug,additional_price,symbol,status} = req.body;
 
-            const image_url = req.file?.path || cakeflavors.image_url;
+            const image_url = req.file?.path || cakeFlavor.image_url;
 
-            await cakeflavors.update({
-                name_en: name_en ?? cakeflavors.name_en,
-                name_ar: name_ar ?? cakeflavors.name_ar,
-                custom_cake_type_id: custom_cake_type_id ?? cakeflavors.custom_cake_type_id,
-                slug: slug ?? cakeflavors.slug,
-                additional_price: additional_price ?? cakeflavors.additional_price,
-                symbol: symbol ?? cakeflavors.symbol,
-                status: status ?? cakeflavors.status,
+            await cakeFlavor.update({
+                name_en: name_en ?? cakeFlavor.name_en,
+                name_ar: name_ar ?? cakeFlavor.name_ar,
+                custom_cake_type_id: custom_cake_type_id ?? cakeFlavor.custom_cake_type_id,
+                slug: slug ?? cakeFlavor.slug,
+                additional_price: additional_price ?? cakeFlavor.additional_price,
+                symbol: symbol ?? cakeFlavor.symbol,
+                status: status ?? cakeFlavor.status,
                 image_url: image_url
             });
     
             return res.status(200).json({
-                message: "Cake flavor updated successfully",
-                cakeflavors
+              message: "Cake flavor updated successfully",
+              cakeFlavor
             });
     
         }catch (error) {
@@ -128,11 +128,11 @@ class CakeFlavorController {
     static async deleteCakeFlavorById(req,res) {
         const { id } = req.params; 
         try {
-            const cakeflavors = await CakeFlavor.findByPk(id);
-            if (!cakeflavors) {
+            const cakeFlavor = await CakeFlavor.findByPk(id);
+            if (!cakeFlavor) {
                 return res.status(404).json({ message: "Cake flavor not found" });
             }
-            await cakeflavors.destroy();
+            await cakeFlavor.destroy();
             return res.status(200).json({ message: "Cake flavor deleted successfully" });
         }
         catch (error) {

@@ -111,9 +111,7 @@ export default function CakePortionSizePage() {
   const updateCakePortionSize = (updatedCakePortionSize) => {
     setCakePortionSizes((prev) =>
       prev.map((cakePortionSize) =>
-        cakePortionSize.id === updatedCakePortionSize.id
-          ? { ...cakePortionSize, ...updatedCakePortionSize }
-          : cakePortionSize
+        cakePortionSize.id === updatedCakePortionSize.id ? updatedCakePortionSize : cakePortionSize
       )
     );
     setShowOffcanvas(false);

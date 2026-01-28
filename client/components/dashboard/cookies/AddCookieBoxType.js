@@ -45,17 +45,18 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
 
   const validateForm = () => {
     const errors = [];
+  
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.sort) errors.push("Sort is required.");
-    if (!formData.status) errors.push("Status is required.");
+  
     return errors;
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
@@ -68,10 +69,9 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
 
       if (cookieBoxTypeData) {
         const res = await axios.put(updateCookieTypeById(cookieBoxTypeData.id), payload);
@@ -82,42 +82,43 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
           });
 
           if (onUpdateCookieBoxType) {
-            onUpdateCookieBoxType({
-              ...cookieBoxTypeData,
-              ...formData,
-              id: cookieBoxTypeData.id,
-            });
+            onUpdateCookieBoxType(res.data.cookieBoxType);
           }
 
           closePopup();
         }
       }
+      
       //  CREATE
       else {
         const res = await axios.post(createCookieBoxType, payload);
-  
-        if (res.status === 201 || res.status === 200) {
 
-          toast.success("Cookie box type added successfully!", {
-            autoClose: 1000,
-            onClose: closePopup,
-          });
-  
-          if (onAddCookieBoxType) onAddCookieBoxType(onAddCookie);
+        if (res.status === 201 || res.status === 200) {
+          toast.success("Cookie Box Type created successfully!");
+
+          if (onAddCookieBoxType) {
+            onAddCookieBoxType(res.data);
+          }
+
+          closePopup();
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
 
   useEffect(() => {
-    if (errors.length) {
+    if (errors.length > 0) {
       errors.forEach((err) => toast.error(err));
       setErrors([]);
     }
-  }, [errors]);
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

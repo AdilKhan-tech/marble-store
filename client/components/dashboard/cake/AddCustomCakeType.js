@@ -6,7 +6,7 @@ import { createCustomCakeType, updateCustomCakeTypeById } from "@/utils/apiRoute
 
 const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomCakeType, onUpdateCustomCakeType }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     id: null,
     name_en: "",
@@ -39,8 +39,22 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+  
+    return errors;
+  };  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
 
     try {
       const payload = new FormData();
@@ -55,9 +69,9 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       }
 
       //------------ UPDATE 
-      if (formData.id) {
+      if (customCakeTypeData) {
         const res = await axios.put(
-          updateCustomCakeTypeById(formData.id),
+          updateCustomCakeTypeById(customCakeTypeData.id),
           payload
         );
 
@@ -95,6 +109,13 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

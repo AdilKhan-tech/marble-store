@@ -7,11 +7,10 @@ import axios from "axios";
 import { createCookieBoxSize, updateCookieBoxSizeById, getAllCookieBoxTypes } from "@/utils/apiRoutes";
 
 const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBoxSize, onUpdateCookieBoxSize }) => {
-  const [errors, setErrors] = useState([]);
   const {token} = useAxiosConfig();
   const [cookiesBoxTypes, setCookiesBoxTypes] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     cookie_type_id: "",
     name_en: "",
@@ -46,20 +45,20 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.cookie_type_id) errors.push("Cookies types id is required.");
+  
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.cookie_type_id) errors.push("Cookie Type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.price) errors.push("Price is required.");
-    if (!formData.portion_size)errors.push("Additional price is required.");
-    if (!formData.symbol) errors.push("Symbol is required.");
-    if (!formData.calories) errors.push("Calories is required.");
+    if (!formData.portion_size) errors.push("Portion Size is required.");
+  
     return errors;
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
@@ -71,10 +70,9 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
   
       if (cookieBoxSizeData) {
         const res = await axios.put(updateCookieBoxSizeById(cookieBoxSizeData.id), payload);
@@ -116,18 +114,22 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
           if (onAddCookieBoxSize) onAddCookieBoxSize(createdCookie);
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
 
   useEffect(() => {
-    if (errors.length) {
+    if (errors.length > 0) {
       errors.forEach((err) => toast.error(err));
       setErrors([]);
     }
-  }, [errors]);
+  }, [errors]);  
 
   const fetchCookieBoxTypes = async () => {
     try {

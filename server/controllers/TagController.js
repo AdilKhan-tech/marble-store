@@ -88,10 +88,7 @@ class TagController {
                 slug: slug ?? tag.slug,
             });
 
-            return res.status(200).json({
-                message: " Tag updated successfully",
-                tag,
-            });
+            return res.status(200).json(tag);
         }catch (error) {
           next(error);
         }

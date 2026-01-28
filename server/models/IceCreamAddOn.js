@@ -13,8 +13,7 @@ const IceCreamAddOn = sequelize.define("IceCreamAddOn",{
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name English is required" },
-      notEmpty: { msg: "Name English cannot be empty" },
+      notEmpty: { msg: "Name English is required" },
       len: {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
@@ -30,8 +29,7 @@ const IceCreamAddOn = sequelize.define("IceCreamAddOn",{
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notNull: { msg: "Name Arabic is required" },
-      notEmpty: {msg: "Name Arabic cannot be empty" },
+      notEmpty: { msg: "Name Arabic is required" },
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",

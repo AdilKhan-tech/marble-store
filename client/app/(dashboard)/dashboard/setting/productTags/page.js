@@ -110,9 +110,7 @@ export default function productTags() {
   const updateTag = (updatedTag) => {
     setTags((prev) =>
       prev.map((tag) =>
-        tag.id === updatedTag.id
-          ? { ...tag, ...updatedTag }
-          : tag
+        tag.id === updatedTag.id ? updatedTag : tag
       )
     );
     setShowOffcanvas(false);

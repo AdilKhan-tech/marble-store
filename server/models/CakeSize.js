@@ -46,8 +46,7 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
-      isInt: {msg: "Cake Type ID must be an integer"},
-      notNull: {msg: "Cake Type ID is required"},
+      notEmpty: {msg: "Cake Type is required"},
     },
   },
 

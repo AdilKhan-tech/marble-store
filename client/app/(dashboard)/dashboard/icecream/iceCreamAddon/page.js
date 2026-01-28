@@ -110,9 +110,7 @@ export default function IceCreamAddonPage() {
   const updateIceCreamAddon = (updatedIceCreamAddon) => {
     setIceCreamAddons((prev) =>
       prev.map((iceCreamAddon) =>
-        iceCreamAddon.id === updatedIceCreamAddon.id
-          ? { ...iceCreamAddon, ...updatedIceCreamAddon }
-          : iceCreamAddon
+        iceCreamAddon.id === updatedIceCreamAddon.id ? updatedIceCreamAddon : iceCreamAddon
       )
     );
     setShowOffcanvas(false);

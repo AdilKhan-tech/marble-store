@@ -15,8 +15,7 @@ const CustomCakeTypes = sequelize.define(
       type: DataTypes.STRING(55),
       allowNull: false,
       validate: {
-        notNull: { msg: "Name english is required" },
-        notEmpty: { msg: "Name english cannot be empty" },
+        notEmpty: { msg: "Name english is required" },
         len: {
           args: [2, 55],
           msg: "Name english must be between 2 and 55 characters",
@@ -32,8 +31,7 @@ const CustomCakeTypes = sequelize.define(
       type: DataTypes.STRING(55),
       allowNull: false,
       validate: {
-        notNull: { msg: "Name arabic is required" },
-        notEmpty: { msg: "Name arabic cannot be empty" },
+        notEmpty: { msg: "Name arabic is required" },
         len: {
           args: [2, 55],
           msg: "Name arabic must be between 2 and 55 characters",

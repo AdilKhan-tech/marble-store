@@ -97,10 +97,7 @@ class CakePortionSizeController {
                 image_url,
             });
         
-            return res.status(200).json({
-                message: "Cake Portion Size updated successfully",
-                cakePortionSize,
-            });
+            return res.status(200).json(cakePortionSize);
         }catch (error) {
           next(error);
         }

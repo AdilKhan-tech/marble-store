@@ -76,7 +76,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
@@ -89,10 +89,9 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
 
       if (cookieData) {
         const res = await axios.put(updateCookieById(cookieData.id), payload);
@@ -140,9 +139,13 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
           if (onAddCookie) onAddCookie(createdCookie);
         }
       }
-    } catch (error) {
-      const msg = error?.response?.data?.message || "Something went wrong!";
-      setErrors([msg]);
+    }catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
 
@@ -152,7 +155,6 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       setErrors([]);
     }
   }, [errors]);
-
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

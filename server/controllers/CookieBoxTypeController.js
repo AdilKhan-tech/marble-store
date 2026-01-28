@@ -10,7 +10,7 @@ class CookieBoxTypeController {
 
             const image_url = req.file?.path || null;
 
-            const cookiesTypes = await CookieBoxType.create({
+            const cookieBoxType = await CookieBoxType.create({
                 name_en,
                 name_ar,
                 slug,
@@ -18,7 +18,7 @@ class CookieBoxTypeController {
                 status,
                 image_url,
             });
-            return res.status(201).json(cookiesTypes);
+            return res.status(201).json(cookieBoxType);
 
         } catch(error) {
             next(error);
@@ -79,25 +79,25 @@ class CookieBoxTypeController {
     static async updateCookieBoxTypeById(req, res, next) {
         const { id } = req.params;
         try {
-            const cookiesTypes = await CookieBoxType.findByPk(id);
-            if (!cookiesTypes) {
+            const cookieBoxType = await CookieBoxType.findByPk(id);
+            if (!cookieBoxType) {
                 return res.status(404).json({ message: "Cookies Types not found" });
             }
     
             const { name_en, name_ar, slug, sort, status } = req.body;
 
-            const image_url = req.file?.path || cookiesTypes.image_url;
+            const image_url = req.file?.path || cookieBoxType.image_url;
     
-            await cookiesTypes.update({
-                name_en: name_en ?? cookiesTypes.name_en,
-                name_ar: name_ar ?? cookiesTypes.name_ar,
-                slug: slug ?? cookiesTypes.slug,
-                sort: sort ?? cookiesTypes.sort,
-                status: status ?? cookiesTypes.status,
+            await cookieBoxType.update({
+                name_en: name_en ?? cookieBoxType.name_en,
+                name_ar: name_ar ?? cookieBoxType.name_ar,
+                slug: slug ?? cookieBoxType.slug,
+                sort: sort ?? cookieBoxType.sort,
+                status: status ?? cookieBoxType.status,
                 image_url: image_url
             });
 
-            return res.status(200).json({message: "Cookies Types updated successfully",cookiesTypes});
+            return res.status(200).json({message: "Cookies Types updated successfully",cookieBoxType});
     
         } catch (error) {
             next(error);
@@ -108,27 +108,27 @@ class CookieBoxTypeController {
         try {
             const { id } = req.params;
     
-            const cookiesTypes = await CookieBoxType.findByPk(id);
+            const cookieBoxType = await CookieBoxType.findByPk(id);
     
-            if (!cookiesTypes) {
+            if (!cookieBoxType) {
                 return res.status(404).json({
                     message: "Cookies Types not found"
                 });
             }
     
             // Agar image folder se remove karna hai (optional)
-            if (cookiesTypes.image_url) {
+            if (cookieBoxType.image_url) {
                 const fs = require("fs");
                 const path = require("path");
     
-                const filePath = path.join(__dirname, "..", cookiesTypes.image_url);
+                const filePath = path.join(__dirname, "..", cookieBoxType.image_url);
     
                 if (fs.existsSync(filePath)) {
                     fs.unlinkSync(filePath);
                 }
             }
 
-            await cookiesTypes.destroy();
+            await cookieBoxType.destroy();
     
             return res.status(200).json({message: "Cookies Types deleted successfully"});
     
