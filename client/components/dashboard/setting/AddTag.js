@@ -5,6 +5,7 @@ import axios from 'axios';
 import { createTag, updateTagById } from "@/utils/apiRoutes";
 
 function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -21,8 +22,22 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
     }
   }, [tagData]);
 
+  const validateForm = () => {
+    const errors = [];
+
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+  
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
 
     try {
       if (tagData) {
@@ -49,6 +64,13 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach(err => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className='mt-0' onSubmit={handleSubmit}>

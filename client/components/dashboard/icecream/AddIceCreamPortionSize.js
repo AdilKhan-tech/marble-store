@@ -8,6 +8,7 @@ import { createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCrea
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [iceCreamBuckets, setIceCreamBuckets] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -49,6 +50,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       console.error("Error fetching IceCream Buckets", error);
     }
   };
+
   useEffect(() => {
       if (!token) return;
       fetchIceCreamBuckets();
@@ -58,8 +60,26 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.icecream_bucket_id) errors.push("IceCream Bucket is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.additional_price) errors.push("Additional price is required.");
+    if (!formData.calories && formData.calories !== 0) errors.push("Calories is required.");
+  
+    return errors;
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
 
     try {
       const payload = new FormData();
@@ -83,14 +103,21 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
         }
       }
     }catch (error) {
-          const backendMessage =
-            error?.response?.data?.message ||
-            error?.response?.data?.errors?.[0] ||
-            "Something went wrong!";
-        
-          toast.error(backendMessage);
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Something went wrong!";
+    
+      toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach(err => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

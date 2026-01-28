@@ -5,6 +5,7 @@ import { createIceCreamAddOn, updateIceCreamAddOnById } from "@/utils/apiRoutes"
 
 const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamAddon, onUpdateIceCreamAddon }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -37,8 +38,23 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.type) errors.push("Addon Type is required.");
+  
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -48,10 +64,9 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        if (selectedFiles.length > 0) {
-          payload.append("image_url", selectedFiles[0]);
-        }
+        payload.append("image_url", selectedFiles[0]);
       }
+      
       if (IceCreamAddonData) {
         const res = await axios.put(updateIceCreamAddOnById(IceCreamAddonData.id), payload);
 
@@ -88,6 +103,13 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

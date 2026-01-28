@@ -10,6 +10,7 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
   const {token} = useAxiosConfig();
   const [cookiesBoxTypes, setCookiesBoxTypes] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     cookie_type_id: "",
     name_en: "",
@@ -42,8 +43,25 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.cookie_type_id) errors.push("Cookie Type is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.price) errors.push("Price is required.");
+    if (!formData.portion_size) errors.push("Portion Size is required.");
+  
+    return errors;
+  };  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -52,10 +70,9 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
   
       if (cookieBoxSizeData) {
         const res = await axios.put(updateCookieBoxSizeById(cookieBoxSizeData.id), payload);
@@ -106,6 +123,13 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   const fetchCookieBoxTypes = async () => {
     try {

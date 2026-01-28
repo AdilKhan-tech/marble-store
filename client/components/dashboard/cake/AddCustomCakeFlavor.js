@@ -7,8 +7,9 @@ import axios from "axios";
 import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCustomCakeTypes} from "@/utils/apiRoutes"
 
 function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdateCustomCakeFlavor , onAddCustomCakeFlavor }) {
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [customCakeTypes , setCustomCakeTypes] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -33,9 +34,25 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
-
+  
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.custom_cake_type_id)
+      errors.push("Cake type is required.");
+  
+    return errors;
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -109,6 +126,13 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   const fetchAllCustomCakeType = async () => {
     try {

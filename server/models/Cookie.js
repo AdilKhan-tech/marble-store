@@ -12,7 +12,9 @@ const Cookie = sequelize.define("Cookie",{
         type: DataTypes.STRING(55),
         allowNull: false,
         validate: {
-            notEmpty: { msg: "Name English is required" },
+            // notEmpty: { msg: "Name English is required" },
+            notNull: { msg: "English name is required" },
+            notEmpty: { msg: "English name cannot be empty" },
             len: {
                 args: [2, 55],
                 msg: "Name English must be between 2 and 55 characters",

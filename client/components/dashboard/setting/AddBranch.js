@@ -5,7 +5,7 @@ import axios from "axios";
 import { createBranch, updateBranchById } from "@/utils/apiRoutes";
 
 const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch }) => {
-
+    const [errors, setErrors] = useState([]);
     const [formData, setFormData] = useState({
         name_en: "",
         name_ar: "",
@@ -36,7 +36,7 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             status: branchData.status || "Active for Both",
           });
         }
-      }, [branchData]);
+    }, [branchData]);
       
       
     const handleChange = (e) => {
@@ -47,8 +47,30 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         }));
     };
 
+    const validateForm = () => {
+        const errors = [];
+      
+        if (!formData.name_en) errors.push("Name English is required.");
+        if (!formData.name_ar) errors.push("Name Arabic is required.");
+        if (!formData.slug) errors.push("Slug is required.");
+        if (!formData.city) errors.push("City is required.");
+        if (!formData.address) errors.push("Address is required.");
+        if (!formData.latitude) errors.push("Latitude is required.");
+        if (!formData.longitude) errors.push("Longitude is required.");
+        if (!formData.number) errors.push("Contact number is required.");
+        if (!formData.timing) errors.push("Timing is required.");
+        if (!formData.branch_store_id) errors.push("Branch Store Id is required.");
+        if (!formData.status) errors.push("Status is required.");
+      
+        return errors;
+    };      
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = validateForm();
+        setErrors(validationErrors);
+        if (validationErrors.length > 0) return;
       
         try {
           if (branchData) {
@@ -79,6 +101,13 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
             toast.error(backendMessage);
         }        
     };
+
+    useEffect(() => {
+        if (errors.length > 0) {
+          errors.forEach(err => toast.error(err));
+          setErrors([]);
+        }
+    }, [errors]);      
 
     return (
         <form className="mt-0" onSubmit={handleSubmit}>

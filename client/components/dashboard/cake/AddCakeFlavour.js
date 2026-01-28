@@ -9,6 +9,7 @@ import { createCakeFlavor, updateCakeFlavorById, getAllCustomCakeTypes } from "@
 const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [customCakeTypes, setCustomCakeTypes] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -43,6 +44,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       console.error("Error fetching custom cake types", error);
     }
   };
+
   useEffect(() => {
       if (!token) return;
       fetchCustomCakeTypes();
@@ -60,8 +62,26 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.custom_cake_type_id) errors.push("Cake type is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.additional_price) errors.push("Price is required.");
+    if (!formData.symbol) errors.push("Symbol is required.");
+    if (!formData.status) errors.push("Status is required.");
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
+
     try {
       const payload = new FormData();
   
@@ -132,6 +152,13 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
 
   return (
     <form className="component-form" onSubmit={handleSubmit}>

@@ -14,7 +14,7 @@ import Common from "@/utils/Common"
 export default function CookieBoxTypePage() {
 
   const {token} = useAxiosConfig();
-  const [cookieBoxType, setCookieBoxTypes] = useState([]);
+  const [cookieBoxTypes, setCookieBoxTypes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cookieBoxTypeData, setCookieBoxTypeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -106,10 +106,10 @@ export default function CookieBoxTypePage() {
     setShowOffcanvas(false);
   };
 
-  const updateCookieBoxType = (updatedCookieBoxTypes) => {
+  const updateCookieBoxType = (updatedCookieBoxType) => {
     setCookieBoxTypes((prev) =>
       prev.map((cookieBoxType) =>
-        cookieBoxType.id === updatedCookieBoxTypes.id ? updatedCookieBoxTypes : cookieBoxType
+        cookieBoxType.id === updatedCookieBoxType.id ? updatedCookieBoxType : cookieBoxType
       )
     );
     setShowOffcanvas(false);
@@ -196,7 +196,7 @@ export default function CookieBoxTypePage() {
                 </tr>
               </thead>
               <tbody>
-                {cookieBoxType.map((type, index) => (
+                {cookieBoxTypes.map((type, index) => (
                   <tr key={type._id || type.id || index}>
                     <td className="fw-normal fs-14 fnt-color">
                       {type?.id}

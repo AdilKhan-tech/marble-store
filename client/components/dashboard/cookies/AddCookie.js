@@ -9,6 +9,7 @@ import { createCookie, updateCookieById, getAllCookieBoxTypes } from "@/utils/ap
 const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie }) => {
   const { token } = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [cookieBoxTypes, setCookieBoxTypes] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -62,8 +63,23 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
     setSelectedFiles(files);
   };
 
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.cookie_type_id) errors.push("Cookie type is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.sort) errors.push("Sort is required.");
+    if (!formData.status) errors.push("Status is required.");
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -73,10 +89,9 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
 
       if (cookieData) {
         const res = await axios.put(updateCookieById(cookieData.id), payload);
@@ -133,6 +148,13 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

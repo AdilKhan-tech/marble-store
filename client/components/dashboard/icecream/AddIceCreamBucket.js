@@ -7,6 +7,7 @@ import React from "react";
 
 const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,onUpdateIceCreamBucket}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -34,9 +35,27 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,on
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.size) errors.push("Size is required.");
+    if (!formData.price) errors.push("Price is required.");
+    if (!formData.calories) errors.push("Calories is required."); 
+  
+    return errors;
+  };
+  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
 
     try {
       const payload = new FormData();
@@ -88,6 +107,13 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,on
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
   
   return (
     <form className="mt-0" onSubmit={handleSubmit}>

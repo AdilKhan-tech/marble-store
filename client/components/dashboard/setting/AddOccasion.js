@@ -7,6 +7,7 @@ import axios from 'axios';
 function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOccasion, occasionData}) {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -29,8 +30,24 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const validateForm = () => {
+    const errors = [];
+
+    if (!formData.name_en) errors.push("Name English is required.");  
+    if (!formData.name_ar) errors.push("Name Arabic is required.");  
+    if (!formData.slug) errors.push("Slug is required.");  
+    if (!formData.parent_ocassion) errors.push("Parent Occasion is required.");
+  
+    return errors;
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -87,6 +104,13 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach(err => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className='mt-0' onSubmit={handleSubmit}>

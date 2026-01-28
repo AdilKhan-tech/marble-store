@@ -7,6 +7,7 @@ import { createCookieBoxType, updateCookieTypeById } from "@/utils/apiRoutes";
 
 const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBoxType, onUpdateCookieBoxType }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en:"",
     name_ar:"",
@@ -42,8 +43,23 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
     setSelectedFiles(files);
   };
 
+  const validateForm = () => {
+    const errors = [];
+  
+    if (!formData.name_en) errors.push("Name English is required.");
+    if (!formData.name_ar) errors.push("Name Arabic is required.");
+    if (!formData.slug) errors.push("Slug is required.");
+    if (!formData.sort) errors.push("Sort is required.");
+  
+    return errors;
+  };  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
   
     try {
       const payload = new FormData();
@@ -53,10 +69,9 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       });
   
       if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+        payload.append("image_url", selectedFiles[0]);
       }
+      
 
       if (cookieBoxTypeData) {
         const res = await axios.put(updateCookieTypeById(cookieBoxTypeData.id), payload);
@@ -97,6 +112,13 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
       toast.error(backendMessage);
     }
   };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+      setErrors([]);
+    }
+  }, [errors]);  
 
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
