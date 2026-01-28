@@ -5,16 +5,12 @@ import axios from "axios";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import Common from "@/utils/Common";
 import { getProductByIdRoute } from "@/utils/apiRoutes";
-import ProductUpdate from "@/components/dashboard/setting/ProductUpdate"
-import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function Page() {
   const { productId } = useParams();
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
   const router = useRouter();
   const { token } = useAxiosConfig();
   const [product, setProduct] = useState(null);
-  const [productData , setProductData] = useState(null)
 
   const fetchProduct = async () => {
     try {
@@ -30,28 +26,14 @@ export default function Page() {
     fetchProduct();
   }, [productId, token]);
 
-  const showOffcanvasOnEditProduct = (product) => {
-    setProductData(product);
-    setShowOffcanvas(true);
-  }
-
-  const closePopup = () => {
-    setShowOffcanvas(false);
-    
-  };
 
   if (!product) return <p className="mt-5">Loading...</p>;
 
   return (
     <div className="mt-5">
       <div className="card p-4 rounded-4">
-       <div className="d-flex justify-content-between align-items-center">
+       <div className="d-flex justify-content-start align-items-center">
           <p className="pagetitle mb-0 fnt-color">Product Details</p>
-          <div className="fs-14 mb-0 fnt-color d-flex align-items-center" 
-           role="button" onClick={() => showOffcanvasOnEditProduct(product)}>
-            <i className="bi bi-pencil"></i>
-            Edit
-          </div>
         </div>
         <hr />
 
@@ -188,25 +170,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Offcanvas
-          show={showOffcanvas}
-          onHide={() => setShowOffcanvas(false)}
-          placement="end">
-          <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            <div className='fs-24 fnt-color'>
-              {productData ? "Update Product" : "Add Product"}
-            </div>
-          </Offcanvas.Title>
-          </Offcanvas.Header>
-          <hr  className="mt-0"/>
-          <Offcanvas.Body>
-            <ProductUpdate
-            closePopup={closePopup}
-            productData = {productData}
-            />
-          </Offcanvas.Body>
-        </Offcanvas>
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {FaEllipsisV, FaEye } from "react-icons/fa";
 import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
-export default function CakeFlavourPage() {
+export default function ProductPage() {
   const [sortField, setSortField] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
@@ -79,6 +79,13 @@ export default function CakeFlavourPage() {
       handleDelete(productId);
     }
   };
+
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap.bundle.min.js").then((bootstrap) => {
+      const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+    });
+  }, [products]);
 
   const handleLimitChange = (newLimit) => {
     setPageLimit(newLimit);
@@ -232,9 +239,17 @@ export default function CakeFlavourPage() {
                       {product?.regular_price}
                     </td>
                     <td
-                      className="fw-normal fs-14 fnt-color">
+                      role="button"
+                      className="fw-normal fs-14 fnt-color"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title={
+                        product?.categories?.length
+                          ? product.categories.map(cat => cat.name_en).join(", ")
+                          : "N/A"}>
                       {product?.categories?.length
-                        ? Common.truncateText(product.categories.map(cat => cat.name_en).join(", "),10)
+                        ? Common.truncateText(product.categories.map(cat => cat.name_en).join(", "), 10)
                         : "N/A"}
                     </td>
                     <td
@@ -242,7 +257,15 @@ export default function CakeFlavourPage() {
                       {Common.dateFormat(product?.created_at)}
                     </td>
                     <td
-                      className="fw-normal fs-14 fnt-color">
+                      role="button"
+                      className="fw-normal fs-14 fnt-color"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title={
+                      product?.branches?.length
+                        ? product.branches.map(b => b.name_en).join(", ")
+                        : "N/A"}>
                       {product?.branches?.length
                         ? Common.truncateText(product.branches.map(b => b.name_en).join(", "),10)
                         : "N/A"}
@@ -258,7 +281,10 @@ export default function CakeFlavourPage() {
                             <FaEye className="me-2" />View Product
                           </Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                        </Dropdown>
+                      <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => router.push(`/dashboard/product/update/`)}>
+                        <i className="bi bi-pencil-square text-primary"></i>
+                      </div>
                       <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(product?.id)}>
                         <i className="bi bi-trash text-danger"></i>
                       </div>
