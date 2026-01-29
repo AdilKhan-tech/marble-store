@@ -195,7 +195,7 @@ export default function Sidebar() {
                   </Link>
                   <Link 
                     href="/dashboard/cake/customCakeFlavor" 
-                    className="dropdown-link d-block align-items-center text-decoration-none fs-14"
+                    className="dropdown-link nowrap d-block align-items-center text-decoration-none fs-14"
                     onClick={() => setActiveDropdown(null)}
                   >
                     <i className="bi bi-stars me-2 fs-5"></i>
