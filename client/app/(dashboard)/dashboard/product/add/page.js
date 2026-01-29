@@ -13,7 +13,7 @@ const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const MemoJoditEditor = React.memo(JoditEditor);
 
 
-const AddProduct = ({ productData, onAddProduct }) => {
+const AddProduct = ({ onAddProduct }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
   const descriptionRef = useRef("");
@@ -51,25 +51,6 @@ const AddProduct = ({ productData, onAddProduct }) => {
     branch_ids: [],
     category_ids: []
   });
-
-  useEffect(() => {
-    if (productData) {
-      setFormData({
-        name_en: productData.name_en || "",
-        name_ar: productData.name_ar || "",
-        description: productData.description || "",
-        tag_ids: productData.tags?.map(t => t.id) || [],
-        occasion_ids:  productData.occasions?.map(o => o.id) || [],
-        gender_id: productData.gender_id || "",
-        regular_price: productData.regular_price || "",
-        sale_price: productData.sale_price || "",
-        tax_status: productData.tax_status || "",
-        tax_class: productData.tax_class || "",
-        branch_ids: productData.branches?.map(b => b.id) || [],
-        category_ids: productData.categories?.map(c => c.id) || [],
-      });
-    }
-  }, [productData]);
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -385,17 +366,17 @@ const AddProduct = ({ productData, onAddProduct }) => {
     <form onSubmit={handleSubmit} className="mt-5">
       <div className="card p-4 rounded-4">
         <div className="row">
-          <div className="col-md-5">
-            <div className="fs-14 w-100">
+          <div className="col-md-4">
+            <div className="">
               <div
                 className="position-relative w-100 bg-white d-flex justify-content-center"
                 style={{
                   border: "2px dashed #e6e6e6",
                   borderRadius: "20px",
-                  minHeight: "270px",
+                  minHeight: "10px",
                 }}
               >
-                <div className="d-flex flex-column align-items-center justify-content-center h-100 text-center p-4">
+                <div className="d-flex flex-column align-items-center justify-content-center h-75 text-center p-3">
                   <i className="bi bi-image fs-1 text-secondary"></i>
                   <div className="mt-2 fs-16 fw-bold">
                     <span className="text-primary">Click here</span>
@@ -421,7 +402,7 @@ const AddProduct = ({ productData, onAddProduct }) => {
             </div>
           </div>
 
-          <div className="col-md-7">
+          <div className="col-md-8">
             <div className="row">
               <div className="form-group col-md-6">
                 <label className="form-label text-secondary">
