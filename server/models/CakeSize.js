@@ -14,14 +14,14 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notEmpty: {msg: "Name English is required"},
+      notEmpty: { msg: "Name English is required" },
       len: {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
       },
       is: {
-        args: /^[A-Za-z\s]+$/,
-        msg: "Name English must contain only letters",
+        args: /^[A-Za-z0-9\s]+$/,
+        msg: "Name English can contain letters and numbers only",
       },
     },
   },
@@ -30,17 +30,17 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.STRING(55),
     allowNull: false,
     validate: {
-      notEmpty: {msg: "Name Arabic is required"},
+      notEmpty: { msg: "Name Arabic is required" },
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",
       },
       is: {
-        args: /^[A-Za-z\s]+$/,
-        msg: "Name Arabic must contain only letters",
+        args: /^[\u0600-\u06FF0-9\s]+$/,
+        msg: "Name Arabic can contain Arabic letters and numbers only",
       },
     },
-  },
+  },  
 
   custom_cake_type_id: {
     type: DataTypes.INTEGER,
@@ -70,6 +70,13 @@ const CakeSize = sequelize.define("CakeSize", {
     type: DataTypes.FLOAT,
     allowNull: false,
     defaultValue: 0,
+    validate: {
+      isFloat: { msg: "Additional price must be a number" },
+      min: {
+        args: [0],
+        msg: "Additional price cannot be negative",
+      },
+    }
   },
 
   calories: {

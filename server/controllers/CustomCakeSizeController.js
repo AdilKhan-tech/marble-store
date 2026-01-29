@@ -114,7 +114,7 @@ class CustomCakeSizeController {
         status: status ?? customCakeSize.status,
         image_url: image_url ?? customCakeSize.image_url,
       });
-      return res.status(200).json({message: "Custom cake size updated successfully.",customCakeSize,});
+      return res.status(200).json(customCakeSize);
     }catch (error) {
       next(error);
     }

@@ -116,15 +116,24 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             (t) =>
               String(t.id) === String(formData.custom_cake_type_id)
           );
-  
+
+          const updatedCakeSize = {
+            ...res.data,
+            customCakeType: selectedType || null,
+          };
+        
           if (onUpdateCakeSize) {
-            onUpdateCakeSize({
-              ...cakeSizeData,
-              ...formData,
-              id: cakeSizeData.id,
-              customCakeType: selectedType || null,
-            });
+            onUpdateCakeSize(updatedCakeSize);
           }
+  
+          // if (onUpdateCakeSize) {
+          //   onUpdateCakeSize({
+          //     ...cakeSizeData,
+          //     ...formData,
+          //     id: cakeSizeData.id,
+          //     customCakeType: selectedType || null,
+          //   });
+          // }
   
           closePopup();
         }

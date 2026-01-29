@@ -110,13 +110,12 @@ export default function CustomCakeSize() {
   const updateCustomCakeSize = (updatedCustomCakeSize) => {
     setCustomCakeSizes((prev) =>
       prev.map((customCakeSize) =>
-        customCakeSize.id === updatedCustomCakeSize.id
-          ? { ...customCakeSize, ...updatedCustomCakeSize }
-          : customCakeSize
+        customCakeSize.id === updatedCustomCakeSize.id ? updatedCustomCakeSize : customCakeSize
       )
     );
     setShowOffcanvas(false);
   };
+
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
 
@@ -125,7 +124,7 @@ export default function CustomCakeSize() {
       <section className="mt-3">
         <div className="">
         <div className="d-flex justify-content-between mb-3">
-          <p className="pagetitle mb-0 fnt-color">Custom Cakes Sizes</p>
+          <p className="pagetitle mb-0 fnt-color">Custom Cake Sizes</p>
           <div>
             <div
               className="btn-orange text-center"
@@ -196,6 +195,16 @@ export default function CustomCakeSize() {
                     </th>
                     <th
                       className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
+                    </th>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("status")}>
                       Status
                       <span className="fs-10 text-secondary ms-1">
@@ -221,6 +230,13 @@ export default function CustomCakeSize() {
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         {customCakeSize?.cake_type_id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={`http://localhost:5000/${customCakeSize.image_url}`} 
+                        alt={customCakeSize.name_en} 
+                        className="table-img rounded-4"
+                      />
                       </td>
                       <td>
                         <div

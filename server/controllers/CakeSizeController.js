@@ -10,7 +10,7 @@ class CakeSizeController {
 
           const image_url = req.file?.path || null;
           
-          const cakesizes = await CakeSize.create({
+          const cakeSize = await CakeSize.create({
               name_en,
               name_ar,
               custom_cake_type_id,
@@ -21,7 +21,7 @@ class CakeSizeController {
               status,
               image_url,
           });
-          return res.status(201).json(cakesizes);
+          return res.status(201).json(cakeSize);
       } catch (error) {
         next(error);
       }
@@ -53,7 +53,7 @@ class CakeSizeController {
       ];
 
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
-      const finalSortOrder = sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+      const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
       const { count, rows } = await CakeSize.findAndCountAll({
         where: whereClause,
@@ -68,9 +68,32 @@ class CakeSizeController {
         offset,
         order: [[finalSortField, finalSortOrder]],
       });
+
+      // 🔥 PROFESSIONAL PART
+      const baseUrl = process.env.APP_URL;
+
+      const data = rows.map(item => {
+        const json = item.toJSON();
+        return {
+          ...json,
+          image_url: json.image_url
+            ? `${baseUrl}/${json.image_url}`
+            : null,
+        };
+      });
   
       const pageCount = Math.ceil(count / limit);
   
+      // return res.status(200).json({
+      //   pagination: {
+      //     page,
+      //     limit,
+      //     total: count,
+      //     pageCount,
+      //   },
+      //   data: rows,
+      // });
+      // ✅ FINAL RESPONSE
       return res.status(200).json({
         pagination: {
           page,
@@ -78,7 +101,7 @@ class CakeSizeController {
           total: count,
           pageCount,
         },
-        data: rows,
+        data,
       });
     } catch (error) {
       return res.status(500).json({ message: "Failed to get cake sizes",error: error.message });
@@ -88,8 +111,8 @@ class CakeSizeController {
   static async updateCakeSizeById(req, res, next) {
       const { id } = req.params;
       try {
-          const cakesizes = await CakeSize.findByPk(id);
-          if (!cakesizes) {
+          const cakeSize = await CakeSize.findByPk(id);
+          if (!cakeSize) {
               return res.status(404).json({ message: "Cake size not found" });
           }
           const {
@@ -103,24 +126,21 @@ class CakeSizeController {
               status
           } = req.body;
 
-          const image_url = req.file?.path || cakesizes.image_url;
+          const image_url = req.file?.path || cakeSize.image_url;
 
-          await cakesizes.update({
-            name_en: name_en ?? cakesizes.name_en,
-            name_ar: name_ar ?? cakesizes.name_ar,
-            custom_cake_type_id: custom_cake_type_id ?? cakesizes.custom_cake_type_id,
-            slug: slug ?? cakesizes.slug,
-            scoop_size: scoop_size ?? cakesizes.scoop_size,
-            additional_price: additional_price ?? cakesizes.additional_price,
-            calories: calories ?? cakesizes.calories,
-            status: status ?? cakesizes.status,
+          await cakeSize.update({
+            name_en: name_en ?? cakeSize.name_en,
+            name_ar: name_ar ?? cakeSize.name_ar,
+            custom_cake_type_id: custom_cake_type_id ?? cakeSize.custom_cake_type_id,
+            slug: slug ?? cakeSize.slug,
+            scoop_size: scoop_size ?? cakeSize.scoop_size,
+            additional_price: additional_price ?? cakeSize.additional_price,
+            calories: calories ?? cakeSize.calories,
+            status: status ?? cakeSize.status,
             image_url: image_url
           });
   
-          return res.status(200).json({
-              message: "Cake size updated successfully",
-              cakesizes
-          });
+          return res.status(200).json(cakeSize);
   
       } catch (error) {
           next(error);
@@ -130,11 +150,11 @@ class CakeSizeController {
   static async deleteCakeSizeById(req, res) {
       try {
           const { id } = req.params;
-          const cakesizes = await CakeSize.findByPk(id);
-          if(!cakesizes) {
+          const cakeSize = await CakeSize.findByPk(id);
+          if(!cakeSize) {
               return res.status(404).json({ message: "Cake size not found" });
           }
-          await cakesizes.destroy();
+          await cakeSize.destroy();
           return res.status(200).json({ message: "Cake size deleted successfully" });     
       }
       catch (err) {
