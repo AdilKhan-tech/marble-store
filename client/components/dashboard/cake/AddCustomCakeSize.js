@@ -44,13 +44,10 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.portion_size)
-      errors.push("Portion size is required.");
+    if (!formData.portion_size) errors.push("Portion size is required.");
     if (!formData.sort) errors.push("Sort is required.");
-    if (!formData.calories)
-      errors.push("Calories is required.");
-    if (!formData.cake_type_id)
-      errors.push("Cake type is required.");
+    if (!formData.calories) errors.push("Calories is required.");
+    if (!formData.cake_type_id) errors.push("Cake type is required.");
   
     return errors;
   };  
@@ -74,12 +71,9 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         const response = await axios.put(updateCustomCakeSizeById(customCakeSizeData.id),  payload  );
         if (response.status === 200 || response.status === 201) {
           toast.success("Custom Cake Size updated successfully!", {autoClose: 1000, onClose: closePopup, });
+
           if (onUpdateCustomCakeSize) {
-            onUpdateCustomCakeSize({
-              ...customCakeSizeData,
-              ...formData,
-              id: customCakeSizeData.id,
-            });
+            onUpdateCustomCakeSize(response.data);
           }
         }
       } else {
@@ -87,7 +81,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         const response = await axios.post(createCustomCakeSize, payload);
         if (response.status === 200 || response.status === 201) {
           toast.success("Custom Cake Size added successfully!", {autoClose: 1000, onClose: closePopup, });
-         onAddCustomCakeSize(response.data);
+          onAddCustomCakeSize(response.data);
         }
       }
     }catch (error) {

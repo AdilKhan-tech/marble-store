@@ -14,6 +14,7 @@ export default function CakeSizePage() {
 
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
+  console.log("cakeSizes",cakeSizes)
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeSizeData, setCakeSizeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -204,6 +205,16 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
+                    </th>
+                    <th 
                       className="fw-bold fs-14 fnt-color"
                       onClick={() => handleSortChange("status")}>
                       Status
@@ -233,7 +244,19 @@ export default function CakeSizePage() {
                         {cakeSize?.scoop_size}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {cakeSize?.additional_price}</td>
+                        {cakeSize?.additional_price}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {/* <img
+                          src={`http://localhost:5000/${cakeSize.image_url}`} 
+                          alt={cakeSize.name_en} 
+                          className="table-img rounded-4"
+                        /> */}
+
+                        <img src={cakeSize.image_url} className="table-img rounded-4" />
+
+
+                      </td>
                       <td>
                         <div className={cakeSize?.status === "active" ? "blue-status" : "red-status"}>
                           {cakeSize?.status === "active" ? "Active" : "Inactive"}

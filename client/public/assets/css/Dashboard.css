@@ -442,3 +442,7 @@ body.sidebar-collapsed .main-content-area {
 .nowrap {
   white-space: nowrap;
 }
+.table-img{
+  width: 40px;
+  height: 40px;
+}
