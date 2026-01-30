@@ -21,7 +21,7 @@ const MemoJoditEditor = React.memo(JoditEditor);
 export default function EditProduct({ productData, closePopup }) {
   const router = useRouter();
   const descriptionRef = useRef("");
-
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [genders, setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -33,7 +33,6 @@ export default function EditProduct({ productData, closePopup }) {
   const [categoryIds, setCategoryIds] = useState([]);
   const [occasionIds, setOccasionIds] = useState([]);
   const [tagIds, setTagIds] = useState([]);
-  const [selectedFile, setSelectedFile] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -112,7 +111,7 @@ export default function EditProduct({ productData, closePopup }) {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (!token) return;
     fetchGenders();
     fetchBranches();
@@ -121,9 +120,6 @@ export default function EditProduct({ productData, closePopup }) {
     fetchTags();
   }, [token]);
 
-  const handleFileChange = (e) => {
-    setSelectedFile(Array.from(e.target.files));
-  };
 
   const editorConfig = useMemo(() => ({ height: 300 }), []);
 
@@ -153,7 +149,7 @@ export default function EditProduct({ productData, closePopup }) {
 
       // ✅ ID + PUT/PATCH
       await axios.put(
-        updateProductByIdRoute(productData.id),payload,);
+        updateProductByIdRoute(productData.id), payload,);
 
 
       toast.success("Branch Updated successfully!", {
@@ -166,138 +162,217 @@ export default function EditProduct({ productData, closePopup }) {
     }
   };
 
+  const handleFileChange = (e) => {
+    setSelectedFiles(Array.from(e.target.files));
+  };
+
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">Name English</label>
-        <input
-          value={formData.name_en}
-          onChange={(e) =>
-            setFormData({ ...formData, name_en: e.target.value })
-          }
-          className="form-control mb-2"
-          placeholder="Name English"
-        />
-      </div>
+      <div className="card p-4 rounded-4">
+        <div className="row mt-3">
+          <div className="col-md-4 mt-3">
+            <div className="">
+              <div
+                className="position-relative w-100 bg-white d-flex justify-content-center"
+                style={{
+                  border: "2px dashed #e6e6e6",
+                  borderRadius: "20px",
+                  minHeight: "10px",
+                }}
+              >
+                <div className="d-flex flex-column align-items-center justify-content-center h-75 text-center p-2">
+                  <i className="bi bi-image fs-1 text-secondary"></i>
+                  <div className="mt-2 fs-16 fw-bold">
+                    <span className="text-primary">Click here</span>
+                    <span className="fnt-color"> or drag n' drop</span>
+                  </div>
+                  <div className="mt-4 fs-14 opacity-75">JPG, JPEG or PNG</div>
+                  <div className="fs-14 fw-bold opacity-75">Maximum 2 MB</div>
+                </div>
 
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">Name Arabic</label>
-        <input
-          value={formData.name_ar}
-          onChange={(e) =>
-            setFormData({ ...formData, name_ar: e.target.value })
-          }
-          className="form-control mb-2"
-          placeholder="Name Arabic"
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">Description</label>
-        <MemoJoditEditor
-          value={formData.description}
-          config={editorConfig}
-          onBlur={(c) => setFormData((p) => ({ ...p, description: c }))}
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <MultiSelectDropdown
-          label="Product Categories"
-          items={categories}
-          selectedIds={categoryIds}
-          setSelectedIds={setCategoryIds}
-          placeholder="Select Categories"
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <MultiSelectDropdown
-          label="Product Branches"
-          items={branches}
-          selectedIds={branchIds}
-          setSelectedIds={setBranchIds}
-          placeholder="Select Branches"
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <MultiSelectDropdown
-          label="Product Occasions"
-          items={occasions}
-          selectedIds={occasionIds}
-          setSelectedIds={setOccasionIds}
-          placeholder="Select Occasions"
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <MultiSelectDropdown
-          label="Product Tags"
-          items={tags}
-          selectedIds={tagIds}
-          setSelectedIds={setTagIds}
-          placeholder="Select Tags"
-        />
-      </div>
-
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">Genders</label>
-        <select
-          className="form-select mt-2"
-          value={formData.gender_id}
-          onChange={(e) =>
-            setFormData({ ...formData, gender_id: e.target.value })
-          }
-        >
-          <option>Select Gender</option>
-          {genders.map((g) => (
-            <option key={g.id} value={g.id}>
-              {g.name_en}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group mt-3">
-        <label className="form-label text-secondary">File Attachment</label>
-        <div className="col-md-12">
-          <div
-            className="upload-container text-center flex-column"
-            style={{ width: 490 }}
-          >
-            <input
-              id="fileInput"
-              type="file"
-              onChange={handleFileChange}
-              className="d-none"
-            />
-            <label role="button" className="d-block cursor-pointer">
-              <div className="mb-1">
-                <span className="fs-16 fw-medium">Upload File</span>
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={handleFileChange}
+                  className="position-absolute top-0 start-0 w-100 h-100"
+                  style={{ opacity: 0, cursor: "pointer" }}
+                />
               </div>
-              <div className="upload-text fs-16 fw-normal">
-                <img src="/assets/images/Group.png" className="me-1" />
-                Drag & drop or
-                <span className="text-decoration-underline">browse files</span>
+
+              {selectedFiles.length > 0 && (
+                <div className="mt-2 text-success fs-12">
+                  <i className="bi bi-check-circle me-1"></i>Image uploaded successfully</div>
+              )}
+            </div>
+          </div>
+
+          <div className="col-md-8">
+            <div className="row">
+              <div className="form-group col-md-6">
+                <label className="form-label text-secondary">
+                  Name English
+                </label>
+                <input
+                  name="name_en"
+                  type="text"
+                  value={formData.name_en}
+                  onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                  className="form-control form-control-lg textarea-hover-dark text-secondary"
+                />
               </div>
-            </label>
-            <ul className="mt-2">
-              {selectedFile.map((file, index) => (
-                <li
-                  className="list-unstyled text-muted fnt-color opacity-50 fs-14 fw-normal"
-                  key={index}
-                >
-                  File Size: {file.size} KB
-                </li>
-              ))}
-            </ul>
+
+              <div className="form-group col-md-6">
+                <label className="form-label text-secondary">Name Arabic</label>
+                <input
+                  name="name_ar"
+                  type="text"
+                  value={formData.name_ar}
+                  onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
+                  className="form-control form-control-lg textarea-hover-dark text-secondary"
+                />
+              </div>
+            </div>
+
+            <div className="form-group mt-3">
+              <MultiSelectDropdown
+                label="Product Tags"
+                items={tags}
+                selectedIds={tagIds}
+                setSelectedIds={setTagIds}
+                placeholder="Select Tags"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <button className="org-btn mt-4 w-100">Update</button>
-      <ToastContainer />
+        <div className="form-group mt-3">
+          <label className="form-label text-secondary">Description</label>
+          <MemoJoditEditor
+            value={formData.description}
+            config={editorConfig}
+            onBlur={(c) => setFormData((p) => ({ ...p, description: c }))}
+          />
+        </div>
+
+        <div className="row mt-3">
+          <div className="form-group col-md-6">
+            <label className="form-label text-secondary">
+              Regular Price
+            </label>
+            <input
+              name="regular_price"
+              type="text"
+              value={formData.regular_price}
+              onChange={(e) => setFormData({ ...formData, regular_price: e.target.value })}
+              className="form-control form-control-lg textarea-hover-dark text-secondary"
+            />
+          </div>
+
+          <div className="form-group col-md-6">
+            <label className="form-label text-secondary">Sale Price</label>
+            <input
+              name="sale_price"
+              type="text"
+              value={formData.sale_price}
+              onChange={(e) => setFormData({ ...formData, sale_price: e.target.value })}
+              className="form-control form-control-lg textarea-hover-dark text-secondary"
+            />
+          </div>
+        </div>
+
+        <div className="row mt-3">
+
+          <div className="form-group col-md-6">
+            <label className="form-label text-secondary">
+              Tax Class
+            </label>
+            <select
+              name="tax_class"
+              className="form-select textarea-hover-dark text-secondary"
+              value={formData.tax_class}
+              onChange={(e) => setFormData({ ...formData, tax_class: e.target.value })}
+            >
+              <option value="">Select Tax Class</option>
+              <option value="Standard">Standard</option>
+              <option value="Popular">Popular</option>
+            </select>
+          </div>
+
+          <div className="form-group col-md-6">
+            <label className="form-label text-secondary">
+              Tax Status
+            </label>
+            <select
+              name="tax_status"
+              className="form-select textarea-hover-dark text-secondary"
+              value={formData.tax_status}
+              onChange={(e) => setFormData({ ...formData, tax_status: e.target.value })}
+            >
+              <option value="">Select Tax Status</option>
+              <option value="Taxable">Taxable</option>
+              <option value="Shipping only">Shipping only</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="row mt-3">
+          <div className="form-group col-md-6">
+            <MultiSelectDropdown
+              label="Product Categories"
+              items={categories}
+              selectedIds={categoryIds}
+              setSelectedIds={setCategoryIds}
+              placeholder="Select Categories"
+            />
+          </div>
+
+          <div className="form-group col-md-6">
+            <MultiSelectDropdown
+              label="Product Branches"
+              items={branches}
+              selectedIds={branchIds}
+              setSelectedIds={setBranchIds}
+              placeholder="Select Branches"
+            />
+          </div>
+        </div>
+
+        <div className="row mt-3">
+          <div className="form-group col-md-6">
+            <MultiSelectDropdown
+              label="Product Occasions"
+              items={occasions}
+              selectedIds={occasionIds}
+              setSelectedIds={setOccasionIds}
+              placeholder="Select Occasions"
+            />
+          </div>
+
+          <div className="form-group mt-3 col-md-6">
+            <label className="form-label text-secondary">Genders</label>
+            <select
+              className="form-select"
+              value={formData.gender_id}
+              onChange={(e) =>
+                setFormData({ ...formData, gender_id: e.target.value })
+              }
+            >
+              <option>Select Gender</option>
+              {genders.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name_en}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="form-buttons mt-5 d-flex justify-content-end gap-2">
+        <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-25">Save</button>
+      </div>
+        <ToastContainer />
+      </div>
     </form>
   );
 }

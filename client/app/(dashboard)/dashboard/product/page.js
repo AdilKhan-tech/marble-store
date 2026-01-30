@@ -142,6 +142,17 @@ export default function ProductPage() {
 
                     <th
                       className="fw-bold fs-14 fnt-color nowrap"  
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
+                    </th>
+
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
@@ -225,6 +236,13 @@ export default function ProductPage() {
                   <tr key={product.id || product.id || index}>
                     <td className="fw-normal fs-14 fnt-color">
                       {product?.id}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={`http://localhost:5000/${product.image_url}`} 
+                        alt={product.name_en} 
+                        className="table-img rounded-1"
+                        />
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {product?.name_en}

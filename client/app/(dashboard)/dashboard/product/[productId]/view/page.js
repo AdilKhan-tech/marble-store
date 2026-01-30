@@ -38,7 +38,7 @@ export default function Page() {
         <hr />
 
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-3">
             <div
               className="position-relative w-100 bg-white d-flex justify-content-center"
               style={{
@@ -57,7 +57,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="col-md-7">
+          <div className="col-md-9">
             <div className="row mt-2">
               <div className="col-md-6 mb-3">
                 <p className="fs-16 fw-bold mb-0 fnt-color">
@@ -73,7 +73,13 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="col-md-4 mb-3">
+            <div className="">
+              <div className="fs-14 fw-bold mb-0 fnt-color" dangerouslySetInnerHTML={{ __html: product.description }}/>
+              <p className="fs-14 fw-normal mt-0">Product Description</p>
+            </div>
+            
+            <div className="row">
+            <div className="col-md-6 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
                 {product?.tags?.length
                   ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),30)
@@ -82,12 +88,7 @@ export default function Page() {
               <p className="fs-14 fw-normal">Product Tags</p>
             </div>
 
-              <div className="row">
 
-            <div className="col-md-6">
-              <div className="fs-14 fw-bold mb-0 fnt-color" dangerouslySetInnerHTML={{ __html: product.description }}/>
-              <p className="fs-14 fw-normal mt-1">Product Description</p>
-            </div>
             <div className="col-md-6 mb-3">
                 <p className="fs-16 fw-bold mb-0 fnt-color">
                   {product.gender.name_en}

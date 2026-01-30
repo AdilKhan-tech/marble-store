@@ -247,13 +247,13 @@ export default function CakeSizePage() {
                         {cakeSize?.additional_price}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {/* <img
+                        <img
                           src={`http://localhost:5000/${cakeSize.image_url}`} 
                           alt={cakeSize.name_en} 
                           className="table-img rounded-4"
-                        /> */}
+                        />
 
-                        <img src={cakeSize.image_url} className="table-img rounded-4" />
+                        {/* <img src={cakeSize.image_url} className="table-img rounded-4" /> */}
 
 
                       </td>
