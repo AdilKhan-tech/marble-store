@@ -9,7 +9,6 @@ const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
 const CustomCakeSizeController = require("../controllers/CustomCakeSizeController");
-const { route } = require("./userRoutes");
 
 router.use(authenticateToken);
 
