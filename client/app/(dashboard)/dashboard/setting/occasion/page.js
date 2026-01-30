@@ -236,7 +236,6 @@ function Occasions() {
         <ToastContainer />
       </div>
     </section>
-    <hr/>
     <div className='datatable-bottom'>
       <Pagination
         currentPage={currentPage}
