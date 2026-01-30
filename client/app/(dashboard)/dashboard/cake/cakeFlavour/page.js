@@ -134,15 +134,15 @@ export default function CakeFlavourPage() {
         </div>
         </div>
           <div className='d-flex'>
-              <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
-              <input 
-                type="text" 
-                className="form-control px-5 text-dark-custom" 
-                style={{height:"44px", width:"300px"}}
-                placeholder="Search here..."
-                onChange={(e) => setKeywords(e.target.value)}
-              />
-              </div>
+            <i className='bi bi-search fs-5 px-3 py-1 text-secondary position-absolute'></i>
+            <input 
+              type="text" 
+              className="form-control px-5 text-dark-custom" 
+              style={{height:"44px", width:"300px"}}
+              placeholder="Search here..."
+              onChange={(e) => setKeywords(e.target.value)}
+            />
+          </div>
       </div>
       <div className="px-0 pt-0 rounded-2 p-0 mt-3">
         <div className="">

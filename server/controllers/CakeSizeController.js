@@ -1,4 +1,5 @@
 const { CakeSize, CustomCakeTypes } = require("../models");
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class CakeSizeController {
       try {
           const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,calories,status } = req.body
 
-          const image_url = req.file?.path || null;
+          const image_url = req.file ? req.file.filename : null;
           
           const cakeSize = await CakeSize.create({
               name_en,
@@ -21,7 +22,16 @@ class CakeSizeController {
               status,
               image_url,
           });
-          return res.status(201).json(cakeSize);
+          
+          const responseData = {
+            ...cakeSize.toJSON(),
+            image_url: cakeSize.image_url
+              ? `${UPLOADS_URL}/${cakeSize.image_url}`
+              : null,
+          };
+
+          return res.status(201).json(responseData);
+
       } catch (error) {
         next(error);
       }
@@ -69,31 +79,19 @@ class CakeSizeController {
         order: [[finalSortField, finalSortOrder]],
       });
 
-      // 🔥 PROFESSIONAL PART
-      const baseUrl = process.env.APP_URL;
-
+      // 🔥 IMAGE URL BUILD HERE
       const data = rows.map(item => {
-        const json = item.toJSON();
+        const cake = item.toJSON();
         return {
-          ...json,
-          image_url: json.image_url
-            ? `${baseUrl}/${json.image_url}`
+          ...cake,
+          image_url: cake.image_url
+            ? `${UPLOADS_URL}/${cake.image_url}`
             : null,
         };
       });
   
       const pageCount = Math.ceil(count / limit);
   
-      // return res.status(200).json({
-      //   pagination: {
-      //     page,
-      //     limit,
-      //     total: count,
-      //     pageCount,
-      //   },
-      //   data: rows,
-      // });
-      // ✅ FINAL RESPONSE
       return res.status(200).json({
         pagination: {
           page,
@@ -126,7 +124,11 @@ class CakeSizeController {
               status
           } = req.body;
 
-          const image_url = req.file?.path || cakeSize.image_url;
+          // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+          let image_url = cakeSize.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
 
           await cakeSize.update({
             name_en: name_en ?? cakeSize.name_en,
@@ -140,7 +142,15 @@ class CakeSizeController {
             image_url: image_url
           });
   
-          return res.status(200).json(cakeSize);
+          // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+          const responseData = {
+            ...cakeSize.toJSON(),
+            image_url: cakeSize.image_url
+              ? `${UPLOADS_URL}/${cakeSize.image_url}`
+              : null,
+          };
+
+          return res.status(200).json(responseData);
   
       } catch (error) {
           next(error);
