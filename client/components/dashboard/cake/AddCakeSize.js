@@ -126,15 +126,6 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             onUpdateCakeSize(updatedCakeSize);
           }
   
-          // if (onUpdateCakeSize) {
-          //   onUpdateCakeSize({
-          //     ...cakeSizeData,
-          //     ...formData,
-          //     id: cakeSizeData.id,
-          //     customCakeType: selectedType || null,
-          //   });
-          // }
-  
           closePopup();
         }
       }
