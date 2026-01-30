@@ -457,3 +457,10 @@ body.sidebar-collapsed .main-content-area {
   width: 40px;
   height: 40px;
 }
+.text-black {
+  color: #494949;
+}
+.header-logo{
+  width: 25px;
+  height: 25px;
+}

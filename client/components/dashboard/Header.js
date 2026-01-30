@@ -13,8 +13,9 @@ function Header() {
       <div className="container-fluid">
         <div className="row align-items-center">
           <div className="col-md-6">
-            <div className="left-header-content">
-              <h2 className="fs-20">Welcome back, Admin!</h2>
+            <div className="left-header-content d-flex justify-contnet-between gap-2">
+              <img src="/assets/images/raisedhand.png" alt="lol" className="header-logo"/>
+              <h2 className="fw-normal welcom-admin text-black fs-18">Welcome back, Admin!</h2>
             </div>
           </div>
           <div className="col-md-6">

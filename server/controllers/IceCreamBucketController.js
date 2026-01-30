@@ -1,4 +1,5 @@
 const IceCreamBucket = require('../models/IceCreamBucket');
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class IceCreamBucketController {
         try {
             const {name_en,name_ar,slug,size,price,calories,status} = req.body;
 
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
     
             const iceCreamBucket = await IceCreamBucket.create({
                 name_en,
@@ -20,7 +21,15 @@ class IceCreamBucketController {
                 status,
                 image_url
             });
-            return res.status(201).json(iceCreamBucket);
+
+            const responseData = {
+            ...iceCreamBucket.toJSON(),
+            image_url: iceCreamBucket.image_url
+              ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+              : null,
+            };
+            
+            return res.status(201).json(responseData);
     
         }catch (error) {
             next(error);
@@ -59,6 +68,16 @@ class IceCreamBucketController {
             offset,
             order: [[finalSortField, finalSortOrder]],
           });
+            
+            const data = rows.map(item => {
+            const iceCreamBucket = item.toJSON();
+              return {
+               ...iceCreamBucket,
+               image_url: iceCreamBucket.image_url
+                ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                : null,
+            };
+            });
     
           const pageCount = Math.ceil(count / limit);
     
@@ -69,7 +88,7 @@ class IceCreamBucketController {
               total: count,
               pageCount,
             },
-            data: rows,
+            data,
           });
         } catch (error) {
           return res.status(500).json({
@@ -97,7 +116,10 @@ class IceCreamBucketController {
                 status,
             } = req.body;
 
-            const image_url = req.file?.path || iceCreamBucket.image_url;
+            let image_url = iceCreamBucket.image_url;
+            if (req.file) {
+                image_url = req.file.filename;
+            }
     
             await iceCreamBucket.update({
                 name_en: name_en ?? iceCreamBucket.name_en,
@@ -110,7 +132,14 @@ class IceCreamBucketController {
                 image_url: image_url
             });
 
-            return res.status(200).json({message: "IceCream Bucket updated successfully",iceCreamBucket});
+            const responseData = {
+            ...iceCreamBucket.toJSON(),
+            image_url: iceCreamBucket.image_url
+              ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+              : null,
+          };
+
+            return res.status(200).json({message: "IceCream Bucket updated successfully",responseData});
     
         }catch (error) {
             next(error);
