@@ -32,6 +32,7 @@ const corsOptions = {
 
 // Middlewares
 app.use(cors(corsOptions));
+// app.use(cors()); // Allow all origins in dev
 app.use(express.json());
 
 // Routes

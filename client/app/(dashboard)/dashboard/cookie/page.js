@@ -275,7 +275,6 @@ export default function Cookies() {
         <ToastContainer />
       </div>
     </section>
-    <hr/>
     <div className='datatable-bottom'>
       <Pagination
         currentPage={currentPage}
