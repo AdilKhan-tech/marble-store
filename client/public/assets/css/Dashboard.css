@@ -237,12 +237,6 @@ table tr:nth-child(even) td {
   height: 35px;
   width: 35px;
 }
-.pagination-Div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
 .pagination-Div .page-link {
   width: 28px;
   height: 28px;
@@ -268,7 +262,7 @@ table tr:nth-child(even) td {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 .showperpage {
   color: #90908f;
@@ -291,6 +285,23 @@ table tr:nth-child(even) td {
   padding: 12px;
   margin-top: 19px;
   width: 140px;
+}
+select.datatable-selector,
+/* select.form-select, */
+select {
+  border: 1px solid rgba(132, 132, 132, 0.25);
+  border-radius: 8px;
+
+  font-size: 14px;
+  line-height: 20px;
+  background: transparent;
+  background-image: url("/assets/images/Dashboard/arrow-down-fig.svg") !important;
+  background-repeat: no-repeat !important;
+  height: 40px;
+  width: 60px;
+  background-position: right 5px center !important;
+  appearance: none;
+  margin-bottom: 0 !important;
 }
 .dashboard-sidebar {
   width: 300px;
@@ -445,4 +456,11 @@ body.sidebar-collapsed .main-content-area {
 .table-img{
   width: 40px;
   height: 40px;
+}
+.text-black {
+  color: #494949;
+}
+.header-logo{
+  width: 25px;
+  height: 25px;
 }

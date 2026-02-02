@@ -21,11 +21,13 @@ class IceCreamBucketController {
                 status,
                 image_url
             });
+
             const responseData = {
-                ...iceCreamBucket.toJSON(),
-                image_url: iceCreamBucket.image_url
-                  ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
-                  : null,
+            ...iceCreamBucket.toJSON(),
+            image_url: iceCreamBucket.image_url
+              ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+              : null,
+
             };
             
             return res.status(201).json(responseData);
@@ -81,16 +83,6 @@ class IceCreamBucketController {
             });
     
             const pageCount = Math.ceil(count / limit);
-    
-            return res.status(200).json({
-                pagination: {
-                page,
-                limit,
-                total: count,
-                pageCount,
-                },
-                data,
-            });
         } catch (error) {
             return res.status(500).json({
                 message: "Failed to get Ice Cream Bucket",

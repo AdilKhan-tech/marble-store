@@ -205,10 +205,10 @@ export default function IceCreamBucketPage() {
                     </th>
                     <th
                       className="fw-bold fs-14 fnt-color nowrap" 
-                      onClick={() => handleSortChange("image")}>
+                      onClick={() => handleSortChange("image_url")}>
                       Image
                       <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "image" &&
+                      {(sortField === "image_url" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
@@ -249,6 +249,13 @@ export default function IceCreamBucketPage() {
                           src={iceCreamBucket.image_url}
                           alt={iceCreamBucket.name_en}
                           className="table-img rounded-5"
+                        />
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={icecream.image_url}
+                          alt={icecream.name_en}
+                          className="table-img rounded-1"
                         />
                       </td>
                       <td>
@@ -308,7 +315,6 @@ export default function IceCreamBucketPage() {
           <ToastContainer />
         </div>
       </section>
-      <hr/>
       <div className='datatable-bottom'>
         <Pagination
           currentPage={currentPage}

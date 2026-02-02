@@ -221,7 +221,7 @@ export default function IceCreamPortionSizePage() {
                         {icecream.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.icecream_bucket_id}
+                        {icecream?.iceCreamBucket?.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         {icecream.slug}
@@ -283,7 +283,6 @@ export default function IceCreamPortionSizePage() {
           <ToastContainer />
         </div>
       </section>
-      <hr/>
       <div className='datatable-bottom'>
         <Pagination
           currentPage={currentPage}

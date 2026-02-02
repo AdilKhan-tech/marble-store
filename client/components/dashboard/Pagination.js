@@ -45,8 +45,8 @@ function Pagination({ currentPage, pageCount, onPageChange, pageLimit, totalEntr
     };
 
     return (
-        <div className="pagination-Div">
-            <div className="datatable-info">
+        <div className="pagination-Div d-flex justify-content-between align-items-center w-100">
+            <div className="datatable-info text-secondary">
                 Showing <b>{(currentPage - 1) * pageLimit + 1}</b> out of{" "}
                 <b>{totalEntries}</b> entries
             </div>
