@@ -300,7 +300,10 @@ export default function ProductPage() {
                           </Dropdown.Item>
                         </Dropdown.Menu>
                         </Dropdown>
-                      <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => router.push(`/dashboard/product/update/`)}>
+                      <div 
+                        className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" 
+                        onClick={() => router.push(`/dashboard/product/update/${product.id}`)}
+                      >
                         <i className="bi bi-pencil-square text-primary"></i>
                       </div>
                       <div className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" onClick={() => showDeleteConfirmation(product?.id)}>
