@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ import {
   getAllTags,
   getAllOcassions,
   updateProductByIdRoute,
+  getProductByIdRoute
 } from "@/utils/apiRoutes";
 import MultiSelectDropdown from "@/components/dashboard/MultiSelectDropdown";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,7 +20,10 @@ import { toast, ToastContainer } from "react-toastify";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const MemoJoditEditor = React.memo(JoditEditor);
 
-export default function EditProduct({ productData, closePopup }) {
+export default function EditProduct() {
+  const { token } = useAxiosConfig()
+  const { id } = useParams();
+  const [productData, setProductData] = useState(null);
   const router = useRouter();
   const descriptionRef = useRef("");
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -27,7 +32,6 @@ export default function EditProduct({ productData, closePopup }) {
   const [categories, setCategories] = useState([]);
   const [occasions, setOccasions] = useState([]);
   const [tags, setTags] = useState([]);
-  const { token } = useAxiosConfig()
 
   const [branchIds, setBranchIds] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
@@ -64,6 +68,22 @@ export default function EditProduct({ productData, closePopup }) {
     setOccasionIds(productData.occasions?.map((o) => o.id) || []);
     setTagIds(productData.tags?.map((t) => t.id) || []);
   }, [productData]);
+
+  // fetchProduct
+  useEffect(() => {
+    if (!token || !id) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(getProductByIdRoute(id));
+        setProductData(res.data);
+      } catch (error) {
+        console.error("Product fetch failed", error);
+      }
+    };
+
+    fetchProduct();
+  }, [token, id]);
 
   /* ===== FETCH ALL ===== */
   const fetchGenders = async () => {
@@ -143,7 +163,7 @@ export default function EditProduct({ productData, closePopup }) {
       tagIds.forEach((id) => payload.append("tag_ids[]", id));
 
       // ✅ FILES (missing part)
-      selectedFile.forEach((file) => {
+      selectedFiles.forEach((file) => {
         payload.append("images[]", file);
       });
 
@@ -154,7 +174,7 @@ export default function EditProduct({ productData, closePopup }) {
 
       toast.success("Branch Updated successfully!", {
         autoClose: 1000,
-        onClose: closePopup,
+        // onClose: closePopup,
       });
     } catch (err) {
       console.error(err);

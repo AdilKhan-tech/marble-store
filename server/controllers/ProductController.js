@@ -4,6 +4,7 @@ const Branch = require("../models/Branch");
 const Occasion = require("../models/Occasion");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
+const { UPLOADS_URL } = require("../config/config");
 
 class ProductController {
 
@@ -24,7 +25,7 @@ class ProductController {
                 occasion_ids
             } = req.body;
     
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
     
             const product = await Product.create({
                 name_en,
@@ -81,7 +82,14 @@ class ProductController {
                 );
             }
     
-            return res.status(201).json(product);
+            // return res.status(201).json(product);
+
+            return res.status(201).json({
+                ...product.toJSON(),
+                image_url: product.image_url
+                  ? `${UPLOADS_URL}/${product.image_url}`
+                  : null,
+              });
 
         } catch (error) {
             return res.status(500).json({
@@ -227,54 +235,65 @@ class ProductController {
     }
 
     static async updateProductById(req, res) {
-    const { id } = req.params;
-    try {
-        const product = await Product.findByPk(id);
-        if (!product) return res.status(404).json({ message: "Product not found" });
+        const { id } = req.params;
+        try {
+            const product = await Product.findByPk(id);
+            if (!product) return res.status(404).json({ message: "Product not found" });
 
-        const {
-            name_en,
-            name_ar,
-            description,
-            tag_ids,
-            gender_id,
-            regular_price,
-            sale_price,
-            tax_status,
-            tax_class,
-            branch_ids,
-            category_ids,
-            occasion_ids
-        } = req.body;
+            const {
+                name_en,
+                name_ar,
+                description,
+                tag_ids,
+                gender_id,
+                regular_price,
+                sale_price,
+                tax_status,
+                tax_class,
+                branch_ids,
+                category_ids,
+                occasion_ids
+            } = req.body;
 
-        const image_url = req.file?.path || product.image_url;
+            let image_url = product.image_url;
+            if (req.file) {
+                image_url = req.file.filename;
+            }
 
-        await product.update({
-            name_en, name_ar, description, gender_id, regular_price,
-            sale_price, tax_status, tax_class, image_url
-        });
+            await product.update({
+                name_en, name_ar, description, gender_id, regular_price,
+                sale_price, tax_status, tax_class, image_url
+            });
 
-        // normalize ids
-        const tags = Common.normalizeToArray(tag_ids);
-        const branches = Common.normalizeToArray(branch_ids);
-        const categories = Common.normalizeToArray(category_ids);
-        const occasions = Common.normalizeToArray(occasion_ids);
+            // normalize ids
+            const tags = Common.normalizeToArray(tag_ids);
+            const branches = Common.normalizeToArray(branch_ids);
+            const categories = Common.normalizeToArray(category_ids);
+            const occasions = Common.normalizeToArray(occasion_ids);
 
-        if (tags.length) await ProductTag.destroy({ where: { product_id: id } });
-        if (branches.length) await ProductBranch.destroy({ where: { product_id: id } });
-        if (categories.length) await ProductCategory.destroy({ where: { product_id: id } });
-        if (occasions.length) await ProductOccasion.destroy({ where: { product_id: id } });
+            if (tags.length) await ProductTag.destroy({ where: { product_id: id } });
+            if (branches.length) await ProductBranch.destroy({ where: { product_id: id } });
+            if (categories.length) await ProductCategory.destroy({ where: { product_id: id } });
+            if (occasions.length) await ProductOccasion.destroy({ where: { product_id: id } });
 
-        if (tags.length) await ProductTag.bulkCreate(tags.map(tag_id => ({ product_id: id, tag_id })));
-        if (branches.length) await ProductBranch.bulkCreate(branches.map(branch_id => ({ product_id: id, branch_id })));
-        if (categories.length) await ProductCategory.bulkCreate(categories.map(category_id => ({ product_id: id, category_id })));
-        if (occasions.length) await ProductOccasion.bulkCreate(occasions.map(occasion_id => ({ product_id: id, occasion_id })));
+            if (tags.length) await ProductTag.bulkCreate(tags.map(tag_id => ({ product_id: id, tag_id })));
+            if (branches.length) await ProductBranch.bulkCreate(branches.map(branch_id => ({ product_id: id, branch_id })));
+            if (categories.length) await ProductCategory.bulkCreate(categories.map(category_id => ({ product_id: id, category_id })));
+            if (occasions.length) await ProductOccasion.bulkCreate(occasions.map(occasion_id => ({ product_id: id, occasion_id })));
 
-        return res.status(200).json(product);
-    } catch (error) {
-        return res.status(500).json({ message: "Failed to update product", error: error.message });
+            // return res.status(200).json(product);
+
+            // ✅ RESPONSE WITH FULL IMAGE URL
+            return res.status(200).json({
+                ...product.toJSON(),
+                image_url: product.image_url
+                ? `${UPLOADS_URL}/${product.image_url}`
+                : null,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to update product", error: error.message });
+        }
     }
-}
 
 }
 
