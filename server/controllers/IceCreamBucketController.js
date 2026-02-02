@@ -40,56 +40,63 @@ class IceCreamBucketController {
     static async getAllIceCreamBucket(req, res) {
         const { page, limit, offset } = getPagination(req);
         const { keywords, sortField, sortOrder } = req.query;
-    
+      
         try {
-
-            const whereClause = {};
-    
-            if (keywords) {
-                whereClause[Op.or] = [
-                { name_en: { [Op.like]: `%${keywords}%` } },
-                { name_ar: { [Op.like]: `%${keywords}%` } },
-                ];
-            }
-    
-            const allowedSortFields = [
-                "id",
-                "name_en",
-                "size",
-                "price",
-                "calories",
-                "status",
+          const whereClause = {};
+      
+          if (keywords) {
+            whereClause[Op.or] = [
+              { name_en: { [Op.like]: `%${keywords}%` } },
+              { name_ar: { [Op.like]: `%${keywords}%` } },
             ];
-    
-            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
-            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
-        
-            const { count, rows } = await IceCreamBucket.findAndCountAll({
-                where: whereClause,
-                limit,
-                offset,
-                order: [[finalSortField, finalSortOrder]],
-            });
-
-          // 🔥 IMAGE URL BUILD HERE
-            const data = rows.map(item => {
-                const iceCreamBucket = item.toJSON();
-                return {
-                ...iceCreamBucket,
-                image_url: iceCreamBucket.image_url
-                    ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
-                    : null,
-                };
-            });
-    
-            const pageCount = Math.ceil(count / limit);
+          }
+      
+        const allowedSortFields = [
+            "id",
+            "name_en",
+            "size",
+            "price",
+            "calories",
+            "status",
+        ];
+      
+          const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+          const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+      
+          const { count, rows } = await IceCreamBucket.findAndCountAll({
+            where: whereClause,
+            limit,
+            offset,
+            order: [[finalSortField, finalSortOrder]],
+          });
+              // 🔥 IMAGE URL BUILD HERE
+           const data = rows.map(item => {
+            const iceCreamBucket = item.toJSON();
+            return {
+              ...iceCreamBucket,
+              image_url: iceCreamBucket.image_url
+                ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                : null,
+            };
+          });
+          const pageCount = Math.ceil(count / limit);
+      
+          return res.status(200).json({
+            pagination: {
+              page,
+              limit,
+              total: count,
+              pageCount,
+            },
+            data,
+          });
         } catch (error) {
-            return res.status(500).json({
-                message: "Failed to get Ice Cream Bucket",
-                error: error.message,
-            });
+          return res.status(500).json({
+            message: "Failed to get Ice Cream Bucket",
+            error: error.message,
+          });
         }
-    }
+      }
 
     static async updateIceCreamBucketById(req, res, next) {
         const { id } = req.params;
