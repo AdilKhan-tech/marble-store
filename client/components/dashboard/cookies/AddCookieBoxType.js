@@ -82,7 +82,7 @@ const AddCookieBoxType = ({ closePopup, cookieBoxTypeData = null, onAddCookieBox
           });
 
           if (onUpdateCookieBoxType) {
-            onUpdateCookieBoxType(res.data.cookieBoxType);
+            onUpdateCookieBoxType(res.data);
           }
 
           closePopup();

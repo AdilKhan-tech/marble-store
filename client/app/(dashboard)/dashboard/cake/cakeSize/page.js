@@ -250,7 +250,7 @@ export default function CakeSizePage() {
                         <img
                           src={cakeSize.image_url}
                           alt={cakeSize.name_en}
-                          className="table-img rounded-4"
+                          className="table-img rounded-5"
                         />
                       </td>
                       <td>

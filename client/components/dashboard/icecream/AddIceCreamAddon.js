@@ -74,7 +74,7 @@ const AddIceCreamAddon = ({ closePopup, IceCreamAddonData = null, onAddIceCreamA
           toast.success("Icecream Addon updated successfully!");
 
           if (onUpdateIceCreamAddon) {
-            onUpdateIceCreamAddon(res.data.iceCreamAddOn);
+            onUpdateIceCreamAddon(res.data);
           }
 
           closePopup();

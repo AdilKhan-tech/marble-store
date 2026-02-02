@@ -27,6 +27,7 @@ class IceCreamBucketController {
             image_url: iceCreamBucket.image_url
               ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
               : null,
+
             };
             
             return res.status(201).json(responseData);
@@ -41,60 +42,52 @@ class IceCreamBucketController {
         const { keywords, sortField, sortOrder } = req.query;
     
         try {
-          const whereClause = {};
+
+            const whereClause = {};
     
-          if (keywords) {
-            whereClause[Op.or] = [
-              { name_en: { [Op.like]: `%${keywords}%` } },
-              { name_ar: { [Op.like]: `%${keywords}%` } },
+            if (keywords) {
+                whereClause[Op.or] = [
+                { name_en: { [Op.like]: `%${keywords}%` } },
+                { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
+    
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "size",
+                "price",
+                "calories",
+                "status",
             ];
-          }
     
-          const allowedSortFields = [
-            "id",
-            "name_en",
-            "size",
-            "price",
-            "calories",
-            "status",
-          ];
-    
-          const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
-          const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
-    
-          const { count, rows } = await IceCreamBucket.findAndCountAll({
-            where: whereClause,
-            limit,
-            offset,
-            order: [[finalSortField, finalSortOrder]],
-          });
-            
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+        
+            const { count, rows } = await IceCreamBucket.findAndCountAll({
+                where: whereClause,
+                limit,
+                offset,
+                order: [[finalSortField, finalSortOrder]],
+            });
+
+          // 🔥 IMAGE URL BUILD HERE
             const data = rows.map(item => {
-            const iceCreamBucket = item.toJSON();
-              return {
-               ...iceCreamBucket,
-               image_url: iceCreamBucket.image_url
-                ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
-                : null,
-            };
+                const iceCreamBucket = item.toJSON();
+                return {
+                ...iceCreamBucket,
+                image_url: iceCreamBucket.image_url
+                    ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                    : null,
+                };
             });
     
-          const pageCount = Math.ceil(count / limit);
-    
-          return res.status(200).json({
-            pagination: {
-              page,
-              limit,
-              total: count,
-              pageCount,
-            },
-            data,
-          });
+            const pageCount = Math.ceil(count / limit);
         } catch (error) {
-          return res.status(500).json({
-            message: "Failed to get Ice Cream Bucket",
-            error: error.message,
-          });
+            return res.status(500).json({
+                message: "Failed to get Ice Cream Bucket",
+                error: error.message,
+            });
         }
     }
 
@@ -116,6 +109,7 @@ class IceCreamBucketController {
                 status,
             } = req.body;
 
+            // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
             let image_url = iceCreamBucket.image_url;
             if (req.file) {
                 image_url = req.file.filename;
@@ -132,14 +126,15 @@ class IceCreamBucketController {
                 image_url: image_url
             });
 
+            // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
             const responseData = {
-            ...iceCreamBucket.toJSON(),
-            image_url: iceCreamBucket.image_url
-              ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
-              : null,
-          };
+                ...iceCreamBucket.toJSON(),
+                image_url: iceCreamBucket.image_url
+                ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                : null,
+            };
 
-            return res.status(200).json({message: "IceCream Bucket updated successfully",responseData});
+            return res.status(200).json(responseData);
     
         }catch (error) {
             next(error);
