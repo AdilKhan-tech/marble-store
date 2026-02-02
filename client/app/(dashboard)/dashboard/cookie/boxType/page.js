@@ -184,6 +184,16 @@ export default function CookieBoxTypePage() {
                   </th>
                   <th
                     className="fw-bold fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                  </th>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("status")}>
                     Status
                     <span className="fs-10 text-secondary ms-1">
@@ -206,6 +216,13 @@ export default function CookieBoxTypePage() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {type?.slug}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={type.image_url}
+                        alt={type.name_en}
+                        className="table-img rounded-5"
+                      />
                     </td>
                     <td>
                       <div className={type?.status === "active" ? "blue-status" : "red-status"}>

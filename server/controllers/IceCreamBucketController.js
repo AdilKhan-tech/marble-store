@@ -1,4 +1,5 @@
 const IceCreamBucket = require('../models/IceCreamBucket');
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class IceCreamBucketController {
         try {
             const {name_en,name_ar,slug,size,price,calories,status} = req.body;
 
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
     
             const iceCreamBucket = await IceCreamBucket.create({
                 name_en,
@@ -20,7 +21,14 @@ class IceCreamBucketController {
                 status,
                 image_url
             });
-            return res.status(201).json(iceCreamBucket);
+            const responseData = {
+                ...iceCreamBucket.toJSON(),
+                image_url: iceCreamBucket.image_url
+                  ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                  : null,
+            };
+            
+            return res.status(201).json(responseData);
     
         }catch (error) {
             next(error);
@@ -32,50 +40,62 @@ class IceCreamBucketController {
         const { keywords, sortField, sortOrder } = req.query;
     
         try {
-          const whereClause = {};
+
+            const whereClause = {};
     
-          if (keywords) {
-            whereClause[Op.or] = [
-              { name_en: { [Op.like]: `%${keywords}%` } },
-              { name_ar: { [Op.like]: `%${keywords}%` } },
+            if (keywords) {
+                whereClause[Op.or] = [
+                { name_en: { [Op.like]: `%${keywords}%` } },
+                { name_ar: { [Op.like]: `%${keywords}%` } },
+                ];
+            }
+    
+            const allowedSortFields = [
+                "id",
+                "name_en",
+                "size",
+                "price",
+                "calories",
+                "status",
             ];
-          }
     
-          const allowedSortFields = [
-            "id",
-            "name_en",
-            "size",
-            "price",
-            "calories",
-            "status",
-          ];
+            const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+            const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+        
+            const { count, rows } = await IceCreamBucket.findAndCountAll({
+                where: whereClause,
+                limit,
+                offset,
+                order: [[finalSortField, finalSortOrder]],
+            });
+
+          // 🔥 IMAGE URL BUILD HERE
+            const data = rows.map(item => {
+                const iceCreamBucket = item.toJSON();
+                return {
+                ...iceCreamBucket,
+                image_url: iceCreamBucket.image_url
+                    ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                    : null,
+                };
+            });
     
-          const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
-          const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+            const pageCount = Math.ceil(count / limit);
     
-          const { count, rows } = await IceCreamBucket.findAndCountAll({
-            where: whereClause,
-            limit,
-            offset,
-            order: [[finalSortField, finalSortOrder]],
-          });
-    
-          const pageCount = Math.ceil(count / limit);
-    
-          return res.status(200).json({
-            pagination: {
-              page,
-              limit,
-              total: count,
-              pageCount,
-            },
-            data: rows,
-          });
+            return res.status(200).json({
+                pagination: {
+                page,
+                limit,
+                total: count,
+                pageCount,
+                },
+                data,
+            });
         } catch (error) {
-          return res.status(500).json({
-            message: "Failed to get Ice Cream Bucket",
-            error: error.message,
-          });
+            return res.status(500).json({
+                message: "Failed to get Ice Cream Bucket",
+                error: error.message,
+            });
         }
     }
 
@@ -97,7 +117,11 @@ class IceCreamBucketController {
                 status,
             } = req.body;
 
-            const image_url = req.file?.path || iceCreamBucket.image_url;
+            // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+            let image_url = iceCreamBucket.image_url;
+            if (req.file) {
+                image_url = req.file.filename;
+            }
     
             await iceCreamBucket.update({
                 name_en: name_en ?? iceCreamBucket.name_en,
@@ -110,7 +134,15 @@ class IceCreamBucketController {
                 image_url: image_url
             });
 
-            return res.status(200).json({message: "IceCream Bucket updated successfully",iceCreamBucket});
+            // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+            const responseData = {
+                ...iceCreamBucket.toJSON(),
+                image_url: iceCreamBucket.image_url
+                ? `${UPLOADS_URL}/${iceCreamBucket.image_url}`
+                : null,
+            };
+
+            return res.status(200).json(responseData);
     
         }catch (error) {
             next(error);

@@ -190,7 +190,17 @@ export default function Cookies() {
                     onClick={() => handleSortChange("slug")}>
                     Slug
                     <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "cookie_type_id" &&
+                      {(sortField === "slug" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                  </th>
+                  <th
+                    className="fw-bold fs-14 fnt-color nowrap"  
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
@@ -222,6 +232,13 @@ export default function Cookies() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {cookie?.slug}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={cookie.image_url}
+                        alt={cookie.name_en}
+                        className="table-img rounded-5"
+                      />
                     </td>
                     <td>
                       <div
