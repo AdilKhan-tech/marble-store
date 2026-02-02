@@ -155,7 +155,7 @@ export default function CakePortionSizePage() {
               <thead className=''>
                 <tr className=''>
                   <th
-                    className="fw-bold fs-14 fnt-color"
+                    className="fw-medium fs-14 fnt-color"
                     onClick={() => handleSortChange("id")}>
                     ID
                     <span className="fs-10 text-secondary ms-1">
@@ -165,7 +165,7 @@ export default function CakePortionSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color"
+                    className="fw-medium fs-14 fnt-color"
                     onClick={() => handleSortChange("name_en")}>
                     Name
                     <span className="fs-10 text-secondary ms-1">
@@ -175,7 +175,7 @@ export default function CakePortionSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color"
+                    className="fw-medium fs-14 fnt-color"
                     onClick={() => handleSortChange("slug")}>
                     Slug
                     <span className="fs-10 text-secondary ms-1">
@@ -185,7 +185,7 @@ export default function CakePortionSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color" 
+                    className="fw-medium fs-14 fnt-color" 
                     onClick={() => handleSortChange("parent_portion_size")}>
                     Parent Portion Size
                     <span className="fs-10 text-secondary ms-1">
@@ -194,7 +194,7 @@ export default function CakePortionSizePage() {
                       "↑↓"}
                     </span>
                   </th>
-                  <th className="fw-bold fs-14 fnt-color">Action</th>
+                  <th className="fw-medium fs-14 fnt-color">Action</th>
                 </tr>
               </thead>
 

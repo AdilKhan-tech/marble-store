@@ -153,7 +153,7 @@ export default function IceCreamAddonPage() {
               <thead className=''>
                 <tr className=''>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("id")}>
                     ID
                     <span className="fs-10 text-secondary ms-1">
@@ -164,7 +164,7 @@ export default function IceCreamAddonPage() {
                   </th>
 
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("name_en")}>
                     Name
                     <span className="fs-10 text-secondary ms-1">
@@ -175,7 +175,7 @@ export default function IceCreamAddonPage() {
                   </th>
 
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("slug")}>
                     Slug
                     <span className="fs-10 text-secondary ms-1">
@@ -186,7 +186,7 @@ export default function IceCreamAddonPage() {
                   </th>
 
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("type")}>
                     Type
                     <span className="fs-10 text-secondary ms-1">
@@ -197,7 +197,7 @@ export default function IceCreamAddonPage() {
                   </th>
 
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("image_url")}>
                     Image
                     <span className="fs-10 text-secondary ms-1">
@@ -208,7 +208,7 @@ export default function IceCreamAddonPage() {
                   </th>
 
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("status")}>
                     Status
                     <span className="fs-10 text-secondary ms-1">
@@ -218,7 +218,7 @@ export default function IceCreamAddonPage() {
                     </span>
                   </th>
 
-                  <th>Action</th>
+                  <th className='fw-medium fs-14 fnt-color'>Action</th>
                 </tr>
               </thead>
               <tbody>
