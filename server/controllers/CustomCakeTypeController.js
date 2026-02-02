@@ -1,4 +1,5 @@
 const CustomCakeType = require("../models/CustomCakeType");
+const { UPLOADS_URL } = require("../config/config")
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class CustomCakeTypeController {
     try {
         const {name_en, name_ar, slug, status} = req.body;
 
-        const image_url = req.file?.path || null;
+        const image_url = req.file ? req.file.filename : null;
 
         const customCakeTypes = await CustomCakeType.create({
             name_en,
@@ -17,7 +18,13 @@ class CustomCakeTypeController {
             status,
             image_url,
         });
-        return res.status(201).json(customCakeTypes);
+       const responseData = {
+             ...customCakeTypes.toJSON(),
+             image_url: customCakeTypes.image_url
+               ? `${UPLOADS_URL}/${customCakeTypes.image_url}` 
+               : null,
+       };
+        return res.status(201).json(responseData);
 
     }catch(error) {
       next(error);
@@ -54,7 +61,16 @@ class CustomCakeTypeController {
         offset,
         order: [[finalSortField, finalSortOrder]],
       });
-  
+          // 🔥 IMAGE URL BUILD HERE
+       const data = rows.map(item => {
+        const cake = item.toJSON();
+        return {
+          ...cake,
+          image_url: cake.image_url
+            ? `${UPLOADS_URL}/${cake.image_url}`
+            : null,
+        };
+      });
       const pageCount = Math.ceil(count / limit);
   
       return res.status(200).json({
@@ -64,7 +80,7 @@ class CustomCakeTypeController {
           total: count,
           pageCount,
         },
-        data: rows,
+        data,
       });
     } catch (error) {
       return res.status(500).json({
@@ -88,7 +104,11 @@ class CustomCakeTypeController {
   
       const { name_en, name_ar, slug, status } = req.body;
   
-      const image_url = req.file?.path || customCakeTypes.image_url;
+       // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+            let image_url = customCakeTypes.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
   
       await customCakeTypes.update({
         name_en: name_en ?? customCakeTypes.name_en,

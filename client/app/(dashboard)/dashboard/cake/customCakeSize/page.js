@@ -232,11 +232,11 @@ export default function CustomCakeSize() {
                         {customCakeSize?.cake_type_id}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                      <img
-                        src={`http://localhost:5000/${customCakeSize.image_url}`} 
-                        alt={customCakeSize.name_en} 
-                        className="table-img rounded-4"
-                      />
+                        <img
+                          src={customCakeSize.image_url}
+                          alt={customCakeSize.name_en}
+                          className="table-img rounded-4"
+                        />
                       </td>
                       <td>
                         <div

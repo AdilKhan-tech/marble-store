@@ -1,4 +1,5 @@
 const {CakeFlavor, CustomCakeTypes} = require('../models');
+const { UPLOADS_URL } = require("../config/config")
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -7,8 +8,7 @@ class CakeFlavorController {
     static async createCakeFlavor(req, res, next) {
        try {
         const { name_en, name_ar, custom_cake_type_id, slug, additional_price, symbol, status } = req.body
-
-        const image_url = req.file?.path || null;
+         const image_url = req.file ? req.file.filename : null;
 
         const cakeFlavor = await CakeFlavor.create({
             name_en,
@@ -21,7 +21,13 @@ class CakeFlavorController {
             image_url,
         });
         
-        return res.status(201).json(cakeFlavor);
+       const responseData = {
+             ...cakeFlavor.toJSON(),
+             image_url: cakeFlavor.image_url
+               ? `${UPLOADS_URL}/${cakeFlavor.image_url}` 
+               : null,
+       };
+           return res.status(201).json(responseData)
         } catch (error) {
           next(error);
         }
@@ -72,6 +78,16 @@ class CakeFlavorController {
           offset,
           order: [[finalSortField, finalSortOrder]],
         });
+        // 🔥 IMAGE URL BUILD HERE
+       const data = rows.map(item => {
+        const cake = item.toJSON();
+        return {
+          ...cake,
+          image_url: cake.image_url
+            ? `${UPLOADS_URL}/${cake.image_url}`
+            : null,
+        };
+      });
   
         const pageCount = Math.ceil(count / limit);
   
@@ -82,7 +98,7 @@ class CakeFlavorController {
             total: count,
             pageCount,
           },
-          data: rows,
+          data,
         });
   
       } catch (error) {
@@ -102,7 +118,11 @@ class CakeFlavorController {
             }
             const {name_en,name_ar,custom_cake_type_id,slug,additional_price,symbol,status} = req.body;
 
-            const image_url = req.file?.path || cakeFlavor.image_url;
+          // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+            let image_url = cakeFlavor.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
 
             await cakeFlavor.update({
                 name_en: name_en ?? cakeFlavor.name_en,
@@ -114,11 +134,15 @@ class CakeFlavorController {
                 status: status ?? cakeFlavor.status,
                 image_url: image_url
             });
-    
-            return res.status(200).json({
-              message: "Cake flavor updated successfully",
-              cakeFlavor
-            });
+          
+            // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+          const responseData = {
+            ...cakeFlavor.toJSON(),
+            image_url: cakeFlavor.image_url
+              ? `${UPLOADS_URL}/${cakeFlavor.image_url}`
+              : null,
+          };
+            return res.status(200).json(responseData);
     
         }catch (error) {
           next(error);

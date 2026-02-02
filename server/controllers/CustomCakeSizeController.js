@@ -1,4 +1,5 @@
 const CustomCakeSize = require("../models/CustomCakeSize");
+const { UPLOADS_URL } = require("../config/config")
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -6,7 +7,7 @@ class CustomCakeSizeController {
   static async createCustomCakeSize(req, res, next) {
     try {
       const {name_en,name_ar,cake_type_id,slug,portion_size,sort,calories,status,} = req.body;
-      const image_url = req.file?.path || null;
+      const image_url = req.file ? req.file.filename : null;
 
       const customCakeSize = await CustomCakeSize.create({
         name_en,
@@ -19,7 +20,13 @@ class CustomCakeSizeController {
         status,
         image_url,
       });
-      return res.status(200).json(customCakeSize);
+       const responseData = {
+             ...customCakeSize.toJSON(),
+             image_url: customCakeSize.image_url
+               ? `${UPLOADS_URL}/${customCakeSize.image_url}` 
+               : null,
+       };
+      return res.status(200).json(responseData);
     } catch (error) {
       next(error);
     }
@@ -57,6 +64,16 @@ class CustomCakeSizeController {
         offset,
         order: [[finalSortField, finalSortOrder]],
       });
+        // 🔥 IMAGE URL BUILD HERE
+       const data = rows.map(item => {
+        const cake = item.toJSON();
+        return {
+          ...cake,
+          image_url: cake.image_url
+            ? `${UPLOADS_URL}/${cake.image_url}`
+            : null,
+        };
+      });
 
       const pageCount = Math.ceil(count / limit);
 
@@ -67,7 +84,7 @@ class CustomCakeSizeController {
           total: count,
           pageCount,
         },
-        data: rows,
+        data,
       });
 
     } catch (error) {
@@ -101,7 +118,11 @@ class CustomCakeSizeController {
       }
       const { name_en,name_ar,cake_type_id,slug,portion_size,sort,calories,status } = req.body;
 
-      const image_url = req.file?.path || customCakeSize.image_url;
+       // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+            let image_url = customCakeSize.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
 
       await customCakeSize.update({
         name_en: name_en ?? customCakeSize.name_en,
