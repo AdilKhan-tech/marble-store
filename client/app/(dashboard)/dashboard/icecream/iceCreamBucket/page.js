@@ -251,13 +251,6 @@ export default function IceCreamBucketPage() {
                           className="table-img rounded-5"
                         />
                       </td>
-                      <td className="fw-normal fs-14 fnt-color">
-                        <img
-                          src={icecream.image_url}
-                          alt={icecream.name_en}
-                          className="table-img rounded-1"
-                        />
-                      </td>
                       <td>
                         <div className={iceCreamBucket?.status === "active"? "blue-status": "red-status"}>
                           {iceCreamBucket?.status === "active"? "Active": "Inactive"}
