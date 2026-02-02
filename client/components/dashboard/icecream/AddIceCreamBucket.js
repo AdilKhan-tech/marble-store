@@ -77,7 +77,7 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,on
           toast.success("IceCream Bucket updated successfully!");
 
           if (onUpdateIceCreamBucket) {
-            onUpdateIceCreamBucket(res.data.iceCreamBucket);
+            onUpdateIceCreamBucket(res.data);
           }
 
           closePopup();

@@ -1,4 +1,5 @@
 const { Cookie, CookieBoxType } = require('../models');
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class CookieController {
         try {
             const {name_en, name_ar, cookie_type_id, slug, sort, status} = req.body;
 
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
 
             const cookie = await Cookie.create({
                 name_en,
@@ -19,7 +20,14 @@ class CookieController {
                 status,
                 image_url,
             });
-            return res.status(201).json(cookie);
+            const responseData = {
+                ...cookie.toJSON(),
+                image_url: cookie.image_url
+                  ? `${UPLOADS_URL}/${cookie.image_url}`
+                  : null,
+            };
+            
+            return res.status(201).json(responseData);
 
         } catch(error) {
             next(error);
@@ -65,6 +73,17 @@ class CookieController {
                 order: [[finalSortField, finalSortOrder]],
             });
 
+            // 🔥 IMAGE URL BUILD HERE
+            const data = rows.map(item => {
+                const cookie = item.toJSON();
+                return {
+                ...cookie,
+                image_url: cookie.image_url
+                    ? `${UPLOADS_URL}/${cookie.image_url}`
+                    : null,
+                };
+            });
+
             const pageCount = Math.ceil(count / limit);
 
             return res.status(200).json({
@@ -74,7 +93,7 @@ class CookieController {
                     total: count,
                     pageCount,
                 },
-                data: rows,
+                data,
             });
 
         } catch (error) {
@@ -102,7 +121,11 @@ class CookieController {
                 status
             } = req.body;
 
-            const image_url = req.file?.path || cookie.image_url;
+            // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
+            let image_url = cookie.image_url;
+            if (req.file) {
+                image_url = req.file.filename;
+            }
     
             await cookie.update({
                 name_en: name_en ?? cookie.name_en,
@@ -114,7 +137,15 @@ class CookieController {
                 image_url: image_url
             });
 
-            return res.status(200).json({message: "Cookie updated successfully",cookie});
+            // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+            const responseData = {
+                ...cookie.toJSON(),
+                image_url: cookie.image_url
+                ? `${UPLOADS_URL}/${cookie.image_url}`
+                : null,
+            };
+
+            return res.status(200).json(responseData);
     
         } catch (error) {
             next(error);

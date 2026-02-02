@@ -13,7 +13,7 @@ import Common from "@/utils/Common"
 
 export default function IceCreamBucketPage() {
   const { token } = useAxiosConfig();
-  const [iceCreamBucket, setIceCreamBucket] = useState([]);
+  const [iceCreamBuckets, setIceCreamBuckets] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [iceCreamBucketData, setIceCreamBucketData] = useState(null);
     const [sortField, setSortField] = useState("id");
@@ -37,7 +37,7 @@ export default function IceCreamBucketPage() {
         sortField,
       }
       const response = await axios.get(getAllIceCreamBuckets, { params });
-      setIceCreamBucket(response.data.data);
+      setIceCreamBuckets(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     } catch (error) {
@@ -62,8 +62,8 @@ export default function IceCreamBucketPage() {
     setShowOffcanvas(true);
   };
 
-  const showOffcanvasOnEditIceCreamBucket = (icecream) => {
-    setIceCreamBucketData(icecream);
+  const showOffcanvasOnEditIceCreamBucket = (iceCreamBucket) => {
+    setIceCreamBucketData(iceCreamBucket);
     setShowOffcanvas(true);
   };
 
@@ -85,7 +85,7 @@ export default function IceCreamBucketPage() {
       const response = await axios.delete(deleteIceCreamBucketById(iceCreamId));
       if (response.status === 200) {
       toast.success("Ice Cream Bucket deleted successfully!", {autoClose: 1000,});
-        setIceCreamBucket((prev) =>
+        setIceCreamBuckets((prev) =>
           prev.filter((iceCreamBucket) => iceCreamBucket.id !== iceCreamId)
         );
       }
@@ -103,12 +103,12 @@ export default function IceCreamBucketPage() {
   };
 
   const addIceCreamBucket = (newIceCream) => {
-    setIceCreamBucket((prev) => [newIceCream, ...prev]);
+    setIceCreamBuckets((prev) => [newIceCream, ...prev]);
     setShowOffcanvas(false);
   };
 
   const updateIceCreamBucket = (updatedIceCream) => {
-    setIceCreamBucket((prev) =>
+    setIceCreamBuckets((prev) =>
       prev.map((item) =>
         item.id === updatedIceCream.id ? updatedIceCream : item
       )
@@ -205,6 +205,16 @@ export default function IceCreamBucketPage() {
                     </th>
                     <th
                       className="fw-bold fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("image")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                    </th>
+                    <th
+                      className="fw-bold fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("status")}>
                       Status
                       <span className="fs-10 text-secondary ms-1">
@@ -217,26 +227,33 @@ export default function IceCreamBucketPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {iceCreamBucket.map((icecream, index) => (
-                    <tr key={`${icecream.id}-${index}`}>
+                  {iceCreamBuckets.map((iceCreamBucket, index) => (
+                    <tr key={`${iceCreamBucket.id}-${index}`}>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.id}
+                        {iceCreamBucket.id}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.name_en}
+                        {iceCreamBucket.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.slug}
+                        {iceCreamBucket.slug}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.size}
+                        {iceCreamBucket.size}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {icecream.price}
+                        {iceCreamBucket.price}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={iceCreamBucket.image_url}
+                          alt={iceCreamBucket.name_en}
+                          className="table-img rounded-5"
+                        />
                       </td>
                       <td>
-                        <div className={icecream?.status === "active"? "blue-status": "red-status"}>
-                          {icecream?.status === "active"? "Active": "Inactive"}
+                        <div className={iceCreamBucket?.status === "active"? "blue-status": "red-status"}>
+                          {iceCreamBucket?.status === "active"? "Active": "Inactive"}
                         </div>
                       </td>
                       <td>
@@ -244,14 +261,14 @@ export default function IceCreamBucketPage() {
                           <button
                             className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
                             onClick={() =>
-                              showOffcanvasOnEditIceCreamBucket(icecream)
+                              showOffcanvasOnEditIceCreamBucket(iceCreamBucket)
                             }
                           >
                             <i className="bi bi-pencil-square text-primary"></i>
                           </button>
                           <button
                             className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2"
-                            onClick={() => showDeleteConfirmation(icecream.id)}
+                            onClick={() => showDeleteConfirmation(iceCreamBucket.id)}
                           >
                             <i className="bi bi-trash text-danger"></i>
                           </button>

@@ -107,9 +107,7 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
       
           if (onUpdateCookie) {
             onUpdateCookie({
-              ...cookieData,
-              ...formData,
-              id: cookieData.id,
+              ...res.data,        // 🔥 backend ka fresh response
               type: selectedType || null,
             });
           }

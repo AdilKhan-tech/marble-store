@@ -7,30 +7,30 @@ class CakeSizeController {
 
   static async createCakeSize(req, res, next) {
       try {
-          const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,calories,status } = req.body
+        const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,calories,status } = req.body
 
-          const image_url = req.file ? req.file.filename : null;
+        const image_url = req.file ? req.file.filename : null;
           
-          const cakeSize = await CakeSize.create({
-              name_en,
-              name_ar,
-              custom_cake_type_id,
-              slug,
-              scoop_size,
-              additional_price,
-              calories,
-              status,
-              image_url,
-          });
+        const cakeSize = await CakeSize.create({
+            name_en,
+            name_ar,
+            custom_cake_type_id,
+            slug,
+            scoop_size,
+            additional_price,
+            calories,
+            status,
+            image_url,
+        });
           
-          const responseData = {
-            ...cakeSize.toJSON(),
-            image_url: cakeSize.image_url
-              ? `${UPLOADS_URL}/${cakeSize.image_url}`
-              : null,
-          };
+        const responseData = {
+          ...cakeSize.toJSON(),
+          image_url: cakeSize.image_url
+            ? `${UPLOADS_URL}/${cakeSize.image_url}`
+            : null,
+        };
 
-          return res.status(201).json(responseData);
+        return res.status(201).json(responseData);
 
       } catch (error) {
         next(error);
@@ -38,7 +38,6 @@ class CakeSizeController {
   }
 
   static async getAllCakeSizes(req, res) {
-
     const { page, limit, offset } = getPagination(req);
     const { keywords, sortField, sortOrder } = req.query;
   
