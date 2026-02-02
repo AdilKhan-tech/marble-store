@@ -184,6 +184,16 @@ export default function CustomCakeTypePage() {
                       "↑↓"}
                     </span>
                   </th>
+                   <th 
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
+                    </th>
                   <th
                     className='fw-bold fs-14 fnt-color'
                     onClick={() => handleSortChange("status")}>
@@ -210,6 +220,13 @@ export default function CustomCakeTypePage() {
                     <td className="fw-normal fs-14 fnt-color">
                       {customeCakeType?.slug}
                     </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={customeCakeType.image_url}
+                          alt={customeCakeType.name_en}
+                          className="table-img rounded-4"
+                        />
+                      </td>
                     <td>
                       <div className={customeCakeType?.status === "active" ? "blue-status" : "red-status"}>
                         {customeCakeType?.status === "active" ? "Active" : "Inactive"}

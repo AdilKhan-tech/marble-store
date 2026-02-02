@@ -193,7 +193,16 @@ export default function CakeFlavourPage() {
                       "↑↓"}
                     </span>
                   </th>
-
+                   <th 
+                      className="fw-bold fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                         "↑↓"}
+                      </span>
+                    </th>
                   <th
                     className="fw-bold fs-14 fnt-color nowrap"
                     onClick={() => handleSortChange("status")}>
@@ -204,7 +213,6 @@ export default function CakeFlavourPage() {
                       "↑↓"}
                     </span>
                   </th>
-
                   <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
                 </tr>
               </thead>
@@ -223,6 +231,13 @@ export default function CakeFlavourPage() {
                     <td className="fw-normal fs-14 fnt-color">
                       {cakeFlavor?.slug}
                     </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={cakeFlavor.image_url}
+                          alt={cakeFlavor.name_en}
+                          className="table-img rounded-4"
+                        />
+                      </td>
                     <td>
                       <div className={cakeFlavor?.status === "active" ? "blue-status" : "red-status"}>
                         {cakeFlavor?.status === "active" ? "Active" : "Inactive"}
