@@ -8,7 +8,7 @@ class CategoryController {
         try {
             const { name_en, name_ar, slug, parent_category, display_type } = req.body;
 
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
 
             const category = await Category.create({
                 name_en,
@@ -19,7 +19,14 @@ class CategoryController {
                 image_url
             });
 
-            return res.status(201).json(category);
+            const responseData = {
+            ...category.toJSON(),
+            image_url: category.image_url
+                ? `${UPLOADS_URL}/${category.image_url}`
+                : null,
+            };
+
+            return res.status(201).json(responseData);
         } catch (error) {
             next(error);
         }
@@ -57,6 +64,16 @@ class CategoryController {
                 order: [[finalSortField, finalSortOrder]],
             });
 
+            const data = rows.map(item => {
+                const category = item.toJSON();
+                return {
+                ...category,
+                image_url: category.image_url
+                    ? `${UPLOADS_URL}/${category.image_url}`
+                    : null,
+                };
+            });
+
             const pageCount = Math.ceil(count / limit);
 
             return res.status(200).json({
@@ -66,7 +83,7 @@ class CategoryController {
                     total: count,
                     pageCount,
                 },
-                data: rows,
+                data,
             });
 
         } catch (error) {
@@ -85,7 +102,10 @@ class CategoryController {
                 return res.status(404).json({ message: "Category not found" });
             }
             const { name_en, name_ar, slug, parent_category, display_type } = req.body;
-            const image_url = req.file?.path || category.image_url;
+            let image_url = category.image_url;
+            if (req.file) {
+                image_url = req.file.filename;
+            }
 
              await category.update({
                 name_en: name_en ?? category.name_en,
@@ -94,8 +114,15 @@ class CategoryController {
                 parent_category: parent_category ?? category.parent_category,
                 display_type: display_type ?? category.display_type,
                 image_url: image_url
-            });
-               return res.status(200).json(category);
+             });
+            
+            const responseData = {
+                ...category.toJSON(),
+                image_url: category.image_url
+                ? `${UPLOADS_URL}/${category.image_url}`
+                : null,
+            };
+               return res.status(200).json(responseData);
         } catch (error) {
             next(error);
         }
