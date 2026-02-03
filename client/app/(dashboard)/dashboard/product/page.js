@@ -239,7 +239,7 @@ export default function ProductPage() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       <img
-                        src={`http://localhost:5000/${product.image_url}`} 
+                        src={product.image_url} 
                         alt={product.name_en} 
                         className="table-img rounded-1"
                         />
@@ -319,7 +319,7 @@ export default function ProductPage() {
           <ToastContainer/>
         </div>
       </section>
-      <div className="datatable-bottom">
+      <div className="d-flex align-items-center justify-content-between mt-0">
         <Pagination
           currentPage={currentPage}
           pageCount={pageCount}

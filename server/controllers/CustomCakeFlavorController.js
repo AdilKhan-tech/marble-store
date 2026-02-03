@@ -1,4 +1,5 @@
-const { CustomCakeFlavor, CustomCakeTypes} = require("../models");
+const { CustomCakeFlavor, CustomCakeTypes } = require("../models");
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class CustomCakeFlavorController {
     try {
       const { name_en, name_ar, custom_cake_type_id, slug, status } = req.body;
 
-      const image_url = req.file?.path || null;
+      const image_url = req.file ? req.file.filename : null;
 
       const customCakeFlavor = await CustomCakeFlavor.create({
         name_en,
@@ -18,7 +19,13 @@ class CustomCakeFlavorController {
         status,
         image_url,
       });
-      return res.status(200).json(customCakeFlavor);
+      const responseData = {
+          ...customCakeFlavor.toJSON(),
+          image_url: customCakeFlavor.image_url
+            ? `${UPLOADS_URL}/${customCakeFlavor.image_url}`
+            : null,
+        };
+      return res.status(200).json(responseData);
     } catch (error) {
       next(error);
     }
@@ -62,6 +69,15 @@ class CustomCakeFlavorController {
         order: [[finalSortField, finalSortOrder]],
       });
 
+      const data = rows.map(item => {
+        const customCakeFlavor = item.toJSON();
+        return {
+          ...customCakeFlavor,
+          image_url: customCakeFlavor.image_url
+            ? `${UPLOADS_URL}/${customCakeFlavor.image_url}`
+            : null,
+        };
+      });
       const pageCount = Math.ceil(count / limit);
 
       return res.status(200).json({
@@ -71,7 +87,7 @@ class CustomCakeFlavorController {
           total: count,
           pageCount,
         },
-        data: rows,
+        data,
       });
 
     } catch (error) {
@@ -97,7 +113,10 @@ class CustomCakeFlavorController {
             status
         } = req.body;
 
-        const image_url = req.file?.path || customCakeFlavor.image_url;
+        let image_url = customCakeFlavor.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
 
         await customCakeFlavor.update({
           name_en: name_en ?? customCakeFlavor.name_en,
@@ -107,11 +126,15 @@ class CustomCakeFlavorController {
           status: status ?? customCakeFlavor.status,
           image_url: image_url
         });
+      
+        const responseData = {
+          ...customCakeFlavor.toJSON(),
+          image_url: customCakeFlavor.image_url
+            ? `${UPLOADS_URL}/${customCakeFlavor.image_url}`
+            : null,
+        };
 
-        return res.status(200).json({
-            message: "custom cake flavor updated successfully",
-            customCakeFlavor
-        });
+        return res.status(200).json(responseData);
 
     } catch (error) {
       next(error);

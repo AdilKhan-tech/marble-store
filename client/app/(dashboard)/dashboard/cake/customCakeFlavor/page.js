@@ -203,6 +203,16 @@ function page() {
                   </th>
                   <th
                     className="fw-medium fs-14 fnt-color"
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                  </th>
+                  <th
+                    className="fw-medium fs-14 fnt-color"
                     onClick={() => handleSortChange("status")}>
                     Status
                     <span className="fs-10 text-secondary ms-1">
@@ -228,6 +238,13 @@ function page() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {customCakeFlavor?.customCakeType?.name_en}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={customCakeFlavor.image_url}
+                        alt={customCakeFlavor.name_en}
+                        className="table-img rounded-5"
+                      />
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       <div
@@ -282,7 +299,7 @@ function page() {
         <ToastContainer />
       </div>
     </section>
-    <div className='datatable-bottom'>
+    <div className='d-flex align-items-center justify-content-between mt-0'>
       <Pagination
         currentPage={currentPage}
         pageCount={pageCount}

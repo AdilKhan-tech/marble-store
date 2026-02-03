@@ -26,7 +26,7 @@ export default function EditProduct() {
   const [productData, setProductData] = useState(null);
   const router = useRouter();
   const descriptionRef = useRef("");
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState([]);
   const [genders, setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -163,8 +163,8 @@ export default function EditProduct() {
       tagIds.forEach((id) => payload.append("tag_ids[]", id));
 
       // ✅ FILES (missing part)
-      selectedFiles.forEach((file) => {
-        payload.append("images[]", file);
+      selectedFile.forEach((file) => {
+        payload.append("image_url", file); // ✅ FIX
       });
 
       // ✅ ID + PUT/PATCH
@@ -183,7 +183,7 @@ export default function EditProduct() {
   };
 
   const handleFileChange = (e) => {
-    setSelectedFiles(Array.from(e.target.files));
+    setSelectedFile(Array.from(e.target.files));
   };
 
   return (
@@ -219,7 +219,7 @@ export default function EditProduct() {
                 />
               </div>
 
-              {selectedFiles.length > 0 && (
+              {selectedFile.length > 0 && (
                 <div className="mt-2 text-success fs-12">
                   <i className="bi bi-check-circle me-1"></i>Image uploaded successfully</div>
               )}

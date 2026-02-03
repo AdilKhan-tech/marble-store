@@ -53,7 +53,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside ref={sidebarRef} className="dashboard-sidebar position-fixed bg-white">
-        <div className="sidebar-header bg-white position-sticky d-flex align-items-center justify-content-between p-4">
+        <div className="sidebar-header bg-white position-sticky d-flex align-items-center justify-content-between mt-0 p-4">
           <Link href="/dashboard" className="logo-link text-decoration-none">
             {isCollapsed ? (
               <div className="text-dark org-btn w-100"><i className="bi bi-list fs-3"></i></div>
@@ -117,9 +117,9 @@ export default function Sidebar() {
                 )}
               </button>
 
-              {/* submenu*/}
+              {/* submenu position-relative*/}
               {!isCollapsed && activeDropdown === "Cakes" && (
-                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
+                <div className="submenu position-relative mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cake/cakeSize"
                     className={`d-block align-items-center ${isActive("/dashboard/cake/cakeSize") ? "active" : ""}`}
@@ -240,7 +240,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "IceCream" && (
-                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
+                <div className="submenu position-relative mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/icecream/iceCreamAddon"
                     className={`d-block align-items-center ${isActive("/dashboard/icecream/iceCreamAddon") ? "active" : ""}`}
@@ -315,7 +315,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "Cookies" && (
-                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
+                <div className="submenu position-relative mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/cookie/boxSize"
                     className={`d-block align-items-center ${isActive("/dashboard/cookie/boxSize") ? "active" : ""}`}
@@ -390,7 +390,7 @@ export default function Sidebar() {
               </button>
 
               {!isCollapsed && activeDropdown === "Settings" && (
-                <div className="submenu mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
+                <div className="submenu position-relative mt-2 d-flex align-items-center fs-14 text-decoration-none flex-column">
                   <Link
                     href="/dashboard/setting/branches"
                     className={`d-block align-items-center ${isActive("/dashboard/setting/branches") ? "active" : ""}`}

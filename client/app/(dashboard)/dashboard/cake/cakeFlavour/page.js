@@ -283,7 +283,7 @@ export default function CakeFlavourPage() {
         <ToastContainer />
       </div>
     </section>
-    <div className='d-flex justify-content-between align-items-center mt-3'>
+    <div className='d-flex justify-content-between align-items-center mt-0'>
       <Pagination
         currentPage={currentPage}
         pageCount={pageCount}

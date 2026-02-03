@@ -258,12 +258,6 @@ table tr:nth-child(even) td {
   background: #ff7700;
   color: #fff;
 }
-.datatable-bottom {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 0px;
-}
 .showperpage {
   color: #90908f;
   font-size: 14px;
@@ -287,11 +281,9 @@ table tr:nth-child(even) td {
   width: 140px;
 }
 select.datatable-selector,
-/* select.form-select, */
 select {
   border: 1px solid rgba(132, 132, 132, 0.25);
   border-radius: 8px;
-
   font-size: 14px;
   line-height: 20px;
   background: transparent;
@@ -363,7 +355,6 @@ body.sidebar-collapsed .dashboard-sidebar {
   text-align: left;
 }
 .submenu{
-  position: relative;
   padding-left: 40px;
   animation: slideDown 0.5s ease;
 }
@@ -376,7 +367,6 @@ body.sidebar-collapsed .dashboard-sidebar {
   width: 2px;
   background: rgba(0,0,0,.082);
 }
-
 .submenu a.active {
   color: #ff6e21;
   background: rgba(255, 180, 79, 0.1);
@@ -429,27 +419,6 @@ body.sidebar-collapsed .main-content-area {
   margin-inline-start: 85px;
 }
 .dropdown-toggle::after { display: none !important; }
-.upload-container {
-  width: 520px;
-  height: auto;
-  border-radius: 1rem;
-  border: 2px dashed rgba(134, 134, 134, 0.36);
-  padding: 20px;
-  opacity: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  transition: border-color 0.3s ease, color 0.3s ease;
-}
-.upload-container:hover {
-  border-color: rgba(134, 134, 134, 1);
-}
-.upload-container:hover .upload-text {
-  opacity: 1;
-  color: rgba(0, 0, 0, 1);
-}
 .nowrap {
   white-space: nowrap;
 }

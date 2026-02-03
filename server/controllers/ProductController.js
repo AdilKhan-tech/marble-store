@@ -157,8 +157,19 @@ class ProductController {
             ],
             limit,
             offset,
+            distinct: true,
             order: [[finalSortField, finalSortOrder]],
           });
+            
+            const data = rows.map(item => {
+                const product = item.toJSON();
+                return {
+                ...product,
+                image_url: product.image_url
+                    ? `${UPLOADS_URL}/${product.image_url}`
+                    : null,
+                };
+            });
             const pageCount = Math.ceil(count / limit);
   
             return res.status(200).json({
@@ -168,7 +179,7 @@ class ProductController {
                 total: count,
                 pageCount,
                 },
-                data: rows,
+                data,
             });
 
         }catch (error) {
@@ -228,7 +239,13 @@ class ProductController {
                     },
                 ],
             });
-            return res.status(200).json(product);
+            const responseData = {
+            ...product.toJSON(),
+            image_url: product.image_url
+              ? `${UPLOADS_URL}/${product.image_url}`
+              : null,
+          };
+            return res.status(200).json(responseData);
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
@@ -283,13 +300,13 @@ class ProductController {
 
             // return res.status(200).json(product);
 
-            // ✅ RESPONSE WITH FULL IMAGE URL
-            return res.status(200).json({
-                ...product.toJSON(),
-                image_url: product.image_url
-                ? `${UPLOADS_URL}/${product.image_url}`
-                : null,
-            });
+            const responseData = {
+            ...product.toJSON(),
+            image_url: product.image_url
+              ? `${UPLOADS_URL}/${product.image_url}`
+              : null,
+          };
+            return res.status(200).json(responseData);
         } catch (error) {
             return res.status(500).json({ message: "Failed to update product", error: error.message });
         }
