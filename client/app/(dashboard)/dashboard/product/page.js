@@ -130,7 +130,7 @@ export default function ProductPage() {
                 <thead>
                   <tr className="">
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("id")}>
                       Id
                       <span className="fs-10 text-secondary ms-1">
@@ -141,7 +141,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("image_url")}>
                       Image
                       <span className="fs-10 text-secondary ms-1">
@@ -152,7 +152,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
@@ -163,7 +163,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("sku")}>
                       SKU
                       <span className="fs-10 text-secondary ms-1">
@@ -174,7 +174,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("stock")}>
                       Stock
                       <span className="fs-10 text-secondary ms-1">
@@ -185,7 +185,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("price")}>
                       Price
                       <span className="fs-10 text-secondary ms-1">
@@ -196,7 +196,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("category")}>
                       Categories
                       <span className="fs-10 text-secondary ms-1">
@@ -207,7 +207,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("date")}>
                       Date
                       <span className="fs-10 text-secondary ms-1">
@@ -218,7 +218,7 @@ export default function ProductPage() {
                     </th>
 
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"  
+                      className="fw-medium fs-14 fnt-color nowrap"  
                       onClick={() => handleSortChange("branches")}>
                       Branches
                       <span className="fs-10 text-secondary ms-1">
@@ -228,7 +228,7 @@ export default function ProductPage() {
                       </span>
                     </th>
 
-                    <th className="fw-bold fs-14 fnt-color">Action</th>
+                    <th className="fw-medium fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
                 <tbody>

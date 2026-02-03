@@ -124,7 +124,7 @@ export default function IceCreamBucketPage() {
       <section>
         <div className="mt-3">
          <div className="d-flex justify-content-between mt-4">
-          <p className="pagetitle fnt-color">Ice Cream Bucket</p>
+          <p className="pagetitle mb-0 fnt-color">Ice Cream Bucket</p>
           <div>
             <div
               className="btn-orange text-center"
@@ -154,7 +154,7 @@ export default function IceCreamBucketPage() {
                 <thead className="">
                   <tr className="">
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("id")}>
                       ID
                       <span className="fs-10 text-secondary ms-1">
@@ -164,7 +164,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
@@ -174,7 +174,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("slug")}>
                       Slug
                       <span className="fs-10 text-secondary ms-1">
@@ -184,7 +184,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("size")}>
                       Size
                       <span className="fs-10 text-secondary ms-1">
@@ -194,7 +194,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("price")}>
                       Price
                       <span className="fs-10 text-secondary ms-1">
@@ -204,7 +204,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("image_url")}>
                       Image
                       <span className="fs-10 text-secondary ms-1">
@@ -214,7 +214,7 @@ export default function IceCreamBucketPage() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap" 
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("status")}>
                       Status
                       <span className="fs-10 text-secondary ms-1">
@@ -223,7 +223,7 @@ export default function IceCreamBucketPage() {
                       "↑↓"}
                     </span>
                     </th>
-                    <th className="fw-bold fs-14 fnt-color nowrap">Action</th>
+                    <th className="fw-medium fs-14 fnt-color nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody>

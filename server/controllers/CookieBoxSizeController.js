@@ -1,4 +1,5 @@
-const {CookieBoxSize, CookieBoxType } = require ("../models")
+const { CookieBoxSize, CookieBoxType } = require("../models")
+const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 
@@ -8,7 +9,7 @@ class CookieBoxSizeController {
         try {
             const {name_en, name_ar, cookie_type_id, slug, portion_size, price, symbol, calories, status} = req.body;
 
-            const image_url = req.file?.path || null;
+            const image_url = req.file ? req.file.filename : null;
 
             const cookiesBoxSize = await CookieBoxSize.create({
                 name_en,
@@ -23,7 +24,14 @@ class CookieBoxSizeController {
                 image_url,
             })
 
-            return res.status(201).json(cookiesBoxSize);
+            const responseData = {
+                ...cookiesBoxSize.toJSON(),
+                image_url: cookiesBoxSize.image_url
+                ? `${UPLOADS_URL}/${cookiesBoxSize.image_url}`
+                : null,
+            };
+
+            return res.status(201).json(responseData);
         } catch(error) {
             next(error);
         }
@@ -69,6 +77,16 @@ class CookieBoxSizeController {
                 order: [[finalSortField, finalSortOrder]],
             });
 
+            const data = rows.map(item => {
+                const cookiesBoxSize = item.toJSON();
+                return {
+                ...cookiesBoxSize,
+                image_url: cookiesBoxSize.image_url
+                    ? `${UPLOADS_URL}/${cookiesBoxSize.image_url}`
+                    : null,
+                };
+            });
+
             const pageCount = Math.ceil(count / limit);
 
             return res.status(200).json({
@@ -78,7 +96,7 @@ class CookieBoxSizeController {
                     total: count,
                     pageCount,
                 },
-                data: rows,
+                data,
             });
 
         } catch (error) {
@@ -109,8 +127,11 @@ class CookieBoxSizeController {
                 status,
             } = req.body;
 
-            const image_url = req.file?.path || cookiesBoxSize.image_url;
-    
+            let image_url = cookiesBoxSize.image_url;
+                if (req.file) {
+                    image_url = req.file.filename;
+                }
+            
             await cookiesBoxSize.update({
                 name_en: name_en ?? cookiesBoxSize.name_en,
                 name_ar: name_ar ?? cookiesBoxSize.name_ar,
@@ -124,7 +145,14 @@ class CookieBoxSizeController {
                 image_url: image_url
             });
 
-            return res.status(200).json({message: "Cookies box size updated successfully",cookiesBoxSize});
+            const responseData = {
+            ...cookiesBoxSize.toJSON(),
+            image_url: cookiesBoxSize.image_url
+              ? `${UPLOADS_URL}/${cookiesBoxSize.image_url}`
+              : null,
+          };
+
+            return res.status(200).json(responseData);
     
         } catch (error) {
             next(error);

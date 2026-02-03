@@ -154,7 +154,7 @@ export default function Category() {
                 <thead className="">
                   <tr className="">
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("id")}>
                       ID
                       <span className="fs-10 text-secondary ms-1">
@@ -164,7 +164,17 @@ export default function Category() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                    </span>
+                    </th>
+                    <th
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("name_en")}>
                       Name
                       <span className="fs-10 text-secondary ms-1">
@@ -174,7 +184,7 @@ export default function Category() {
                     </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("slug")}>
                       Slug
                       <span className="fs-10 text-secondary ms-1">
@@ -184,7 +194,7 @@ export default function Category() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("parent_category")}>
                       Parent Category
                       <span className="fs-10 text-secondary ms-1">
@@ -194,7 +204,7 @@ export default function Category() {
                     </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("display_type")}>
                       Display Type
                       <span className="fs-10 text-secondary ms-1">
@@ -203,7 +213,7 @@ export default function Category() {
                         "↑↓"}
                     </span>
                     </th>
-                    <th className="fw-bold fs-14 fnt-color">Action</th>
+                    <th className="fw-medium fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,6 +221,13 @@ export default function Category() {
                     <tr key={category?.id}>
                       <td className="fw-normal fs-14 fnt-color">
                         {category?.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={category.image_url}
+                          alt={category.name_en}
+                          className="table-img rounded-5"
+                        />
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         {category?.name_en}

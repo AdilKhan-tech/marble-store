@@ -155,7 +155,7 @@ export default function CakeSizePage() {
               <table className="table datatable-wrapper">
                 <thead className="">
                   <tr className=''>
-                    <th className="fw-bold fs-14 fnt-color"
+                    <th className="fw-medium fs-14 fnt-color"
                       onClick={() => handleSortChange("id")}>
                       ID 
                       <span className="fs-10 text-secondary ms-1">
@@ -165,7 +165,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color"
+                      className="fw-medium fs-14 fnt-color"
                       onClick={() => handleSortChange("name_en")}>
                       Name 
                       <span className="fs-10 text-secondary ms-1">
@@ -175,7 +175,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color"
+                      className="fw-medium fs-14 fnt-color"
                       onClick={() => handleSortChange("custom_cake_type_id")}>
                       Cake Type
                       <span className="fs-10 text-secondary ms-1">
@@ -185,7 +185,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color"
+                      className="fw-medium fs-14 fnt-color"
                       onClick={() => handleSortChange("scoop_size")}>
                       Scope
                       <span className="fs-10 text-secondary ms-1">
@@ -195,7 +195,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("additional_price")}>
                       Additional Price
                       <span className="fs-10 text-secondary ms-1">
@@ -205,7 +205,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("image_url")}>
                       Image
                       <span className="fs-10 text-secondary ms-1">
@@ -215,7 +215,7 @@ export default function CakeSizePage() {
                       </span>
                     </th>
                     <th 
-                      className="fw-bold fs-14 fnt-color"
+                      className="fw-medium fs-14 fnt-color"
                       onClick={() => handleSortChange("status")}>
                       Status
                       <span className="fs-10 text-secondary ms-1">
@@ -224,7 +224,7 @@ export default function CakeSizePage() {
                          "↑↓"}
                       </span>
                     </th>
-                    <th className="fw-bold fs-14 fnt-color">Action</th>
+                    <th className="fw-medium fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
 

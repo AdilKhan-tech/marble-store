@@ -151,7 +151,7 @@ export default function GenderPage() {
               <thead className="">
                 <tr className="">
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("id")}>
                     ID
                     <span className="fs-10 text-secondary ms-1">
@@ -161,7 +161,7 @@ export default function GenderPage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("name_en")}>
                     Name
                     <span className="fs-10 text-secondary ms-1">
@@ -171,7 +171,7 @@ export default function GenderPage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("parent_gender")}>
                     Parent Gender
                     <span className="fs-10 text-secondary ms-1">
@@ -181,7 +181,7 @@ export default function GenderPage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("slug")}>
                     Slug
                     <span className="fs-10 text-secondary ms-1">
@@ -190,7 +190,7 @@ export default function GenderPage() {
                       "↑↓"}
                     </span>
                   </th>
-                  <th className="fw-bold fs-14 fnt-color">Action</th>
+                  <th className="fw-medium fs-14 fnt-color">Action</th>
                 </tr>
               </thead>
               <tbody>

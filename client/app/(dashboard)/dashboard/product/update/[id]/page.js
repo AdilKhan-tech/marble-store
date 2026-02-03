@@ -170,11 +170,11 @@ export default function EditProduct() {
       // ✅ ID + PUT/PATCH
       await axios.put(
         updateProductByIdRoute(productData.id), payload,);
-
-
-      toast.success("Branch Updated successfully!", {
-        autoClose: 1000,
-        // onClose: closePopup,
+      toast.success("Product added successfully!", {
+        autoClose: 500,
+        onClose: () => {
+        setTimeout(() => router.push("/dashboard/product"), 500);
+        },
       });
     } catch (err) {
       console.error(err);

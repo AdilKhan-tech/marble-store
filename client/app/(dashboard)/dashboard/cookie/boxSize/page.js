@@ -152,7 +152,7 @@ export default function CookieBoxSizePage() {
               <thead className=''>
                 <tr className=''>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("id")}>
                     ID
                     <span className="fs-10 text-secondary ms-1">
@@ -162,7 +162,7 @@ export default function CookieBoxSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("name_en")}>
                     Name
                     <span className="fs-10 text-secondary ms-1">
@@ -172,7 +172,7 @@ export default function CookieBoxSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("cookie_type_id")}>
                     Cookies Type
                     <span className="fs-10 text-secondary ms-1">
@@ -182,7 +182,7 @@ export default function CookieBoxSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("slug")}>
                     Slug
                     <span className="fs-10 text-secondary ms-1">
@@ -192,7 +192,17 @@ export default function CookieBoxSizePage() {
                     </span>
                   </th>
                   <th
-                    className="fw-bold fs-14 fnt-color nowrap" 
+                    className="fw-medium fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                  </th>
+                  <th
+                    className="fw-medium fs-14 fnt-color nowrap" 
                     onClick={() => handleSortChange("status")}>
                     Status
                     <span className="fs-10 text-secondary ms-1">
@@ -201,7 +211,7 @@ export default function CookieBoxSizePage() {
                       "↑↓"}
                     </span>
                   </th>
-                  <th className="fw-bold fs-14 fnt-color nowrap">
+                  <th className="fw-medium fs-14 fnt-color nowrap">
                     Action
                   </th>
                 </tr>
@@ -225,6 +235,14 @@ export default function CookieBoxSizePage() {
                       {boxSize?.slug?.length
                         ? Common.truncateText(boxSize.slug,15)
                       : "N/A"}
+                    </td>
+
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={boxSize.image_url}
+                        alt={boxSize.name_en}
+                        className="table-img rounded-5"
+                      />
                     </td>
                     <td>
                     <div className={boxSize.status === "active" ? "blue-status" : "red-status"}>
