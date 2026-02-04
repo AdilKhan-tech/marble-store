@@ -103,15 +103,24 @@ function Occasions() {
     }
   };
 
-  const onAddOccasion = (newOccasion) => {
+  const addOccasion = (newOccasion) => {
     setOccasions(prev => [newOccasion, ...prev]);
     setShowOffcanvas(false);
   };
 
-  const onUpdateOcassion = (updateOcassion) => {
+  // const onUpdateOcassion = (updateOcassion) => {
+  //   setOccasions((prev) =>
+  //     prev.map((occasion) =>
+  //       occasion.id === updateOcassion.id ? { ...occasion, ...updateOcassion } : occasion
+  //     )
+  //   );
+  //   setShowOffcanvas(false);
+  // };
+
+  const updateOcassion = (updateOcassion) => {
     setOccasions((prev) =>
-      prev.map((occasion) =>
-        occasion.id === updateOcassion.id ? { ...occasion, ...updateOcassion } : occasion
+      prev.map((item) =>
+        item.id === updateOcassion.id ? updateOcassion : item
       )
     );
     setShowOffcanvas(false);
@@ -226,10 +235,9 @@ function Occasions() {
           <Offcanvas.Body>
             <AddOccasion
              closePopup={closePopup}
-             occasions={occasions}
-             onAddOccasion={onAddOccasion}
+             onAddOccasion={addOccasion}
              occasionData={occasionData}
-             onUpdateOcassion={onUpdateOcassion}
+             onUpdateOcassion={updateOcassion}
             />
           </Offcanvas.Body>
         </Offcanvas>

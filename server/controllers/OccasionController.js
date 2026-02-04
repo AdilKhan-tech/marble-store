@@ -6,7 +6,7 @@ class OccasionController {
 
     static async createOccasion (req, res, next) {
         try{
-            const { name_en, name_ar,parent_ocassion, slug} = req.body;
+            const { name_en, name_ar, parent_ocassion, slug} = req.body;
 
             const image_url = req.file?.path || null;
             
@@ -83,14 +83,15 @@ class OccasionController {
               return res.status(404).json({ message: "Occasion not found" });
           }
     
-          const {name_en, name_ar, slug} = req.body;
+          const {name_en, name_ar, parent_ocassion, slug} = req.body;
     
           const image_url = req.file?.path || occasion.image_url;
     
           await occasion.update({
               name_en: name_en ?? occasion.name_en,
               name_ar: name_ar ?? occasion.name_ar,
-              slug: slug ?? iceCreamPortionSize.slug,
+              parent_ocassion: parent_ocassion ?? occasion.parent_ocassion,
+              slug: slug ?? occasion.slug,
               image_url: image_url
           });
     

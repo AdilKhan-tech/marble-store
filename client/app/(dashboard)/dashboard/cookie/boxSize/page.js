@@ -37,6 +37,7 @@ export default function CookieBoxSizePage() {
         sortField,
       }
       const response = await axios.get(getAllCookieBoxSizes, { params });
+      console.log("response", response.data.data)
       setCookieBoxSizes(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
@@ -229,7 +230,7 @@ export default function CookieBoxSizePage() {
                       : "N/A"}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {boxSize.type.name_en}
+                      {boxSize?.type?.name_en}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {boxSize?.slug?.length

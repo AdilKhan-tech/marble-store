@@ -4,7 +4,7 @@ import {createOcassion, updateOccasionById} from "@/utils/apiRoutes"
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOccasion, occasionData}) {
+function AddOccasions({closePopup, occasionData = null, onAddOccasion, onUpdateOcassion}) {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -40,7 +40,7 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
   
     return errors;
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,51 +48,26 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-  
+
     try {
       const payload = new FormData();
-  
-      Object.entries(formData).forEach(([key, value]) => {
-        payload.append(key, value);
-      });
-  
-      if (selectedFiles && selectedFiles.length > 0) {
-        selectedFiles.forEach((file) => {
-          payload.append("image_url", selectedFiles[0]);
-        });
+      Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
+
+      if (selectedFiles.length > 0) {
+        payload.append("image_url", selectedFiles[0]);
       }
 
       if (occasionData) {
         const res = await axios.put(updateOccasionById(occasionData.id), payload);
-
-        if (res.status === 200) {
-          toast.success("Ocassion updated successfully!", {
-            autoClose: 1000,
-          });
-
-          if (onUpdateOccasion) {
-            onUpdateOccasion({
-              ...occasionData,
-              ...formData,
-              id: occasionData.id,
-            });
-          }
-
-          closePopup();
+        if (res.status === 200 || res.status === 201) {
+          toast.success("Ocassion updated successfully!", { autoClose: 1000, onClose: closePopup });
+          onUpdateOcassion(res.data);
         }
-      }
-      //  CREATE
-      else {
+      } else {
         const res = await axios.post(createOcassion, payload);
-  
-        if (res.status === 201 || res.status === 200) {
-
-          toast.success("Ocassion added successfully!", {
-            autoClose: 1000,
-            onClose: closePopup,
-          });
-  
-          if (onAddOccasion) onAddOccasion(onAddOccasion);
+        if (res.status === 200 || res.status === 201) {
+          toast.success("Ocassion added successfully!", { autoClose: 1000, onClose: closePopup });
+          onAddOccasion(res.data);
         }
       }
     }catch (error) {
@@ -104,6 +79,7 @@ function AddOccasions({closePopup, occasions = null, onAddOccasion, onUpdateOcca
       toast.error(backendMessage);
     }
   };
+  
 
   useEffect(() => {
     if (errors.length > 0) {

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCreamBuckets } from "@/utils/apiRoutes";
+import {createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCreamBuckets} from "@/utils/apiRoutes";
 
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const {token} = useAxiosConfig();
@@ -72,7 +72,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
   
     return errors;
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,26 +83,68 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
 
     try {
       const payload = new FormData();
-      Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
-
-      if (selectedFiles.length > 0) {
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
-
+  
+      // ================= UPDATE =================
       if (iceCreamPortionData) {
-        const res = await axios.put(updateIceCreamPortionSizeById(iceCreamPortionData.id), payload);
-        if (res.status === 200 || res.status === 201) {
-          toast.success("IceCream Portion Size updated successfully!", { autoClose: 1000, onClose: closePopup });
-          onUpdateIceCreamPortionSize(res.data);
-        }
-      } else {
-        const res = await axios.post(createIceCreamPortionSize, payload);
-        if (res.status === 200 || res.status === 201) {
-          toast.success("IceCream Portion Size added successfully!", { autoClose: 1000, onClose: closePopup });
-          onAddIceCreamPortionSize(res.data);
+        const res = await axios.put(
+          updateIceCreamPortionSizeById(iceCreamPortionData.id),
+          payload
+        );
+  
+        if (res.status === 200) {
+          toast.success("IceCream Portion Size updated successfully!", {
+            autoClose: 1000,
+          });
+
+          const selectedIceCreamBucket = iceCreamBuckets.find(
+            (t) =>
+              String(t.id) === String(formData.icecream_bucket_id)
+          );
+
+          const updatedIceCream = {
+            ...res.data,
+            iceCreamBucket: selectedIceCreamBucket || null,
+          };
+        
+          if (onUpdateIceCreamPortionSize) {
+            onUpdateIceCreamPortionSize(updatedIceCream);
+          }
+  
+          closePopup();
         }
       }
-    }catch (error) {
+  
+      // ================= CREATE =================
+      else {
+        const res = await axios.post(createIceCreamPortionSize, payload);
+  
+        if (res.status === 201 || res.status === 200) {
+          const selectedIceCreamBucket = iceCreamBuckets.find((t) =>
+              String(t.id) === String(formData.icecream_bucket_id)
+          );
+  
+          const createdIceCream = {
+            ...res.data,
+            iceCreamBucket: selectedIceCreamBucket || null,
+          };
+  
+          toast.success("IceCream Portion Size added successfully!", {
+            autoClose: 1000,
+            onClose: closePopup,
+          });
+  
+          if (onAddIceCreamPortionSize) onAddIceCreamPortionSize(createdIceCream);
+        }
+      }
+    } catch (error) {
       const backendMessage =
         error?.response?.data?.message ||
         error?.response?.data?.errors?.[0] ||
