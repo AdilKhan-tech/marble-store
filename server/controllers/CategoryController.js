@@ -1,4 +1,3 @@
-const { UPLOADS_URL } = require("../config/config");
 const Category = require("../models/Category");
 const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
@@ -8,7 +7,7 @@ class CategoryController {
 
     static async createCategory(req, res, next) {
         try {
-            const { name_en, name_ar, slug, parent_category, display_type } = req.body;
+            const { name_en, name_ar, slug, parent_id, display_type } = req.body;
 
             const image_url = req.file ? req.file.filename : null;
 
@@ -16,7 +15,7 @@ class CategoryController {
                 name_en,
                 name_ar,
                 slug,
-                parent_category,
+                parent_id: parent_id || null,
                 display_type,
                 image_url
             });
@@ -53,7 +52,7 @@ class CategoryController {
                 "name_en",
                 "slug",
                 "display_type",
-                "parent_category",
+                "parent_id",
             ];
 
             const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
@@ -64,6 +63,13 @@ class CategoryController {
                 limit,
                 offset,
                 order: [[finalSortField, finalSortOrder]],
+                include: [
+                    {
+                      model: Category,
+                      as: "parent",
+                      attributes: ["id", "name_en"],
+                    },
+                ],
             });
 
             const data = rows.map(item => {
@@ -94,7 +100,7 @@ class CategoryController {
                 error: error.message
             });
         }
-    }
+    }    
 
     static async updateCategoryById(req, res, next) {
         const { id } = req.params;
@@ -103,7 +109,7 @@ class CategoryController {
             if (!category) {
                 return res.status(404).json({ message: "Category not found" });
             }
-            const { name_en, name_ar, slug, parent_category, display_type } = req.body;
+            const { name_en, name_ar, slug, parent_id, display_type } = req.body;
             let image_url = category.image_url;
             if (req.file) {
                 image_url = req.file.filename;
@@ -113,7 +119,7 @@ class CategoryController {
                 name_en: name_en ?? category.name_en,
                 name_ar: name_ar ?? category.name_ar,
                 slug: slug ?? category.slug,
-                parent_category: parent_category ?? category.parent_category,
+                parent_id: parent_id ?? category.parent_id,
                 display_type: display_type ?? category.display_type,
                 image_url: image_url
              });
@@ -143,6 +149,38 @@ class CategoryController {
             return res.status(500).json({ message: err.message });
         }
     }
+
+    static async getCategoryTree(req, res) {
+        try {
+          const categories = await Category.findAll({
+            where: { parent_id: null },
+            attributes: ["id", "name_en", "slug", "parent_id"],
+            include: [
+              {
+                model: Category,
+                as: "children",
+                attributes: ["id", "name_en", "slug", "parent_id"],
+                include: [
+                  {
+                    model: Category,
+                    as: "children",
+                    attributes: ["id", "name_en", "slug", "parent_id"],
+                  },
+                ],
+              },
+            ],
+            order: [["id", "ASC"]],
+          });
+      
+          return res.status(200).json({ data: categories });
+        } catch (error) {
+          return res.status(500).json({
+            message: "Failed to fetch category tree",
+            error: error.message,
+          });
+        }
+    }
+       
 
 }
 

@@ -38,6 +38,37 @@ class Common {
       Common.sortOrder = "desc";
     }
   };
+
+   // Build Category Tree ==========================
+   static buildCategoryTree(categories, parentId = null) {
+    return categories
+      .filter(cat => cat.parent_id === parentId)
+      .map(cat => ({
+        ...cat,
+        children: Common.buildCategoryTree(categories, cat.id),
+      }));
+  }
+
+  // Flatten Category Tree ========================
+  static flattenCategories(categories, level = 0) {
+    let result = [];
+
+    categories.forEach(cat => {
+      result.push({
+        ...cat,
+        name_en: `${"— ".repeat(level)}${cat.name_en}`,
+      });
+
+      if (cat.children?.length) {
+        result = result.concat(
+          Common.flattenCategories(cat.children, level + 1)
+        );
+      }
+    });
+
+    return result;
+  }
+  
 }
 
 export default Common;

@@ -3,39 +3,32 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import {getAllGenders, getAllBranches, getAllCategories, getAllTags, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
+import { useRouter } from "next/navigation";
+import {getAllGenders, getAllBranches, getCategoryTree, getAllTags, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
+import MultiSelectDropdown from "@/components/dashboard/MultiSelectDropdown";
 import axios from "axios";
+import Common from "@/utils/Common"
 import { toast, ToastContainer } from "react-toastify";
 import { useRef } from "react";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const MemoJoditEditor = React.memo(JoditEditor);
 
-
 const AddProduct = ({ onAddProduct }) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const {token} = useAxiosConfig();
+  const [parentCategories, setParentCategories] = useState([]);
   const descriptionRef = useRef("");
-  const categoryRef = useRef(null);
-  const tagRef = useRef(null);
-  const branchRef = useRef(null);
-  const occasionRef = useRef(null);
   const [genders , setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [occasions, setOccasions] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState([]);
   const router = useRouter();
-  const [branchId, setBranchId] = useState([]);
-  const [isBrancheOpen, setIsBrancheOpen] = useState(false);
+  const [branchIds, setBranchIds] = useState([]);
   const [tags, setTags] = useState([]);
-  const [tagId, setTagId] = useState([]);
-  const [isTagOpen, setIsTagOpen] = useState(false);
-  const [isOccasionOpen, setIsOccasionOpen] = useState(false);
-  const [occasionId, setOccasionId] = useState([]);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState([]);
+  const [tagIds, setTagIds] = useState([]);
+  const [occasionIds, setOccasionIds] = useState([]);
+  const [categoryIds, setCategoryIds] = useState([]);
   
   const [formData, setFormData] = useState({
     name_en:"",
@@ -67,37 +60,38 @@ const AddProduct = ({ onAddProduct }) => {
 
   const fetchBranches = async () => {
     try {
-      const response = await axios.get(getAllBranches);
-      setBranches(response?.data?.data);  
-    } catch (error) {
-      console.error("Error fetching Branches", error);
+      const res = await axios.get(getAllBranches);
+      setBranches(res?.data?.data || []);
+    } catch (err) {
+      console.error("Branch fetch error", err);
     }
   };
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get(getAllTags);
-      setTags(response?.data?.data);  
-    } catch (error) {
-      console.error("Error fetching Branches", error);
+      const res = await axios.get(getAllTags);
+      setTags(res?.data?.data || []);
+    } catch (err) {
+      console.error("Tag fetch error", err);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(getAllCategories);
-      setCategories(response?.data?.data);      
-    } catch (error) {
-      console.error("Error fetching Categories", error);
+      const res = await axios.get(getCategoryTree);
+      const flatCategories = Common.flattenCategories(res.data.data);
+      setParentCategories(flatCategories);
+    } catch (err) {
+      console.error("Category fetch error", err);
     }
   };
 
   const fetchOccasions = async () => {
     try {
-      const response = await axios.get(getAllOcassions);
-      setOccasions(response?.data?.data);      
-    } catch (error) {
-      console.error("Error fetching Occasions", error);
+      const res = await axios.get(getAllOcassions);
+      setOccasions(res?.data?.data || []);
+    } catch (err) {
+      console.error("Occasion fetch error", err);
     }
   };
 
@@ -110,169 +104,9 @@ const AddProduct = ({ onAddProduct }) => {
     fetchOccasions();
   }, [token]);
 
-  const toggleBranch = (id) => {
-    setBranchId((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter(b => b !== id)
-        : [...prev, id];
-  
-      setFormData(prevForm => ({
-        ...prevForm,
-        branch_ids: updated
-      }));
-  
-      return updated;
-    });
-  };
-
-  const toggleCategory = (id) => {
-    setCategoryId((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter(c => c !== id)
-        : [...prev, id];
-  
-      setFormData(prevForm => ({
-        ...prevForm,
-        category_ids: updated
-      }));
-  
-      return updated;
-    });
-  };
-
-  const toggleTag = (id) => {
-    setTagId((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter(t => t !== id)
-        : [...prev, id];
-  
-      setFormData(prevForm => ({
-        ...prevForm,
-        tag_ids: updated
-      }));
-  
-      return updated;
-    });
-  };
-
   const editorConfig = useMemo(() => ({
     height: 300,
   }), []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        categoryRef.current &&
-        !categoryRef.current.contains(event.target)
-      ) {
-        setIsCategoryOpen(false);
-      }
-  
-      if (
-        branchRef.current &&
-        !branchRef.current.contains(event.target)
-      ) {
-        setIsBrancheOpen(false);
-      }
-
-      if (
-        tagRef.current &&
-        !tagRef.current.contains(event.target)
-      ) {
-        setIsTagOpen(false);
-      }
-  
-      if (
-        occasionRef.current &&
-        !occasionRef.current.contains(event.target)
-      ) {
-        setIsOccasionOpen(false);
-      }
-    };
-  
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const openCategory = () => {
-    setIsCategoryOpen(true);
-    setIsBrancheOpen(false);
-    setIsTagOpen(false);
-    setIsOccasionOpen(false);
-  };
-
-  const selectedCategoryNames = categories
-  .filter(c => categoryId.includes(c.id))
-  .map(c => c.name_en);
-
-  const toggleAllCategories = () => {
-    const updated =
-    categoryId.length === categories.length
-      ? []
-      : categories.map(c => c.id);
-
-      setCategoryId(updated);
-    setFormData(prev => ({ ...prev, category_ids: updated }));
-  };
-  
-  const toggleAllBranches = () => {
-    const updated =
-      branchId.length === branches.length
-        ? []
-        : branches.map(b => b.id);
-  
-    setBranchId(updated);
-    setFormData(prev => ({ ...prev, branch_ids: updated }));
-  };
-
-  const selectedBranchNames = branches
-  .filter(t => branchId.includes(t.id))
-  .map(t => t.name_en);
-
-  const toggleAllTags = () => {
-    const updated =
-      tagId.length === tags.length
-        ? []
-        : tags.map(t => t.id);
-  
-    setTagId(updated);
-    setFormData(prev => ({ ...prev, tag_ids: updated }));
-  };
-
-  const selectedTagNames = tags
-  .filter(t => tagId.includes(t.id))
-  .map(t => t.name_en);
-
-  const toggleOccasions = (id) => {
-    setOccasionId((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter(o => o !== id)
-        : [...prev, id];
-  
-      setFormData(prevForm => ({
-        ...prevForm,
-        occasion_ids: updated
-      }));
-  
-      return updated;
-    });
-  };
-
-  const toggleAllOccasions = () => {
-    const updated =
-      occasionId.length === occasions.length
-        ? []
-        : occasions.map(o => o.id);
-  
-    setOccasionId(updated);
-    setFormData(prev => ({ ...prev, occasion_ids: updated }));
-  };
-
-  const selectedOccasionNames = occasions
-  .filter(b => occasionId.includes(b.id))
-  .map(b => b.name_en);
 
   const validateForm = () => {
     const errors = [];
@@ -299,59 +133,36 @@ const AddProduct = ({ onAddProduct }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (validationErrors.length > 0) return;
-
     try {
       const payload = new FormData();
 
       // normal fields
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "branch_ids" && key !== "category_ids" && key !== "tag_ids" && key !== "occasion_ids") {
-          payload.append(key, value);
-        }
+      Object.entries(formData).forEach(([k, v]) => {
+        payload.append(k, v);
       });
 
-      // image
-      if (selectedFile.length > 0) {
-        payload.append("image_url", selectedFile[0]);
-      }
+      // // multiselect ids
+      branchIds.forEach((id) => payload.append("branch_ids[]", id));
+      categoryIds.forEach((id) => payload.append("category_ids[]", id));
+      occasionIds.forEach((id) => payload.append("occasion_ids[]", id));
+      tagIds.forEach((id) => payload.append("tag_ids[]", id));
 
-      // branches
-      formData.branch_ids.forEach(id =>
-        payload.append("branch_ids[]", id)
-      );
+      selectedFile.forEach((file) => {
+        payload.append("image_url", file); 
+      });
 
-      // tags
-      formData.tag_ids.forEach(id =>
-        payload.append("tag_ids[]", id)
-      );
+      const res = await axios.post(createProductRoute, payload);
+      toast.success("Product added successfully!", {
+        autoClose: 500,
+        onClose: () => {
+        setTimeout(() => router.push("/dashboard/product"), 500);
+        },
+      });
 
-      // occasions
-      formData.occasion_ids.forEach(id =>
-        payload.append("occasion_ids[]", id)
-      );
-
-      // categories
-      formData.category_ids.forEach(id =>
-        payload.append("category_ids[]", id)
-      );
-
-         const res = await axios.post(createProductRoute, payload);
-
-        toast.success("Product added successfully!", {
-          autoClose: 500,
-          onClose: () => {
-          setTimeout(() => router.push("/dashboard/product"), 500);
-          },
-        });
-
-        if (onAddProduct) onAddProduct(res.data);
-    } catch (error) {
-      setErrors([
-        error?.response?.data?.message || "Something went wrong",
-      ]);
+      if (onAddProduct) onAddProduct(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Update failed");
     }
   };
 
@@ -429,44 +240,14 @@ const AddProduct = ({ onAddProduct }) => {
               </div>
             </div>
 
-            <div className="form-group mt-3"  ref={tagRef}>
-              <label className="form-label text-secondary">Product Tags</label>
-              <div
-                className="form-control d-flex justify-content-between align-items-center"
-                onClick={() => setIsTagOpen(!isTagOpen)}
-                style={{ cursor: "pointer" }}>
-                <div className="d-flex flex-wrap gap-1">
-                  {selectedTagNames.length ? selectedTagNames.map((name, index) => (
-                        <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                      )): "Select Tags"}
-                </div>
-
-                <i className={`bi bi-chevron-${isTagOpen ? "up" : "down"}`} />
-              </div>
-              {isTagOpen && (
-                <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
-                  
-                  <div className="form-check border-bottom pb-1">
-                    <input 
-                      type="checkbox" 
-                      checked={tagId.length === tags.length}
-                      onChange={toggleAllTags}
-                    />
-                    <label className="ps-2 fs-14 fw-bold">Select All</label>
-                  </div>
-
-                  {tags.map((tag) => (
-                    <div key={tag.id} className="form-check py-1">
-                      <input
-                        type="checkbox"
-                        checked={tagId.includes(tag.id)}
-                        onChange={() => toggleTag(tag.id)}
-                      />
-                      <label className="ps-2 fs-14">{tag.name_en || tag.name}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="form-group mt-3">
+              <MultiSelectDropdown
+                label="Product Tags"
+                items={tags}
+                selectedIds={tagIds}
+                setSelectedIds={setTagIds}
+                placeholder="Select Tags"
+              />
             </div>
           </div>
 
@@ -550,132 +331,41 @@ const AddProduct = ({ onAddProduct }) => {
           </div>
             
           <div className="row">
-
             {/* ===== Categories Dropdown ===== */}
-            <div className="form-group mt-3 col-md-6"  ref={categoryRef}>
-              <label className="form-label text-secondary">Product Categories</label>
-              <div
-                className="form-control d-flex justify-content-between align-items-center"
-                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                style={{ cursor: "pointer" }}>
-                <div className="d-flex flex-wrap gap-1">
-                  {selectedCategoryNames.length ? selectedCategoryNames.map((name, index) => (
-                        <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                      )): "Select Categories"}
-                </div>
-
-                <i className={`bi bi-chevron-${isCategoryOpen ? "up" : "down"}`} />
-              </div>
-              {isCategoryOpen && (
-                <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
-                  
-                  <div className="form-check border-bottom pb-1">
-                    <input 
-                      type="checkbox" 
-                      checked={categoryId.length === categories.length}
-                      onChange={toggleAllCategories}
-                    />
-                    <label className="ps-2 fs-14 fw-bold">Select All</label>
-                  </div>
-
-                  {categories.map((category) => (
-                    <div key={category.id} className="form-check py-1">
-                      <input
-                        type="checkbox"
-                        checked={categoryId.includes(category.id)}
-                        onChange={() => toggleCategory(category.id)}
-                      />
-                      <label className="ps-2 fs-14">{category.name_en || category.name}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="form-group col-md-6">
+              <MultiSelectDropdown
+                label="Product Categories"
+                items={parentCategories}
+                selectedIds={categoryIds}
+                setSelectedIds={setCategoryIds}
+                placeholder="Select Categories"
+              />
             </div>
 
             {/* ===== Branches Dropdown ===== */}
-            <div className="form-group mt-3 col-md-6"  ref={branchRef}>
-              <label className="form-label text-secondary">Product Branches</label>
-              <div
-                className="form-control d-flex justify-content-between align-items-center"
-                onClick={() => setIsBrancheOpen(!isBrancheOpen)}
-                style={{ cursor: "pointer" }}>
-                <div className="d-flex flex-wrap gap-1">
-                  {selectedBranchNames.length ? selectedBranchNames.map((name, index) => (
-                        <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                      )): "Select Branches"}
-                </div>
-
-                <i className={`bi bi-chevron-${isBrancheOpen ? "up" : "down"}`} />
-              </div>
-              {isBrancheOpen && (
-                <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
-                  
-                  <div className="form-check border-bottom pb-1">
-                    <input 
-                      type="checkbox" 
-                      checked={branchId.length === branches.length}
-                      onChange={toggleAllBranches}
-                    />
-                    <label className="ps-2 fs-14 fw-bold">Select All</label>
-                  </div>
-
-                  {branches.map((branch) => (
-                    <div key={branch.id} className="form-check py-1">
-                      <input
-                        type="checkbox"
-                        checked={branchId.includes(branch.id)}
-                        onChange={() => toggleBranch(branch.id)}
-                      />
-                      <label className="ps-2 fs-14">{branch.name_en || branch.name}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="form-group col-md-6">
+              <MultiSelectDropdown
+                label="Product Branches"
+                items={branches}
+                selectedIds={branchIds}
+                setSelectedIds={setBranchIds}
+                placeholder="Select Branches"
+              />
             </div>
           </div>
         </div>
 
         <div className="row mt-4">
-          <div className="form-group mt-3 col-md-6"  ref={occasionRef}>
-            <label className="form-label text-secondary">Product Occasions</label>
-            <div
-                  className="form-control d-flex justify-content-between align-items-center"
-                  onClick={() => setIsOccasionOpen(!isOccasionOpen)}
-                  style={{ cursor: "pointer" }}>
-                  <div className="d-flex flex-wrap gap-1">
-                    {selectedOccasionNames.length ? selectedOccasionNames.map((name, index) => (
-                          <span key={`${name}-${index}`} className="px-2 py-1 border rounded small">{name}</span>
-                        )): "Select Occasions"}
-                  </div>
-
-                  <i className={`bi bi-chevron-${isOccasionOpen ? "up" : "down"}`} />
-                </div>
-                {isOccasionOpen && (
-                  <div className="border bg-white p-2 position-absolute mt-1 rounded-3" style={{ width: 470 }}>
-                    
-                    <div className="form-check border-bottom pb-1 gap-2">
-                      <input 
-                        type="checkbox" 
-                        checked={occasionId.length === occasions.length}
-                        onChange={toggleAllOccasions}
-                      />
-                      <label className="ps-2 fs-14 fw-bold">Select All</label>
-                    </div>
-                      {occasions.map((occasion) => (
-                        <div key={occasion.id} className="form-check py-1">
-                          <input
-                            type="checkbox"
-                            checked={occasionId.includes(occasion.id)}
-                            onChange={() => toggleOccasions(occasion.id)}
-                          />
-                          <label className="ps-2 fs-14">
-                            {occasion.name_en || occasion.name}
-                          </label>
-                        </div>
-                      ))}
-                  </div>
-                )}
+          <div className="form-group col-md-6">
+            <MultiSelectDropdown
+              label="Product Occasions"
+              items={occasions}
+              selectedIds={occasionIds}
+              setSelectedIds={setOccasionIds}
+              placeholder="Select Occasions"
+            />
           </div>
+          
           <div className="form-group mt-3 col-md-6">
             <label className="form-label text-secondary">Gender</label>
             <select 

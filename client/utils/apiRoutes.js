@@ -92,6 +92,7 @@ export const getAllCategories = `${host}/categories`
 export const createCategory = `${host}/categories/create`
 export const UpdateCategoryById = (id) => `${host}/categories/update/${id}`
 export const deleteCategoryById = (id) => `${host}/categories/delete/${id}`
+export const getCategoryTree = `${host}/categories/tree`;
 
 // Branches
 export const getAllBranches = `${host}/branches`;

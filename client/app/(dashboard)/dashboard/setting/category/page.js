@@ -35,7 +35,10 @@ export default function Category() {
       };
       const response = await axios.get(getAllCategories, { params });
 
-      setCategories(response.data.data);
+      const tree = Common.buildCategoryTree(response.data.data);
+      const flatList = Common.flattenCategories(tree);
+
+      setCategories(flatList);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     } catch (error) {
@@ -195,20 +198,10 @@ export default function Category() {
                     </th>
                     <th
                       className="fw-medium fs-14 fnt-color nowrap"
-                      onClick={() => handleSortChange("parent_category")}>
+                      onClick={() => handleSortChange("parent_id")}>
                       Parent Category
                       <span className="fs-10 text-secondary ms-1">
                         {(sortField === "parent_category" &&
-                        (sortOrder === "asc" ? "↑" : "↓")) ||
-                        "↑↓"}
-                    </span>
-                    </th>
-                    <th
-                      className="fw-medium fs-14 fnt-color nowrap"
-                      onClick={() => handleSortChange("display_type")}>
-                      Display Type
-                      <span className="fs-10 text-secondary ms-1">
-                        {(sortField === "display_type" &&
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                     </span>
@@ -225,7 +218,6 @@ export default function Category() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={category.image_url}
-                          alt={category.name_en}
                           className="table-img rounded-5"
                         />
                       </td>
@@ -235,11 +227,8 @@ export default function Category() {
                       <td className="fw-normal fs-14 fnt-color">
                         {category?.slug}
                       </td>
-                      <td className="fw-normal fs-14 fnt-color">
-                        {category?.parent_category}
-                      </td>
-                      <td className="fw-normal fs-14 fnt-color">
-                        {category?.display_type}
+                      <td>
+                        {category?.parent ? category.parent.name_en : "-"}
                       </td>
                       <td className="d-flex gap-2">
                         <div

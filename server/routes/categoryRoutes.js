@@ -11,6 +11,7 @@ router.post('/create', upload.single('image_url'), CategoryController.createCate
 router.get('/', CategoryController.getAllCategories);
 router.put('/update/:id', upload.single('image_url'), CategoryController.updateCategoryById);
 router.delete('/delete/:id', CategoryController.deleteCategoryById);
+router.get("/tree", CategoryController.getCategoryTree);
 
 
 

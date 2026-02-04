@@ -38,6 +38,7 @@ const Category = sequelize.define(
         },
       },
     },
+    
     slug: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -52,28 +53,19 @@ const Category = sequelize.define(
         },
       },
     },
-    parent_category: {
-      type: DataTypes.STRING(100),
+
+    parent_id: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      // validate: {
-      //   isInt: {
-      //     msg: "Parent category must be a number",
-      //   },
-      //   min: {
-      //     args: [1],
-      //     msg: "Parent category must be greater than 0",
-      //   },
-      // },
+      references: {
+        model: "categories",
+        key: "id",
+      },
+      onDelete: "SET NULL",
     },
     display_type: {
-      type: DataTypes.ENUM("Defult", "Products", "Subcategories", "Both"),
+      type: DataTypes.ENUM("Default", "Products", "Subcategories", "Both"),
       allowNull: true,
-      validate: {
-        isIn: {
-          args: [["Default", "Products", "Subcategories", "Both"]],
-          msg: "Display type must be Default, Products, Subcategories or Both",
-        },
-      },
     },
     image_url: {
       type: DataTypes.STRING(255),
@@ -95,4 +87,15 @@ const Category = sequelize.define(
     timestamps: false,
   },
 );
+
+Category.belongsTo(Category, {
+  foreignKey: "parent_id",
+  as: "parent",
+});
+
+Category.hasMany(Category, {
+  foreignKey: "parent_id",
+  as: "children",
+});
+
 module.exports = Category;
