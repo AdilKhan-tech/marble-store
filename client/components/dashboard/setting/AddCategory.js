@@ -1,17 +1,39 @@
 "use client";
 import { useEffect, useState } from "react";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { UpdateCategoryById, createCategory } from "@/utils/apiRoutes";
+import { UpdateCategoryById, createCategory, getCategoryTree } from "@/utils/apiRoutes";
+
+const flattenCategories = (categories, level = 0) => {
+  let result = [];
+
+  categories.forEach(cat => {
+    result.push({
+      id: cat.id,
+      name: `${"— ".repeat(level)}${cat.name_en}`,
+    });
+
+    if (cat.children?.length) {
+      result = result.concat(
+        flattenCategories(cat.children, level + 1)
+      );
+    }
+  });
+
+  return result;
+};
 
 const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCategory,}) => {
+  const { token } = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [parentCategories, setParentCategories] = useState([]);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
     slug: "",
-    parent_category: "",
+    parent_id: "",
     display_type: "",
   });
   
@@ -21,7 +43,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
         name_en: categoryData.name_en || "",
         name_ar: categoryData.name_ar || "",
         slug: categoryData.slug || "",
-        parent_category: categoryData.parent_category || "",
+        parent_id: categoryData.parent_id || "",
         display_type: categoryData.display_type || "",
       });
     }
@@ -31,14 +53,24 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const fetchCategories = async () => {
+    if (!token) return;
+    const res = await axios.get(getCategoryTree);
+    const flat = flattenCategories(res.data.data);
+    setParentCategories(flat);
+  };
+  
+  useEffect(() => {
+    fetchCategories();
+  }, [token]);
+  
+
   const validateForm = () => {
     const errors = [];
   
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.parent_category) errors.push("Parent Category is required.");
-    if (!formData.display_type) errors.push("Display Type is required.");
   
     return errors;
   };
@@ -156,16 +188,23 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
             Parent Category
           </label>
           <select
-            name="parent_category"
-            type="text"
+            name="parent_id"
             className="form-select textarea-hover-dark text-secondary"
-            value={formData.parent_category}
+            value={formData.parent_id}
             onChange={(e) =>
-              setFormData({ ...formData, parent_category: e.target.value })}>
-            <option value="None">None</option>
-            <option value="Add Ons">Add Ons</option>
-            <option value="Bonus">Bonus</option>
-            <option value="Cakes">Cakes</option>
+              setFormData({
+                ...formData,
+                parent_id: e.target.value ? Number(e.target.value) : null
+              })
+            }
+          >
+            <option value="">None</option>
+
+            {parentCategories.map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -174,7 +213,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
             Display Type
           </label>
           <select
-            name="dispaly_type"
+            name="display_type"
             type="text"
             className="form-select textarea-hover-dark text-secondary"
             value={formData.display_type}
@@ -218,6 +257,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">
         <button
           type="button"
+          onClick={closePopup}
           className="cancle-btn rounded-3 border-1 border-secondary fs-16 py-2 fw-medium w-100"
         >
           Cancel

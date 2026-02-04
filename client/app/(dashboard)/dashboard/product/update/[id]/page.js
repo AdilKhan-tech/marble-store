@@ -3,12 +3,13 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import Common from "@/utils/Common"
 import { useRouter } from "next/navigation";
 import useAxiosConfig from "@/hooks/useAxiosConfig"
 import {
   getAllGenders,
   getAllBranches,
-  getAllCategories,
+  getCategoryTree,
   getAllTags,
   getAllOcassions,
   updateProductByIdRoute,
@@ -25,11 +26,10 @@ export default function EditProduct() {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
   const router = useRouter();
-  const descriptionRef = useRef("");
   const [selectedFile, setSelectedFile] = useState([]);
   const [genders, setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [parentCategories, setParentCategories] = useState([]);
   const [occasions, setOccasions] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -106,12 +106,14 @@ export default function EditProduct() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(getAllCategories);
-      setCategories(res?.data?.data || []);
+      const res = await axios.get(getCategoryTree);
+      const flatCategories = Common.flattenCategories(res.data.data);
+      setParentCategories(flatCategories);
     } catch (err) {
       console.error("Category fetch error", err);
     }
   };
+  
 
   const fetchOccasions = async () => {
     try {
@@ -340,7 +342,7 @@ export default function EditProduct() {
           <div className="form-group col-md-6">
             <MultiSelectDropdown
               label="Product Categories"
-              items={categories}
+              items={parentCategories}
               selectedIds={categoryIds}
               setSelectedIds={setCategoryIds}
               placeholder="Select Categories"
