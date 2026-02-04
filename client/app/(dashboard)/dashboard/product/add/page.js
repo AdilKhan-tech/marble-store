@@ -14,7 +14,7 @@ const MemoJoditEditor = React.memo(JoditEditor);
 
 
 const AddProduct = ({ onAddProduct }) => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState([]);
   const {token} = useAxiosConfig();
   const descriptionRef = useRef("");
   const categoryRef = useRef(null);
@@ -53,7 +53,7 @@ const AddProduct = ({ onAddProduct }) => {
   });
 
   const handleFileChange = (e) => {
-    setSelectedFiles(Array.from(e.target.files));
+    setSelectedFile(Array.from(e.target.files));
   };
 
   const fetchGenders = async () => {
@@ -314,8 +314,8 @@ const AddProduct = ({ onAddProduct }) => {
       });
 
       // image
-      if (selectedFiles.length > 0) {
-        payload.append("image_url", selectedFiles[0]);
+      if (selectedFile.length > 0) {
+        payload.append("image_url", selectedFile[0]);
       }
 
       // branches
@@ -395,7 +395,7 @@ const AddProduct = ({ onAddProduct }) => {
                 />
               </div>
 
-              {selectedFiles.length > 0 && (
+              {selectedFile.length > 0 && (
                 <div className="mt-2 text-success fs-12">
                   <i className="bi bi-check-circle me-1"></i>Image uploaded successfully</div>
               )}

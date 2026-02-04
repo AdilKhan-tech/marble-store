@@ -154,7 +154,7 @@ export default function productTags() {
                 <thead className="">
                   <tr className="">
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("id")}
                     >
                       ID
@@ -166,7 +166,7 @@ export default function productTags() {
                     </th>
                     
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("name_en")}
                     >
                       Name
@@ -177,7 +177,7 @@ export default function productTags() {
                       </span>
                     </th>
                     <th
-                      className="fw-bold fs-14 fnt-color nowrap"
+                      className="fw-medium fs-14 fnt-color nowrap"
                       onClick={() => handleSortChange("slug")}
                     >
                       Slug
@@ -187,7 +187,7 @@ export default function productTags() {
                           "↑↓"}
                       </span>
                     </th>
-                    <th className="fw-bold fs-14 fnt-color">Action</th>
+                    <th className="fw-medium fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -249,7 +249,7 @@ export default function productTags() {
           <ToastContainer />
         </div>
       </section>
-      <div className="datatable-bottom">
+      <div className="d-flex align-items-center justify-content-between mt-0">
         <Pagination
           currentPage={currentPage}
           pageCount={pageCount}

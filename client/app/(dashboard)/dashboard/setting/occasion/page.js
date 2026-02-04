@@ -244,7 +244,7 @@ function Occasions() {
         <ToastContainer />
       </div>
     </section>
-    <div className='datatable-bottom'>
+    <div className='d-flex align-items-center justify-content-between mt-0'>
       <Pagination
         currentPage={currentPage}
         pageCount={pageCount}

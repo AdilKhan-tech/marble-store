@@ -248,7 +248,7 @@ export default function IceCreamBucketPage() {
                         <img
                           src={iceCreamBucket.image_url}
                           alt={iceCreamBucket.name_en}
-                          className="table-img rounded-5"
+                          className="table-img"
                         />
                       </td>
                       <td>
@@ -308,7 +308,7 @@ export default function IceCreamBucketPage() {
           <ToastContainer />
         </div>
       </section>
-      <div className='datatable-bottom'>
+      <div className='d-flex align-items-center justify-content-between mt-0'>
         <Pagination
           currentPage={currentPage}
           pageCount={pageCount}

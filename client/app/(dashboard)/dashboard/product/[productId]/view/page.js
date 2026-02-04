@@ -48,7 +48,7 @@ export default function Page() {
               }}
             >
               <img
-                src={`http://localhost:5000/${product.image_url}`} 
+                src={product.image_url} 
                 alt={product.name_en} 
                 className="position-absolute top-0 start-0 w-100 h-100 rounded-4"/>
               <i
