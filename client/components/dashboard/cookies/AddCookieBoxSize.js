@@ -75,43 +75,55 @@ const AddCookieBoxSize = ({ closePopup, cookieBoxSizeData = null, onAddCookieBox
       
   
       if (cookieBoxSizeData) {
-        const res = await axios.put(updateCookieBoxSizeById(cookieBoxSizeData.id), payload);
+        const res = await axios.put(
+          updateCookieBoxSizeById(cookieBoxSizeData.id),
+          payload
+        );
   
         if (res.status === 200) {
           toast.success("Cookie Box Size updated successfully!", {
             autoClose: 1000,
           });
-          
-          if (onUpdateCookieBoxSize) {
-            onUpdateCookieBoxSize({
-              ...cookieBoxSizeData,
-              ...formData,
-              id: cookieBoxSizeData.id,
-            });
-          }
-
-          closePopup();
-        }
-      }
-      //  CREATE
-      else {
-        const res = await axios.post(createCookieBoxSize, payload);
   
-        if (res.status === 201 || res.status === 200) {
+          // 🔥 attach type manually (same as Cookie module)
           const selectedType = cookiesBoxTypes.find(
             (t) => String(t.id) === String(formData.cookie_type_id)
           );
   
-          const createdCookie = {
-            ...res.data,
-            cookiesTypes: selectedType || null,
-          };
+          if (onUpdateCookieBoxSize) {
+            onUpdateCookieBoxSize({
+              ...res.data,        // backend response
+              type: selectedType || null,
+            });
+          }
   
+          closePopup();
+        }
+      }
+  
+      // ================= CREATE =================
+      else {
+        const res = await axios.post(createCookieBoxSize, payload);
+  
+        if (res.status === 201 || res.status === 200) {
           toast.success("Cookie Box Size added successfully!", {
             autoClose: 1000,
-            onClose: closePopup,
           });
-          if (onAddCookieBoxSize) onAddCookieBoxSize(createdCookie);
+  
+          const selectedType = cookiesBoxTypes.find(
+            (t) => String(t.id) === String(formData.cookie_type_id)
+          );
+  
+          const createdCookieBoxSize = {
+            ...res.data,
+            type: selectedType || null,
+          };
+  
+          if (onAddCookieBoxSize) {
+            onAddCookieBoxSize(createdCookieBoxSize);
+          }
+  
+          closePopup();
         }
       }
     }catch (error) {

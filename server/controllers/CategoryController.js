@@ -1,3 +1,4 @@
+const { UPLOADS_URL } = require("../config/config");
 const Category = require("../models/Category");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
