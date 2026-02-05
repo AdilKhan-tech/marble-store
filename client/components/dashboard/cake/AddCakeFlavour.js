@@ -110,9 +110,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
   
           if (onUpdateCakeFlavor) {
             onUpdateCakeFlavor({
-              ...cakeFlavorData,
-              ...formData,
-              id: cakeFlavorData.id,
+              ...res.data,
               customCakeType: selectedType || null,
             });
           }
