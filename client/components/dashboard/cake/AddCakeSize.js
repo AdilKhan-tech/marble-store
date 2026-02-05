@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakeSize, updateCakeSizeById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
+import { createCakeSize, updateCakeSizeById, getAllCategories } from "@/utils/apiRoutes";
 
 const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [customCakeTypes, setCustomCakeTypes] = useState([]);
+  const [cakeCategories, setCakeCategories] = useState([]);
 
   const [formData, setFormData] = useState({
-    custom_cake_type_id: "",
+    cake_category_id: "",
     name_en: "",
     name_ar: "",
     slug: "",
@@ -26,7 +26,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
   useEffect(() => {
     if (cakeSizeData) {
       setFormData({
-        custom_cake_type_id: cakeSizeData.custom_cake_type_id || "",
+        cake_category_id: cakeSizeData.cake_category_id || "",
         name_en: cakeSizeData.name_en || "",
         name_ar: cakeSizeData.name_ar || "",
         slug: cakeSizeData.slug || "",
@@ -38,18 +38,20 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     }
   }, [cakeSizeData]);
 
-  const fetchCustomCakeTypes = async () => {
+  const fetchCakeCategories = async () => {
     try {
-      const response = await axios.get(getAllCustomCakeTypes);
-      setCustomCakeTypes(response.data.data)
+      const response = await axios.get(getAllCategories);
+      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
+      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
+      setCakeCategories(cakeSubCategories || []);
     } catch (error) {
-      console.error("Error fetching custom cake types", error);
+      console.error("Error fetching cake categories", error);
     }
   };
 
   useEffect(() => {
     if (!token) return;
-    fetchCustomCakeTypes();
+    fetchCakeCategories();
   }, [token]);
 
   const handleChange = (e) => {
@@ -69,7 +71,7 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
   
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.custom_cake_type_id)
+    if (!formData.cake_category_id)
       errors.push("Cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.scoop_size) errors.push("Scoop size is required.");
@@ -112,14 +114,14 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             autoClose: 1000,
           });
 
-          const selectedType = customCakeTypes.find(
+          const selectedType = cakeCategories.find(
             (t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+              String(t.id) === String(formData.cake_category_id)
           );
 
           const updatedCakeSize = {
             ...res.data,
-            customCakeType: selectedType || null,
+            cakeCategory: selectedType || null,
           };
         
           if (onUpdateCakeSize) {
@@ -135,13 +137,13 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
         const res = await axios.post(createCakeSize, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = customCakeTypes.find((t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+          const selectedType = cakeCategories.find((t) =>
+              String(t.id) === String(formData.cake_category_id)
           );
   
           const createdCakeSize = {
             ...res.data,
-            customCakeType: selectedType || null,
+            cakeCategory: selectedType || null,
           };
   
           toast.success("Cake Size added successfully!", {
@@ -196,17 +198,17 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
 
         <div className="form-group mt-3">
           <label className="form-label text-secondary">
-            Cake Type
+            Cake Category
           </label>
           <select
-            name="custom_cake_type_id"
+            name="cake_category_id"
             className="form-select textarea-hover-dark text-secondary"
-            value={formData.custom_cake_type_id}
+            value={formData.cake_category_id}
             onChange={handleChange}
           >
-            <option value="">Select Cake Type</option>
+            <option value="">Select Cake Category</option>
 
-            {customCakeTypes.map((type) => (
+            {cakeCategories.map((type) => (
               <option key={type.id} value={type.id}>
                 {type.name_en}
               </option>

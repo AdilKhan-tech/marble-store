@@ -4,18 +4,18 @@ import { useState,  useEffect } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCustomCakeTypes} from "@/utils/apiRoutes"
+import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCategories} from "@/utils/apiRoutes"
 
 function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdateCustomCakeFlavor , onAddCustomCakeFlavor }) {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [customCakeTypes , setCustomCakeTypes] = useState([]);
+  const [cakeCategories , setCakeCategories] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
     slug: "",
-    custom_cake_type_id: "",
+    cake_category_id: "",
     status: "active",
   });
 
@@ -25,7 +25,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
         name_en: customCakeFlavorData.name_en || "",
         name_ar: customCakeFlavorData.name_ar || "",
         slug: customCakeFlavorData.slug || "",
-        custom_cake_type_id: customCakeFlavorData.custom_cake_type_id || "",
+        cake_category_id: customCakeFlavorData.cake_category_id || "",
         status: customCakeFlavorData.status || "active",
       });
     }
@@ -41,7 +41,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.custom_cake_type_id)
+    if (!formData.cake_category_id)
       errors.push("Cake type is required.");
   
     return errors;
@@ -77,8 +77,8 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
             autoClose: 1000,
           });
   
-          const selectedType = customCakeTypes.find((t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+          const selectedType = cakeCategories.find((t) =>
+              String(t.id) === String(formData.cake_category_id)
           );
   
           if (onUpdateCustomCakeFlavor) {
@@ -86,7 +86,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
               ...customCakeFlavorData,
               ...formData,
               id: customCakeFlavorData.id,
-              customCakeType: selectedType || null, 
+              cakeCategory: selectedType || null, 
             });
           }
   
@@ -98,14 +98,14 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
         const res = await axios.post(createCustomCakeFlavor, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = customCakeTypes.find(
+          const selectedType = cakeCategories.find(
             (t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+              String(t.id) === String(formData.cake_category_id)
           );
   
           const createdCustomCakeFlavor = {
             ...res.data,
-            customCakeType: selectedType || null, // 🔑 FIX
+            cakeCategory: selectedType || null, // 🔑 FIX
           };
   
           toast.success("Custom Cake Flavor added successfully!", {
@@ -134,10 +134,12 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
     }
   }, [errors]);  
 
-  const fetchAllCustomCakeType = async () => {
+  const fetchAllcakeCategory = async () => {
     try {
-      const response = await axios.get(getAllCustomCakeTypes)
-      setCustomCakeTypes(response.data.data)
+      const response = await axios.get(getAllCategories);
+      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
+      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
+      setCakeCategories(cakeSubCategories || []);
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -145,7 +147,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
 
   useEffect (() =>{
     if (!token) return;
-    fetchAllCustomCakeType();
+    fetchAllcakeCategory();
   },[token]);
 
   return (
@@ -194,12 +196,12 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
           Cake Type
         </label>
         <select
-          name="custom_cake_type_id"
+          name="cake_category_id"
           type="select"
           className="form-select textarea-hove-dark text-secondary"
-          value={formData.custom_cake_type_id} onChange={(e)=>setFormData({...formData,custom_cake_type_id:e.target.value})}>
+          value={formData.cake_category_id} onChange={(e)=>setFormData({...formData,cake_category_id:e.target.value})}>
           <option>Select Custom Cake Type</option>
-            {customCakeTypes.map((type) => (
+            {cakeCategories.map((type) => (
               <option key={type.id} value={type.id}>
                 {type.name_en}
               </option>

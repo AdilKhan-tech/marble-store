@@ -1,4 +1,4 @@
-const { CakeSize, CustomCakeTypes } = require("../models");
+const { CakeSize, Category } = require("../models");
 const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
@@ -7,14 +7,14 @@ class CakeSizeController {
 
   static async createCakeSize(req, res, next) {
       try {
-        const { name_en,name_ar,custom_cake_type_id,slug,scoop_size,additional_price,calories,status } = req.body
+        const { name_en,name_ar,cake_category_id,slug,scoop_size,additional_price,calories,status } = req.body
 
         const image_url = req.file ? req.file.filename : null;
           
         const cakeSize = await CakeSize.create({
             name_en,
             name_ar,
-            custom_cake_type_id,
+            cake_category_id,
             slug,
             scoop_size,
             additional_price,
@@ -40,9 +40,8 @@ class CakeSizeController {
   static async getAllCakeSizes(req, res) {
     const { page, limit, offset } = getPagination(req);
     const { keywords, sortField, sortOrder } = req.query;
-  
-    try {
 
+    try {
       const whereClause = {};
 
       if (keywords) {
@@ -58,19 +57,28 @@ class CakeSizeController {
         "scoop_size",
         "additional_price",
         "status",
-        "custom_cake_type_id",
+        "cake_category_id",
       ];
 
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
+      // 🔹 Get parent_id of Cake category
+      const cakeParent = await Category.findOne({
+        where: { slug: "Cakes" }, // ya name_en: "Cake"
+        attributes: ["id"],
+      });
+      const cakeParentId = cakeParent ? cakeParent.id : null;
+      
       const { count, rows } = await CakeSize.findAndCountAll({
         where: whereClause,
         include: [
           {
-            model: CustomCakeTypes,
-            as: "customCakeType",
-            attributes: ["id", "name_en", "name_ar"],
+            model: Category,
+            as: "cakeCategory",
+            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
+            where: { parent_id: cakeParentId },
+            required: true, // sirf matching sub-categories
           },
         ],
         limit,
@@ -78,19 +86,15 @@ class CakeSizeController {
         order: [[finalSortField, finalSortOrder]],
       });
 
-      // 🔥 IMAGE URL BUILD HERE
+      // 🔥 IMAGE URL BUILD
       const data = rows.map(item => {
         const cake = item.toJSON();
         return {
           ...cake,
-          image_url: cake.image_url
-            ? `${UPLOADS_URL}/${cake.image_url}`
-            : null,
+          image_url: cake.image_url ? `${UPLOADS_URL}/${cake.image_url}` : null,
         };
       });
-  
       const pageCount = Math.ceil(count / limit);
-  
       return res.status(200).json({
         pagination: {
           page,
@@ -101,9 +105,13 @@ class CakeSizeController {
         data,
       });
     } catch (error) {
-      return res.status(500).json({ message: "Failed to get cake sizes",error: error.message });
+      return res.status(500).json({
+        message: "Failed to get cake sizes",
+        error: error.message,
+      });
     }
   }
+
     
   static async updateCakeSizeById(req, res, next) {
       const { id } = req.params;
@@ -113,7 +121,7 @@ class CakeSizeController {
               return res.status(404).json({ message: "Cake size not found" });
           }
           const {
-              custom_cake_type_id,
+              cake_category_id,
               name_en,
               name_ar,
               slug,
@@ -132,7 +140,7 @@ class CakeSizeController {
           await cakeSize.update({
             name_en: name_en ?? cakeSize.name_en,
             name_ar: name_ar ?? cakeSize.name_ar,
-            custom_cake_type_id: custom_cake_type_id ?? cakeSize.custom_cake_type_id,
+            cake_category_id: cake_category_id ?? cakeSize.cake_category_id,
             slug: slug ?? cakeSize.slug,
             scoop_size: scoop_size ?? cakeSize.scoop_size,
             additional_price: additional_price ?? cakeSize.additional_price,

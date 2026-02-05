@@ -193,10 +193,10 @@ function page() {
                   </th>
                   <th
                     className="fw-medium fs-14 fnt-color"
-                    onClick={() => handleSortChange("custom_cake_type_id")}>
+                    onClick={() => handleSortChange("cake_category_id")}>
                     Cake Type
                     <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "custom_cake_type_id" &&
+                      {(sortField === "cake_category_id" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
@@ -237,7 +237,7 @@ function page() {
                       {customCakeFlavor?.slug}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {customCakeFlavor?.customCakeType?.name_en}
+                      {customCakeFlavor?.cakeCategory?.name_en}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       <img

@@ -201,7 +201,7 @@ export default function Category() {
                       onClick={() => handleSortChange("parent_id")}>
                       Parent Category
                       <span className="fs-10 text-secondary ms-1">
-                        {(sortField === "parent_category" &&
+                        {(sortField === "parent_id" &&
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                     </span>
