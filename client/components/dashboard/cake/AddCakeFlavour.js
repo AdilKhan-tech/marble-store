@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakeFlavor, updateCakeFlavorById, getAllCustomCakeTypes } from "@/utils/apiRoutes";
+import { createCakeFlavor, updateCakeFlavorById, getAllCategories } from "@/utils/apiRoutes";
 
 const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [customCakeTypes, setCustomCakeTypes] = useState([]);
+  const [cakeCategories, setCakeCategories] = useState([]);
 
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
-    custom_cake_type_id: "",
+    cake_category_id: "",
     slug: "",
     additional_price: "",
     symbol: "",
@@ -27,7 +27,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       setFormData({
         name_en: cakeFlavorData.name_en || "",
         name_ar: cakeFlavorData.name_ar || "",
-        custom_cake_type_id: cakeFlavorData.custom_cake_type_id || "",
+        cake_category_id: cakeFlavorData.cake_category_id || "",
         slug: cakeFlavorData.slug || "",
         additional_price: cakeFlavorData.additional_price || "",
         symbol: cakeFlavorData.symbol || "",
@@ -36,18 +36,20 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
     }
   }, [cakeFlavorData]);
 
-  const fetchCustomCakeTypes = async () => {
+    const fetchCakeCategories = async () => {
     try {
-      const response = await axios.get(getAllCustomCakeTypes);
-        setCustomCakeTypes(response.data.data)
+      const response = await axios.get(getAllCategories);
+      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
+      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
+      setCakeCategories(cakeSubCategories || []);
     } catch (error) {
-      console.error("Error fetching custom cake types", error);
+      console.error("Error fetching cake categories", error);
     }
   };
 
   useEffect(() => {
       if (!token) return;
-      fetchCustomCakeTypes();
+      fetchCakeCategories();
   }, [token]);
 
   const handleChange = (e) => {
@@ -67,7 +69,7 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
 
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.custom_cake_type_id) errors.push("Cake type is required.");
+    if (!formData.cake_category_id) errors.push("Cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.additional_price) errors.push("Price is required.");
     if (!formData.symbol) errors.push("Symbol is required.");
@@ -104,8 +106,8 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
             autoClose: 1000,
           });
 
-          const selectedType = customCakeTypes.find((t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+          const selectedType = cakeCategories.find((t) =>
+              String(t.id) === String(formData.cake_category_id)
           );
   
           if (onUpdateCakeFlavor) {
@@ -123,9 +125,9 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         const res = await axios.post(createCakeFlavor, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = customCakeTypes.find(
+          const selectedType = cakeCategories.find(
             (t) =>
-              String(t.id) === String(formData.custom_cake_type_id)
+              String(t.id) === String(formData.cake_category_id)
           );
   
           const createdCake = {
@@ -187,14 +189,14 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
           Cake Type
         </label>
         <select
-          name="custom_cake_type_id"
+          name="cake_category_id"
           className="form-select textarea-hover-dark text-secondary"
-          value={formData.custom_cake_type_id}
+          value={formData.cake_category_id}
           onChange={handleChange}
         >
           <option value="">Select Cake Type</option>
 
-          {customCakeTypes.map((type) => (
+          {cakeCategories.map((type) => (
             <option key={type.id} value={type.id}>
               {type.name_en}
             </option>

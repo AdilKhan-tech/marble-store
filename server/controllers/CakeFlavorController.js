@@ -1,4 +1,4 @@
-const {CakeFlavor, CustomCakeTypes} = require('../models');
+const {CakeFlavor, Category} = require('../models');
 const { UPLOADS_URL } = require("../config/config")
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
@@ -7,13 +7,13 @@ class CakeFlavorController {
     
     static async createCakeFlavor(req, res, next) {
        try {
-        const { name_en, name_ar, custom_cake_type_id, slug, additional_price, symbol, status } = req.body
+        const { name_en, name_ar, cake_category_id, slug, additional_price, symbol, status } = req.body
          const image_url = req.file ? req.file.filename : null;
 
         const cakeFlavor = await CakeFlavor.create({
             name_en,
             name_ar,
-            custom_cake_type_id,
+            cake_category_id,
             slug,
             additional_price,
             symbol,
@@ -55,7 +55,7 @@ class CakeFlavorController {
           "name_en",
           "additional_price",
           "status",
-          "custom_cake_type_id"
+          "cake_category_id"
         ];
   
         const finalSortField = allowedSortFields.includes(sortField)
@@ -64,16 +64,24 @@ class CakeFlavorController {
   
         const finalSortOrder =
           sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+        
+        const cakeParent = await Category.findOne({
+          where: { slug: "Cakes" }, // ya name_en: "Cake"
+          attributes: ["id"],
+        });
+          const cakeParentId = cakeParent ? cakeParent.id : null;
   
         const { count, rows } = await CakeFlavor.findAndCountAll({
           where: whereClause,
           include: [
-            {
-              model: CustomCakeTypes,
-              as: "customCakeType",
-              attributes: ["id", "name_en", "name_ar"],
-            },
-          ],
+          {
+            model: Category,
+            as: "cakeCategory",
+            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
+            where: { parent_id: cakeParentId },
+            required: true, // sirf matching sub-categories
+          },
+        ],
           limit,
           offset,
           order: [[finalSortField, finalSortOrder]],
@@ -116,7 +124,7 @@ class CakeFlavorController {
             if (!cakeFlavor) {
                 return res.status(404).json({ message: "Cake flavor not found" });
             }
-            const {name_en,name_ar,custom_cake_type_id,slug,additional_price,symbol,status} = req.body;
+            const {name_en,name_ar,cake_category_id,slug,additional_price,symbol,status} = req.body;
 
           // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
             let image_url = cakeFlavor.image_url;
@@ -127,7 +135,7 @@ class CakeFlavorController {
             await cakeFlavor.update({
                 name_en: name_en ?? cakeFlavor.name_en,
                 name_ar: name_ar ?? cakeFlavor.name_ar,
-                custom_cake_type_id: custom_cake_type_id ?? cakeFlavor.custom_cake_type_id,
+                cake_category_id: cake_category_id ?? cakeFlavor.cake_category_id,
                 slug: slug ?? cakeFlavor.slug,
                 additional_price: additional_price ?? cakeFlavor.additional_price,
                 symbol: symbol ?? cakeFlavor.symbol,

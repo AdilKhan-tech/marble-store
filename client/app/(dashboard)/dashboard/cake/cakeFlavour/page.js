@@ -174,10 +174,10 @@ export default function CakeFlavourPage() {
 
                   <th
                     className="fw-medium fs-14 fnt-color nowrap"
-                    onClick={() => handleSortChange("custom_cake_type_id")}>
+                    onClick={() => handleSortChange("cake_category_id")}>
                     Cake Type
                     <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "custom_cake_type_id" &&
+                      {(sortField === "cake_category_id" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
@@ -226,7 +226,7 @@ export default function CakeFlavourPage() {
                       {cakeFlavor?.name_en}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {cakeFlavor?.customCakeType?.name_en}
+                      {cakeFlavor?.cakeCategory?.name_en}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {cakeFlavor?.slug}

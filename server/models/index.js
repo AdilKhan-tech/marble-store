@@ -29,34 +29,34 @@ IceCreamPortionSize.belongsTo(IceCreamBucket, {
   as: "iceCreamBucket",
 });
 
-CustomCakeTypes.hasMany(CakeSize, {
-  foreignKey: "custom_cake_type_id",
+Category.hasMany(CakeSize, {
+  foreignKey: "cake_category_id",
   as: "sizes",
 });
 
-CakeSize.belongsTo(CustomCakeTypes, {
-  foreignKey: "custom_cake_type_id",
-  as: "customCakeType",
+CakeSize.belongsTo(Category, {
+  foreignKey: "cake_category_id",
+  as: "cakeCategory",
 });
 
-CustomCakeTypes.hasMany(CakeFlavor, {
-  foreignKey: "custom_cake_type_id",
+Category.hasMany(CakeFlavor, {
+  foreignKey: "cake_category_id",
   as: "flavors",
 });
 
-CakeFlavor.belongsTo(CustomCakeTypes, {
-  foreignKey: "custom_cake_type_id",
-  as: "customCakeType",
+CakeFlavor.belongsTo(Category, {
+  foreignKey: "cake_category_id",
+  as: "cakeCategory",
 });
 
-CustomCakeTypes.hasMany(CustomCakeFlavor, {
-  foreignKey: "custom_cake_type_id",
-  as: "customCakeflavor",
+Category.hasMany(CustomCakeFlavor, {
+  foreignKey: "cake_category_id",
+  as: "cakeCategory",
 });
 
-CustomCakeFlavor.belongsTo(CustomCakeTypes, {
-  foreignKey: "custom_cake_type_id",
-  as: "customCakeType",
+CustomCakeFlavor.belongsTo(Category, {
+  foreignKey: "cake_category_id",
+  as: "cakeCategory",
 });
 
 CookieBoxType.hasMany(CookieBoxSize, {
@@ -148,6 +148,16 @@ Tag.belongsToMany(Product,{
   as: "products",
   onDelete: "CASCADE",
 })
+
+Category.belongsTo(Category, {
+  foreignKey: "parent_id",
+  as: "parent",
+});
+
+Category.hasMany(Category, {
+  foreignKey: "parent_id",
+  as: "children",
+});
 
 module.exports = {
   CakeSize,

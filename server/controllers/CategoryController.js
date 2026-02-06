@@ -35,7 +35,7 @@ class CategoryController {
 
     static async getAllCategories(req, res) {
         const { page, limit, offset } = getPagination(req);
-        const { keywords, sortField, sortOrder } = req.query;
+        const { keywords, sortField, sortOrder, parent_slug } = req.query; // 🔥 parent_slug add kiya
 
         try {
             const whereClause = {};
@@ -58,27 +58,37 @@ class CategoryController {
             const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
             const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
+            const include = [];
+            if (parent_slug) {
+                include.push({
+                    model: Category,
+                    as: "parent",
+                    where: { slug: parent_slug },
+                    attributes: [],
+                });
+            } else {
+                include.push({
+                    model: Category,
+                    as: "parent",
+                    attributes: ["id", "name_en"],
+                });
+            }
+
             const { count, rows } = await Category.findAndCountAll({
                 where: whereClause,
                 limit,
                 offset,
                 order: [[finalSortField, finalSortOrder]],
-                include: [
-                    {
-                      model: Category,
-                      as: "parent",
-                      attributes: ["id", "name_en"],
-                    },
-                ],
+                include,
             });
 
             const data = rows.map(item => {
                 const category = item.toJSON();
                 return {
-                ...category,
-                image_url: category.image_url
-                    ? `${UPLOADS_URL}/${category.image_url}`
-                    : null,
+                    ...category,
+                    image_url: category.image_url
+                        ? `${UPLOADS_URL}/${category.image_url}`
+                        : null,
                 };
             });
 
@@ -100,7 +110,8 @@ class CategoryController {
                 error: error.message
             });
         }
-    }    
+    }
+
 
     static async updateCategoryById(req, res, next) {
         const { id } = req.params;

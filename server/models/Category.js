@@ -88,14 +88,4 @@ const Category = sequelize.define(
   },
 );
 
-Category.belongsTo(Category, {
-  foreignKey: "parent_id",
-  as: "parent",
-});
-
-Category.hasMany(Category, {
-  foreignKey: "parent_id",
-  as: "children",
-});
-
 module.exports = Category;

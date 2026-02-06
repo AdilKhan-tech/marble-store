@@ -42,11 +42,11 @@ const CakeSize = sequelize.define("CakeSize", {
     },
   },  
 
-  custom_cake_type_id: {
+  cake_category_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
-      notEmpty: {msg: "Cake Type is required"},
+      notEmpty: {msg: "Cake Category is required"},
     },
   },
 
