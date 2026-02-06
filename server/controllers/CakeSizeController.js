@@ -62,13 +62,6 @@ class CakeSizeController {
 
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
-
-      // 🔹 Get parent_id of Cake category
-      const cakeParent = await Category.findOne({
-        where: { slug: "Cakes" }, // ya name_en: "Cake"
-        attributes: ["id"],
-      });
-      const cakeParentId = cakeParent ? cakeParent.id : null;
       
       const { count, rows } = await CakeSize.findAndCountAll({
         where: whereClause,
@@ -76,9 +69,7 @@ class CakeSizeController {
           {
             model: Category,
             as: "cakeCategory",
-            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
-            where: { parent_id: cakeParentId },
-            required: true, // sirf matching sub-categories
+            attributes: ["id", "name_en", "name_ar"],
           },
         ],
         limit,
@@ -111,7 +102,6 @@ class CakeSizeController {
       });
     }
   }
-
     
   static async updateCakeSizeById(req, res, next) {
       const { id } = req.params;
@@ -131,7 +121,6 @@ class CakeSizeController {
               status
           } = req.body;
 
-          // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
           let image_url = cakeSize.image_url;
           if (req.file) {
             image_url = req.file.filename;

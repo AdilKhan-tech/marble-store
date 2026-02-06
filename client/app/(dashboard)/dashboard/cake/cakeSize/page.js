@@ -11,10 +11,8 @@ import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelecto
 import Common from "@/utils/Common"
 
 export default function CakeSizePage() {
-
   const {token} = useAxiosConfig();
   const [cakeSizes, setCakeSizes] = useState([]);
-  console.log("cakeSizes",cakeSizes)
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakeSizeData, setCakeSizeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -37,7 +35,6 @@ export default function CakeSizePage() {
       };
 
       const response = await axios.get(getAllCakeSizes, { params });
-
       setCakeSizes(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
@@ -106,6 +103,7 @@ export default function CakeSizePage() {
   }
   
   const addCakeSize = (newCakeSize) => {
+    console.log("newCakeSize", newCakeSize)
     setCakeSizes(prev => [newCakeSize, ...prev]);
     setShowOffcanvas(false);
   };

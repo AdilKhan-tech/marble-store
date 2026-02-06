@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakeSize, updateCakeSizeById, getAllCategories } from "@/utils/apiRoutes";
+import { createCakeSize, updateCakeSizeById, getCakeCategoryChildrens } from "@/utils/apiRoutes";
 
 const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateCakeSize }) => {
   const {token} = useAxiosConfig();
@@ -38,12 +38,23 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
     }
   }, [cakeSizeData]);
 
+  // ✅ YAHAN LAGAO
+  const findCategoryById = (categories, id) => {
+    for (const cat of categories) {
+      if (String(cat.id) === String(id)) return cat;
+
+      if (cat.children?.length) {
+        const found = findCategoryById(cat.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
   const fetchCakeCategories = async () => {
     try {
-      const response = await axios.get(getAllCategories);
-      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
-      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
-      setCakeCategories(cakeSubCategories || []);
+      const response = await axios.get(getCakeCategoryChildrens);
+      setCakeCategories(response.data);
     } catch (error) {
       console.error("Error fetching cake categories", error);
     }
@@ -101,56 +112,57 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
       if (selectedFiles && selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
-  
+
       // ================= UPDATE =================
       if (cakeSizeData) {
         const res = await axios.put(
           updateCakeSizeById(cakeSizeData.id),
           payload
         );
-  
+
         if (res.status === 200) {
           toast.success("Cake size updated successfully!", {
             autoClose: 1000,
           });
 
-          const selectedType = cakeCategories.find(
-            (t) =>
-              String(t.id) === String(formData.cake_category_id)
+          const selectedType = findCategoryById(
+            cakeCategories,
+            formData.cake_category_id
           );
 
           const updatedCakeSize = {
             ...res.data,
             cakeCategory: selectedType || null,
           };
-        
+
           if (onUpdateCakeSize) {
             onUpdateCakeSize(updatedCakeSize);
           }
-  
+
           closePopup();
         }
       }
-  
+
       // ================= CREATE =================
       else {
         const res = await axios.post(createCakeSize, payload);
-  
+      
         if (res.status === 201 || res.status === 200) {
-          const selectedType = cakeCategories.find((t) =>
-              String(t.id) === String(formData.cake_category_id)
+          const selectedType = findCategoryById(
+            cakeCategories,
+            formData.cake_category_id
           );
-  
+      
           const createdCakeSize = {
             ...res.data,
             cakeCategory: selectedType || null,
           };
-  
+      
           toast.success("Cake Size added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-  
+      
           if (onAddCakeSize) onAddCakeSize(createdCakeSize);
         }
       }
@@ -207,15 +219,23 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
             onChange={handleChange}
           >
             <option value="">Select Cake Category</option>
+              {cakeCategories.map((parent) => (
+                <React.Fragment key={parent.id}>
+                  {/* Parent category */}
+                  <option value={parent.id}>
+                    {parent.name_en}
+                  </option>
 
-            {cakeCategories.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.name_en}
-              </option>
-            ))}
+                  {/* Children categories */}
+                  {parent.children?.map((child) => (
+                    <option key={child.id} value={child.id}>
+                      {"— "}{child.name_en}
+                    </option>
+                  ))}
+                </React.Fragment>
+              ))}
           </select>
         </div>
-
 
         <div className="row">
         <div className="form-group mt-3 col-md-6">
