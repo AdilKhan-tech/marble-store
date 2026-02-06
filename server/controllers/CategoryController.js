@@ -112,7 +112,6 @@ class CategoryController {
         }
     }
 
-
     static async updateCategoryById(req, res, next) {
         const { id } = req.params;
         try {
@@ -191,7 +190,42 @@ class CategoryController {
           });
         }
     }
-       
+
+    static async getCakeCategoriesWithChildren(req, res) {
+        try {
+          // 🔹 1. Cakes parent category
+          const cakeParent = await Category.findOne({
+            where: { slug: "cakes" },
+            attributes: ["id", "name_en", "name_ar", "slug"],
+          });
+      
+          if (!cakeParent) {
+            return res.status(200).json({ data: [] });
+          }
+      
+          // 🔹 2. Cakes ke direct sub-categories + unke children
+          const cakeCategories = await Category.findAll({
+            where: { parent_id: cakeParent.id },
+            attributes: ["id", "name_en", "name_ar", "slug", "parent_id"],
+            include: [
+              {
+                model: Category,
+                as: "children",
+                attributes: ["id", "name_en", "name_ar", "slug", "parent_id"],
+              },
+            ],
+            order: [["id", "ASC"]],
+          });
+      
+          return res.status(200).json(cakeCategories);
+      
+        } catch (error) {
+          return res.status(500).json({
+            message: "Failed to get cake categories",
+            error: error.message,
+          });
+        }
+    }      
 
 }
 
