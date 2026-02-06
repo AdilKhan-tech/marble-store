@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import {updateCustomCakeSizeById,createCustomCakeSize,} from "@/utils/apiRoutes";
+import {updateCustomCakeSizeById,createCustomCakeSize, getAllCategories} from "@/utils/apiRoutes";
 
 const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCakeSize,onUpdateCustomCakeSize,}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
+  const [cakeCategories , setCakeCategories] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -14,7 +17,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     portion_size: "",
     sort: "",
     calories: "",
-    cake_type_id: "",
+    cake_category_id: "",
     status: "active",
   });
 
@@ -28,7 +31,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         portion_size: customCakeSizeData.portion_size || "",
         sort: customCakeSizeData.sort || "",
         calories: customCakeSizeData.calories || "",
-        cake_type_id: customCakeSizeData.cake_type_id || "",
+        cake_category_id: customCakeSizeData.cake_category_id || "",
         status: customCakeSizeData.status || "active",
       });
     }
@@ -47,41 +50,79 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     if (!formData.portion_size) errors.push("Portion size is required.");
     if (!formData.sort) errors.push("Sort is required.");
     if (!formData.calories) errors.push("Calories is required.");
-    if (!formData.cake_type_id) errors.push("Cake type is required.");
+    if (!formData.cake_category_id) errors.push("Cake type is required.");
   
     return errors;
   };  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-    
+  
     try {
       const payload = new FormData();
-      Object.entries(formData).forEach(([key, value]) =>
-        payload.append(key, value)
-      );
-      if (selectedFiles.length > 0) {
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
+  
+      // ================= UPDATE =================
       if (customCakeSizeData) {
-        const response = await axios.put(updateCustomCakeSizeById(customCakeSizeData.id),  payload  );
-        if (response.status === 200 || response.status === 201) {
-          toast.success("Custom Cake Size updated successfully!", {autoClose: 1000, onClose: closePopup, });
-
+        const res = await axios.put(
+          updateCustomCakeSizeById(customCakeSizeData.id),
+          payload
+        );
+  
+        if (res.status === 200) {
+          toast.success("Custom Cake Size updated successfully!", {
+            autoClose: 1000,
+          });
+  
+          const selectedType = cakeCategories.find((t) =>
+              String(t.id) === String(formData.cake_category_id)
+          );
+  
           if (onUpdateCustomCakeSize) {
-            onUpdateCustomCakeSize(response.data);
+            onUpdateCustomCakeSize({
+              ...customCakeSizeData,
+              ...formData,
+              id: customCakeSizeData.id,
+              cakeCategory: selectedType || null, 
+            });
           }
+  
+          closePopup();
         }
-      } else {
-        // Create new Custom Cake Size
-        const response = await axios.post(createCustomCakeSize, payload);
-        if (response.status === 200 || response.status === 201) {
-          toast.success("Custom Cake Size added successfully!", {autoClose: 1000, onClose: closePopup, });
-          onAddCustomCakeSize(response.data);
+      }
+      // ================= CREATE =================
+      else {
+        const res = await axios.post(createCustomCakeSize, payload);
+  
+        if (res.status === 201 || res.status === 200) {
+          const selectedType = cakeCategories.find(
+            (t) =>
+              String(t.id) === String(formData.cake_category_id)
+          );
+  
+          const createdCustomCakeSize = {
+            ...res.data,
+            cakeCategory: selectedType || null,
+          };
+  
+          toast.success("Custom Cake Size added successfully!", {
+            autoClose: 1000,
+            onClose: closePopup,
+          });
+  
+          if (onAddCustomCakeSize)
+            onAddCustomCakeSize(createdCustomCakeSize);
         }
       }
     }catch (error) {
@@ -100,6 +141,22 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
       setErrors([]);
     }
   }, [errors]);  
+
+  const fetchAllcakeCategory = async () => {
+    try {
+      const response = await axios.get(getAllCategories);
+      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
+      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
+      setCakeCategories(cakeSubCategories || []);
+    } catch (error) {
+      console.error("Error fetching custom cake types", error);
+    }
+  }
+  
+  useEffect (() =>{
+    if (!token) return;
+    fetchAllcakeCategory();
+  },[token]);
  
   return (
     <form className="mt-0" onSubmit={handleSubmit}>
@@ -180,18 +237,20 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         </div>
       </div>
       <div className="form-group mt-3">
-        <label className="form-label text-secondary">Cake Types</label>
+        <label className="form-label text-secondary">
+          Cake Type
+        </label>
         <select
-          name="custom_cake_types_id"
-          className="form-select textarea-hover-dark text-secondary"
-          value={formData.cake_type_id}
-          onChange={(e) =>setFormData({ ...formData, cake_type_id: e.target.value })}>
-          <option value="">Select Cake Type</option>
-          <option value="Cookie Cake">Cookie Cake</option>
-          <option value="Cute cake">Cute cake</option>
-          <option value="Ice cream Cake">Ice cream Cake</option>
-          <option value="others">others</option>
-          <option value="Sponge Cake"> Sponge Cake</option>
+          name="cake_category_id"
+          type="select"
+          className="form-select textarea-hove-dark text-secondary"
+          value={formData.cake_category_id} onChange={(e)=>setFormData({...formData,cake_category_id:e.target.value})}>
+          <option>Select Custom Cake Size</option>
+            {cakeCategories.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name_en}
+              </option>
+            ))}
         </select>
       </div>
       <div className="col-md-12 mt-3">

@@ -40,11 +40,11 @@ const CustomCakeSize = sequelize.define(
         },
       },
     },
-    cake_type_id: {
+    cake_category_id: {
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notNull: { msg: "Cake Type ID is required" },
+        notNull: { msg: "Cake Category is required" },
       },
     },
     slug: {

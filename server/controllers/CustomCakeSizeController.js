@@ -2,17 +2,18 @@ const CustomCakeSize = require("../models/CustomCakeSize");
 const { UPLOADS_URL } = require("../config/config")
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
+const { Category } = require("../models");
 
 class CustomCakeSizeController {
   static async createCustomCakeSize(req, res, next) {
     try {
-      const {name_en,name_ar,cake_type_id,slug,portion_size,sort,calories,status,} = req.body;
+      const {name_en,name_ar,cake_category_id,slug,portion_size,sort,calories,status,} = req.body;
       const image_url = req.file ? req.file.filename : null;
 
       const customCakeSize = await CustomCakeSize.create({
         name_en,
         name_ar,
-        cake_type_id,
+        cake_category_id,
         slug,
         portion_size,
         sort,
@@ -52,14 +53,28 @@ class CustomCakeSizeController {
         "portion_size",
         "sort",
         "status",
-        "cake_type_id",
+        "cake_category_id",
       ];
+      const cakeParent = await Category.findOne({
+          where: { slug: "Cakes" },
+          attributes: ["id"],
+        });
+      const cakeParentId = cakeParent ? cakeParent.id : null;
 
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
       const { count, rows } = await CustomCakeSize.findAndCountAll({
         where: whereClause,
+        include: [
+          {
+            model: Category,
+            as: "cakeCategory",
+            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
+            where: { parent_id: cakeParentId },
+            required: true,
+          },
+        ],
         limit,
         offset,
         order: [[finalSortField, finalSortOrder]],
@@ -116,7 +131,7 @@ class CustomCakeSizeController {
       if (!customCakeSize) {
         return res.status(404).json({ message: "Custom cake size not found." });
       }
-      const { name_en,name_ar,cake_type_id,slug,portion_size,sort,calories,status } = req.body;
+      const { name_en,name_ar,cake_category_id,slug,portion_size,sort,calories,status } = req.body;
 
        // ✅ IMPORTANT: image ko overwrite mat karo agar new image nahi aayi
             let image_url = customCakeSize.image_url;
@@ -127,7 +142,7 @@ class CustomCakeSizeController {
       await customCakeSize.update({
         name_en: name_en ?? customCakeSize.name_en,
         name_ar: name_ar ?? customCakeSize.name_ar,
-        cake_type_id: cake_type_id ?? customCakeSize.cake_type_id,
+        cake_category_id: cake_category_id ?? customCakeSize.cake_category_id,
         slug: slug ?? customCakeSize.slug,
         portion_size: portion_size ?? customCakeSize.portion_size,
         sort: sort ?? customCakeSize.sort,
