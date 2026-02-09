@@ -28,10 +28,6 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
         args: [2, 55],
         msg: "Name arabic must be between 2 and 55 characters",
       },
-      is: {
-        args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
-        msg: "Name Arabic must contain only Arabic or English letters",
-      },
     },
   },
   icecream_bucket_id: {

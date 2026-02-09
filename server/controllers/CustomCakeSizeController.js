@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 class CustomCakeSizeController {
   static async createCustomCakeSize(req, res, next) {
     try {
-      const {name_en,name_ar,custom_cake_type_id,slug,portion_size,sort,calories,status,} = req.body;
+      const {name_en,name_ar,custom_cake_type_id,slug,scoope_size,sort,calories,status,} = req.body;
       const image_url = req.file ? req.file.filename : null;
 
       const customCakeSize = await CustomCakeSize.create({
@@ -15,7 +15,7 @@ class CustomCakeSizeController {
         name_ar,
         custom_cake_type_id,
         slug,
-        portion_size,
+        scoope_size,
         sort,
         calories,
         status,
@@ -123,7 +123,7 @@ class CustomCakeSizeController {
       if (!customCakeSize) {
         return res.status(404).json({ message: "Custom cake size not found." });
       }
-      const { name_en,name_ar,custom_cake_type_id,slug,portion_size,sort,calories,status } = req.body;
+      const { name_en,name_ar,custom_cake_type_id,slug,scoope_size,sort,calories,status } = req.body;
       let image_url = customCakeSize.image_url;
         if (req.file) {
           image_url = req.file.filename;
@@ -134,7 +134,7 @@ class CustomCakeSizeController {
         name_ar: name_ar ?? customCakeSize.name_ar,
         custom_cake_type_id: custom_cake_type_id ?? customCakeSize.custom_cake_type_id,
         slug: slug ?? customCakeSize.slug,
-        portion_size: portion_size ?? customCakeSize.portion_size,
+        scoope_size: scoope_size ?? customCakeSize.scoope_size,
         sort: sort ?? customCakeSize.sort,
         calories: calories ?? customCakeSize.calories,
         status: status ?? customCakeSize.status,

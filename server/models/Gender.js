@@ -16,10 +16,6 @@ const Gender = sequelize.define('Gender', {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
       },
-      is: {
-        args: /^[A-Za-z\s]+$/,
-        msg: "Name English must contain only letters",
-      },
     },
   },
   name_ar: {
@@ -30,10 +26,6 @@ const Gender = sequelize.define('Gender', {
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",
-      },
-      is: {
-        args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
-        msg: "Name Arabic must contain only Arabic or English letters",
       },
     },
   },

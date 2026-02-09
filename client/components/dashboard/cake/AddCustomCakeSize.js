@@ -14,7 +14,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     name_en: "",
     name_ar: "",
     slug: "",
-    portion_size: "",
+    scoope_size: "",
     sort: "",
     calories: "",
     custom_cake_type_id: "",
@@ -28,7 +28,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         name_en: customCakeSizeData.name_en || "",
         name_ar: customCakeSizeData.name_ar || "",
         slug: customCakeSizeData.slug || "",
-        portion_size: customCakeSizeData.portion_size || "",
+        scoope_size: customCakeSizeData.scoope_size || "",
         sort: customCakeSizeData.sort || "",
         calories: customCakeSizeData.calories || "",
         custom_cake_type_id: customCakeSizeData.custom_cake_type_id || "",
@@ -47,9 +47,9 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.portion_size) errors.push("Portion size is required.");
+    if (!formData.scoope_size) errors.push("Scoop Size is required.");
     if (!formData.sort) errors.push("Sort is required.");
-    if (!formData.calories) errors.push("Calories is required.");
+    // if (!formData.calories) errors.push("Calories is required.");
     if (!formData.custom_cake_type_id) errors.push("Cake type is required.");
   
     return errors;
@@ -195,14 +195,14 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         </div>
         <div className="form-group mt-3 col-md-6">
           <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-            Portion Size
+            Scoope Size
           </label>
           <input
-            name="portion_size"
+            name="scoope_size"
             type="text"
             className="form-control form-control-lg textarea-hover-dark text-secondary"
-            value={formData.portion_size}
-            onChange={(e) =>setFormData({ ...formData, portion_size: e.target.value })}
+            value={formData.scoope_size}
+            onChange={(e) =>setFormData({ ...formData, scoope_size: e.target.value })}
           />
         </div>
       </div>
