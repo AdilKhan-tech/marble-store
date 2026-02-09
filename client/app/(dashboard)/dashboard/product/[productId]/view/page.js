@@ -11,6 +11,7 @@ export default function Page() {
   const router = useRouter();
   const { token } = useAxiosConfig();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchProduct = async () => {
     try {
@@ -18,6 +19,8 @@ export default function Page() {
       setProduct(response.data);
     } catch (error) {
       console.error("Error fetching product:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -26,144 +29,249 @@ export default function Page() {
     fetchProduct();
   }, [productId, token]);
 
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-50">
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3 text-muted">Loading product details...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (!product) return <p className="mt-5">Loading...</p>;
+  if (!product) {
+    return (
+      <div className="container mt-5">
+        <div className="alert alert-danger" role="alert">
+          Failed to load product details. Please try again.
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="mt-5">
-      <div className="card p-4 rounded-4">
-       <div className="d-flex justify-content-start align-items-center">
-          <p className="pagetitle mb-0 fnt-color">Product Details</p>
-        </div>
-        <hr />
+    <div className="container-fluid py-4">
+      <div className="row">
+        <div className="col-12">
+          {/* Main Card */}
+          <div className="card shadow-sm border-0">
+            <div className="card-body p-4">
+                <div>
+                  <h1 className="h3 fw-bold text-dark mb-1">Product Details</h1>
+                  <p className="text-muted mb-0">Complete information about the product</p>
+                </div>
+              <hr />
+              {/* Product Image and Basic Info */}
+              <div className="row mb-5">
+                <div className="col-lg-4 col-md-5 mb-4 mb-md-0">
+                  <div className="card border rounded-3 overflow-hidden shadow-sm">
+                    <div className="card-body p-3">
+                      <div className="position-relative" style={{ height: "300px" }}>
+                        <img
+                          src={product.image_url}
+                          alt={product.name_en}
+                          className="img-fluid rounded w-100 h-100 object-fit-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="card-footer bg-light border-top py-3">
+                      <div className="d-flex justify-content-between">
+                        <span className="badge bg-primary fs-6 px-3 py-2">
+                          ${product.regular_price}
+                        </span>
+                        <span className={`badge ${product.stock ? 'bg-success' : 'bg-danger'} fs-6 px-3 py-2`}>
+                          {product.stock ? `${product.stock} in stock` : 'Out of stock'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-        <div className="row">
-          <div className="col-md-3">
-            <div
-              className="position-relative w-100 bg-white d-flex justify-content-center"
-              style={{
-                border: "2px dashed #e6e6e6",
-                borderRadius: "20px",
-                minHeight: "230px",
-              }}
-            >
-              <img
-                src={product.image_url} 
-                alt={product.name_en} 
-                className="position-absolute top-0 start-0 w-100 h-100 rounded-4"/>
-            </div>
-          </div>
+                <div className="col-lg-8 col-md-7">
+                  {/* Product Names */}
+                  <div className="row mb-4">
+                    <div className="col-md-6 mb-3">
+                      <div className="p-3 bg-light rounded-3">
+                        <h4 className="fw-bold text-dark mb-0">{product.name_en}</h4>
+                        <h6 className="text-uppercase text-muted small mt-2">English Name</h6>
+                      </div>
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <div className="p-3 bg-light rounded-3">
+                        <h4 className="fw-bold text-dark mb-0">{product.name_ar}</h4>
+                        <h6 className="text-uppercase text-muted small mt-2">Arabic Name</h6>
+                      </div>
+                    </div>
+                  </div>
 
-          <div className="col-md-9">
-            <div className="row mt-2">
-              <div className="col-md-6 mb-3">
-                <p className="fs-16 fw-bold mb-0 fnt-color">
-                  {product.name_en}
-                </p>
-                <p className="fs-14 fw-normal">Name English</p>
+                  {/* Description */}
+                  <div className="mb-4">
+                    <div className="p-3 bg-light rounded-3">
+                      <div
+                        className="text-dark"
+                        dangerouslySetInnerHTML={{ __html: product.description }}
+                      />
+                      <h6 className="text-uppercase text-muted small mt-3">Product Description</h6>
+                    </div>
+                  </div>
+
+                  {/* Tags and Gender */}
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <div className="p-3 bg-light rounded-3 h-100">
+                        <div className="d-flex flex-wrap gap-2">
+                          {product?.tags?.length ? (
+                            product.tags.map((tag, index) => (
+                              <span key={index} className="badge bg-secondary-subtle text-dark">
+                                {tag.name_en}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-muted">No tags</span>
+                          )}
+                        </div>
+                        <h6 className="text-uppercase text-muted small mt-2">Product Tags</h6>
+                      </div>
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <div className="p-3 bg-light rounded-3 h-100">
+                        <p className="fs-5 fw-bold text-dark mb-0">{product.gender.name_en}</p>
+                        <h6 className="text-uppercase text-muted small mt-2">Gender</h6>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="col-md-6 mb-3">
-                <p className="fs-16 fw-bold mb-0 fnt-color">
-                  {product.name_ar}
-                </p>
-                <p className="fs-14 fw-normal">Name Arabic</p>
+
+              {/* Divider */}
+              <hr className="my-4" />
+
+              {/* Detailed Information Grid */}
+              <h5 className="fw-bold text-dark mb-4">Product Information</h5>
+
+              <div className="row g-3">
+                {/* First Row */}
+                <div className="col-xl-3 col-md-6">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <p className="fs-5 fw-bold text-dark mb-0">{product.tax_status}</p>
+                      <h6 className="text-uppercase text-muted small mt-2">Tax Status</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-xl-3 col-md-6">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <p className="fs-5 fw-bold text-dark mb-0">{product.tax_class}</p>
+                      <h6 className="text-uppercase text-muted small mt-2">Tax Class</h6>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-xl-3 col-md-6">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <p className="fs-5 fw-bold text-dark mb-0">{product.sku || "N/A"}</p>
+                      <h6 className="text-uppercase text-muted small mt-2">Product SKU</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-xl-3 col-md-6">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <p className={`fs-5 fw-bold ${product.stock ? 'text-success' : 'text-danger'} mb-0`}>
+                        {product.stock || "In Stock"}
+                      </p>
+                      <h6 className="text-uppercase text-muted small mt-2">Stock Status</h6>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="">
-              <div className="fs-14 fw-bold mb-0 fnt-color" dangerouslySetInnerHTML={{ __html: product.description }}/>
-              <p className="fs-14 fw-normal mt-0">Product Description</p>
-            </div>
-            
-            <div className="row">
-            <div className="col-md-6 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product?.tags?.length
-                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),70)
-                  : "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product Tags</p>
-            </div>
+              {/* Categories, Branches, Occasions in SAME ROW - Just like Tags */}
+              <div className="row g-3 mt-3">
+                {/* Product Categories */}
+                <div className="col-xl-4 col-md-4">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <h6 className="text-uppercase text-muted small mb-3">Product Categories</h6>
+                      <div className="d-flex flex-wrap gap-2">
+                        {product?.categories?.length ? (
+                          product.categories.map((category, index) => (
+                            <span key={index} className="badge bg-primary-subtle text-primary">
+                              <i className="bi bi-folder me-1"></i>
+                              {category.name_en}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-muted">No categories</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
+                {/* Product Branches */}
+                <div className="col-xl-4 col-md-4">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <h6 className="text-uppercase text-muted small mb-3">Product Branches</h6>
+                      <div className="d-flex flex-wrap gap-2">
+                        {product?.branches?.length ? (
+                          product.branches.map((branch, index) => (
+                            <span key={index} className="badge bg-warning-subtle text-warning">
+                              <i className="bi bi-shop me-1"></i>
+                              {branch.name_en}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-muted">No branches</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="col-md-6 mb-3">
-                <p className="fs-16 fw-bold mb-0 fnt-color">
-                  {product.gender.name_en}
-                </p>
-                <p className="fs-14 fw-normal">Gender</p>
+                {/* Product Occasions */}
+                <div className="col-xl-4 col-md-4">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body">
+                      <h6 className="text-uppercase text-muted small mb-3">Product Occasions</h6>
+                      <div className="d-flex flex-wrap gap-2">
+                        {product?.occasions?.length ? (
+                          product.occasions.map((occasion, index) => (
+                            <span key={index} className="badge bg-success-subtle text-success">
+                              <i className="bi bi-calendar-event me-1"></i>
+                              {occasion.name_en}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-muted">No occasions</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Action Buttons */}
+              <div className="mt-5 pt-4 border-top">
+                <div className="d-flex justify-content-end gap-3">
+                  <button
+                    onClick={() => router.back()}
+                    className="btn btn-outline-danger px-4 w-25"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-          </div>
-        </div>
-
-        <div className="mt-5">
-          <div className="row">
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                ${product.regular_price}
-              </p>
-              <p className="fs-14 fw-normal">Price</p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product.stock || "In Stock"}
-              </p>
-              <p className="fs-14 fw-normal">Stock</p>
-            </div>
-
-            
-          </div>
-
-          <div className="row">
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product.tax_status}
-              </p>
-              <p className="fs-14 fw-normal">Tax Status</p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product.tax_class}
-              </p>
-              <p className="fs-14 fw-normal">Tax Class</p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product.sku || "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product SKU</p>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product?.branches?.length
-                  ? Common.truncateText(product.branches.map(branch => branch.name_en).join(", "),70)
-                  : "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product Branches</p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product?.occasions?.length
-                  ? Common.truncateText(product.occasions.map(occasion => occasion.name_en).join(", "),70)
-                  : "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product Occasions</p>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <p className="fs-16 fw-bold mb-0 fnt-color">
-                {product?.categories?.length
-                  ? Common.truncateText(product.categories.map(category => category.name_en).join(", "),70)
-                  : "N/A"}
-              </p>
-              <p className="fs-14 fw-normal">Product Categories</p>
             </div>
           </div>
         </div>
