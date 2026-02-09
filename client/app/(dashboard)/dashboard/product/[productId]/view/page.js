@@ -51,9 +51,6 @@ export default function Page() {
                 src={product.image_url} 
                 alt={product.name_en} 
                 className="position-absolute top-0 start-0 w-100 h-100 rounded-4"/>
-              <i
-                className="bi bi-pencil-square fs-4 updatepro position-absolute top-0 end-0 m-2"
-                role="button"></i>
             </div>
           </div>
 
