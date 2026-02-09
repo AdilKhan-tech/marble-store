@@ -103,7 +103,6 @@ export default function CakeSizePage() {
   }
   
   const addCakeSize = (newCakeSize) => {
-    console.log("newCakeSize", newCakeSize)
     setCakeSizes(prev => [newCakeSize, ...prev]);
     setShowOffcanvas(false);
   };

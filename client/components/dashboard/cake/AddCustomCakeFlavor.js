@@ -4,7 +4,7 @@ import { useState,  useEffect } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import {updateCustomCakeFlavorById , createCustomCakeFlavor, getAllCategories} from "@/utils/apiRoutes"
+import {updateCustomCakeFlavorById , createCustomCakeFlavor, getCakeCategoryChildrens} from "@/utils/apiRoutes"
 
 function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdateCustomCakeFlavor , onAddCustomCakeFlavor }) {
   const {token} = useAxiosConfig();
@@ -136,10 +136,8 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
 
   const fetchAllcakeCategory = async () => {
     try {
-      const response = await axios.get(getAllCategories);
-      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
-      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
-      setCakeCategories(cakeSubCategories || []);
+      const response = await axios.get(getCakeCategoryChildrens);
+      setCakeCategories(response.data);
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -201,10 +199,20 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
           className="form-select textarea-hove-dark text-secondary"
           value={formData.cake_category_id} onChange={(e)=>setFormData({...formData,cake_category_id:e.target.value})}>
           <option>Select Custom Cake Type</option>
-            {cakeCategories.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.name_en}
-              </option>
+            {cakeCategories.map((parent) => (
+              <React.Fragment key={parent.id}>
+                {/* Parent category */}
+                <option value={parent.id}>
+                  {parent.name_en}
+                </option>
+
+                {/* Children categories */}
+                {parent.children?.map((child) => (
+                  <option key={child.id} value={child.id}>
+                    {"— "}{child.name_en}
+                  </option>
+                ))}
+              </React.Fragment>
             ))}
         </select>
       </div>
