@@ -156,13 +156,16 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
 
       <div className="form-group col-md-6">
         <label className="form-label text-secondary">Parent Portion Size</label>
-        <input 
+        <select 
           name="parent_portion_size" 
           type="text" 
           className="form-control form-control-lg textarea-hover-dark text-secondary"
           value={formData.parent_portion_size} 
           onChange={handleChange}
-        />
+        >
+          <option>Select Parent Portion Size</option>
+          <option value="None">None</option>
+        </select>
       </div>
       </div>
       

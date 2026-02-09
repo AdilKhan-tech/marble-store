@@ -1,3 +1,4 @@
+const { UPLOADS_URL } = require("../config/config");
 const CakePortionSize = require("../models/CakePortionSize");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
@@ -9,8 +10,7 @@ class CakePortionSizeController {
         try {
             const { name_en, name_ar, slug, parent_portion_size } = req.body
 
-            const image_url = req.file?.path || null;
-            
+            const image_url = req.file ? req.file.filename : null;
             const cakePortionSize = await CakePortionSize.create({
                 name_en,
                 name_ar,
@@ -18,7 +18,14 @@ class CakePortionSizeController {
                 parent_portion_size,
                 image_url,
             });
-            return res.status(201).json(cakePortionSize);
+          
+          const responseData = {
+            ...cakePortionSize.toJSON(),
+            image_url: cakePortionSize.image_url
+              ? `${UPLOADS_URL}/${cakePortionSize.image_url}`
+              : null,
+          };
+            return res.status(201).json(responseData);
         }catch (error) {
           next(error);
         }
@@ -55,7 +62,14 @@ class CakePortionSizeController {
             offset,
             order: [[finalSortField, finalSortOrder]],
           });
-      
+
+          const data = rows.map(item => {
+            const cakePortionSize = item.toJSON();
+            return {
+              ...cakePortionSize,
+              image_url: cakePortionSize.image_url ? `${UPLOADS_URL}/${cakePortionSize.image_url}` : null,
+            };
+          });
           const pageCount = Math.ceil(count / limit);
       
           return res.status(200).json({
@@ -65,7 +79,7 @@ class CakePortionSizeController {
               total: count,
               pageCount,
             },
-            data: rows,
+            data,
           });
         } catch (error) {
           return res.status(500).json({
@@ -87,7 +101,10 @@ class CakePortionSizeController {
         
             const { name_en, name_ar, slug, parent_portion_size } = req.body;
         
-            const image_url = req.file?.path || cakePortionSize.image_url;
+            let image_url = cakePortionSize.image_url;
+              if (req.file) {
+                image_url = req.file.filename;
+              }
         
             await cakePortionSize.update({
                 name_en: name_en ?? cakePortionSize.name_en,
@@ -96,8 +113,13 @@ class CakePortionSizeController {
                 parent_portion_size: parent_portion_size ?? cakePortionSize.parent_portion_size,
                 image_url,
             });
-        
-            return res.status(200).json(cakePortionSize);
+            const responseData = {
+              ...cakePortionSize.toJSON(),
+              image_url: cakePortionSize.image_url
+                ? `${UPLOADS_URL}/${cakePortionSize.image_url}`
+                : null,
+            };
+            return res.status(200).json(responseData);
         }catch (error) {
           next(error);
         }

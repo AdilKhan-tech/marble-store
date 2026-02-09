@@ -198,6 +198,16 @@ export default function IceCreamPortionSizePage() {
                     </th>
                     <th
                       className="fw-medium fs-14 fnt-color nowrap" 
+                      onClick={() => handleSortChange("image_url")}>
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                        (sortOrder === "asc" ? "↑" : "↓")) ||
+                        "↑↓"}
+                      </span>
+                    </th>
+                    <th
+                      className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("status")}>
                       Status
                       <span className="fs-10 text-secondary ms-1">
@@ -226,6 +236,13 @@ export default function IceCreamPortionSizePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         {icecream.slug}
                       </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={icecream.image_url}
+                          alt={icecream.name_en}
+                          className="table-img rounded-1"
+                        />
+                        </td>
                       <td>
                         <div className={icecream?.status === "active"? "blue-status": "red-status"}>
                           {icecream?.status === "active"? "Active": "Inactive"}

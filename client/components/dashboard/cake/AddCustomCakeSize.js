@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import {updateCustomCakeSizeById,createCustomCakeSize, getCakeCategoryChildrens} from "@/utils/apiRoutes";
+import {updateCustomCakeSizeById,createCustomCakeSize, getAllCustomCakeTypes} from "@/utils/apiRoutes";
 
 const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCakeSize,onUpdateCustomCakeSize,}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const {token} = useAxiosConfig();
   const [errors, setErrors] = useState([]);
-  const [cakeCategories , setCakeCategories] = useState([]);
+  const [customCakeTypes , setCustomCakeTypes] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -17,7 +17,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     portion_size: "",
     sort: "",
     calories: "",
-    cake_category_id: "",
+    custom_cake_type_id: "",
     status: "active",
   });
 
@@ -31,7 +31,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         portion_size: customCakeSizeData.portion_size || "",
         sort: customCakeSizeData.sort || "",
         calories: customCakeSizeData.calories || "",
-        cake_category_id: customCakeSizeData.cake_category_id || "",
+        custom_cake_type_id: customCakeSizeData.custom_cake_type_id || "",
         status: customCakeSizeData.status || "active",
       });
     }
@@ -50,7 +50,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     if (!formData.portion_size) errors.push("Portion size is required.");
     if (!formData.sort) errors.push("Sort is required.");
     if (!formData.calories) errors.push("Calories is required.");
-    if (!formData.cake_category_id) errors.push("Cake type is required.");
+    if (!formData.custom_cake_type_id) errors.push("Cake type is required.");
   
     return errors;
   };  
@@ -85,16 +85,14 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
             autoClose: 1000,
           });
   
-          const selectedType = cakeCategories.find((t) =>
-              String(t.id) === String(formData.cake_category_id)
+          const selectedType = customCakeTypes.find((t) =>
+              String(t.id) === String(formData.custom_cake_type_id)
           );
   
           if (onUpdateCustomCakeSize) {
             onUpdateCustomCakeSize({
-              ...customCakeSizeData,
-              ...formData,
-              id: customCakeSizeData.id,
-              cakeCategory: selectedType || null, 
+              ...res.data,
+              customCakeTypes: selectedType || null,
             });
           }
   
@@ -106,14 +104,14 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
         const res = await axios.post(createCustomCakeSize, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = cakeCategories.find(
+          const selectedType = customCakeTypes.find(
             (t) =>
-              String(t.id) === String(formData.cake_category_id)
+              String(t.id) === String(formData.custom_cake_type_id)
           );
   
           const createdCustomCakeSize = {
             ...res.data,
-            cakeCategory: selectedType || null,
+            customCakeTypes: selectedType || null,
           };
   
           toast.success("Custom Cake Size added successfully!", {
@@ -142,10 +140,10 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     }
   }, [errors]);  
 
-  const fetchAllcakeCategory = async () => {
+  const fetchAllCustomCakeTypes = async () => {
     try {
-      const response = await axios.get(getCakeCategoryChildrens);
-      setCakeCategories(response.data);
+      const response = await axios.get(getAllCustomCakeTypes);
+      setCustomCakeTypes(response.data.data);
     } catch (error) {
       console.error("Error fetching custom cake types", error);
     }
@@ -153,7 +151,7 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
   
   useEffect (() =>{
     if (!token) return;
-    fetchAllcakeCategory();
+    fetchAllCustomCakeTypes();
   },[token]);
  
   return (
@@ -239,26 +237,16 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
           Cake Type
         </label>
         <select
-          name="cake_category_id"
+          name="custom_cake_type_id"
           type="select"
           className="form-select textarea-hove-dark text-secondary"
-          value={formData.cake_category_id} onChange={(e)=>setFormData({...formData,cake_category_id:e.target.value})}>
+          value={formData.custom_cake_type_id} onChange={(e)=>setFormData({...formData,custom_cake_type_id:e.target.value})}>
           <option>Select Custom Cake Size</option>
-            {cakeCategories.map((parent) => (
-              <React.Fragment key={parent.id}>
-                {/* Parent category */}
-                <option value={parent.id}>
-                  {parent.name_en}
-                </option>
-
-                {/* Children categories */}
-                {parent.children?.map((child) => (
-                  <option key={child.id} value={child.id}>
-                    {"— "}{child.name_en}
-                  </option>
-                ))}
-              </React.Fragment>
-            ))}
+            {customCakeTypes.map((customCakeType) => (
+            <option key={customCakeType?.id} value={customCakeType?.id}>
+              {customCakeType?.name_en}
+            </option>
+          ))}
         </select>
       </div>
       <div className="col-md-12 mt-3">

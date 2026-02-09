@@ -1,5 +1,6 @@
 const { IceCreamBucket, IceCreamPortionSize } = require("../models");
 const getPagination = require("../utils/pagination");
+const { UPLOADS_URL } = require("../config/config");
 const { Op } = require("sequelize");
 
 class IceCreamPortionSizeController {
@@ -7,8 +8,7 @@ class IceCreamPortionSizeController {
     try {
       const {icecream_bucket_id, name_en, name_ar, slug, additional_price, calories, status} = req.body;
 
-      const image_url = req.file?.path || null;
-
+      const image_url = req.file ? req.file.filename : null;
       const iceCreamPortionSize = await IceCreamPortionSize.create({
         icecream_bucket_id,
         name_en,
@@ -19,7 +19,13 @@ class IceCreamPortionSizeController {
         status,
         image_url,
       });
-      return res.status(201).json(iceCreamPortionSize);
+      const responseData = {
+        ...iceCreamPortionSize.toJSON(),
+        image_url: iceCreamPortionSize.image_url
+          ? `${UPLOADS_URL}/${iceCreamPortionSize.image_url}`
+          : null,
+      };
+      return res.status(201).json(responseData);
 
     }catch (error) {
       next(error);
@@ -67,7 +73,13 @@ class IceCreamPortionSizeController {
         offset,
         order: [[finalSortField, finalSortOrder]],
       });
-
+      const data = rows.map(item => {
+        const iceCreamPortion = item.toJSON();
+        return {
+          ...iceCreamPortion,
+          image_url: iceCreamPortion.image_url ? `${UPLOADS_URL}/${iceCreamPortion.image_url}` : null,
+        };
+      });
       const pageCount = Math.ceil(count / limit);
 
       return res.status(200).json({
@@ -77,7 +89,7 @@ class IceCreamPortionSizeController {
           total: count,
           pageCount,
         },
-        data: rows,
+        data,
       });
 
     } catch (error) {
@@ -97,9 +109,10 @@ class IceCreamPortionSizeController {
       }
 
       const {name_en, name_ar, icecream_bucket_id, slug, additional_price, calories,status} = req.body;
-
-      const image_url = req.file?.path || iceCreamPortionSize.image_url;
-
+      let image_url = iceCreamPortionSize.image_url;
+        if (req.file) {
+          image_url = req.file.filename;
+        }
       await iceCreamPortionSize.update({
           name_en: name_en ?? iceCreamPortionSize.name_en,
           name_ar: name_ar ?? iceCreamPortionSize.name_ar,
@@ -111,7 +124,13 @@ class IceCreamPortionSizeController {
           image_url: image_url
       });
 
-      return res.status(200).json(iceCreamPortionSize);
+      const responseData = {
+        ...iceCreamPortionSize.toJSON(),
+        image_url: iceCreamPortionSize.image_url
+          ? `${UPLOADS_URL}/${iceCreamPortionSize.image_url}`
+          : null,
+      };
+      return res.status(200).json(responseData);
 
     }catch (error) {
       next(error);

@@ -1,6 +1,6 @@
 const CakeSize = require("./CakeSize");
 const CakeFlavor = require("./CakeFlavor");
-const CustomCakeTypes = require("./CustomCakeType");
+const CustomCakeType = require("./CustomCakeType");
 
 const CookieBoxSize = require("./CookieBoxSize");
 const CookieBoxType = require("./CookieBoxType");
@@ -50,23 +50,23 @@ CakeFlavor.belongsTo(Category, {
   as: "cakeCategory",
 });
 
-Category.hasMany(CustomCakeFlavor, {
-  foreignKey: "cake_category_id",
-  as: "cakeCategory",
+CustomCakeType.hasMany(CustomCakeFlavor, {
+  foreignKey: "custom_cake_type_id",
+  as: "customCakeTypes",
 });
 
-CustomCakeFlavor.belongsTo(Category, {
-  foreignKey: "cake_category_id",
-  as: "cakeCategory",
+CustomCakeFlavor.belongsTo(CustomCakeType, {
+  foreignKey: "custom_cake_type_id",
+  as: "customCakeTypes",
 });
 
-Category.hasMany(CustomCakeSize, {
-  foreignKey: "cake_category_id",
+CustomCakeType.hasMany(CustomCakeSize, {
+  foreignKey: "custom_cake_type_id",
   as: "customCakeSizes",
 })
-CustomCakeSize.belongsTo(Category, {
-  foreignKey: "cake_category_id",
-  as: "cakeCategory"
+CustomCakeSize.belongsTo(CustomCakeType, {
+  foreignKey: "custom_cake_type_id",
+  as: "customCakeTypes"
 })
 
 CookieBoxType.hasMany(CookieBoxSize, {
@@ -172,13 +172,13 @@ Category.hasMany(Category, {
 module.exports = {
   CakeSize,
   CakeFlavor,
-  CustomCakeTypes,
+  CustomCakeType,
 
   CookieBoxSize,
   CookieBoxType,
   Cookie,
 
-  CustomCakeTypes,
+  CustomCakeType,
   CustomCakeFlavor,
 
   Product,
