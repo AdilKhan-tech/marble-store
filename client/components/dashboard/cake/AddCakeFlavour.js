@@ -104,13 +104,14 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
       if (selectedFiles && selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
+      
       // ================= UPDATE =================
       if (cakeFlavorData) {
         const res = await axios.put(
           updateCakeFlavorById(cakeFlavorData.id),
           payload
         );
-  
+
         if (res.status === 200) {
           toast.success("Cake Flavour updated successfully!", {
             autoClose: 1000,
@@ -120,36 +121,41 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
             cakeCategories,
             formData.cake_category_id
           );
-  
+
+          const updatedCakeFlavor = {
+            ...res.data,
+            cakeCategory: selectedType || null,
+          };
+
           if (onUpdateCakeFlavor) {
-            onUpdateCakeFlavor({
-              ...res.data,
-              customCakeType: selectedType || null,
-            });
+            onUpdateCakeFlavor(updatedCakeFlavor);
           }
-  
+
           closePopup();
         }
       }
+
       // ================= CREATE =================
       else {
         const res = await axios.post(createCakeFlavor, payload);
-  
+      
         if (res.status === 201 || res.status === 200) {
           const selectedType = findCategoryById(
             cakeCategories,
             formData.cake_category_id
           );
-          const createdCake = {
+      
+          const createdCakeFlavor = {
             ...res.data,
-            customCakeType: selectedType || null,
+            cakeCategory: selectedType || null,
           };
+      
           toast.success("Cake Flavour added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-  
-          if (onAddCakeFlavor) onAddCakeFlavor(createdCake);
+      
+          if (onAddCakeFlavor) onAddCakeFlavor(createdCakeFlavor);
         }
       }
     }catch (error) {

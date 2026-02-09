@@ -117,11 +117,16 @@ class CustomCakeTypeController {
         status: status ?? customCakeTypes.status,
         image_url,
       });
+
+      // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+      const responseData = {
+        ...customCakeTypes.toJSON(),
+        image_url: customCakeTypes.image_url
+        ? `${UPLOADS_URL}/${customCakeTypes.image_url}`
+        : null,
+      };
   
-      return res.status(200).json({
-        message: "Custom Cake Type updated successfully",
-        customCakeTypes,
-      });
+      return res.status(200).json(responseData);
     }catch (error) {
       next(error);
     }
