@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import { createCakeFlavor, updateCakeFlavorById, getAllCategories } from "@/utils/apiRoutes";
+import { createCakeFlavor, updateCakeFlavorById, getCakeCategoryChildrens } from "@/utils/apiRoutes";
 
 const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, onUpdateCakeFlavor }) => {
   const {token} = useAxiosConfig();
@@ -38,13 +38,23 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
 
     const fetchCakeCategories = async () => {
     try {
-      const response = await axios.get(getAllCategories);
-      const cakeParent = response.data.data.find(cat => cat.name_en.toLowerCase() === "cakes");
-      const cakeSubCategories = response.data.data.filter(cat => cat.parent_id === cakeParent?.id);
-      setCakeCategories(cakeSubCategories || []);
+      const response = await axios.get(getCakeCategoryChildrens);
+      setCakeCategories(response.data);
     } catch (error) {
       console.error("Error fetching cake categories", error);
     }
+    };
+  
+  const findCategoryById = (categories, id) => {
+    for (const cat of categories) {
+      if (String(cat.id) === String(id)) return cat;
+
+      if (cat.children?.length) {
+        const found = findCategoryById(cat.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -106,8 +116,9 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
             autoClose: 1000,
           });
 
-          const selectedType = cakeCategories.find((t) =>
-              String(t.id) === String(formData.cake_category_id)
+          const selectedType = findCategoryById(
+            cakeCategories,
+            formData.cake_category_id
           );
   
           if (onUpdateCakeFlavor) {
@@ -125,16 +136,14 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         const res = await axios.post(createCakeFlavor, payload);
   
         if (res.status === 201 || res.status === 200) {
-          const selectedType = cakeCategories.find(
-            (t) =>
-              String(t.id) === String(formData.cake_category_id)
+          const selectedType = findCategoryById(
+            cakeCategories,
+            formData.cake_category_id
           );
-  
           const createdCake = {
             ...res.data,
             customCakeType: selectedType || null,
           };
-  
           toast.success("Cake Flavour added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
@@ -196,10 +205,20 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
         >
           <option value="">Select Cake Type</option>
 
-          {cakeCategories.map((type) => (
-            <option key={type.id} value={type.id}>
-              {type.name_en}
-            </option>
+          {cakeCategories.map((parent) => (
+            <React.Fragment key={parent.id}>
+              {/* Parent category */}
+              <option value={parent.id}>
+                {parent.name_en}
+              </option>
+
+              {/* Children categories */}
+              {parent.children?.map((child) => (
+                <option key={child.id} value={child.id}>
+                  {"— "}{child.name_en}
+                </option>
+              ))}
+            </React.Fragment>
           ))}
         </select>
       </div>
