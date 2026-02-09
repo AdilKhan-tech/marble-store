@@ -82,7 +82,7 @@ export default function Page() {
             <div className="col-md-6 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
                 {product?.tags?.length
-                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),30)
+                  ? Common.truncateText(product.tags.map(tag => tag.name_en).join(", "),70)
                   : "N/A"}
               </p>
               <p className="fs-14 fw-normal">Product Tags</p>
@@ -145,7 +145,7 @@ export default function Page() {
             <div className="col-md-4 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
                 {product?.branches?.length
-                  ? Common.truncateText(product.branches.map(branch => branch.name_en).join(", "),30)
+                  ? Common.truncateText(product.branches.map(branch => branch.name_en).join(", "),70)
                   : "N/A"}
               </p>
               <p className="fs-14 fw-normal">Product Branches</p>
@@ -154,7 +154,7 @@ export default function Page() {
             <div className="col-md-4 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
                 {product?.occasions?.length
-                  ? Common.truncateText(product.occasions.map(occasion => occasion.name_en).join(", "),30)
+                  ? Common.truncateText(product.occasions.map(occasion => occasion.name_en).join(", "),70)
                   : "N/A"}
               </p>
               <p className="fs-14 fw-normal">Product Occasions</p>
@@ -163,7 +163,7 @@ export default function Page() {
             <div className="col-md-4 mb-3">
               <p className="fs-16 fw-bold mb-0 fnt-color">
                 {product?.categories?.length
-                  ? Common.truncateText(product.categories.map(category => category.name_en).join(", "),30)
+                  ? Common.truncateText(product.categories.map(category => category.name_en).join(", "),70)
                   : "N/A"}
               </p>
               <p className="fs-14 fw-normal">Product Categories</p>

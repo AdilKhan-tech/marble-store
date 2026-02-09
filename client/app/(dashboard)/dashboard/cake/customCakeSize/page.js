@@ -185,10 +185,10 @@ export default function CustomCakeSize() {
                     </th>
                     <th
                       className="fw-medium fs-14 fnt-color nowrap"
-                      onClick={() => handleSortChange("cake_category_id")}>
+                      onClick={() => handleSortChange("custom_cake_type_id")}>
                       Cake Type
                       <span className="fs-10 text-secondary ms-1">
-                        {(sortField === "cake_category_id" &&
+                        {(sortField === "custom_cake_type_id" &&
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                     </span>
@@ -229,7 +229,7 @@ export default function CustomCakeSize() {
                         {customCakeSize?.slug}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
-                        {customCakeSize?.cake_category_id}
+                        {customCakeSize?.customCakeTypes?.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         <img

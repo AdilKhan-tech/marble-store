@@ -1,4 +1,4 @@
-const { CustomCakeFlavor, Category } = require("../models");
+const { CustomCakeFlavor, CustomCakeType } = require("../models");
 const { UPLOADS_URL } = require("../config/config");
 const getPagination = require("../utils/pagination");
 const { Op } = require("sequelize");
@@ -7,14 +7,14 @@ class CustomCakeFlavorController {
 
   static async createCustomCakeFlavor(req, res, next) {
     try {
-      const { name_en, name_ar, cake_category_id, slug, status } = req.body;
+      const { name_en, name_ar, custom_cake_type_id, slug, status } = req.body;
 
       const image_url = req.file ? req.file.filename : null;
 
       const customCakeFlavor = await CustomCakeFlavor.create({
         name_en,
         name_ar,
-        cake_category_id,
+        custom_cake_type_id,
         slug,
         status,
         image_url,
@@ -49,26 +49,18 @@ class CustomCakeFlavorController {
         "id",
         "name_en",
         "status",
-        "cake_category_id",
+        "custom_cake_type_id",
       ];
 
       const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
-
-      const cakeParent = await Category.findOne({
-          where: { slug: "Cakes" },
-          attributes: ["id"],
-        });
-          const cakeParentId = cakeParent ? cakeParent.id : null;
       const { count, rows } = await CustomCakeFlavor.findAndCountAll({
         where: whereClause,
         include: [
           {
-            model: Category,
-            as: "cakeCategory",
-            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
-            where: { parent_id: cakeParentId },
-            required: true,
+            model: CustomCakeType,
+            as: "customCakeTypes",
+            attributes: ["id", "name_en", "name_ar"],
           },
         ],
         limit,
@@ -115,7 +107,7 @@ class CustomCakeFlavorController {
         const {
             name_en,
             name_ar,
-            cake_category_id,
+            custom_cake_type_id,
             slug,
             status
         } = req.body;
@@ -128,7 +120,7 @@ class CustomCakeFlavorController {
         await customCakeFlavor.update({
           name_en: name_en ?? customCakeFlavor.name_en,
           name_ar: name_ar ?? customCakeFlavor.name_ar,
-          cake_category_id: cake_category_id ?? customCakeFlavor.cake_category_id,
+          custom_cake_type_id: custom_cake_type_id ?? customCakeFlavor.custom_cake_type_id,
           slug: slug ?? customCakeFlavor.slug,
           status: status ?? customCakeFlavor.status,
           image_url: image_url

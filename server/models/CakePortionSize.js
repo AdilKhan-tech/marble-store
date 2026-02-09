@@ -59,11 +59,11 @@ const CakePortionSize = sequelize.define(
     },
 
     parent_portion_size: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(100),
       allowNull: true,
       validate: {
         isInt: {
-          msg: "Parent portion size must be a number",
+          msg: "Parent portion size must be a number , String",
         },
         min: {
           args: [1],

@@ -194,6 +194,16 @@ export default function CakePortionSizePage() {
                       "↑↓"}
                     </span>
                   </th>
+                  <th
+                    className="fw-medium fs-14 fnt-color" 
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
+                  </th>
                   <th className="fw-medium fs-14 fnt-color">Action</th>
                 </tr>
               </thead>
@@ -212,6 +222,13 @@ export default function CakePortionSizePage() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {cakePortionSize?.parent_portion_size}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                      <img
+                        src={cakePortionSize.image_url}
+                        alt={cakePortionSize.name_en}
+                        className="table-img rounded-1"
+                      />
                     </td>
                     <td className='d-flex gap-2'>
                       <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakePortionSizes(cakePortionSize)}>
