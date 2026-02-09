@@ -8,7 +8,7 @@ class CakeFlavorController {
     static async createCakeFlavor(req, res, next) {
        try {
         const { name_en, name_ar, cake_category_id, slug, additional_price, symbol, status } = req.body
-         const image_url = req.file ? req.file.filename : null;
+        const image_url = req.file ? req.file.filename : null;
 
         const cakeFlavor = await CakeFlavor.create({
             name_en,
@@ -39,7 +39,6 @@ class CakeFlavorController {
       const { keywords, sortField, sortOrder } = req.query;
   
       try {
-  
         const whereClause = {};
   
         if (keywords) {
@@ -58,18 +57,8 @@ class CakeFlavorController {
           "cake_category_id"
         ];
   
-        const finalSortField = allowedSortFields.includes(sortField)
-          ? sortField
-          : "id";
-  
-        const finalSortOrder =
-          sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
-        
-        const cakeParent = await Category.findOne({
-          where: { slug: "Cakes" }, // ya name_en: "Cake"
-          attributes: ["id"],
-        });
-          const cakeParentId = cakeParent ? cakeParent.id : null;
+        const finalSortField = allowedSortFields.includes(sortField) ? sortField : "id";
+        const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
   
         const { count, rows } = await CakeFlavor.findAndCountAll({
           where: whereClause,
@@ -77,9 +66,7 @@ class CakeFlavorController {
           {
             model: Category,
             as: "cakeCategory",
-            attributes: ["id", "name_en", "name_ar", "parent_id", "slug"],
-            where: { parent_id: cakeParentId },
-            required: true, // sirf matching sub-categories
+            attributes: ["id", "name_en", "name_ar",],
           },
         ],
           limit,

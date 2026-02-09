@@ -79,7 +79,7 @@ const AddCustomCakeType = ({ closePopup, customCakeTypeData = null, onAddCustomC
           toast.success("Custom Cake Type updated successfully!");
 
           if (onUpdateCustomCakeType) {
-            onUpdateCustomCakeType(res.data.customCakeTypes);
+            onUpdateCustomCakeType(res.data);
           }
 
           closePopup();
