@@ -187,7 +187,7 @@ function AddCustomCakeFlavor({ closePopup, customCakeFlavorData = null, onUpdate
 
       <div className="form-group mt-3">
         <label className="form-label text-secondary">
-          Cake Type
+          Custom Cake Type
         </label>
         <select
           name="custom_cake_type_id"

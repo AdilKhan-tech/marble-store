@@ -234,14 +234,14 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
       </div>
       <div className="form-group mt-3">
         <label className="form-label text-secondary">
-          Cake Type
+         Custom Cake Type
         </label>
         <select
           name="custom_cake_type_id"
           type="select"
           className="form-select textarea-hove-dark text-secondary"
           value={formData.custom_cake_type_id} onChange={(e)=>setFormData({...formData,custom_cake_type_id:e.target.value})}>
-          <option>Select Custom Cake Size</option>
+          <option>Select Custom Cake Type</option>
             {customCakeTypes.map((customCakeType) => (
             <option key={customCakeType?.id} value={customCakeType?.id}>
               {customCakeType?.name_en}
