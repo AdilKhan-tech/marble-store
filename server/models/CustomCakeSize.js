@@ -19,10 +19,6 @@ const CustomCakeSize = sequelize.define(
           args: [2, 55],
           msg: "Name English must be between 2 and 55 characters",
         },
-        is: {
-          args: /^[A-Za-z\s]+$/,
-          msg: "Name English must contain only letters",
-        },
       },
     },
     name_ar: {
@@ -33,10 +29,6 @@ const CustomCakeSize = sequelize.define(
         len: {
           args: [2, 55],
           msg: "Name Arabic must be between 2 and 55 characters",
-        },
-        is: {
-          args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
-          msg: "Name Arabic must contain only Arabic or English letters",
         },
       },
     },
@@ -58,7 +50,7 @@ const CustomCakeSize = sequelize.define(
         },
       },
     },
-    portion_size: {
+    scoope_size: {
       type: DataTypes.STRING(55),
       allowNull: false,
       validate: {
@@ -71,7 +63,7 @@ const CustomCakeSize = sequelize.define(
     },
     sort: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0,
       validate: {
         isInt: { msg: "Sort must be a number" },

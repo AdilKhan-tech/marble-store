@@ -19,10 +19,6 @@ const CakeSize = sequelize.define("CakeSize", {
         args: [2, 55],
         msg: "Name English must be between 2 and 55 characters",
       },
-      is: {
-        args: /^[A-Za-z0-9\s]+$/,
-        msg: "Name English can contain letters and numbers only",
-      },
     },
   },
 
@@ -34,10 +30,6 @@ const CakeSize = sequelize.define("CakeSize", {
       len: {
         args: [2, 55],
         msg: "Name Arabic must be between 2 and 55 characters",
-      },
-      is: {
-        args: /^[\u0600-\u06FF0-9\s]+$/,
-        msg: "Name Arabic can contain Arabic letters and numbers only",
       },
     },
   },  

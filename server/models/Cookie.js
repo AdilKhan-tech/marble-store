@@ -30,10 +30,6 @@ const Cookie = sequelize.define("Cookie",{
               args: [2, 100],
               msg: "Name arabic must be betwwen 2 and 100 characters",
             },
-            is: {
-              args: /^[A-Za-z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$/,
-              msg: "Name Arabic must contain only Arabic or English letters",
-            },
           },
     },
     cookie_type_id: {
