@@ -3,8 +3,9 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getAllGenders, getAllBranches, getCategoryTree, getAllTags, getAllOcassions, createProductRoute } from "@/utils/apiRoutes";
+import { getAllGenders, getAllBranches, getCategoryTree, updateProductByIdRoute, getProductByIdRoute, getAllTags, getAllOcassions, createProductRoute } from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import MultiSelectDropdown from "@/components/dashboard/MultiSelectDropdown";
 import axios from "axios";
@@ -17,6 +18,11 @@ const MemoJoditEditor = React.memo(JoditEditor);
 const AddProduct = ({ onAddProduct }) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const { token } = useAxiosConfig();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const isEditMode = Boolean(id);
+  const [productData, setProductData] = useState(null);
   const [parentCategories, setParentCategories] = useState([]);
   const descriptionRef = useRef("");
   const [genders, setGenders] = useState([]);
@@ -59,6 +65,45 @@ const AddProduct = ({ onAddProduct }) => {
       console.error("Error fetching Genders", error);
     }
   };
+
+  // fetchProduct
+  useEffect(() => {
+    if (!token || !isEditMode) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(getProductByIdRoute(id));
+        setProductData(res.data);
+      } catch (error) {
+        console.error("Product fetch failed", error);
+      }
+    };
+
+    fetchProduct();
+  }, [token, id, isEditMode]);
+
+
+  /* ===== PREFILL (IMPORTANT PART) ===== */
+  useEffect(() => {
+    if (!productData || !isEditMode) return;
+  
+    setFormData({
+      name_en: productData.name_en || "",
+      name_ar: productData.name_ar || "",
+      description: productData.description || "",
+      gender_id: productData.gender_id || "",
+      regular_price: productData.regular_price || "",
+      sale_price: productData.sale_price || "",
+      tax_status: productData.tax_status || "",
+      tax_class: productData.tax_class || "",
+    });
+  
+    setBranchIds(productData.branches?.map(b => b.id) || []);
+    setCategoryIds(productData.categories?.map(c => c.id) || []);
+    setOccasionIds(productData.occasions?.map(o => o.id) || []);
+    setTagIds(productData.tags?.map(t => t.id) || []);
+  }, [productData, isEditMode]);
+
 
   const fetchBranches = async () => {
     try {
@@ -129,6 +174,47 @@ const AddProduct = ({ onAddProduct }) => {
     return errors;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const validationErrors = validateForm();
+  //   if (validationErrors.length > 0) {
+  //     setErrors(validationErrors);
+  //     validationErrors.forEach((err) => toast.error(err));
+  //     return;
+  //   }
+  //   setIsSubmitting(true);
+  //   try {
+  //     const payload = new FormData();
+  //     // normal fields
+  //     Object.entries(formData).forEach(([k, v]) => {
+  //       payload.append(k, v);
+  //     });
+  //     // multiselect ids
+  //     branchIds.forEach((id) => payload.append("branch_ids[]", id));
+  //     categoryIds.forEach((id) => payload.append("category_ids[]", id));
+  //     occasionIds.forEach((id) => payload.append("occasion_ids[]", id));
+  //     tagIds.forEach((id) => payload.append("tag_ids[]", id));
+  //     selectedFile.forEach((file) => {
+  //       payload.append("image_url", file);
+  //     });
+
+  //     const res = await axios.post(createProductRoute, payload);
+  //     toast.success("Product added successfully!", {
+  //       autoClose: 2000,
+  //       onClose: () => {
+  //         setTimeout(() => router.push("/dashboard/product"), 500);
+  //       },
+  //     });
+
+  //     if (onAddProduct) onAddProduct(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //     toast.error("Failed to add product. Please try again.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -137,38 +223,43 @@ const AddProduct = ({ onAddProduct }) => {
       validationErrors.forEach((err) => toast.error(err));
       return;
     }
-    setIsSubmitting(true);
+  
+    const payload = new FormData();
+    Object.entries(formData).forEach(([k, v]) => payload.append(k, v));
+  
+    branchIds.forEach(id => payload.append("branch_ids[]", id));
+    categoryIds.forEach(id => payload.append("category_ids[]", id));
+    occasionIds.forEach(id => payload.append("occasion_ids[]", id));
+    tagIds.forEach(id => payload.append("tag_ids[]", id));
+    selectedFile.forEach(file => payload.append("image_url", file));
+  
     try {
-      const payload = new FormData();
-      // normal fields
-      Object.entries(formData).forEach(([k, v]) => {
-        payload.append(k, v);
-      });
-      // multiselect ids
-      branchIds.forEach((id) => payload.append("branch_ids[]", id));
-      categoryIds.forEach((id) => payload.append("category_ids[]", id));
-      occasionIds.forEach((id) => payload.append("occasion_ids[]", id));
-      tagIds.forEach((id) => payload.append("tag_ids[]", id));
-      selectedFile.forEach((file) => {
-        payload.append("image_url", file);
-      });
-
-      const res = await axios.post(createProductRoute, payload);
-      toast.success("Product added successfully!", {
-        autoClose: 2000,
-        onClose: () => {
-          setTimeout(() => router.push("/dashboard/product"), 500);
-        },
-      });
-
-      if (onAddProduct) onAddProduct(res.data);
+      if (isEditMode) {
+        await axios.put(updateProductByIdRoute(id), payload);
+    
+        toast.success("Product updated successfully!", {
+          autoClose: 2000,
+          onClose: () => {
+            router.push("/dashboard/product");
+          },
+        });
+    
+      } else {
+        await axios.post(createProductRoute, payload);
+    
+        toast.success("Product added successfully!", {
+          autoClose: 2000,
+          onClose: () => {
+            router.push("/dashboard/product");
+          },
+        });
+      }
+    
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to add product. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      toast.error("Something went wrong");
     }
   };
+  
 
   return (
     <div className="container-fluid py-4">
@@ -176,7 +267,9 @@ const AddProduct = ({ onAddProduct }) => {
         <div className="col-12">
           <div className="d-flex">
             <i className="bi bi-arrow-left fs-3 me-2"></i>
-            <h1 className="fs-4 fnt-color fw-semibold mb-0 mt-1">Add New Product</h1>
+            <h1 className="fs-4 fnt-color fw-semibold mb-0 mt-1">
+              {isEditMode ? "Edit Product" : "Add New Product"}
+            </h1>
           </div>
         </div>
       </div>

@@ -261,7 +261,7 @@ export default function Page() {
                 <div className="d-flex justify-content-end gap-3">
                   <button
                     onClick={() => router.back()}
-                    className="btn btn-outline-danger px-4 w-25"
+                    className="btn btn-outline-secondary px-4 w-25"
                   >
                     Cancel
                   </button>

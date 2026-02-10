@@ -302,7 +302,7 @@ export default function ProductPage() {
                         </Dropdown>
                       <div 
                         className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" 
-                        onClick={() => router.push(`/dashboard/product/update/${product.id}`)}
+                        onClick={() => router.push(`/dashboard/product/add?id=${product.id}`)}
                       >
                         <i className="bi bi-pencil-square text-primary"></i>
                       </div>
