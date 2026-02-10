@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {getAllGenders, getAllBranches, getCategoryTree, getAllTags, getAllOcassions, createProductRoute} from "@/utils/apiRoutes";
+import { getAllGenders, getAllBranches, getCategoryTree, getAllTags, getAllOcassions, createProductRoute } from "@/utils/apiRoutes";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import MultiSelectDropdown from "@/components/dashboard/MultiSelectDropdown";
 import axios from "axios";
@@ -16,10 +16,10 @@ const MemoJoditEditor = React.memo(JoditEditor);
 
 const AddProduct = ({ onAddProduct }) => {
   const [selectedFile, setSelectedFile] = useState([]);
-  const {token} = useAxiosConfig();
+  const { token } = useAxiosConfig();
   const [parentCategories, setParentCategories] = useState([]);
   const descriptionRef = useRef("");
-  const [genders , setGenders] = useState([]);
+  const [genders, setGenders] = useState([]);
   const [branches, setBranches] = useState([]);
   const [occasions, setOccasions] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -29,30 +29,32 @@ const AddProduct = ({ onAddProduct }) => {
   const [tagIds, setTagIds] = useState([]);
   const [occasionIds, setOccasionIds] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
-    name_en:"",
-    name_ar:"",
-    tag_ids: [], 
-    description:"",
-    occasion_ids: [], 
-    gender_id:"",
-    regular_price:"",
-    sale_price:"",
-    tax_status:"Taxable",
-    tax_class:"Standard",
+    name_en: "",
+    name_ar: "",
+    tag_ids: [],
+    description: "",
+    occasion_ids: [],
+    gender_id: "",
+    regular_price: "",
+    sale_price: "",
+    tax_status: "Taxable",
+    tax_class: "Standard",
     branch_ids: [],
     category_ids: []
   });
 
   const handleFileChange = (e) => {
-    setSelectedFile(Array.from(e.target.files));
+    const files = Array.from(e.target.files);
+    setSelectedFile(files);
   };
 
   const fetchGenders = async () => {
     try {
       const response = await axios.get(getAllGenders);
-      setGenders(response?.data?.data);  
+      setGenders(response?.data?.data);
     } catch (error) {
       console.error("Error fetching Genders", error);
     }
@@ -106,289 +108,385 @@ const AddProduct = ({ onAddProduct }) => {
 
   const editorConfig = useMemo(() => ({
     height: 300,
+    toolbarAdaptive: false,
+    buttons: [
+      'bold', 'italic', 'underline', 'strikethrough',
+      '|', 'superscript', 'subscript',
+      '|', 'ul', 'ol', 'outdent', 'indent',
+      '|', 'font', 'fontsize', 'brush', 'paragraph',
+      '|', 'image', 'video', 'table', 'link',
+      '|', 'align', 'undo', 'redo', 'fullsize'
+    ],
+    style: { background: '#f8f9fa', color: '#212529' }
   }), []);
 
   const validateForm = () => {
     const errors = [];
-    if (!formData.name_en) errors.push("Name English is required");
-    if (!formData.name_ar) errors.push("Name Arabic is required");
-    if (!formData.description) errors.push("Description is required");
-    if (!formData.gender_id) errors.push("Gender is required");
-  
-    if (!formData.branch_ids.length)
-      errors.push("At least one branch is required");
-  
-    if (!formData.category_ids.length)
-      errors.push("At least one category is required");
-  
-    if (!formData.occasion_ids.length)
-      errors.push("At least one occasion is required");
-
-    if (!formData.tag_ids.length)
-      errors.push("At least one tag is required");
-  
+    if (!formData.name_en) errors.push("Name English is require!");
+    if (!formData.name_ar) errors.push("Name Arabic is require!");
+    if (!formData.description) errors.push("Description is require!");
+    if (!formData.gender_id) errors.push("Gender is require!");
     return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      validationErrors.forEach((err) => toast.error(err));
+      return;
+    }
+    setIsSubmitting(true);
     try {
       const payload = new FormData();
-
       // normal fields
       Object.entries(formData).forEach(([k, v]) => {
         payload.append(k, v);
       });
-
-      // // multiselect ids
+      // multiselect ids
       branchIds.forEach((id) => payload.append("branch_ids[]", id));
       categoryIds.forEach((id) => payload.append("category_ids[]", id));
       occasionIds.forEach((id) => payload.append("occasion_ids[]", id));
       tagIds.forEach((id) => payload.append("tag_ids[]", id));
-
       selectedFile.forEach((file) => {
-        payload.append("image_url", file); 
+        payload.append("image_url", file);
       });
 
       const res = await axios.post(createProductRoute, payload);
       toast.success("Product added successfully!", {
-        autoClose: 500,
+        autoClose: 2000,
         onClose: () => {
-        setTimeout(() => router.push("/dashboard/product"), 500);
+          setTimeout(() => router.push("/dashboard/product"), 500);
         },
       });
 
       if (onAddProduct) onAddProduct(res.data);
     } catch (err) {
       console.error(err);
-      toast.error("Update failed");
+      toast.error("Failed to add product. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => toast.error(err));
-      setErrors([]);
-    }
-  }, [errors]);
-
   return (
-    <form onSubmit={handleSubmit} className="mt-5">
-      <div className="card p-4 rounded-4">
+    <div className="container-fluid py-4">
+      <div className="row mb-4">
+        <div className="col-12">
+          <div className="d-flex">
+            <i className="bi bi-arrow-left fs-3 me-2"></i>
+            <h1 className="fs-4 fnt-color fw-semibold mb-0 mt-1">Add New Product</h1>
+          </div>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-md-4">
-            <div className="">
-              <div
-                className="position-relative w-100 bg-white d-flex justify-content-center"
-                style={{
-                  border: "2px dashed #e6e6e6",
-                  borderRadius: "20px",
-                  minHeight: "10px",
-                }}
-              >
-                <div className="d-flex flex-column align-items-center justify-content-center h-75 text-center p-3">
-                  <i className="bi bi-image fs-1 text-secondary"></i>
-                  <div className="mt-2 fs-16 fw-bold">
-                    <span className="text-primary">Click here</span>
-                    <span className="fnt-color"> or drag n' drop</span>
+          <div className="col-lg-8">
+            <div className="card shadow-sm border-0 mb-4">
+              <div className="card-header bg-white py-3">
+                <h5 className="mb-0 fs-18 fw-semibold">Product Information</h5>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Product Name (English) <span className="text-danger">*</span></label>
+                    <input
+                      name="name_en"
+                      type="text"
+                      value={formData.name_en}
+                      onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                      className="form-control fs-14 mt-2 textarea-hover-dark text-secondary"
+                      placeholder="Enter product name in English"
+                    />
                   </div>
-                  <div className="mt-4 fs-14 opacity-75">JPG, JPEG or PNG</div>
-                  <div className="fs-14 fw-bold opacity-75">Maximum 2 MB</div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Product Name (Arabic) <span className="text-danger">*</span></label>
+                    <input
+                      name="name_ar"
+                      type="text"
+                      value={formData.name_ar}
+                      onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
+                      className="form-control fs-14 mt-2 textarea-hover-dark text-secondary"
+                      placeholder="أدخل اسم المنتج باللغة العربية"
+                    />
+                  </div>
                 </div>
 
-                <input 
-                  type="file" 
-                  accept="image/png, image/jpeg, image/jpg" 
-                  onChange={handleFileChange}
-                  className="position-absolute top-0 start-0 w-100 h-100"
-                  style={{ opacity: 0, cursor: "pointer" }}
-                />
+                <div className="mb-3">
+                  <label className="form-label fs-14 fw-medium fnt-color opacity-75">Description <span className="text-danger">*</span></label>
+                  <div className="border rounded overflow-hidden">
+                    <MemoJoditEditor
+                      value={formData.description}
+                      config={editorConfig}
+                      onChange={(content) => {
+                        descriptionRef.current = content;
+                      }}
+                      onBlur={(newContent) => {
+                        setFormData(prev => ({
+                          ...prev,
+                          description: newContent
+                        }));
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Product Tags <span className="text-danger">*</span></label>
+                    <MultiSelectDropdown
+                      label=""
+                      items={tags}
+                      selectedIds={tagIds}
+                      setSelectedIds={setTagIds}
+                      placeholder="Select tags..."
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Gender <span className="text-danger">*</span></label>
+                    <select
+                      className="form-select form-select-lg"
+                      value={formData.gender_id}
+                      onChange={(e) =>
+                        setFormData({ ...formData, gender_id: e.target.value })
+                      }
+                    >
+                      <option value="">Select Gender</option>
+                      {genders.map((gender) => (
+                        <option key={gender.id} value={gender.id}>
+                          {gender.name_en}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
-
-              {selectedFile.length > 0 && (
-                <div className="mt-2 text-success fs-12">
-                  <i className="bi bi-check-circle me-1"></i>Image uploaded successfully</div>
-              )}
             </div>
-          </div>
 
-          <div className="col-md-8">
-            <div className="row">
-              <div className="form-group col-md-6">
-                <label className="form-label text-secondary">
-                  Name English
-                </label>
-                <input
-                  name="name_en"
-                  type="text"
-                  value={formData.name_en}
-                  onChange={(e)=>setFormData({...formData,name_en:e.target.value})}
-                  className="form-control form-control-lg textarea-hover-dark text-secondary"
-                />
+            <div className="card shadow-sm border-0 mb-4">
+              <div className="card-header bg-white py-3">
+                <h5 className="mb-0 fs-18 fw-semibold">Pricing & Tax</h5>
               </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Regular Price</label>
+                    <div className="input-group input-group-lg">
+                      <span className="input-group-text">$</span>
+                      <input
+                        name="regular_price"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formData.regular_price}
+                        onChange={(e) => setFormData({ ...formData, regular_price: e.target.value })}
+                        className="form-control textarea-hover-dark border-start-0 rounded-start-0"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </div>
 
-              <div className="form-group col-md-6">
-                <label className="form-label text-secondary">Name Arabic</label>
-                <input
-                  name="name_ar"
-                  type="text"
-                  value={formData.name_ar}
-                  onChange={(e)=>setFormData({...formData,name_ar:e.target.value})}
-                  className="form-control form-control-lg textarea-hover-dark text-secondary"
-                />
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Sale Price</label>
+                    <div className="input-group input-group-lg">
+                      <span className="input-group-text">$</span>
+                      <input
+                        name="sale_price"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formData.sale_price}
+                        onChange={(e) => setFormData({ ...formData, sale_price: e.target.value })}
+                        className="form-control textarea-hover-dark border-start-0 rounded-start-0"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Tax Status</label>
+                    <select
+                      name="tax_status"
+                      className="form-select form-select-lg"
+                      value={formData.tax_status}
+                      onChange={(e) => setFormData({ ...formData, tax_status: e.target.value })}
+                    >
+                      <option value="Taxable">Taxable</option>
+                      <option value="Shipping only">Shipping only</option>
+                      <option value="None">None</option>
+                    </select>
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label fs-14 fw-medium fnt-color opacity-75">Tax Class</label>
+                    <select
+                      name="tax_class"
+                      className="form-select form-select-lg"
+                      value={formData.tax_class}
+                      onChange={(e) => setFormData({ ...formData, tax_class: e.target.value })}
+                    >
+                      <option value="Standard">Standard</option>
+                      <option value="Popular">Popular</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-4">
+            <div className="card shadow-sm border-0 mb-4">
+              <div className="card-header bg-white py-3">
+                <h5 className="mb-0 fs-18 fw-semibold">Product Image</h5>
+              </div>
+              <div className="card-body">
+                <div className="text-center">
+                  <div
+                    className="dropzone border-dashed rounded-3 p-5 mb-3"
+                    style={{
+                      background: selectedFile.length > 0 ? '#f8f9fa' : '#fff',
+                      border: '2px dashed #dee2e6',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s'
+                    }}
+                    onClick={() => document.getElementById('fileInput').click()}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.borderColor = '#0d6efd';
+                      e.currentTarget.style.background = '#f0f8ff';
+                    }}
+                    onDragLeave={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.borderColor = '#dee2e6';
+                      e.currentTarget.style.background = selectedFile.length > 0 ? '#f8f9fa' : '#fff';
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      handleFileChange({ target: { files: e.dataTransfer.files } });
+                      e.currentTarget.style.borderColor = '#dee2e6';
+                      e.currentTarget.style.background = '#f8f9fa';
+                    }}
+                  >
+                    {selectedFile.length > 0 ? (
+                      <div>
+                        <i className="bi bi-check-circle-fill text-success fs-1"></i>
+                        <p className="mt-3 mb-1 fs-14 fw-medium fnt-color opacity-75">{selectedFile.length} file(s) selected</p>
+                        <p className="text-muted small">Click or drag to change</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <i className="bi bi-cloud-arrow-up fs-1 text-muted"></i>
+                        <p className="mt-3 mb-1 fs-14 fw-medium fnt-color opacity-75">Click to upload or drag & drop</p>
+                        <p className="text-muted small">JPG, JPEG or PNG (Max. 2MB each)</p>
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handleFileChange}
+                    multiple
+                    className="d-none"
+                  />
+
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary btn-sm"
+                      onClick={() => document.getElementById('fileInput').click()}
+                    >
+                      <i className="bi bi-plus-circle me-1"></i>Add More Images
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="form-group mt-3">
-              <MultiSelectDropdown
-                label="Product Tags"
-                items={tags}
-                selectedIds={tagIds}
-                setSelectedIds={setTagIds}
-                placeholder="Select Tags"
-              />
-            </div>
-          </div>
+            <div className="card shadow-sm border-0 mb-4">
+              <div className="card-header bg-white py-3">
+                <h5 className="mb-0 fs-18 fw-semibold">Categories & Organization</h5>
+              </div>
+              <div className="card-body">
+                <div className="mb-3">
+                  <label className="form-label fs-14 fw-medium fnt-color opacity-75">Categories <span className="text-danger">*</span></label>
+                  <MultiSelectDropdown
+                    label=""
+                    items={parentCategories}
+                    selectedIds={categoryIds}
+                    setSelectedIds={setCategoryIds}
+                    placeholder="Select categories..."
+                  />
+                </div>
 
-          <div className="form-group mt-3">
-            <label className="form-label text-secondary">Description</label>
-            <MemoJoditEditor
-              value={formData.description}
-              config={editorConfig}
-              onChange={(content) => {
-                descriptionRef.current = content;
-              }}
-              onBlur={(newContent) => {
-                setFormData(prev => ({
-                  ...prev,
-                  description: newContent
-                }));
-              }}
-            />
-          </div>
+                <div className="mb-3">
+                  <label className="form-label fs-14 fw-medium fnt-color opacity-75">Branches <span className="text-danger">*</span></label>
+                  <MultiSelectDropdown
+                    label=""
+                    items={branches}
+                    selectedIds={branchIds}
+                    setSelectedIds={setBranchIds}
+                    placeholder="Select branches..."
+                  />
+                </div>
 
-          <div className="row mt-3">
-            <div className="form-group col-md-6">
-              <label className="form-label text-secondary">
-                Regular Price
-              </label>
-              <input
-                name="regular_price"
-                type="text"
-                value={formData.regular_price}
-                onChange={(e)=>setFormData({...formData,regular_price:e.target.value})}
-                className="form-control form-control-lg textarea-hover-dark text-secondary"
-              />
+                <div className="mb-3">
+                  <label className="form-label fs-14 fw-medium fnt-color opacity-75">Occasions <span className="text-danger">*</span></label>
+                  <MultiSelectDropdown
+                    label=""
+                    items={occasions}
+                    selectedIds={occasionIds}
+                    setSelectedIds={setOccasionIds}
+                    placeholder="Select occasions..."
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="form-group col-md-6">
-              <label className="form-label text-secondary">Sale Price</label>
-              <input
-                name="sale_price"
-                type="text"
-                value={formData.sale_price}
-                onChange={(e)=>setFormData({...formData,sale_price:e.target.value})}
-                className="form-control form-control-lg textarea-hover-dark text-secondary"
-              />
-            </div>
-          </div>
+            <div className="card shadow-sm border-0 sticky-top" style={{ top: '20px' }}>
+              <div className="card-body">
+                <h6 className="fs-18 fw-semibold mb-3">Ready to Publish?</h6>
+                <p className="text-muted small mb-4">Review all information before submitting.  fields are marked with *</p>
 
-          <div className="row mt-3">
+                <div className="d-grid gap-2">
+                  <button
+                    type="submit"
+                    className="border-0 p-2 px-3 btn btn-success text-white fs-16 px-28"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-check-circle me-2"></i>
+                        Save Product
+                      </>
+                    )}
+                  </button>
 
-            <div className="form-group col-md-6">
-              <label className="form-label text-secondary">
-                Tax Class
-              </label>
-              <select
-                name="tax_class"
-                className="form-select textarea-hover-dark text-secondary"
-                value={formData.tax_class}
-                onChange={(e)=>setFormData({...formData,tax_class:e.target.value})}
-              >
-                <option value="">Select Tax Class</option>
-                <option value="Standard">Standard</option>
-                <option value="Popular">Popular</option>
-              </select>
-            </div>
-
-            <div className="form-group col-md-6">
-              <label className="form-label text-secondary">
-                Tax Status
-              </label>
-              <select
-                name="tax_status"
-                className="form-select textarea-hover-dark text-secondary"
-                value={formData.tax_status}
-                onChange={(e)=>setFormData({...formData,tax_status:e.target.value})}
-              >
-                <option value="">Select Tax Status</option>
-                <option value="Taxable">Taxable</option>
-                <option value="Shipping only">Shipping only</option>
-                <option value="None">None</option>
-              </select>
-            </div>
-          </div>
-            
-          <div className="row">
-            {/* ===== Categories Dropdown ===== */}
-            <div className="form-group col-md-6">
-              <MultiSelectDropdown
-                label="Product Categories"
-                items={parentCategories}
-                selectedIds={categoryIds}
-                setSelectedIds={setCategoryIds}
-                placeholder="Select Categories"
-              />
-            </div>
-
-            {/* ===== Branches Dropdown ===== */}
-            <div className="form-group col-md-6">
-              <MultiSelectDropdown
-                label="Product Branches"
-                items={branches}
-                selectedIds={branchIds}
-                setSelectedIds={setBranchIds}
-                placeholder="Select Branches"
-              />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => router.back()}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div className="row mt-4">
-          <div className="form-group col-md-6">
-            <MultiSelectDropdown
-              label="Product Occasions"
-              items={occasions}
-              selectedIds={occasionIds}
-              setSelectedIds={setOccasionIds}
-              placeholder="Select Occasions"
-            />
-          </div>
-          
-          <div className="form-group mt-3 col-md-6">
-            <label className="form-label text-secondary">Gender</label>
-            <select 
-              className="form-select text-secondary"
-              value={formData.gender_id}
-              onChange={(e) =>
-                setFormData({ ...formData, gender_id: e.target.value })
-              }
-            >
-              <option>Select Gender</option>
-                {genders.map((gender) => (
-              <option key={gender.id} value={gender.id}>
-              {gender.name_en}</option>))}
-            </select>
-          </div>
-        </div>
-
-        <div className="form-buttons mt-5 d-flex justify-content-end gap-2">
-        <button type="submit" className="org-btn rounded-3 border-0 py-2 fs-16 fw-bold w-25">Save</button>
-      </div>
-      </div>
+      </form>
       <ToastContainer />
-    </form>
+    </div>
   );
 };
 

@@ -78,14 +78,9 @@ export default function Page() {
                       </div>
                     </div>
                     <div className="card-footer bg-light border-top py-3">
-                      <div className="d-flex justify-content-between">
-                        <span className="badge bg-primary fs-6 px-3 py-2">
+                        <span className="badge bg-primary fs-6 px-3 w-100 py-2">
                           ${product.regular_price}
                         </span>
-                        <span className={`badge ${product.stock ? 'bg-success' : 'bg-danger'} fs-6 px-3 py-2`}>
-                          {product.stock ? `${product.stock} in stock` : 'Out of stock'}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -95,14 +90,14 @@ export default function Page() {
                   <div className="row mb-4">
                     <div className="col-md-6 mb-3">
                       <div className="p-3 bg-light rounded-3">
-                        <h4 className="fw-bold text-dark mb-0">{product.name_en}</h4>
-                        <h6 className="text-uppercase text-muted small mt-2">English Name</h6>
+                        <h4 className="fs-16 fw-medium mb-0 text-break mb-0">{product.name_en}</h4>
+                        <h6 className="fs-14 fw-normal mt-2">English Name</h6>
                       </div>
                     </div>
                     <div className="col-md-6 mb-3">
                       <div className="p-3 bg-light rounded-3">
-                        <h4 className="fw-bold text-dark mb-0">{product.name_ar}</h4>
-                        <h6 className="text-uppercase text-muted small mt-2">Arabic Name</h6>
+                        <h4 className="fs-16 fw-medium text-break mb-0">{product.name_ar}</h4>
+                        <h6 className="fs-14 fw-normal mt-2">Arabic Name</h6>
                       </div>
                     </div>
                   </div>
@@ -111,10 +106,10 @@ export default function Page() {
                   <div className="mb-4">
                     <div className="p-3 bg-light rounded-3">
                       <div
-                        className="text-dark"
+                        className="fs-16 fw-medium mb-0"
                         dangerouslySetInnerHTML={{ __html: product.description }}
                       />
-                      <h6 className="text-uppercase text-muted small mt-3">Product Description</h6>
+                      <h6 className="fs-14 fw-normal mt-2">Product Description</h6>
                     </div>
                   </div>
 
@@ -125,7 +120,7 @@ export default function Page() {
                         <div className="d-flex flex-wrap gap-2">
                           {product?.tags?.length ? (
                             product.tags.map((tag, index) => (
-                              <span key={index} className="badge bg-secondary-subtle text-dark">
+                              <span key={index} className="badge bg-secondary-subtle text-dark fs-16 fw-medium">
                                 {tag.name_en}
                               </span>
                             ))
@@ -133,13 +128,13 @@ export default function Page() {
                             <span className="text-muted">No tags</span>
                           )}
                         </div>
-                        <h6 className="text-uppercase text-muted small mt-2">Product Tags</h6>
+                        <h6 className="fs-14 fw-normal mt-2 mt-2">Product Tags</h6>
                       </div>
                     </div>
                     <div className="col-md-6 mb-3">
                       <div className="p-3 bg-light rounded-3 h-100">
-                        <p className="fs-5 fw-bold text-dark mb-0">{product.gender.name_en}</p>
-                        <h6 className="text-uppercase text-muted small mt-2">Gender</h6>
+                        <p className="text-dark fs-16 fw-medium mb-0">{product.gender.name_en}</p>
+                        <h6 className="fs-14 fw-normal mt-2 mt-2">Gender</h6>
 
                       </div>
                     </div>
@@ -158,8 +153,8 @@ export default function Page() {
                 <div className="col-xl-3 col-md-6">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <p className="fs-5 fw-bold text-dark mb-0">{product.tax_status}</p>
-                      <h6 className="text-uppercase text-muted small mt-2">Tax Status</h6>
+                      <p className="text-dark fs-16 fw-medium mb-0">{product.tax_status}</p>
+                      <h6 className="fs-14 fw-normal mt-2 mt-2">Tax Status</h6>
                     </div>
                   </div>
                 </div>
@@ -167,8 +162,8 @@ export default function Page() {
                 <div className="col-xl-3 col-md-6">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <p className="fs-5 fw-bold text-dark mb-0">{product.tax_class}</p>
-                      <h6 className="text-uppercase text-muted small mt-2">Tax Class</h6>
+                      <p className="text-dark fs-16 fw-medium mb-0">{product.tax_class}</p>
+                      <h6 className="fs-14 fw-normal mt-2 mt-2">Tax Class</h6>
 
                     </div>
                   </div>
@@ -177,8 +172,8 @@ export default function Page() {
                 <div className="col-xl-3 col-md-6">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <p className="fs-5 fw-bold text-dark mb-0">{product.sku || "N/A"}</p>
-                      <h6 className="text-uppercase text-muted small mt-2">Product SKU</h6>
+                      <p className="text-dark fs-16 fw-medium mb-0">{product.sku || "N/A"}</p>
+                      <h6 className="fs-14 fw-normal mt-2 mt-2">Product SKU</h6>
                     </div>
                   </div>
                 </div>
@@ -186,10 +181,10 @@ export default function Page() {
                 <div className="col-xl-3 col-md-6">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <p className={`fs-5 fw-bold ${product.stock ? 'text-success' : 'text-danger'} mb-0`}>
+                      <p className="text-dark fs-16 fw-medium">
                         {product.stock || "In Stock"}
                       </p>
-                      <h6 className="text-uppercase text-muted small mt-2">Stock Status</h6>
+                      <h6 className="fs-14 fw-normal mt-2 mt-2">Stock Status</h6>
                     </div>
                   </div>
                 </div>
@@ -213,7 +208,7 @@ export default function Page() {
                           <span className="text-muted">No categories</span>
                         )}
                       </div>
-                      <h6 className="text-uppercase text-muted small mt-3">Product Categories</h6>
+                      <h6 className="fs-14 fw-normal mt-2 mt-3">Product Categories</h6>
                     </div>
                   </div>
                 </div>
@@ -234,7 +229,7 @@ export default function Page() {
                           <span className="text-muted">No branches</span>
                         )}
                       </div>
-                      <h6 className="text-uppercase text-muted small mt-3">Product Branches</h6>
+                      <h6 className="fs-14 fw-normal mt-2 mt-3">Product Branches</h6>
                     </div>
                   </div>
                 </div>
@@ -255,7 +250,7 @@ export default function Page() {
                           <span className="text-muted">No occasions</span>
                         )}
                       </div>
-                      <h6 className="text-uppercase text-muted small mt-3">Product Occasions</h6>
+                      <h6 className="fs-14 fw-normal mt-2 mt-3">Product Occasions</h6>
                     </div>
                   </div>
                 </div>
