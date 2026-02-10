@@ -201,11 +201,10 @@ export default function Page() {
                 <div className="col-xl-4 col-md-4">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <h6 className="text-uppercase text-muted small mb-3">Product Categories</h6>
                       <div className="d-flex flex-wrap gap-2">
                         {product?.categories?.length ? (
                           product.categories.map((category, index) => (
-                            <span key={index} className="badge bg-primary-subtle text-primary">
+                            <span key={index} className="badge bg-secondary-subtle text-dark">
                               <i className="bi bi-folder me-1"></i>
                               {category.name_en}
                             </span>
@@ -214,6 +213,7 @@ export default function Page() {
                           <span className="text-muted">No categories</span>
                         )}
                       </div>
+                      <h6 className="text-uppercase text-muted small mt-3">Product Categories</h6>
                     </div>
                   </div>
                 </div>
@@ -222,11 +222,10 @@ export default function Page() {
                 <div className="col-xl-4 col-md-4">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <h6 className="text-uppercase text-muted small mb-3">Product Branches</h6>
                       <div className="d-flex flex-wrap gap-2">
                         {product?.branches?.length ? (
                           product.branches.map((branch, index) => (
-                            <span key={index} className="badge bg-warning-subtle text-warning">
+                            <span key={index} className="badge bg-secondary-subtle text-dark">
                               <i className="bi bi-shop me-1"></i>
                               {branch.name_en}
                             </span>
@@ -235,6 +234,7 @@ export default function Page() {
                           <span className="text-muted">No branches</span>
                         )}
                       </div>
+                      <h6 className="text-uppercase text-muted small mt-3">Product Branches</h6>
                     </div>
                   </div>
                 </div>
@@ -243,11 +243,10 @@ export default function Page() {
                 <div className="col-xl-4 col-md-4">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <h6 className="text-uppercase text-muted small mb-3">Product Occasions</h6>
                       <div className="d-flex flex-wrap gap-2">
                         {product?.occasions?.length ? (
                           product.occasions.map((occasion, index) => (
-                            <span key={index} className="badge bg-success-subtle text-success">
+                            <span key={index} className="badge bg-secondary-subtle text-dark">
                               <i className="bi bi-calendar-event me-1"></i>
                               {occasion.name_en}
                             </span>
@@ -256,6 +255,7 @@ export default function Page() {
                           <span className="text-muted">No occasions</span>
                         )}
                       </div>
+                      <h6 className="text-uppercase text-muted small mt-3">Product Occasions</h6>
                     </div>
                   </div>
                 </div>
