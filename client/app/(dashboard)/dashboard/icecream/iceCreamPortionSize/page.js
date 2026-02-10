@@ -239,8 +239,8 @@ export default function IceCreamPortionSizePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={icecream.image_url}
-                          alt={icecream.name_en}
-                          className="table-img rounded-1"
+                          // alt={icecream.name_en}
+                          className="table-img rounded-5"
                         />
                         </td>
                       <td>

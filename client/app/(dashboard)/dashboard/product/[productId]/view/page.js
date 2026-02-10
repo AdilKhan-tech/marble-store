@@ -82,9 +82,9 @@ export default function Page() {
                         <span className="badge bg-primary fs-6 px-3 py-2">
                           ${product.regular_price}
                         </span>
-                        <span className={`badge ${product.stock ? 'bg-success' : 'bg-danger'} fs-6 px-3 py-2`}>
+                        {/* <span className={`badge ${product.stock ? 'bg-success' : 'bg-danger'} fs-6 px-3 py-2`}>
                           {product.stock ? `${product.stock} in stock` : 'Out of stock'}
-                        </span>
+                        </span> */}
                       </div>
                     </div>
                   </div>
@@ -186,7 +186,7 @@ export default function Page() {
                 <div className="col-xl-3 col-md-6">
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body">
-                      <p className={`fs-5 fw-bold ${product.stock ? 'text-success' : 'text-danger'} mb-0`}>
+                      <p className={`fs-5 fw-bold ${product.stock ? 'text-dark' : 'text-dark'} mb-0`}>
                         {product.stock || "In Stock"}
                       </p>
                       <h6 className="text-uppercase text-muted small mt-2">Stock Status</h6>

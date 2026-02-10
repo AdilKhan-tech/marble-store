@@ -50,7 +50,7 @@ class CustomCakeSizeController {
       const allowedSortFields = [
         "id",
         "name_en",
-        "portion_size",
+        "scoope_size",
         "sort",
         "status",
         "custom_cake_type_id",

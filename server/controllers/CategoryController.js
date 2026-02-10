@@ -112,39 +112,89 @@ class CategoryController {
         }
     }
 
+    // static async updateCategoryById(req, res, next) {
+    //     const { id } = req.params;
+    //     try {
+    //         const category = await Category.findByPk(id);
+    //         if (!category) {
+    //             return res.status(404).json({ message: "Category not found" });
+    //         }
+    //         const { name_en, name_ar, slug, parent_id, display_type } = req.body;
+    //         let image_url = category.image_url;
+    //         if (req.file) {
+    //             image_url = req.file.filename;
+    //         }
+
+    //          await category.update({
+    //             name_en: name_en ?? category.name_en,
+    //             name_ar: name_ar ?? category.name_ar,
+    //             slug: slug ?? category.slug,
+    //             parent_id: parent_id ?? category.parent_id,
+    //             display_type: display_type ?? category.display_type,
+    //             image_url: image_url
+    //          });
+            
+    //         const responseData = {
+    //             ...category.toJSON(),
+    //             image_url: category.image_url
+    //             ? `${UPLOADS_URL}/${category.image_url}`
+    //             : null,
+    //         };
+    //            return res.status(200).json(responseData);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
+
     static async updateCategoryById(req, res, next) {
         const { id } = req.params;
+      
         try {
-            const category = await Category.findByPk(id);
-            if (!category) {
-                return res.status(404).json({ message: "Category not found" });
-            }
-            const { name_en, name_ar, slug, parent_id, display_type } = req.body;
-            let image_url = category.image_url;
-            if (req.file) {
-                image_url = req.file.filename;
-            }
-
-             await category.update({
-                name_en: name_en ?? category.name_en,
-                name_ar: name_ar ?? category.name_ar,
-                slug: slug ?? category.slug,
-                parent_id: parent_id ?? category.parent_id,
-                display_type: display_type ?? category.display_type,
-                image_url: image_url
-             });
-            
-            const responseData = {
-                ...category.toJSON(),
-                image_url: category.image_url
-                ? `${UPLOADS_URL}/${category.image_url}`
-                : null,
-            };
-               return res.status(200).json(responseData);
+          const category = await Category.findByPk(id);
+          if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+          }
+      
+          const { name_en, name_ar, slug, parent_id, display_type } = req.body;
+      
+          let image_url = category.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
+      
+          let parsedParentId = null;
+          if (parent_id !== undefined && parent_id !== "" && parent_id !== "null") {
+            parsedParentId = Number(parent_id);
+          }
+      
+          if (parsedParentId === Number(id)) {
+            return res.status(400).json({
+              message: "Category cannot be its own parent",
+            });
+          }
+      
+          await category.update({
+            name_en: name_en ?? category.name_en,
+            name_ar: name_ar ?? category.name_ar,
+            slug: slug ?? category.slug,
+            parent_id: parsedParentId,
+            display_type: display_type ?? category.display_type,
+            image_url,
+          });
+      
+          const responseData = {
+            ...category.toJSON(),
+            image_url: category.image_url
+              ? `${UPLOADS_URL}/${category.image_url}`
+              : null,
+          };
+      
+          return res.status(200).json(responseData);
         } catch (error) {
-            next(error);
+          next(error);
         }
-    }
+      }
+      
 
     static async deleteCategoryById(req, res) {
         try {
