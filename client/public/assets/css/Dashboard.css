@@ -121,6 +121,7 @@ body.sidebar-open .header {
   border-radius: 12px !important;
   padding: 14px 18px !important;
   font-size: 14px !important;
+  height: 50px;
   line-height: 1.25;
   padding-bottom: 14px !important;
 }

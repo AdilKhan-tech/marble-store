@@ -41,7 +41,7 @@ export default function MultiSelectDropdown({
     .map((i) => i.name_en || i.name);
 
   return (
-    <div className="form-group mt-3 position-relative" ref={wrapperRef}>
+    <div className="form-group mt-0 position-relative" ref={wrapperRef}>
       <label className="form-label text-secondary">{label}</label>
 
       <div
@@ -69,7 +69,7 @@ export default function MultiSelectDropdown({
       {open && (
         <div
           className="border bg-white p-2 position-absolute mt-1 rounded-3"
-          style={{ width, zIndex: 1000 }}
+          style={{ width : "325px", zIndex: 2000 }}
         >
           <div className="form-check border-bottom pb-1">
             <input
