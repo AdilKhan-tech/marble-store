@@ -13,6 +13,7 @@ import Common from "@/utils/Common"
 export default function Category() {
   const { token } = useAxiosConfig();
   const [categories, setCategories] = useState([]);
+  console.log("cccccccccc", categories)
   const [categoryData, setCategoryData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sortField, setSortField] = useState("id");

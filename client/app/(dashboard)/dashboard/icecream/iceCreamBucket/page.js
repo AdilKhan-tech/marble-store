@@ -247,7 +247,7 @@ export default function IceCreamBucketPage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={iceCreamBucket.image_url}
-                          alt={iceCreamBucket.name_en}
+                          // alt={iceCreamBucket.name_en}
                           className="table-img"
                         />
                       </td>

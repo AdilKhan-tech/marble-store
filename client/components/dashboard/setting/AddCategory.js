@@ -85,9 +85,16 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
     try {
       const payload = new FormData();
 
-      Object.entries(formData).forEach(([key, value]) =>
-        payload.append(key, value)
-      );
+      // Object.entries(formData).forEach(([key, value]) =>
+      //   payload.append(key, value)
+      // );
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "parent_id" && value === "") {
+          payload.append(key, null);
+        } else {
+          payload.append(key, value);
+        }
+      });
       if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
