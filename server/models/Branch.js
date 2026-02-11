@@ -114,11 +114,11 @@ const Branch = sequelize.define("Branch", {
   branch_store_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    validate: {
-      isInt: {
-        msg: "Branch store ID must be an integer",
-      },
-    },
+    // validate: {
+    //   isInt: {
+    //     msg: "Branch store ID must be an integer",
+    //   },
+    // },
   },
 
   status: {

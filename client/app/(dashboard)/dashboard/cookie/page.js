@@ -178,7 +178,7 @@ export default function Cookies() {
                   <th
                     className="fw-medium fs-14 fnt-color nowrap"  
                     onClick={() => handleSortChange("cookie_type_id")}>
-                    Cookies Box Type
+                    Cookie Box Type
                     <span className="fs-10 text-secondary ms-1">
                       {(sortField === "cookie_type_id" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
