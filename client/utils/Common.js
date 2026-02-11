@@ -1,6 +1,4 @@
 // Common.js
-import axios from "axios";
-import React from "react";
 
 class Common {
   //Truncate Text ====================================
@@ -9,21 +7,26 @@ class Common {
   }
 
   //date Format =====================================
-  static dateFormat(date) {
-    if (!date) return "";
-    // If the date is not already a Date object, parse it
-    const dateObject = typeof date === "string" ? new Date(date) : date;
-    // Check if the dateObject is a valid Date object
-    if (!(dateObject instanceof Date && !isNaN(dateObject))) {
-      console.error("Invalid date:", date);
-      return ""; // Return an empty string or handle the error accordingly
-    }
-    // Adjusting for timezone offset
-    const localTime = new Date(
-      dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
-    );
-    return localTime.toISOString().split("T")[0];
+ static dateFormat(date) {
+  if (!date) return "";
+  const dateObject = typeof date === "string" ? new Date(date) : date;
+  if (!(dateObject instanceof Date && !isNaN(dateObject))) {
+    console.error("Invalid date:", date);
+    return "";
   }
+  // Adjusting for local timezone
+  const localTime = new Date(
+    dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+  );
+  const datePart = localTime.toLocaleDateString("en-CA").replace(/-/g, "/"); // 2026/02/03
+  const timePart = localTime.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  }); // 6:28 AM
+  return `Published ${datePart} at ${timePart}`;
+}
+
 
   //handleSortingChange ==============================
   static handleSortingChange = (field, setSortField, setSortOrder) => {

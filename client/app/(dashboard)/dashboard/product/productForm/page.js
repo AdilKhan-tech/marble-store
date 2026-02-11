@@ -238,7 +238,7 @@ const AddProduct = ({ onAddProduct }) => {
         await axios.put(updateProductByIdRoute(id), payload);
     
         toast.success("Product updated successfully!", {
-          autoClose: 2000,
+          autoClose: 1000,
           onClose: () => {
             router.push("/dashboard/product");
           },
@@ -248,7 +248,7 @@ const AddProduct = ({ onAddProduct }) => {
         await axios.post(createProductRoute, payload);
     
         toast.success("Product added successfully!", {
-          autoClose: 2000,
+          autoClose: 1000,
           onClose: () => {
             router.push("/dashboard/product");
           },
@@ -266,7 +266,11 @@ const AddProduct = ({ onAddProduct }) => {
       <div className="row mb-4">
         <div className="col-12">
           <div className="d-flex">
-            <i className="bi bi-arrow-left fs-3 me-2"></i>
+            <i
+              className="bi bi-arrow-left fs-3 me-2"
+              type="button"
+              onClick={() => router.back()}
+            ></i>
             <h1 className="fs-4 fnt-color fw-semibold mb-0 mt-1">
               {isEditMode ? "Edit Product" : "Add New Product"}
             </h1>
@@ -561,7 +565,7 @@ const AddProduct = ({ onAddProduct }) => {
                     ) : (
                       <>
                         <i className="bi bi-check-circle me-2"></i>
-                        Save Product
+                        {isEditMode ? "Update Product" : "Add Product"}
                       </>
                     )}
                   </button>

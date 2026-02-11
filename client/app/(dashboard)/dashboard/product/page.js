@@ -104,7 +104,7 @@ export default function ProductPage() {
         <div className="d-flex justify-content-between mb-3">
           <p className="pagetitle mb-0 fnt-color">Products</p>
           <div>
-            <Link href="/dashboard/product/add" className="text-decoration-none">
+            <Link href="/dashboard/product/productForm" className="text-decoration-none">
               <div className="btn-orange text-center" role="button">
                 <i className="bi bi-plus-circle ms-2"></i>
                 <span className="ms-1">Create</span>
@@ -302,7 +302,7 @@ export default function ProductPage() {
                         </Dropdown>
                       <div 
                         className="action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2" 
-                        onClick={() => router.push(`/dashboard/product/add?id=${product.id}`)}
+                        onClick={() => router.push(`/dashboard/product/productForm?id=${product.id}`)}
                       >
                         <i className="bi bi-pencil-square text-primary"></i>
                       </div>

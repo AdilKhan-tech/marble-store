@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from "react-toastify";
 import axios from "axios";
 import { createBranch, updateBranchById } from "@/utils/apiRoutes";
+import CustomTimePicker from '../../../app/(dashboard)/dashboard/general/CustomTimePicker';
 
 const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch }) => {
     const [errors, setErrors] = useState([]);
@@ -207,22 +208,18 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
 
         <div className='row mt-3'>
         <div className="form-group col-md-6">
-            <label className="form-label text-secondary">Timing</label>
-            <input
-                name="timing"
-                type="text"
-                placeholder="e.g. 9:00 AM - 11:00 PM"
-                className="form-control form-control-lg textarea-hover-dark text-secondary"
-                value={formData.timing}
-                onChange={handleChange}
-            />
+        <label className="form-label text-secondary">Timing</label>
+        <CustomTimePicker
+            value={formData.timing}
+            onChange={(value) => setFormData(prev => ({ ...prev, timing: value }))}
+        />
         </div>
 
         <div className="form-group col-md-6">
             <label className="form-label text-secondary">Branch Store Id</label>
             <input
                 name="branch_store_id"
-                type="number"
+                type="text"
                 className="form-control form-control-lg textarea-hover-dark text-secondary"
                 value={formData.branch_store_id}
                 onChange={handleChange}

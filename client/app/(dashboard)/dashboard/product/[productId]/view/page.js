@@ -56,12 +56,38 @@ export default function Page() {
     <div className="container-fluid py-4">
       <div className="row">
         <div className="col-12">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h1 className="h2 fw-bold text-dark mb-1">Product Details</h1>
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb mb-0">
+                  <li className="breadcrumb-item">
+                    <a href="#" className="text-decoration-none text-muted">Products</a>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">Details</li>
+                </ol>
+              </nav>
+            </div>
+            <button
+              onClick={() => router.back()}
+              className="btn btn-outline-secondary d-flex align-items-center"
+            >
+              <i className="bi bi-arrow-left me-2"></i>
+              Back
+            </button>
+          </div>
           {/* Main Card */}
           <div className="card shadow-sm border-0">
             <div className="card-body p-4">
+                <div className="d-flex justify-content-between">
                 <div>
-                  <h1 className="h3 fw-bold text-dark mb-1">Product Details</h1>
+                  <h1 className="h3 fw-bold text-dark mb-1">Product Information</h1>
                   <p className="text-muted mb-0">Complete information about the product</p>
+                </div>
+
+                <div className="badge bg-light text-dark border me-3 fs-6 px-3 py-2 h-25 mt-2">
+                  ID: #{productId}
+                </div>
                 </div>
               <hr />
               {/* Product Image and Basic Info */}
