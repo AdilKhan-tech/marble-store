@@ -71,7 +71,7 @@ class CustomCakeSizeController {
         offset,
         order: [[finalSortField, finalSortOrder]],
       });
-        // 🔥 IMAGE URL BUILD HERE
+        //  IMAGE URL BUILD HERE
        const data = rows.map(item => {
         const cake = item.toJSON();
         return {
@@ -117,34 +117,62 @@ class CustomCakeSizeController {
   }
 
   static async updateCustomCakeSizeById(req, res, next) {
-    const { id } = req.params;
-    try {
-      const customCakeSize = await CustomCakeSize.findByPk(id);
-      if (!customCakeSize) {
-        return res.status(404).json({ message: "Custom cake size not found." });
-      }
-      const { name_en,name_ar,custom_cake_type_id,slug,scoope_size,sort,calories,status } = req.body;
-      let image_url = customCakeSize.image_url;
-        if (req.file) {
-          image_url = req.file.filename;
-        }
+  const { id } = req.params;
 
-      await customCakeSize.update({
-        name_en: name_en ?? customCakeSize.name_en,
-        name_ar: name_ar ?? customCakeSize.name_ar,
-        custom_cake_type_id: custom_cake_type_id ?? customCakeSize.custom_cake_type_id,
-        slug: slug ?? customCakeSize.slug,
-        scoope_size: scoope_size ?? customCakeSize.scoope_size,
-        sort: sort ?? customCakeSize.sort,
-        calories: calories ?? customCakeSize.calories,
-        status: status ?? customCakeSize.status,
-        image_url: image_url ?? customCakeSize.image_url,
+  try {
+    const customCakeSize = await CustomCakeSize.findByPk(id);
+
+    if (!customCakeSize) {
+      return res.status(404).json({
+        message: "Custom cake size not found.",
       });
-      return res.status(200).json(customCakeSize);
-    }catch (error) {
-      next(error);
     }
+
+    const {
+      name_en,
+      name_ar,
+      custom_cake_type_id,
+      slug,
+      scoope_size,
+      sort,
+      calories,
+      status,
+    } = req.body;
+
+    //  image handle (SAME LOGIC, CLEAR)
+    let image_url = customCakeSize.image_url;
+
+    if (req.file) {
+      image_url = req.file.filename;
+    }
+
+    // update
+    await customCakeSize.update({
+      name_en: name_en ?? customCakeSize.name_en,
+      name_ar: name_ar ?? customCakeSize.name_ar,
+      custom_cake_type_id:
+        custom_cake_type_id ?? customCakeSize.custom_cake_type_id,
+      slug: slug ?? customCakeSize.slug,
+      scoope_size: scoope_size ?? customCakeSize.scoope_size,
+      sort: sort ?? customCakeSize.sort,
+      calories: calories ?? customCakeSize.calories,
+      status: status ?? customCakeSize.status,
+    });
+
+    // FINAL FIX — response mein UPDATED image use karo
+    const responseData = {
+      ...customCakeSize.toJSON(),
+      image_url: image_url
+        ? `${UPLOADS_URL}/${image_url}`
+        : null,
+    };
+
+    return res.status(200).json(responseData);
+  } catch (error) {
+    next(error);
   }
+}
+
 
 }
 module.exports = CustomCakeSizeController;
