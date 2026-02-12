@@ -157,6 +157,7 @@ class CustomCakeSizeController {
       sort: sort ?? customCakeSize.sort,
       calories: calories ?? customCakeSize.calories,
       status: status ?? customCakeSize.status,
+      image_url: image_url, // 👈 yahan zaroori hey
     });
 
     // FINAL FIX — response mein UPDATED image use karo
