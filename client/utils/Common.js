@@ -59,7 +59,7 @@ class Common {
     categories.forEach(cat => {
       result.push({
         ...cat,
-        name_en: `${"— ".repeat(level)}${cat.name_en}`,
+        level,
       });
 
       if (cat.children?.length) {

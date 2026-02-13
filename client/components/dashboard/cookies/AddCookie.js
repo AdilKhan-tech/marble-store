@@ -69,7 +69,6 @@ const AddCookie = ({ closePopup, cookieData = null, onAddCookie, onUpdateCookie 
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.cookie_type_id) errors.push("Cookie type is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.sort) errors.push("Sort is required.");
     if (!formData.status) errors.push("Status is required.");
     return errors;
   };

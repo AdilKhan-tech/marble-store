@@ -150,14 +150,13 @@ class CustomCakeSizeController {
     await customCakeSize.update({
       name_en: name_en ?? customCakeSize.name_en,
       name_ar: name_ar ?? customCakeSize.name_ar,
-      custom_cake_type_id:
-        custom_cake_type_id ?? customCakeSize.custom_cake_type_id,
+      custom_cake_type_id: custom_cake_type_id ?? customCakeSize.custom_cake_type_id,
       slug: slug ?? customCakeSize.slug,
       scoope_size: scoope_size ?? customCakeSize.scoope_size,
       sort: sort ?? customCakeSize.sort,
       calories: calories ?? customCakeSize.calories,
       status: status ?? customCakeSize.status,
-      image_url: image_url, // 👈 yahan zaroori hey
+      image_url: image_url,
     });
 
     // FINAL FIX — response mein UPDATED image use karo

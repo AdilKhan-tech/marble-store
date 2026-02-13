@@ -1,10 +1,32 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { createCakePortionSize, updateCakePortionSizeById } from "@/utils/apiRoutes";
+import { createCakePortionSize, updateCakePortionSizeById, getCakePortionSizeTree } from "@/utils/apiRoutes";
+
+const flattenCategories = (cakePortionSizes, level = 0) => {
+  let result = [];
+
+  cakePortionSizes.forEach(cakePortionSize => {
+    result.push({
+      id: cakePortionSize.id,
+      name: `${"— ".repeat(level)}${cakePortionSize.name_en}`,
+    });
+
+    if (cakePortionSize.children?.length) {
+      result = result.concat(
+        flattenCategories(cakePortionSize.children, level + 1)
+      );
+    }
+  });
+
+  return result;
+};
 
 const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakePortionSize, onUpdateCakePortionSize }) => {
+  const { token } = useAxiosConfig();
+  const [parentCakePortionSizes, setParentCakePortionSizes] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
@@ -12,7 +34,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
     name_en: "",
     name_ar: "",
     slug: "",
-    parent_portion_size: "",
+    parent_id: "",
   });
 
   useEffect(() => {
@@ -22,7 +44,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
         name_en: cakePortionSizeData.name_en || "",
         name_ar: cakePortionSizeData.name_ar || "",
         slug: cakePortionSizeData.slug || "",
-        parent_portion_size: cakePortionSizeData.parent_portion_size || "",
+        parent_id: cakePortionSizeData.parent_id || "",
       });
     }
   }, [cakePortionSizeData]);
@@ -39,13 +61,23 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
     setSelectedFiles(Array.from(e.target.files));
   };
 
+  const fetchCakePortionSizes = async () => {
+    if (!token) return;
+    const res = await axios.get(getCakePortionSizeTree);
+    const flat = flattenCategories(res.data);
+    setParentCakePortionSizes(flat);
+  };
+
+  useEffect(() => {
+    fetchCakePortionSizes();
+  }, [token]);
+
   const validateForm = () => {
     const errors = [];
   
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.parent_portion_size) errors.push("Parent portion size is required.");
   
     return errors;
   };
@@ -157,14 +189,24 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
       <div className="form-group col-md-6">
         <label className="form-label text-secondary">Parent Portion Size</label>
         <select
-          name="cookie_type_id"
-          className="form-select text-secondary"
-          value={formData.cookie_type_id}
-          onChange={handleChange}
-        >
-          <option>Select Parent Portion Size</option>
-          <option value="None">None</option>
-        </select>
+            name="parent_id"
+            className="form-select textarea-hover-dark text-secondary"
+            value={formData.parent_id}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                parent_id: e.target.value ? Number(e.target.value) : null
+              })
+            }
+          >
+            <option value="">None</option>
+
+            {parentCakePortionSizes.map(cakePortionSize => (
+              <option key={cakePortionSize.id} value={cakePortionSize.id}>
+                {cakePortionSize.name}
+              </option>
+            ))}
+          </select>
       </div>
       </div>
       

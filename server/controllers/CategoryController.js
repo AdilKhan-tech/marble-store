@@ -6,36 +6,46 @@ const { Op } = require("sequelize");
 class CategoryController {
 
     static async createCategory(req, res, next) {
-        try {
-            const { name_en, name_ar, slug, parent_id, display_type } = req.body;
+      try {
+        const { name_en, name_ar, slug, parent_id, display_type } = req.body;
+    
+        const image_url = req.file ? req.file.filename : null;
+    
+        const category = await Category.create({
+          name_en,
+          name_ar,
+          slug,
+          parent_id: parent_id || null,
+          display_type,
+          image_url,
+        });
 
-            const image_url = req.file ? req.file.filename : null;
-
-            const category = await Category.create({
-                name_en,
-                name_ar,
-                slug,
-                parent_id: parent_id || null,
-                display_type,
-                image_url
-            });
-
-            const responseData = {
-            ...category.toJSON(),
-            image_url: category.image_url
-                ? `${UPLOADS_URL}/${category.image_url}`
-                : null,
-            };
-
-            return res.status(201).json(responseData);
-        } catch (error) {
-            next(error);
-        }
+        await category.reload({
+          include: [
+            {
+              model: Category,
+              as: "parent",
+              attributes: ["id", "name_en"],
+            },
+          ],
+        });
+    
+        const responseData = {
+          ...category.toJSON(),
+          image_url: category.image_url
+            ? `${UPLOADS_URL}/${category.image_url}`
+            : null,
+        };
+    
+        return res.status(201).json(responseData);
+      } catch (error) {
+        next(error);
+      }
     }
 
     static async getAllCategories(req, res) {
         const { page, limit, offset } = getPagination(req);
-        const { keywords, sortField, sortOrder, parent_slug } = req.query; // 🔥 parent_slug add kiya
+        const { keywords, sortField, sortOrder, parent_slug } = req.query;
 
         try {
             const whereClause = {};
@@ -112,40 +122,6 @@ class CategoryController {
         }
     }
 
-    // static async updateCategoryById(req, res, next) {
-    //     const { id } = req.params;
-    //     try {
-    //         const category = await Category.findByPk(id);
-    //         if (!category) {
-    //             return res.status(404).json({ message: "Category not found" });
-    //         }
-    //         const { name_en, name_ar, slug, parent_id, display_type } = req.body;
-    //         let image_url = category.image_url;
-    //         if (req.file) {
-    //             image_url = req.file.filename;
-    //         }
-
-    //          await category.update({
-    //             name_en: name_en ?? category.name_en,
-    //             name_ar: name_ar ?? category.name_ar,
-    //             slug: slug ?? category.slug,
-    //             parent_id: parent_id ?? category.parent_id,
-    //             display_type: display_type ?? category.display_type,
-    //             image_url: image_url
-    //          });
-            
-    //         const responseData = {
-    //             ...category.toJSON(),
-    //             image_url: category.image_url
-    //             ? `${UPLOADS_URL}/${category.image_url}`
-    //             : null,
-    //         };
-    //            return res.status(200).json(responseData);
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
-
     static async updateCategoryById(req, res, next) {
         const { id } = req.params;
       
@@ -193,8 +169,7 @@ class CategoryController {
         } catch (error) {
           next(error);
         }
-      }
-      
+    }
 
     static async deleteCategoryById(req, res) {
         try {

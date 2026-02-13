@@ -50,18 +50,14 @@ const CakePortionSize = sequelize.define(
       },
     },
 
-    parent_portion_size: {
-      type: DataTypes.STRING(100),
+    parent_id: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      validate: {
-        isInt: {
-          msg: "Parent portion size must be a number , String",
-        },
-        min: {
-          args: [1],
-          msg: "Parent portion size must be greater than 0",
-        },
+      references: {
+        model: "cake_portion_sizes",
+        key: "id",
       },
+      onDelete: "SET NULL",
     },
 
     image_url: {

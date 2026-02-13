@@ -31,6 +31,7 @@ export const getAllCakePortionSizes = `${host}/cakes/portionSize`
 export const createCakePortionSize = `${host}/cakes/portionSize`
 export const updateCakePortionSizeById = (id) => `${host}/cakes/portionSize/${id}`
 export const deleteCakePortionSizeById = (id) => `${host}/cakes/portionSize/${id}`
+export const getCakePortionSizeTree = `${host}/cakes/portionSize/tree`;
 
 // IceCreamPortionSizes
 export const getAllIceCreamPortionSizes = `${host}/icecreams/portions`
