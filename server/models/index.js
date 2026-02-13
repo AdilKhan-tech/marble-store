@@ -19,6 +19,7 @@ const ProductOccasion = require("./ProductOccasion");
 const Tag = require("./Tag");
 const ProductTag = require("./ProductTag");
 const CustomCakeSize = require("./CustomCakeSize");
+const CakePortionSize = require("./CakePortionSize");
 
 IceCreamBucket.hasMany(IceCreamPortionSize, {
   foreignKey: "icecream_bucket_id",
@@ -169,6 +170,16 @@ Category.hasMany(Category, {
   as: "children",
 });
 
+CakePortionSize.belongsTo(CakePortionSize, {
+  foreignKey: "parent_id",
+  as: "parent",
+});
+
+CakePortionSize.hasMany(CakePortionSize, {
+  foreignKey: "parent_id",
+  as: "children",
+});
+
 module.exports = {
   CakeSize,
   CakeFlavor,
@@ -195,5 +206,7 @@ module.exports = {
 
   ProductTag,
   Tag,
-CustomCakeSize,
+  CustomCakeSize,
+
+  CakePortionSize
 };

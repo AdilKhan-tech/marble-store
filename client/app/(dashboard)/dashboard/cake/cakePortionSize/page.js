@@ -38,7 +38,10 @@ export default function CakePortionSizePage() {
         sortField,
       }
       const response = await axios.get(getAllCakePortionSizes, { params });
-      setCakePortionSizes(response.data.data);
+      const tree = Common.buildCategoryTree(response.data.data);
+      const flatList = Common.flattenCategories(tree);
+
+      setCakePortionSizes(flatList);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
     } catch (error) {
@@ -221,7 +224,8 @@ export default function CakePortionSizePage() {
                       {cakePortionSize?.slug}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
-                      {cakePortionSize?.parent_portion_size}
+                      {/* {cakePortionSize?.parent_id} */}
+                      {cakePortionSize?.parent ? cakePortionSize.parent.name_en : "—"}
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       <img

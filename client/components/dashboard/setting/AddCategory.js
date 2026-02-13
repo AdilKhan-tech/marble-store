@@ -10,8 +10,8 @@ const flattenCategories = (categories, level = 0) => {
 
   categories.forEach(cat => {
     result.push({
-      id: cat.id,
-      name: `${"— ".repeat(level)}${cat.name_en}`,
+      ...cat,
+      level,
     });
 
     if (cat.children?.length) {
@@ -85,9 +85,6 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
     try {
       const payload = new FormData();
 
-      // Object.entries(formData).forEach(([key, value]) =>
-      //   payload.append(key, value)
-      // );
       Object.entries(formData).forEach(([key, value]) => {
         if (key === "parent_id" && value === "") {
           payload.append(key, null);
@@ -108,7 +105,19 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           });
 
           if (onUpdateCategory) {
-            onUpdateCategory(res.data);
+            const updated = res.data;
+
+            if (updated.parent_id) {
+              const parent = parentCategories.find(
+                p => p.id === updated.parent_id
+              );
+
+              updated.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            }
+
+            onUpdateCategory(updated);
           }
 
           closePopup();
@@ -121,7 +130,18 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           toast.success("Category added successfully!", {autoClose: 1000, onClose: closePopup, });
 
           if (onAddCategory) {
-            onAddCategory(res.data);
+            const newCategory = res.data;
+
+            if (newCategory.parent_id) {
+              const parent = parentCategories.find(
+                p => p.id === newCategory.parent_id
+              );
+            
+              newCategory.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            }
+            onAddCategory(newCategory);
           }
 
           closePopup();
@@ -197,7 +217,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
           <select
             name="parent_id"
             className="form-select textarea-hover-dark text-secondary"
-            value={formData.parent_id}
+            value={formData.parent_id ?? ""}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -209,7 +229,8 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
 
             {parentCategories.map(cat => (
               <option key={cat.id} value={cat.id}>
-                {cat.name}
+                {"— ".repeat(cat.level || 0)}
+                {cat.name_en}
               </option>
             ))}
           </select>

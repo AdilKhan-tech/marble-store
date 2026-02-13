@@ -12,8 +12,8 @@ import Common from "@/utils/Common"
 
 export default function Category() {
   const { token } = useAxiosConfig();
+  const [rawCategories, setRawCategories] = useState([]);
   const [categories, setCategories] = useState([]);
-  console.log("cccccccccc", categories)
   const [categoryData, setCategoryData] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [sortField, setSortField] = useState("id");
@@ -26,26 +26,34 @@ export default function Category() {
 
   const fetchCategories = async () => {
     if (!token) return;
+  
     try {
       const params = {
         page: currentPage,
         limit: pageLimit,
-        keywords: keywords,
+        keywords,
         sortOrder,
         sortField,
       };
+  
       const response = await axios.get(getAllCategories, { params });
-
-      const tree = Common.buildCategoryTree(response.data.data);
+      const rawData = response.data.data;
+  
+      // 🔥 VERY IMPORTANT
+      setRawCategories(rawData);
+  
+      const tree = Common.buildCategoryTree(rawData);
       const flatList = Common.flattenCategories(tree);
-
+  
       setCategories(flatList);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
+  
     } catch (error) {
       console.error("Error fetching categories", error);
     }
   };
+
   useEffect(() => {
     if (keywords != "") {
       if (keywords.trim() == "") return;
@@ -57,6 +65,12 @@ export default function Category() {
       fetchCategories();
     }
   }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+
+  useEffect(() => {
+    const tree = Common.buildCategoryTree(rawCategories);
+    const flatList = Common.flattenCategories(tree);
+    setCategories(flatList);
+  }, [rawCategories]);
 
   const showOffcanvasOnAddCategory = () => {
     setCategoryData(null);
@@ -77,20 +91,20 @@ export default function Category() {
     setCurrentPage(1);
   };
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-  const handleDelete = async (categoryid) => {
+  // ================= DELETE =================
+  const handleDelete = async (categoryId) => {
     try {
       const response = await axios.delete(
-        deleteCategoryById(categoryid)
+        deleteCategoryById(categoryId)
       );
+
       if (response.status === 200) {
         toast.success("Category deleted successfully", {
           autoClose: 1000,
         });
-        setCategories((prev) =>
-          prev.filter((item) => item.id !== categoryid)
+
+        setRawCategories(prev =>
+          prev.filter(cat => cat.id !== categoryId)
         );
       }
     } catch (error) {
@@ -99,25 +113,48 @@ export default function Category() {
   };
 
   const showDeleteConfirmation = (categoryId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this Category?"
-    );
-    if (confirmed) {
+    if (window.confirm("Are you sure you want to delete this Category?")) {
       handleDelete(categoryId);
     }
   };
+  
   const addCategory = (newCategory) => {
-    setCategories((prev) => [newCategory, ...prev]);
     setShowOffcanvas(false);
+  
+    // 🔹 Always increase total count
+    setTotalEntries(prev => prev + 1);
+  
+    // 🔹 Only update UI if user is on page 1 
+    // and sorting is latest first
+    if (currentPage === 1 && sortField === "id" && sortOrder === "DESC") {
+  
+      setRawCategories(prev => {
+        const updated = [newCategory, ...prev];
+  
+        // Maintain page size
+        if (updated.length > pageLimit) {
+          updated.pop();
+        }
+  
+        return updated;
+      });
+    }
   };
 
   const updateCategory = (updatedCategory) => {
-    setCategories((prev) =>
-      prev.map((Category) =>
-        Category.id === updatedCategory.id ? updatedCategory : Category
+    setRawCategories(prev =>
+      prev.map(cat =>
+        cat.id === updatedCategory.id
+          ? { ...cat, ...updatedCategory }
+          : cat
       )
     );
+  
     setShowOffcanvas(false);
+  };
+  
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const handleSortChange = (field) =>
@@ -223,13 +260,14 @@ export default function Category() {
                         />
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
+                        {"— ".repeat(category.level || 0)}
                         {category?.name_en}
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         {category?.slug}
                       </td>
                       <td>
-                        {category?.parent ? category.parent.name_en : "-"}
+                        {category?.parent ? category.parent.name_en : "—"}
                       </td>
                       <td className="d-flex gap-2">
                         <div

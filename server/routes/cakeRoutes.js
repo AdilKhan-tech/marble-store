@@ -43,6 +43,7 @@ router.post('/portionSize', upload.single('image_url'), CakePortionSizeControlle
 router.get('/portionSize', CakePortionSizeController.getAllCakePortionSizes);
 router.put('/portionSize/:id', upload.single('image_url'), CakePortionSizeController.updateCakePortionSizeById); 
 router.delete('/portionSize/:id', CakePortionSizeController.deleteCakePortionSizeById);
+router.get("/portionSize/tree", CakePortionSizeController.getCakePortionSizeTree);
 
 
 module.exports = router;
