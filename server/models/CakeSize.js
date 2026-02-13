@@ -2,7 +2,6 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const CakeSize = sequelize.define("CakeSize", {
-
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

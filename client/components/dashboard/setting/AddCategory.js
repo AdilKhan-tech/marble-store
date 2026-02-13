@@ -115,6 +115,8 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
               updated.parent = parent
                 ? { id: parent.id, name_en: parent.name_en }
                 : null;
+            } else {
+              updated.parent = null;
             }
 
             onUpdateCategory(updated);

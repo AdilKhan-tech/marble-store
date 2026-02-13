@@ -3,13 +3,11 @@ const router = express.Router();
 const IceCreamBucketController = require('../controllers/IceCreamBucketController');
 const IceCreamPortionSizeController = require("../controllers/IceCreamPortionSizeController");
 const IceCreamAddOnController = require("../controllers/IceCreamAddOnController");
-
 const authenticateToken = require("../middlewares/authenticateToken");
 
 const upload = require("../middlewares/upload");
 
 router.use(authenticateToken);
-
 
 router.post('/buckets', upload.single('image_url'), IceCreamBucketController.createIceCreamBucket);
 router.get('/buckets', IceCreamBucketController.getAllIceCreamBucket);

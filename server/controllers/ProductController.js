@@ -81,8 +81,6 @@ class ProductController {
                     }))
                 );
             }
-    
-            // return res.status(201).json(product);
 
             return res.status(201).json({
                 ...product.toJSON(),
@@ -297,8 +295,6 @@ class ProductController {
             if (branches.length) await ProductBranch.bulkCreate(branches.map(branch_id => ({ product_id: id, branch_id })));
             if (categories.length) await ProductCategory.bulkCreate(categories.map(category_id => ({ product_id: id, category_id })));
             if (occasions.length) await ProductOccasion.bulkCreate(occasions.map(occasion_id => ({ product_id: id, occasion_id })));
-
-            // return res.status(200).json(product);
 
             const responseData = {
             ...product.toJSON(),
