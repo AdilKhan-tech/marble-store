@@ -106,9 +106,9 @@ body.sidebar-open .header {
   font-size: 14px;
 }
 .cancle-btn:hover {
-  border: 1px solid #ff6e21;
-  color: #ff6e21;
-  background: rgba(255, 110, 33, 0.8);
+  border: 1px solid #ff7900 !important;
+  color: #ff7900 !important;
+  background: #ffb44f33 !important;
   transition: all 0.5s ease;
 }
 .text-orange {

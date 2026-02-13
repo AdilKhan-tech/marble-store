@@ -6,35 +6,35 @@ const { Op } = require("sequelize");
 class CakeSizeController {
 
   static async createCakeSize(req, res, next) {
-      try {
-        const { name_en,name_ar,cake_category_id,slug,scoop_size,additional_price,calories,status } = req.body
+    try {
+      const { name_en,name_ar,cake_category_id,slug,scoop_size,additional_price,calories,status } = req.body
 
-        const image_url = req.file ? req.file.filename : null;
-          
-        const cakeSize = await CakeSize.create({
-            name_en,
-            name_ar,
-            cake_category_id,
-            slug,
-            scoop_size,
-            additional_price,
-            calories,
-            status,
-            image_url,
-        });
-          
-        const responseData = {
-          ...cakeSize.toJSON(),
-          image_url: cakeSize.image_url
-            ? `${UPLOADS_URL}/${cakeSize.image_url}`
-            : null,
-        };
+      const image_url = req.file ? req.file.filename : null;
+        
+      const cakeSize = await CakeSize.create({
+        name_en,
+        name_ar,
+        cake_category_id,
+        slug,
+        scoop_size,
+        additional_price,
+        calories,
+        status,
+        image_url,
+      });
+        
+      const responseData = {
+        ...cakeSize.toJSON(),
+        image_url: cakeSize.image_url
+          ? `${UPLOADS_URL}/${cakeSize.image_url}`
+          : null,
+      };
 
-        return res.status(201).json(responseData);
+      return res.status(201).json(responseData);
 
-      } catch (error) {
-        next(error);
-      }
+    } catch (error) {
+      next(error);
+    }
   }
 
   static async getAllCakeSizes(req, res) {
@@ -104,68 +104,67 @@ class CakeSizeController {
   }
     
   static async updateCakeSizeById(req, res, next) {
-      const { id } = req.params;
-      try {
-          const cakeSize = await CakeSize.findByPk(id);
-          if (!cakeSize) {
-              return res.status(404).json({ message: "Cake size not found" });
-          }
-          const {
-              cake_category_id,
-              name_en,
-              name_ar,
-              slug,
-              scoop_size,
-              additional_price,
-              calories,
-              status
-          } = req.body;
-
-          let image_url = cakeSize.image_url;
-          if (req.file) {
-            image_url = req.file.filename;
-          }
-
-          await cakeSize.update({
-            name_en: name_en ?? cakeSize.name_en,
-            name_ar: name_ar ?? cakeSize.name_ar,
-            cake_category_id: cake_category_id ?? cakeSize.cake_category_id,
-            slug: slug ?? cakeSize.slug,
-            scoop_size: scoop_size ?? cakeSize.scoop_size,
-            additional_price: additional_price ?? cakeSize.additional_price,
-            calories: calories ?? cakeSize.calories,
-            status: status ?? cakeSize.status,
-            image_url: image_url
-          });
-  
-          // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
-          const responseData = {
-            ...cakeSize.toJSON(),
-            image_url: cakeSize.image_url
-              ? `${UPLOADS_URL}/${cakeSize.image_url}`
-              : null,
-          };
-
-          return res.status(200).json(responseData);
-  
-      } catch (error) {
-          next(error);
+    const { id } = req.params;
+    try {
+      const cakeSize = await CakeSize.findByPk(id);
+      if (!cakeSize) {
+        return res.status(404).json({ message: "Cake size not found" });
       }
+      const {
+        cake_category_id,
+        name_en,
+        name_ar,
+        slug,
+        scoop_size,
+        additional_price,
+        calories,
+        status
+      } = req.body;
+
+      let image_url = cakeSize.image_url;
+      if (req.file) {
+        image_url = req.file.filename;
+      }
+
+      await cakeSize.update({
+        name_en: name_en ?? cakeSize.name_en,
+        name_ar: name_ar ?? cakeSize.name_ar,
+        cake_category_id: cake_category_id ?? cakeSize.cake_category_id,
+        slug: slug ?? cakeSize.slug,
+        scoop_size: scoop_size ?? cakeSize.scoop_size,
+        additional_price: additional_price ?? cakeSize.additional_price,
+        calories: calories ?? cakeSize.calories,
+        status: status ?? cakeSize.status,
+        image_url: image_url
+      });
+
+      // 🔥 BUILD FULL IMAGE URL FOR FRONTEND
+      const responseData = {
+        ...cakeSize.toJSON(),
+        image_url: cakeSize.image_url
+          ? `${UPLOADS_URL}/${cakeSize.image_url}`
+          : null,
+      };
+
+      return res.status(200).json(responseData);
+    } catch (error) {
+        next(error);
+    }
   }
 
   static async deleteCakeSizeById(req, res) {
-      try {
-          const { id } = req.params;
-          const cakeSize = await CakeSize.findByPk(id);
-          if(!cakeSize) {
-              return res.status(404).json({ message: "Cake size not found" });
-          }
-          await cakeSize.destroy();
-          return res.status(200).json({ message: "Cake size deleted successfully" });     
+    try {
+      const { id } = req.params;
+      const cakeSize = await CakeSize.findByPk(id);
+      if(!cakeSize) {
+        return res.status(404).json({ message: "Cake size not found" });
       }
-      catch (err) {
-          return res.status(500).json({ message: err.message });
-      }
+      await cakeSize.destroy();
+      return res.status(200).json({ message: "Cake size deleted successfully" });     
+    }
+    catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
   }
 
 }

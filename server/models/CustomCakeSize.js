@@ -1,109 +1,107 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const CustomCakeSize = sequelize.define(
-  "CustomCakeSize",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    name_en: {
-      type: DataTypes.STRING(55),
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: "Name English is required" },
-        len: {
-          args: [2, 55],
-          msg: "Name English must be between 2 and 55 characters",
-        },
+const CustomCakeSize = sequelize.define("CustomCakeSize",{
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  name_en: {
+    type: DataTypes.STRING(55),
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Name English is required" },
+      len: {
+        args: [2, 55],
+        msg: "Name English must be between 2 and 55 characters",
       },
     },
-    name_ar: {
-      type: DataTypes.STRING(55),
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: "Name Arabic is required" },
-        len: {
-          args: [2, 55],
-          msg: "Name Arabic must be between 2 and 55 characters",
-        },
+  },
+  name_ar: {
+    type: DataTypes.STRING(55),
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Name Arabic is required" },
+      len: {
+        args: [2, 55],
+        msg: "Name Arabic must be between 2 and 55 characters",
       },
     },
-    custom_cake_type_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Custom cake type is required" },
+  },
+  custom_cake_type_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      notNull: { msg: "Custom cake type is required" },
+    },
+  },
+  slug: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Slug is required" },
+      is: {
+        args: /^[a-z0-9-]+$/i,
+        msg: "Slug can contain only letters, numbers, and dashes",
       },
     },
-    slug: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: "Slug is required" },
-        is: {
-          args: /^[a-z0-9-]+$/i,
-          msg: "Slug can contain only letters, numbers, and dashes",
-        },
+  },
+  scoope_size: {
+    type: DataTypes.STRING(55),
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Scoop size is required" },
+      len: {
+        args: [1, 55],
+        msg: "Scoop size must be between 1 and 55 characters",
       },
     },
-    scoope_size: {
-      type: DataTypes.STRING(55),
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: "Scoop size is required" },
-        len: {
-          args: [1, 55],
-          msg: "Scoop size must be between 1 and 55 characters",
-        },
+  },
+  sort: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0,
+    validate: {
+      isInt: { msg: "Sort must be a number" },
+      min: { args: [0], msg: "Sort cannot be negative" },
+    },
+  },
+  calories: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+    validate: {
+      len: {
+        args: [0, 50],
+        msg: "Calories value must not exceed 50 characters",
       },
     },
-    sort: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0,
-      validate: {
-        isInt: { msg: "Sort must be a number" },
-        min: { args: [0], msg: "Sort cannot be negative" },
+  },
+  status: {
+    type: DataTypes.ENUM("active", "inactive"),
+    defaultValue: "active",
+    validate: {
+      isIn: {
+        args: [["active", "inactive"]],
+        msg: "Status must be active or inactive",
       },
     },
-    calories: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      validate: {
-        len: {
-          args: [0, 50],
-          msg: "Calories value must not exceed 50 characters",
-        },
-      },
-    },
-    status: {
-      type: DataTypes.ENUM("active", "inactive"),
-      defaultValue: "active",
-      validate: {
-        isIn: {
-          args: [["active", "inactive"]],
-          msg: "Status must be active or inactive",
-        },
-      },
-    },
-    image_url: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
+  },
+  image_url: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
   },
   {
     tableName: "custom_cake_sizes",
