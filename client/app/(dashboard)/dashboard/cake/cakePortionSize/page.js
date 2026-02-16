@@ -99,7 +99,7 @@ useEffect(() => {
       const response = await axios.delete(deleteCakePortionSizeById(cakePortionSizeId));
       if(response.status === 200) {
         toast.success("Custom Cake Type deleted successfully!", {autoClose: 1000});
-        setCakePortionSizes((prev) =>
+        setRawCakePortionSizes((prev) =>
           prev.filter((cakePortionSize) => cakePortionSize.id !== cakePortionSizeId)
         );
       }
@@ -140,16 +140,21 @@ useEffect(() => {
   };
 
   const updateCakePortionSize = (updatedCakePortionSize) => {
-    setCakePortionSizes((prev) =>
-      prev.map((cakePortionSize) =>
-        cakePortionSize.id === updatedCakePortionSize.id ? updatedCakePortionSize : cakePortionSize
+    setRawCakePortionSizes(prev =>
+      prev.map(item =>
+        item.id === updatedCakePortionSize.id
+          ? { ...item, ...updatedCakePortionSize }
+          : item
       )
     );
+  
     setShowOffcanvas(false);
   };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+  
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
 

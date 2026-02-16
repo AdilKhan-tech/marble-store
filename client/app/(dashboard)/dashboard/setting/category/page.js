@@ -144,9 +144,7 @@ export default function Category() {
   const updateCategory = (updatedCategory) => {
     setRawCategories(prev =>
       prev.map(cat =>
-        cat.id === updatedCategory.id
-          ? { ...cat, ...updatedCategory }
-          : cat
+        cat.id === updatedCategory.id ? { ...cat, ...updatedCategory } : cat
       )
     );
   
