@@ -86,9 +86,7 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
       const payload = new FormData();
 
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === "parent_id" && value === "") {
-          payload.append(key, null);
-        } else {
+        if (value !== null && value !== "") {
           payload.append(key, value);
         }
       });
