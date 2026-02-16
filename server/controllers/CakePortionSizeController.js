@@ -19,6 +19,16 @@ class CakePortionSizeController {
                 image_url,
             });
           
+  await cakePortionSize.reload({
+          include: [
+            {
+              model: CakePortionSize,
+              as: "parent",
+              attributes: ["id", "name_en"],
+            },
+          ],
+        });
+    
           const responseData = {
             ...cakePortionSize.toJSON(),
             image_url: cakePortionSize.image_url
@@ -190,7 +200,7 @@ class CakePortionSizeController {
           order: [["id", "ASC"]],
         });
     
-        return res.status(200).json(cakePortionSize);
+        return res.status(200).json({ data: cakePortionSize });
       } catch (error) {
         return res.status(500).json({
           message: "Failed to fetch parent portion size tree",

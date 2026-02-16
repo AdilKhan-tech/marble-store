@@ -15,6 +15,7 @@ export default function CakePortionSizePage() {
   
   const {token} = useAxiosConfig();
   const [cakePortionSizes, setCakePortionSizes] = useState([]);
+  const [rawCakePortionSizes, setRawCakePortionSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [cakePortionSizeData, setCakePortionSizeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -37,13 +38,20 @@ export default function CakePortionSizePage() {
         sortOrder,
         sortField,
       }
-      const response = await axios.get(getAllCakePortionSizes, { params });
-      const tree = Common.buildCategoryTree(response.data.data);
-      const flatList = Common.flattenCategories(tree);
+       const response = await axios.get(getAllCakePortionSizes, { params });
+       const rawData = response.data.data;
+  
 
+        // 🔥 VERY IMPORTANT
+      setRawCakePortionSizes(rawData);
+  
+      const tree = Common.buildCategoryTree(rawData);
+      const flatList = Common.flattenCategories(tree);
+  
       setCakePortionSizes(flatList);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
+  
     } catch (error) {
       console.error("Error fetching Cake Portion Sizes", error);
     }
@@ -60,6 +68,12 @@ export default function CakePortionSizePage() {
       fetchCakePortionSizes();
     }
 }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+
+useEffect(() => {
+    const tree = Common.buildCategoryTree(rawCakePortionSizes);
+    const flatList = Common.flattenCategories(tree);
+    setCakePortionSizes(flatList);
+  }, [rawCakePortionSizes]);
 
   const showOffcanvasAddCakePortionSize = () => {
     setCakePortionSizeData(null);
@@ -78,10 +92,6 @@ export default function CakePortionSizePage() {
   const handleLimitChange = (newLimit) => {
     setPageLimit(newLimit);
     setCurrentPage(1);
-  };
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
   };
 
   const handleDelete = async (cakePortionSizeId) => {
@@ -106,9 +116,27 @@ export default function CakePortionSizePage() {
     }
   }
 
-  const addCakePortionSize = (newCakePortionSize) => {
-    setCakePortionSizes(prev => [newCakePortionSize, ...prev]);
+  const addCakePortionSize = (newCakePortionSize ) => {
     setShowOffcanvas(false);
+  
+    // 🔹 Always increase total count
+    setTotalEntries(prev => prev + 1);
+  
+    // 🔹 Only update UI if user is on page 1 
+    // and sorting is latest first
+    if (currentPage === 1 && sortField === "id" && sortOrder === "DESC") {
+  
+      setRawCakePortionSizes(prev => {
+        const updated = [newCakePortionSize, ...prev];
+  
+        // Maintain page size
+        if (updated.length > pageLimit) {
+          updated.pop();
+        }
+  
+        return updated;
+      });
+    }
   };
 
   const updateCakePortionSize = (updatedCakePortionSize) => {
@@ -119,7 +147,9 @@ export default function CakePortionSizePage() {
     );
     setShowOffcanvas(false);
   };
-
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   const handleSortChange = (field) =>
     Common.handleSortingChange(field, setSortField, setSortOrder);
 
@@ -189,10 +219,10 @@ export default function CakePortionSizePage() {
                   </th>
                   <th
                     className="fw-medium fs-14 fnt-color" 
-                    onClick={() => handleSortChange("parent_portion_size")}>
+                    onClick={() => handleSortChange("parent_id")}>
                     Parent Portion Size
                     <span className="fs-10 text-secondary ms-1">
-                      {(sortField === "parent_portion_size" &&
+                      {(sortField === "parent_id" &&
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
@@ -212,28 +242,27 @@ export default function CakePortionSizePage() {
               </thead>
 
               <tbody>
-                {cakePortionSizes.map((cakePortionSize, index) => (
-                  <tr key={cakePortionSize?.id}>
-                    <td className="fw-normal fs-14 fnt-color">
-                      {cakePortionSize?.id}
-                    </td>
-                    <td className="fw-normal fs-14 fnt-color">
-                      {cakePortionSize?.name_en}
-                    </td>
-                    <td className="fw-normal fs-14 fnt-color">
-                      {cakePortionSize?.slug}
-                    </td>
-                    <td className="fw-normal fs-14 fnt-color">
-                      {/* {cakePortionSize?.parent_id} */}
-                      {cakePortionSize?.parent ? cakePortionSize.parent.name_en : "—"}
-                    </td>
-                    <td className="fw-normal fs-14 fnt-color">
-                      <img
-                        src={cakePortionSize.image_url}
-                        alt={cakePortionSize.name_en}
-                        className="table-img rounded-1"
-                      />
-                    </td>
+               {cakePortionSizes.map((cakePortionSize, index) => (
+                    <tr key={cakePortionSize?.id}>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakePortionSize?.id}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {"— ".repeat(cakePortionSize.level || 0)}
+                        {cakePortionSize.name_en}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        {cakePortionSize.slug}
+                      </td>
+                      <td>
+                        {cakePortionSize.parent ? cakePortionSize.parent.name_en : "—"}
+                      </td>
+                        <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={cakePortionSize.image_url}
+                          className="table-img rounded-5"
+                        />
+                      </td>
                     <td className='d-flex gap-2'>
                       <div className='action-btn d-flex justify-content-center align-items-center bg-transparent rounded-2' onClick={() => showOffcanvasOnEditCakePortionSizes(cakePortionSize)}>
                         <i className="bi bi-pencil-square text-primary"></i></div>

@@ -10,8 +10,8 @@ const flattenCategories = (cakePortionSizes, level = 0) => {
 
   cakePortionSizes.forEach(cakePortionSize => {
     result.push({
-      id: cakePortionSize.id,
-      name: `${"— ".repeat(level)}${cakePortionSize.name_en}`,
+      ...cakePortionSize,
+      level,
     });
 
     if (cakePortionSize.children?.length) {
@@ -64,7 +64,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
   const fetchCakePortionSizes = async () => {
     if (!token) return;
     const res = await axios.get(getCakePortionSizeTree);
-    const flat = flattenCategories(res.data);
+    const flat = flattenCategories(res.data.data);
     setParentCakePortionSizes(flat);
   };
 
@@ -92,7 +92,9 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
     try {
       const payload = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "id") {
+        if (key === "parent_id" && value === "") {
+          payload.append(key, null);
+        } else {
           payload.append(key, value);
         }
       });
@@ -102,18 +104,29 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
       }
 
       //------------ UPDATE 
-      if (formData.id) {
-        const res = await axios.put(
-            updateCakePortionSizeById(formData.id),
-          payload
-        );
+      if (cakePortionSizeData) {
+        const res = await axios.put(updateCakePortionSizeById(cakePortionSizeData.id), payload);
 
         if (res.status === 200) {
-          toast.success("Cake Portion Size updated successfully!");
+          toast.success("Cake Portion Size updated successfully!", {
+            autoClose: 1000,
+          });
 
           if (onUpdateCakePortionSize) {
-            onUpdateCakePortionSize(res.data);
-          }
+            const updated = res.data; 
+           
+           if (updated.parent_id) {
+              const parent = parentCakePortionSizes.find(
+                p => p.id === updated.parent_id
+              );
+
+              updated.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            }
+
+            onUpdateCakePortionSize(updated);
+          } 
 
           closePopup();
         }
@@ -124,10 +137,22 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
         const res = await axios.post(createCakePortionSize, payload);
 
         if (res.status === 201 || res.status === 200) {
-          toast.success("Cake Portion Size added successfully!");
+         toast.success("Cake Portion Size added successfully!", 
+         {autoClose: 1000, onClose: closePopup, });
 
-          if (onAddCakePortionSize) {
-            onAddCakePortionSize(res.data);
+
+         if (onAddCakePortionSize) {
+            const newCakePortionSize = res.data;
+            
+              if (newCakePortionSize.parent_id) {
+              const parent = parentCakePortionSizes.find(
+                p => p.id === newCakePortionSize.parent_id
+              );
+               newCakePortionSize.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            }
+            onAddCakePortionSize(newCakePortionSize);
           }
 
           closePopup();
@@ -191,7 +216,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
         <select
             name="parent_id"
             className="form-select textarea-hover-dark text-secondary"
-            value={formData.parent_id}
+            value={formData.parent_id ?? ""}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -203,9 +228,16 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
 
             {parentCakePortionSizes.map(cakePortionSize => (
               <option key={cakePortionSize.id} value={cakePortionSize.id}>
-                {cakePortionSize.name}
+                {"— ".repeat(cakePortionSize.level || 0)}
+                {cakePortionSize.name_en}
               </option>
             ))}
+
+            {/* {parentCakePortionSizes.map(cakePortionSize => (
+              <option key={cakePortionSize.id} value={cakePortionSize.id}>
+                {cakePortionSize.name}
+              </option>
+            ))} */}
           </select>
       </div>
       </div>
