@@ -220,7 +220,6 @@ export default function CookieBoxTypePage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={type.image_url}
-                        alt={type.name_en}
                         className="table-img rounded-5"
                       />
                     </td>

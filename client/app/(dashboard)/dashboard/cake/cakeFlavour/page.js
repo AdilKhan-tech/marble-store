@@ -234,7 +234,6 @@ export default function CakeFlavourPage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={cakeFlavor.image_url}
-                          alt={cakeFlavor.name_en}
                           className="table-img rounded-4"
                         />
                       </td>

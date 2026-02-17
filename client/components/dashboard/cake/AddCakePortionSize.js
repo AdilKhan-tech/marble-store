@@ -223,20 +223,14 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
             }
           >
             <option value="">None</option>
-
+            
             {parentCakePortionSizes.map(cakePortionSize => (
               <option key={cakePortionSize.id} value={cakePortionSize.id}>
                 {"— ".repeat(cakePortionSize.level || 0)}
                 {cakePortionSize.name_en}
               </option>
             ))}
-
-            {/* {parentCakePortionSizes.map(cakePortionSize => (
-              <option key={cakePortionSize.id} value={cakePortionSize.id}>
-                {cakePortionSize.name}
-              </option>
-            ))} */}
-          </select>
+        </select>
       </div>
       </div>
       

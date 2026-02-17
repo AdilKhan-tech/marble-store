@@ -21,16 +21,6 @@ const ProductTag = require("./ProductTag");
 const CustomCakeSize = require("./CustomCakeSize");
 const CakePortionSize = require("./CakePortionSize");
 
-IceCreamBucket.hasMany(IceCreamPortionSize, {
-  foreignKey: "icecream_bucket_id",
-  as: "portionSizes",
-});
-
-IceCreamPortionSize.belongsTo(IceCreamBucket, {
-  foreignKey: "icecream_bucket_id",
-  as: "iceCreamBucket",
-});
-
 Category.hasMany(CakeSize, {
   foreignKey: "cake_category_id",
   as: "sizes",
@@ -176,6 +166,16 @@ CakePortionSize.belongsTo(CakePortionSize, {
 });
 
 CakePortionSize.hasMany(CakePortionSize, {
+  foreignKey: "parent_id",
+  as: "children",
+});
+
+IceCreamPortionSize.belongsTo(IceCreamPortionSize, {
+  foreignKey: "parent_id",
+  as: "parent",
+});
+
+IceCreamPortionSize.hasMany(IceCreamPortionSize, {
   foreignKey: "parent_id",
   as: "children",
 });

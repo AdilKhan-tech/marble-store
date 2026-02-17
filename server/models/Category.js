@@ -7,6 +7,7 @@ const Category = sequelize.define("Category",{
     primaryKey: true,
     autoIncrement: true,
   },
+  
   name_en: {
     type: DataTypes.STRING(100),
     allowNull: false,
@@ -18,6 +19,7 @@ const Category = sequelize.define("Category",{
       },
     },
   },
+
   name_ar: {
     type: DataTypes.STRING(100),
     allowNull: false,
@@ -54,19 +56,23 @@ const Category = sequelize.define("Category",{
     },
     onDelete: "SET NULL",
   },
+
   display_type: {
     type: DataTypes.ENUM("Default", "Products", "Subcategories", "Both"),
     allowNull: true,
   },
+
   image_url: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
+
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+
   updated_at: {
     type: DataTypes.DATE,
     allowNull: false,

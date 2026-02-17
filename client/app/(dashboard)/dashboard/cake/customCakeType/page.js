@@ -223,7 +223,6 @@ export default function CustomCakeTypePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={customeCakeType.image_url}
-                          alt={customeCakeType.name_en}
                           className="table-img rounded-4"
                         />
                       </td>

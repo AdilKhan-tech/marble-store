@@ -241,7 +241,6 @@ export default function CookieBoxSizePage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={boxSize.image_url}
-                        alt={boxSize.name_en}
                         className="table-img rounded-5"
                       />
                     </td>

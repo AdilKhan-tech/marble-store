@@ -8,6 +8,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     autoIncrement: true,
     allowNull: false,
   },
+  
   name_en: {
     type: DataTypes.STRING(55),
     allowNull: false,
@@ -19,6 +20,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
       },
     },
   },
+
   name_ar: {
     type: DataTypes.STRING(55),
     allowNull: false,
@@ -30,14 +32,17 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
       },
     },
   },
-  icecream_bucket_id: {
+
+  parent_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: { msg: "Ice cream bucket is required" },
-      isInt: { msg: "Ice cream bucket ID must be an integer" },
+    allowNull: true,
+    references: {
+      model: "categories",
+      key: "id",
     },
+    onDelete: "SET NULL",
   },
+
   slug: {
     type: DataTypes.STRING(55),
     allowNull: false,
@@ -49,6 +54,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
       },
     },
   },
+
   additional_price: {
     type: DataTypes.FLOAT,
     allowNull: false,
@@ -61,6 +67,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
       },
     },
   },
+
   calories: {
     type: DataTypes.STRING(50),
     allowNull: true,
@@ -71,25 +78,29 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
       },
     },
   },
+
   status: {
-    type: DataTypes.ENUM("active", "inactive"),
-    defaultValue: "active",
+    type: DataTypes.ENUM("Active", "Inactive"),
+    defaultValue: "Active",
     validate: {
       isIn: {
-        args: [["active", "inactive"]],
-        msg: "Status must be either active or inactive",
+        args: [["Active", "Inactive"]],
+        msg: "Status must be either Active or Inactive",
       }
     }
   },
+
   image_url: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
+
   created_at: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+
   updated_at: {
     type: DataTypes.DATE,
     allowNull: false,

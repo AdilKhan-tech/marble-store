@@ -231,7 +231,6 @@ export default function IceCreamAddonPage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={iceCreamAddon.image_url}
-                        alt={iceCreamAddon.name_en}
                         className="table-img rounded-5"
                       />
                     </td>
