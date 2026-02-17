@@ -1,4 +1,4 @@
-const { IceCreamBucket, IceCreamPortionSize } = require("../models");
+const { IceCreamPortionSize } = require("../models");
 const getPagination = require("../utils/pagination");
 const { UPLOADS_URL } = require("../config/config");
 const { Op } = require("sequelize");
@@ -6,19 +6,30 @@ const { Op } = require("sequelize");
 class IceCreamPortionSizeController {
   static async createIceCreamPortionSize(req, res, next) {
     try {
-      const {icecream_bucket_id, name_en, name_ar, slug, additional_price, calories, status} = req.body;
+      const { name_en, name_ar, parent_id, slug, additional_price, calories, status } = req.body;
 
       const image_url = req.file ? req.file.filename : null;
       const iceCreamPortionSize = await IceCreamPortionSize.create({
-        icecream_bucket_id,
         name_en,
         name_ar,
+        parent_id: parent_id || null,
         slug,
         additional_price,
         calories,
         status,
         image_url,
       });
+
+      await iceCreamPortionSize.reload({
+        include: [
+          {
+            model: IceCreamPortionSize,
+            as: "parent",
+            attributes: ["id", "name_en"],
+          },
+        ],
+      });
+
       const responseData = {
         ...iceCreamPortionSize.toJSON(),
         image_url: iceCreamPortionSize.image_url
@@ -35,7 +46,7 @@ class IceCreamPortionSizeController {
   static async getAllIceCreamPortionSize(req, res) {
 
     const { page, limit, offset } = getPagination(req);
-    const { keywords, sortField, sortOrder } = req.query;
+    const { keywords, sortField, sortOrder, parent_slug } = req.query;
 
     try {
 
@@ -54,25 +65,36 @@ class IceCreamPortionSizeController {
         "additional_price",
         "calories",
         "status",
-        "icecream_bucket_id",
+        "parent_id",
       ];
 
       const finalSortField = allowedSortFields.includes(sortField)? sortField : "id";
       const finalSortOrder = sortOrder && sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
+      const include = [];
+      if (parent_slug) {
+        include.push({
+          model: IceCreamPortionSize,
+          as: "parent",
+          where: { slug: parent_slug },
+          attributes: [],
+        });
+      }else {
+        include.push({
+          model: IceCreamPortionSize,
+          as: "parent",
+          attributes: ["id", "name_en"],
+        });
+      }
+
       const { count, rows } = await IceCreamPortionSize.findAndCountAll({
         where: whereClause,
-        include: [
-          {
-            model: IceCreamBucket,
-            as: "iceCreamBucket",
-            attributes: ["id", "name_en", "name_ar"],
-          },
-        ],
         limit,
         offset,
         order: [[finalSortField, finalSortOrder]],
+        include,
       });
+
       const data = rows.map(item => {
         const iceCreamPortion = item.toJSON();
         return {
@@ -108,7 +130,7 @@ class IceCreamPortionSizeController {
           return res.status(404).json({ message: "Ice Cream Portion Size not found" });
       }
 
-      const {name_en, name_ar, icecream_bucket_id, slug, additional_price, calories,status} = req.body;
+      const {name_en, name_ar, parent_id, slug, additional_price, calories,status} = req.body;
       let image_url = iceCreamPortionSize.image_url;
         if (req.file) {
           image_url = req.file.filename;
@@ -116,7 +138,7 @@ class IceCreamPortionSizeController {
       await iceCreamPortionSize.update({
           name_en: name_en ?? iceCreamPortionSize.name_en,
           name_ar: name_ar ?? iceCreamPortionSize.name_ar,
-          icecream_bucket_id: icecream_bucket_id ?? iceCreamPortionSize.icecream_bucket_id,
+          parent_id: parent_id ?? iceCreamPortionSize.parent_id,
           slug: slug ?? iceCreamPortionSize.slug,
           additional_price: additional_price ?? iceCreamPortionSize.additional_price,
           calories: calories ?? iceCreamPortionSize.calories,
@@ -149,6 +171,37 @@ class IceCreamPortionSizeController {
 
     }catch(error) {
       return res.status(500).json ({ message: error.message });
+    }
+  }
+
+  static async getIceCreamPortionSizeTree(req, res) {
+    try {
+      const iceCreamPortionSize = await IceCreamPortionSize.findAll({
+        where: { parent_id: null },
+        attributes: ["id", "name_en", "slug", "parent_id"],
+        include: [
+          {
+            model: IceCreamPortionSize,
+            as: "children",
+            attributes: ["id", "name_en", "slug", "parent_id"],
+            include: [
+              {
+                model: IceCreamPortionSize,
+                as: "children",
+                attributes: ["id", "name_en", "slug", "parent_id"],
+              },
+            ],
+          },
+        ],
+        order: [["id", "ASC"]],
+      });
+  
+      return res.status(200).json({ data: iceCreamPortionSize });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Failed to fetch parent portion size tree",
+        error: error.message,
+      });
     }
   }
 }

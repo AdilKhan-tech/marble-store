@@ -236,7 +236,6 @@ export default function Cookies() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={cookie.image_url}
-                        alt={cookie.name_en}
                         className="table-img rounded-5"
                       />
                     </td>

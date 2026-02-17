@@ -174,47 +174,6 @@ const AddProduct = ({ onAddProduct }) => {
     return errors;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const validationErrors = validateForm();
-  //   if (validationErrors.length > 0) {
-  //     setErrors(validationErrors);
-  //     validationErrors.forEach((err) => toast.error(err));
-  //     return;
-  //   }
-  //   setIsSubmitting(true);
-  //   try {
-  //     const payload = new FormData();
-  //     // normal fields
-  //     Object.entries(formData).forEach(([k, v]) => {
-  //       payload.append(k, v);
-  //     });
-  //     // multiselect ids
-  //     branchIds.forEach((id) => payload.append("branch_ids[]", id));
-  //     categoryIds.forEach((id) => payload.append("category_ids[]", id));
-  //     occasionIds.forEach((id) => payload.append("occasion_ids[]", id));
-  //     tagIds.forEach((id) => payload.append("tag_ids[]", id));
-  //     selectedFile.forEach((file) => {
-  //       payload.append("image_url", file);
-  //     });
-
-  //     const res = await axios.post(createProductRoute, payload);
-  //     toast.success("Product added successfully!", {
-  //       autoClose: 2000,
-  //       onClose: () => {
-  //         setTimeout(() => router.push("/dashboard/product"), 500);
-  //       },
-  //     });
-
-  //     if (onAddProduct) onAddProduct(res.data);
-  //   } catch (err) {
-  //     console.error(err);
-  //     toast.error("Failed to add product. Please try again.");
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();

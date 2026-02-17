@@ -176,7 +176,7 @@ export default function IceCreamPortionSizePage() {
                         "↑↓"}
                       </span>
                     </th>
-                    <th
+                    {/* <th
                       className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("icecream_bucket_id")}>
                       Icecream Bucket
@@ -185,7 +185,7 @@ export default function IceCreamPortionSizePage() {
                         (sortOrder === "asc" ? "↑" : "↓")) ||
                         "↑↓"}
                       </span>
-                    </th>
+                    </th> */}
                     <th
                       className="fw-medium fs-14 fnt-color nowrap" 
                       onClick={() => handleSortChange("slug")}>
@@ -239,7 +239,6 @@ export default function IceCreamPortionSizePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={icecream.image_url}
-                          // alt={icecream.name_en}
                           className="table-img rounded-5"
                         />
                         </td>

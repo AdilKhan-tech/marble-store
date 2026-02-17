@@ -239,10 +239,9 @@ export default function ProductPage() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       <img
-                        src={product.image_url} 
-                        alt={product.name_en} 
+                        src={product.image_url}
                         className="table-img rounded-1"
-                        />
+                      />
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {product?.name_en}

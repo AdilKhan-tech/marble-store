@@ -242,7 +242,6 @@ function page() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={customCakeFlavor.image_url}
-                        alt={customCakeFlavor.name_en}
                         className="table-img rounded-5"
                       />
                     </td>

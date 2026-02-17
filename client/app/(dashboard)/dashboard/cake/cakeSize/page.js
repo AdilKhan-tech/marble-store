@@ -246,7 +246,6 @@ export default function CakeSizePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={cakeSize.image_url}
-                          alt={cakeSize.name_en}
                           className="table-img rounded-5"
                         />
                       </td>
