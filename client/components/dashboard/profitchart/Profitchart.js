@@ -32,203 +32,276 @@ function Profitchart() {
   ];
   return (
     <>
-      <section>
-        <div className="row g-3">
-          <div className="col-lg-6">
-            <div className="card p-4 shadow-sm rounded-4">
-              <LineChart />
-            </div>
-          </div>
-
-          <div className="col-lg-6">
-            <div className="card p-4 shadow-sm rounded-4">
-              <ApexChart />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="row g-3">
-          <div className="col-md-6">
-            <div className="card rounded-4 position-relative z-1 p-3">
-              <h3 className="fs-16">Best Seller Of The Month</h3>
-              <h3 className="fs-16 text-primary">Michael Marquez!</h3>
-              <h2 className="lh-1 fs-20">$3.5K<span className="fs-16 text-body">(Sales)</span></h2>
-              <a href="#" className="fw-medium fs-16 text-primary" style={{ marginTop: "84px" }}>Details View</a>
-              <img src="./assets/images/Dashboard/male.png" className="position-absolute bottom-0 end-0 pe-3" alt="man"/>
-            </div>
-          </div>
-
-          <div className="col-lg-6">
-            <div className="card rounded-4 position-relative z-1 p-3">
-              <div className="d-flex">
-                <div className="flex-grow-1">
-                  <h3 className="fs-16">New Customers This Month</h3>
-                  <h2 className="lh-1">2,537</h2>
+      {/* Performance Charts Section */}
+      <section className="dashboard-charts-section">
+        <div className="container-fluid">
+          <div className="row g-4">
+            <div className="col-lg-6">
+              <div className="dashboard-card">
+                <div className="card-header-custom">
+                  <h3 className="card-title">Revenue Trends</h3>
+                  <p className="card-subtitle">Monthly performance analysis</p>
                 </div>
-                <div>
-                  <span className="d-flex align-items-center px-2 py-1 bg-success bg-opacity-10 border border-success">
-                    <img src="./assets/images/Dashboard/moving-arrow.png" />
-                    <span className="text-success ms-1">2.75%</span>
-                  </span>
+                <div className="card-body-custom">
+                  <LineChart />
                 </div>
               </div>
+            </div>
 
-              <div style={{marginTop: "55px"}}>
-                <span className="fs-16 text-body d-block mb-10">Join Today</span>
-                <ul className="p-0 mb-0 list-unstyled d-flex last-child-none global-right-list">
-                  <li className="nav-link">
-                    <img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user12"
-                    />
-                  </li>
-                  <li className="nav-link">
-                    <img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user13"/>
-                  </li>
-                  <li className="nav-link">
-                    <img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user14"/>
-                  </li>
-                  <li className="nav-link">
-                    <img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user15"/>
-                  </li>
-                  <li className="nav-link">
-                    <img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user16"/>
-                  </li>
-                  <li className="border border-3 border-white rounded-circle bg-primary text-center" style={{marginRight: "-20px", width: "52px", height: "52px", lineHeight: "49px"}}>
-                    <span className="text-white fs-16 fw-medium">27</span>
-                  </li>
-                </ul>
+            <div className="col-lg-6">
+              <div className="dashboard-card">
+                <div className="card-header-custom">
+                  <h3 className="card-title">Inflation Analysis</h3>
+                  <p className="card-subtitle">Yearly inflation rates</p>
+                </div>
+                <div className="card-body-custom">
+                  <ApexChart />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-    <section className="section mt-3">
-      <div className="card-body px-0 pt-0 card rounded-2 p-0">
-
-        <div className="datatable-wrapper">
-          <div className="data-table p-2">
-          <div className="d-flex justify-content-between">
-            <div>
-              <p className="fs-20">Recent Orders</p>
+      {/* Performance Metrics Section */}
+      <section className="dashboard-metrics-section">
+        <div className="container-fluid">
+          <div className="row g-4">
+            <div className="col-md-6">
+              <div className="dashboard-card performance-card">
+                <div className="card-body-custom">
+                  <div className="performance-header">
+                    <div>
+                      <h3 className="fs-16">Best Seller Of The Month</h3>
+                      <h3 className="fs-16 text-primary">Michael Marquez!</h3>
+                      <h2 className="lh-1 fs-20">$3.5K<span className="fs-16 text-body">(Sales)</span></h2>
+                    </div>
+                    <div className="performance-icon">
+                      <img src="./assets/images/Dashboard/male.png" alt="Best Seller"/>
+                    </div>
+                  </div>
+                  <a href="#" className="btn btn-outline-primary btn-sm">View Details</a>
+                </div>
+              </div>
             </div>
-            <div>
-            <div className="d-flex">
-              <div className="notifications language">
-                    <button className="border-0 p-0 position-relative bg-transparent d-flex align-items-center"
-                      type="button"  data-bs-toggle="dropdown" aria-label="Language Selector">
-                      <p className="mt-2 fs-14">Show All</p>
-                      <i className="bi bi-chevron-down ms-1 small me-3 text-success"></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-end p-2 border shadow mt-2">
-                      <div className="">
-                          <p className="fs-16">Shipped</p>
-                          <p className="fs-16">Confirmed</p>
-                          <p className="fs-16">Pending</p>
-                          <p className="fs-16">Rejected</p>
+
+            <div className="col-lg-6">
+              <div className="dashboard-card">
+                <div className="card-header-custom">
+                  <h3 className="card-title">New Customers</h3>
+                  <p className="card-subtitle">This month's growth</p>
+                </div>
+                <div className="card-body-custom">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h2 className="display-4 fw-bold text-success mb-0">2,537</h2>
+                      <p className="text-muted mb-0">New customers joined</p>
+                    </div>
+                    <div className="trend-badge">
+                      <span className="badge bg-success-subtle text-success fs-7">
+                        <i className="bi bi-arrow-up me-1"></i>2.75%
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="customer-avatars mt-4">
+                    <span className="fs-16 text-body d-block mb-3">Recent Joiners</span>
+                    <div className="d-flex">
+                      {[...Array(5)].map((_, i) => (
+                        <img 
+                          key={i}
+                          src="assets/images/Dashboard/adil.png" 
+                          className="customer-avatar img-fluid rounded-5" 
+                          alt={`user${i + 12}`}
+                        />
+                      ))}
+                      <div className="customer-count">
+                        <span className="text-white fs-16 fw-medium">+27</span>
                       </div>
                     </div>
                   </div>
-                  <div className="d-flex align-items-center mb-3 border border-secondary-80 shadow-sm rounded-3">
-                    <i className="bi bi-search position-absolute ms-3 text-dark"></i>
-                    <input  type="search" className="form-control ps-5 bg-light border-0 shadow-sm" 
-                      placeholder="Search here..."/>
-                  </div>
-                  </div>
-            </div>
-          </div>
-            
-            <table className="table datatable-table structure">
-              <thead>
-                <tr>
-                  <th className="bg-light fw-20">Order ID</th>
-                  <th className="bg-light fw-20">Customer</th>
-                  <th className="bg-light fw-20">Created</th>
-                  <th className="bg-light fw-20">Total</th>
-                  <th className="bg-light fw-20">Profit</th>
-                  <th className="bg-light fw-20">Status</th>
-                  <th className="bg-light fw-20">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {businessUnits.map((item) => (
-                  <tr key={item.id}>
-
-                    <td className="text-secondary fs-16">{item.id}</td>
-                    <td><img src="assets/images/Dashboard/adil.png" className="border border-3 border-white rounded-circle customer-img" alt="user12"
-                    /><span>Adil Khan</span></td>
-                    <td className="text-secondary fs-16">{item.created}</td>
-                    <td className="text-secondary fs-16">{item.total}</td>
-                    <td className="text-secondary fs-16">{item.profit}</td>
-                    <td className=""><span className="bg-danger bg-opacity-10 rounded-2 border border-danger fs-16">{item.status}</span></td>
-
-                    <td>
-                      <div className="d-flex gap-1">
-                        <button className="btn btn-sm btn-light p-2">
-                          <i className="bi bi-eye text-primary"></i>
-                        </button>
-                        <button className="btn btn-sm btn-light p-2">
-                          <i className="bi bi-trash3 text-danger"></i>
-                        </button>
-                      </div>
-                    </td>
-
-                  </tr>
-                ))}
-              </tbody>
-
-            </table>
-
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section>
-        <div className="row g-3">
-          <div className="col-lg-6">
-            <div className="card p-4 shadow-sm rounded-4" style={{height:"450px"}}>
-            <div className="d-flex justify-content-between">
-            <div>
-              <p>Order Summary</p>
-            </div>
-            <div className="notifications language">
-              <button className="border-0 p-0 position-relative bg-transparent d-flex align-items-center"
-                type="button"  data-bs-toggle="dropdown" aria-label="Language Selector">
-                <p className="mt-2 fs-14">This Day</p>
-                <i className="bi bi-chevron-down ms-1 small me-3 text-success"></i>
-              </button>
-              <div className="dropdown-menu dropdown-menu-end p-2 border shadow mt-2">
-                <div className="">
-                    <p className="fs-16">This Day</p>
-                    <p className="fs-16">This Week</p>
-                    <p className="fs-16">This Month</p>
-                    <p className="fs-16">This Year</p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Orders Table */}
+      <section className="dashboard-table-section">
+        <div className="container-fluid">
+          <div className="dashboard-card">
+            <div className="card-header-custom">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h3 className="card-title mb-0">Recent Orders</h3>
+                </div>
+                <div className="d-flex gap-3">
+                  <div className="dropdown">
+                    <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                      Show All
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li><a className="dropdown-item" href="#">Shipped</a></li>
+                      <li><a className="dropdown-item" href="#">Confirmed</a></li>
+                      <li><a className="dropdown-item" href="#">Pending</a></li>
+                      <li><a className="dropdown-item" href="#">Rejected</a></li>
+                    </ul>
+                  </div>
+                  <div className="search-box">
+                    <i className="bi bi-search"></i>
+                    <input type="search" className="form-control" placeholder="Search orders..."/>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="d-flex gap-3 justify-content-between mt-3 mb-3">
-              <h4 className="fs-18">Completed<span className="fs-16 ms-2">60%</span></h4>
-              <h4 className="fs-18">Order<span className="fs-16 ms-2">30%</span></h4>
-              <h4 className="fs-18">Pending<span className="fs-16 ms-2">10%</span></h4>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Piechart />
+            
+            <div className="card-body-custom p-0">
+              <div className="table-responsive">
+                <table className="table table-custom">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Created</th>
+                      <th>Total</th>
+                      <th>Profit</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {businessUnits.map((item) => (
+                      <tr key={item.id}>
+                        <td>
+                          <span className="order-id">#{item.id.toString().padStart(4, '0')}</span>
+                        </td>
+                        <td>
+                          <div className="customer-info">
+                            <img src="assets/images/Dashboard/adil.png" className="customer-avatar-sm img-fluid rounded-5" alt="customer"/>
+                            <span>Adil Khan</span>
+                          </div>
+                        </td>
+                        <td>{item.created}</td>
+                        <td className="fw-bold text-primary">{item.total}</td>
+                        <td className="fw-bold text-success">{item.profit}</td>
+                        <td>
+                          <span className={`status-badge status-${item.status.toLowerCase()}`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            <button className="btn btn-sm btn-light">
+                              <i className="bi bi-eye text-primary"></i>
+                            </button>
+                            <button className="btn btn-sm btn-light">
+                              <i className="bi bi-trash3 text-danger"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="col-lg-6">
-            <div className="card p-4 shadow-sm rounded-4">
-             <div className="d-flex justify-content-between">
-              <div>
-                <p>Top Sellers</p>
+      {/* Order Summary Section */}
+      <section className="dashboard-summary-section">
+        <div className="container-fluid">
+          <div className="row g-4">
+            <div className="col-lg-6">
+              <div className="dashboard-card">
+                <div className="card-header-custom">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h3 className="card-title mb-0">Order Summary</h3>
+                    </div>
+                    <div className="dropdown">
+                      <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        This Day
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" href="#">This Day</a></li>
+                        <li><a className="dropdown-item" href="#">This Week</a></li>
+                        <li><a className="dropdown-item" href="#">This Month</a></li>
+                        <li><a className="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body-custom">
+                  <div className="summary-stats">
+                    <div className="stat-item">
+                      <span className="stat-label">Completed</span>
+                      <span className="stat-value">60%</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">New Orders</span>
+                      <span className="stat-value">30%</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Pending</span>
+                      <span className="stat-value">10%</span>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-center mt-4">
+                    <Piechart />
+                  </div>
+                </div>
               </div>
-             </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="dashboard-card">
+                <div className="card-header-custom">
+                  <h3 className="card-title mb-0">Top Sellers</h3>
+                </div>
+                <div className="card-body-custom">
+                  <div className="sellers-list">
+                    <div className="seller-item">
+                      <div className="seller-rank">1</div>
+                      <div className="seller-info">
+                        <h5>Michael Marquez</h5>
+                        <p className="text-muted mb-0">357 sales • $12.4K</p>
+                      </div>
+                      <div className="trend-badge">
+                        <span className="badge bg-success-subtle text-success">
+                          <i className="bi bi-arrow-up"></i> 12%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="seller-item">
+                      <div className="seller-rank">2</div>
+                      <div className="seller-info">
+                        <h5>Sarah Johnson</h5>
+                        <p className="text-muted mb-0">289 sales • $9.8K</p>
+                      </div>
+                      <div className="trend-badge">
+                        <span className="badge bg-success-subtle text-success">
+                          <i className="bi bi-arrow-up"></i> 8%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="seller-item">
+                      <div className="seller-rank">3</div>
+                      <div className="seller-info">
+                        <h5>Robert Chen</h5>
+                        <p className="text-muted mb-0">245 sales • $8.2K</p>
+                      </div>
+                      <div className="trend-badge">
+                        <span className="badge bg-warning-subtle text-warning">
+                          <i className="bi bi-arrow-down"></i> 3%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

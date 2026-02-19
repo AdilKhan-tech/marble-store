@@ -67,6 +67,7 @@ function Header() {
             </div>
             <div>
               <a href="./about" className="text-decoration-none text-white ms-4">About Us</a>
+              <a href="./myAccount" className="text-decoration-none text-white ms-4">My Account</a>
               <a href="./contact" className="text-decoration-none text-white ms-4">Contact</a>
               <a href="./contact" className="text-decoration-none text-white ms-4">FAQ</a>
               <a href="#" className="text-decoration-none text-white ms-4" data-bs-toggle="dropdown">

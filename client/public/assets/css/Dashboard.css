@@ -1,12 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-:root {
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --radius-md: 12px;
-}
-body * {
-  font-family: "Poppins", sans-serif !important;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 .header {
   position: relative;
   width: auto;
@@ -34,7 +26,6 @@ body.sidebar-open .header {
   box-shadow: none !important;
   border-color: black !important;
 }
-
 .img-fluid {
   height: 35px;
   width: 35px;

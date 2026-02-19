@@ -1,233 +1,82 @@
-import React from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
+import { getAllProductsRoute } from "@/utils/apiRoutes";
 
-function Cakes() {
+export default function Cakes() {
+  const {token} = useAxiosConfig()
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    if (!token) return;
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(getAllProductsRoute);
+        setProducts(res.data.data);
+      } catch (err) {
+        console.error("Error fetching products", err);
+      }
+    };
+
+    fetchProducts();
+  }, [token]);
+
   return (
-    <>  
-    <section>
-      <img style={{marginTop:"134px", position:"relative", width:"100%"}} src="./assets/images/ice-cak-bnner.jpg" alt="cake banner"/>
-    <div className='container' style={{marginInlineStart:"35px"}}>
-      <div className="bg-white py-5">
+    <>
+      <section>
+        {/* Banner */}
+        <img
+          style={{ marginTop: "134px", width: "100%" }}
+          src="/assets/images/ice-cak-bnner.jpg"
+          alt="cake banner"
+        />
 
-        <div className="col-5 d-flex justify-content-end" style={{marginInlineStart:"55%"}}> 
-            <input type="text" className="form-control rounded-5 border px-3 py-2 fs-bold text-brown rounded-end-0 border-end-0" placeholder="Search here..." style={{height:"43px", width:"300px"}}/>
-            <i className='bi bi-x-lg bg-light rounded-5 border px-3 py-2 rounded-start-0 border-start-0 rounded-end-0 border-end-0'></i>
-            <button className='btn btn-primary rounded-5 border px-3 py-1 rounded-start-0 border-start-0' type="submit"><i className="bi bi-search"></i></button> 
-            <button className="rounded-5 border px-3 ms-2 color-brown py-1 fs-18 bg-transparent" type="button">
-            <i className='bi bi-funnel'></i>Filters</button>
-        </div> 
-        <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
-            <div className="cakes-card card border-0 w-25 rounded-4 align-items-center ">
-              <img className="w-75 mt-3 rounded-4" src="./assets/images/IMG_1293.jpg" alt="Card image"/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown fs-24 fw-bold">Saudi Regions Challenge Cake</h6>
-                <p className="text-center fs-15">ND-002</p>
-                <p className="text-center mt-0 text-blue fs-20 fw-medium"> SR  194 </p>
-                <button className="btn rounded-5 px-3 py-0 fs-5" type="submit">Add to Cart</button>
-              </div>
-            </div>
-            <div className="cakes-card card border-0 w-25 rounded-4 align-items-center">
-              <img className="w-75 mt-3 rounded-4" src="./assets/images/cookie-cake.jpg" alt="Card image"/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown fs-5 fw-bold">Turtle Cake</h6>
-                <p className="text-center fs-15">ICC14-1</p>
-                <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 235</p>
-                <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-              </div>
-            </div>
-            <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-              <img className="w-75 mt-3 rounded-4" src="./assets/images/turtle.png" alt="Card image"/>
-              <div className="card-body align-items-center">
-                <h6 className="text-center color-brown fs-5 fw-bold">We dream and achieve cookie cake</h6>
-                <p className="text-center fs-15">ND-001</p>
-                <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 173</p>
-                <button className="btn rounded-5 px-3 ms-5 py-0 fs-5" type="submit"> Add to Cart </button>
-              </div>
-            </div>
-            <div className="border-0 w-25 align-items-center rounded-4 mx-4">
-              <a href="/makecake">
-              <img className="w-75 mt-3" src="./assets/images/custom-cake-design.png" alt="Card image"/>
-              </a>
-            </div>
-        </div>
+        <div className="container-fluid px-5 py-5">
+          <div className="bg-white">
 
-        <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3  rounded-4" src="./assets/images/3cuozzpg.jpeg" alt="Card image"/>
-            <div className="card-body align-item-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Cake N cup 2</h6>
-              <p className="text-center fs-15">cnc-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium"> SR  52 </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to cart </button>
-            </div>
-          </div>
+            {/* Products Grid */}
+            <div className="row g-4">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="col-xl-3 col-lg-3 col-md-6 col-sm-12"
+                >
+                  <div className="cakes-card w-100 card border-0 rounded-4 h-100 shadow-sm p-3">
 
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/5thsponge.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Turtle Cake</h6>
-              <p className="text-center fs-15">ICC14-1</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 235</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
+                    <img
+                      className="w-100 rounded-4"
+                      src={product.image_url}
+                      alt={product.name_en}
+                      style={{ objectFit: "cover", height: "250px" }}
+                    />
 
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/bomb.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Cherry Bomb</h6>
-              <p className="text-center fs-15">spc-004</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium"> SR  150 </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
+                    <div className="card-body text-center">
+                      <h6 className="color-brown fs-5 fw-bold">
+                        {product.name_en}
+                      </h6>
 
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/comic.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Cherry Bomb</h6>
-              <p className="text-center fs-15">spc-004</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium"> SR  150 </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
+                      <p className="fs-14 text-muted">
+                        {product.sku || "N/A"}
+                      </p>
+
+                      <p className="text-primary fs-5 fw-semibold">
+                        SR {product.regular_price}
+                      </p>
+
+                      <button className="btn btn-primary rounded-5 px-4">
+                        Add to Cart
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              ))}
             </div>
+
           </div>
         </div>
-
-        <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
-          
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/makewish.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Make A Wish</h6>
-              <p className="text-center fs-15">spc-002</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium"> SR  150 </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/minions.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Minions Party</h6>
-              <p className="text-center fs-15">spc-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">  SR  150  </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/70s.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">70’s</h6>
-              <p className="text-center fs-15">Cute-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">  SR  62  </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3" src="./assets/images/letsparty.png" alt="Card image"/>
-            <div className="card-body align-item-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Let’s Party</h6>
-              <p className="text-center fs-15">Cute-002</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">  SR  62  </p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to cart </button>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
-          
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/butter-fly.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Butterfly</h6>
-              <p className="text-center fs-15">Cute-003</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR  62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/chanel-ribbon.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Chanel Ribbon</h6>
-              <p className="text-center fs-15">Cute-004</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR  62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/Cute-cake-bye-bye-single-life-1-300x300.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Bye bye single life</h6>
-              <p className="text-center fs-15">Cute-wed-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3" src="./assets/images/Cute-cake-tomorrow-wedding.png" alt="Card image"/>
-            <div className="card-body align-item-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Tomorrow wedding</h6>
-              <p className="text-center fs-15">Cute-wed-002</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to cart </button>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="mt-3 d-flex overflow-auto pb-4 ms-3 gap-3">
-          
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/Cute-cake-HBD-you-are-17-1-300x300.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">You are 17</h6>
-              <p className="text-center fs-15">Cute-HBD-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/Cute-cake-HBD-Yalmir-1-300x300.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">HBD Yalmir</h6>
-              <p className="text-center fs-15">Cute-HBD-002</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3 rounded-4" src="./assets/images/Cute-cake-congratulation-finally-pass-1-300x300.png" alt="Card image"/>
-            <div className="card-body align-items-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Finally pass</h6>
-              <p className="text-center fs-15">Cute-GRAD-001</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to Cart </button>
-            </div>
-          </div>
-
-          <div className="cakes-card card border-0 w-25 align-items-center rounded-4">
-            <img className="w-75 mt-3" src="./assets/images/Cute-cake-graduation-cry-1-300x300.png" alt="Card image"/>
-            <div className="card-body align-item-center">
-              <h6 className="text-center color-brown fs-5 fw-bold">Graduation in progress</h6>
-              <p className="text-center fs-15">Cute-GRAD-002</p>
-              <p className="text-center mt-0 text-blue fs-20 fw-medium">SR 62</p>
-              <button className="btn rounded-5 px-3 py-0 fs-5" type="submit"> Add to cart </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    </section>
+      </section>
     </>
-  )
+  );
 }
-
-export default Cakes
