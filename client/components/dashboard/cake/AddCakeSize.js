@@ -82,13 +82,8 @@ const AddCakeSize = ({ closePopup, cakeSizeData = null, onAddCakeSize, onUpdateC
   
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.cake_category_id)
-      errors.push("Cake type is required.");
+    if (!formData.cake_category_id) errors.push("Cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.scoop_size) errors.push("Scoop size is required.");
-    if (!formData.additional_price)
-      errors.push("Additional price is required.");
-    if (!formData.calories) errors.push("Calories is required.");
     if (!formData.status) errors.push("Status is required.");
   
     return errors;

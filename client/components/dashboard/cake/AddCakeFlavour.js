@@ -81,8 +81,8 @@ const AddCakeFlavour = ({ closePopup, cakeFlavorData = null, onAddCakeFlavor, on
     if (!formData.name_ar) errors.push("Name Arabic is required.");
     if (!formData.cake_category_id) errors.push("Cake type is required.");
     if (!formData.slug) errors.push("Slug is required.");
-    if (!formData.additional_price) errors.push("Price is required.");
-    if (!formData.symbol) errors.push("Symbol is required.");
+    // if (!formData.additional_price) errors.push("Price is required.");
+    // if (!formData.symbol) errors.push("Symbol is required.");
     if (!formData.status) errors.push("Status is required.");
     return errors;
   };

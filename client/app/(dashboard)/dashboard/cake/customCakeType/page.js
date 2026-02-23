@@ -130,7 +130,7 @@ export default function CustomCakeTypePage() {
         <p className="pagetitle mb-0 fnt-color">Custom Cake Type</p>
         <div >
           <div 
-            className='btn-orange text-center' 
+            className='btn-orange text-white fs-16 text-center' 
             onClick={showOffcanvasAddCustomCakeType} 
             role='button'
           >
@@ -223,7 +223,7 @@ export default function CustomCakeTypePage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={customeCakeType.image_url}
-                          className="table-img rounded-4"
+                          className="image-fluid rounded-4"
                         />
                       </td>
                     <td>

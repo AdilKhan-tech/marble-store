@@ -127,7 +127,7 @@ export default function CustomCakeSize() {
           <p className="pagetitle mb-0 fnt-color">Custom Cake Sizes</p>
           <div>
             <div
-              className="btn-orange text-center"
+              className="btn-orange text-white fs-16 text-center"
               onClick={showOffcanvasOnAddCustomCakesSize}
               role="button"
             >
@@ -234,7 +234,7 @@ export default function CustomCakeSize() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={customCakeSize.image_url}
-                          className="table-img rounded-4"
+                          className="image-fluid rounded-4"
                         />
                       </td>
                       <td>

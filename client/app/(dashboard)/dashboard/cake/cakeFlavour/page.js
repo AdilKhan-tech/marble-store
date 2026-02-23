@@ -127,7 +127,7 @@ export default function CakeFlavourPage() {
         <div className='d-flex justify-content-between mb-3'>
         <p className="pagetitle mb-0 fnt-color">Cakes Flavours</p>
         <div >
-          <div className='btn-orange text-center' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
+          <div className='btn-orange text-white fs-16 text-center' onClick={showOffcanvasOnAddCakesFlavour} role='button'>
           <i className='bi bi-plus-circle ms-2'></i>
           <span className='ms-1'>Create</span>
           </div>
@@ -234,7 +234,7 @@ export default function CakeFlavourPage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={cakeFlavor.image_url}
-                          className="table-img rounded-4"
+                          className="image-fluid rounded-4"
                         />
                       </td>
                     <td>

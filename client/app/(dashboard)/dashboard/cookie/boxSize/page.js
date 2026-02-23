@@ -125,7 +125,7 @@ export default function CookieBoxSizePage() {
         <p className='pagetitle fnt-color'>Cookie Box Sizes</p>
         <div >
             <button 
-              className='btn-orange'
+              className='btn-orange text-white fs-16'
               onClick={showOffcanvasOnAddCookieBoxSize}
               role='button'>
               <i className='bi bi-plus-circle me-2'
@@ -241,7 +241,7 @@ export default function CookieBoxSizePage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={boxSize.image_url}
-                        className="table-img rounded-5"
+                        className="image-fluid rounded-5"
                       />
                     </td>
                     <td>

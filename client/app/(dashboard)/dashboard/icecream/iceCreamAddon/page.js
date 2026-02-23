@@ -127,7 +127,7 @@ export default function IceCreamAddonPage() {
         <p className="pagetitle mb-0 fnt-color">Ice Cream Add-Ons</p>
         <div >
           <div 
-            className='btn-orange text-center' 
+            className='btn-orange text-white fs-16 text-center' 
             onClick={showOffcanvasOnAddIceCreamAddon} 
             role='button'
           >
@@ -231,7 +231,7 @@ export default function IceCreamAddonPage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={iceCreamAddon.image_url}
-                        className="table-img rounded-5"
+                        className="image-fluid rounded-5"
                       />
                     </td>
                     <td>

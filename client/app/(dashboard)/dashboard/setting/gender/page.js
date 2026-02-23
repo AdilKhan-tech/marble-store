@@ -124,7 +124,7 @@ export default function GenderPage() {
         <p className="pagetitle mb-0 fnt-color">Genders</p>
         <div>
           <div
-            className="btn-orange text-center"
+            className="btn-orange text-white fs-16 text-center"
             role="button"
             onClick={showOffcanvasOnAddGender}
           >

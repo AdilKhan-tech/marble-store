@@ -52,7 +52,7 @@ const CakeFlavor = sequelize.define('CakeFlavor', {
         allowNull: false,
         defaultValue: 0,
         validate: {
-            isFloat: { msg: "Additional price must be a valid number"},
+            // isFloat: { msg: "Additional price must be a valid number"},
             min: { args: [0], msg: "Additional price cannot be nagative" }
         }
     },

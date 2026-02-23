@@ -136,7 +136,7 @@ function Occasions() {
        <div className="d-flex justify-content-between mb-3">
         <p className="pagetitle mb-0 fnt-color">Occasions</p>
         <button
-          className="btn-orange"
+          className="btn-orange text-white fs-16"
           onClick={showOffcanvasOnAddOcassion}>
           <i className="bi bi-plus-circle me-2"></i>Create
         </button>

@@ -126,7 +126,7 @@ export default function CookieBoxTypePage() {
         <p className='pagetitle mb-0 fnt-color'>Cookie Box Types</p>
         <div >
           <button 
-            className='btn-orange'
+            className='btn-orange text-white fs-16'
             role='button' 
             onClick={showOffcanvasOnAddCookieType}
           >
@@ -220,7 +220,7 @@ export default function CookieBoxTypePage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={type.image_url}
-                        className="table-img rounded-5"
+                        className="image-fluid rounded-5"
                       />
                     </td>
                     <td>

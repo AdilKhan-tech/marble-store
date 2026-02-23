@@ -166,7 +166,7 @@ export default function Category() {
           <p className="pagetitle mb-0 fnt-color">Categories</p>
           <div>
             <div
-              className="btn-orange text-center"
+              className="btn-orange text-white fs-16 text-center"
               onClick={showOffcanvasOnAddCategory}
               role="button"
             >
@@ -254,7 +254,7 @@ export default function Category() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={category.image_url}
-                          className="table-img rounded-5"
+                          className="image-fluid rounded-5"
                         />
                       </td>
                       <td className="fw-normal fs-14 fnt-color">

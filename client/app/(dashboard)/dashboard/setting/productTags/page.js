@@ -127,7 +127,7 @@ export default function productTags() {
             <p className="pagetitle mb-0 fnt-color">Product Tags</p>
             <div>
               <div
-                className="btn-orange text-center"
+                className="btn-orange text-white fs-16 text-center"
                 role="button"
                 onClick={showOffcanvasOnAddTags}
               >

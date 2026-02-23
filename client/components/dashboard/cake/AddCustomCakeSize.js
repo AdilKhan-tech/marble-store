@@ -49,7 +49,6 @@ const AddCustomCakeSize = ({closePopup,customCakeSizeData = null,onAddCustomCake
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.scoope_size) errors.push("Scoop Size is required.");
     if (!formData.sort) errors.push("Sort is required.");
-    // if (!formData.calories) errors.push("Calories is required.");
     if (!formData.custom_cake_type_id) errors.push("Cake type is required.");
   
     return errors;
