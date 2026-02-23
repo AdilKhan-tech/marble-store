@@ -135,7 +135,7 @@ function page() {
         <p className="pagetitle mb-0 fnt-color">Custom Cake Flavor</p>
         <div>
           <button
-            className="btn-orange"
+            className="btn-orange text-white fs-16"
             onClick={showOffcanvasOnAddCustomCakeFlavor}
             role="button">
             <i className="bi bi-plus-circle ms-1"></i>
@@ -242,7 +242,7 @@ function page() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={customCakeFlavor.image_url}
-                        className="table-img rounded-5"
+                        className="image-fluid rounded-5"
                       />
                     </td>
                     <td className="fw-normal fs-14 fnt-color">

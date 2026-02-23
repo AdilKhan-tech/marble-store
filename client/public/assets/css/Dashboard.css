@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 .header {
-  position: relative;
-  width: auto;
   top: 25px;
   padding: 20px 24px;
   border-bottom: 1px solid rgba(137, 137, 137, 0.2);
@@ -25,10 +23,6 @@ body.sidebar-open .header {
 .form-control:focus {
   box-shadow: none !important;
   border-color: black !important;
-}
-.img-fluid {
-  height: 35px;
-  width: 35px;
 }
 .fs-14 {
   font-size: 14px;
@@ -56,21 +50,6 @@ body.sidebar-open .header {
 .fs-24 {
   font-size: 24px;
   font-weight: bold;
-}
-.home {
-  margin-top: 50px;
-}
-.card {
-  background-color: silver;
-  margin-inline-start: 30px;
-  margin-top: 20px;
-}
-.customer-img {
-  height: 52px;
-  width: 52px;
-}
-.nav-link {
-  margin-right: -20px;
 }
 .org-btn {
   width: 160px;
@@ -261,12 +240,10 @@ table tr:nth-child(even) td {
   color: var(--Color, rgba(82, 82, 82, 0.63)) !important;
   font-weight: 400;
 }
-.btn-orange {
+.btn-orange{
   border: 1px solid rgba(211, 135, 65, 0.25) !important;
   border-radius: 12px !important;
   background-color: rgb(250, 134, 1) !important;
-  font-size: 16px;
-  color: white;
   line-height: 20px;
   padding: 12px;
   margin-top: 19px;
@@ -370,7 +347,6 @@ body.sidebar-collapsed .dashboard-sidebar {
   left: 85px;
   top: 100px;
   width: 236px;
-  background: #ffffff;
   margin-inline-start: 20px;
   border: 1px solid #fafaf9;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -379,7 +355,6 @@ body.sidebar-collapsed .dashboard-sidebar {
   animation: fadeIn 0.2s ease;
 }
 .collapse-dropdown .dropdown-header {
-  color: #9f9f9f;
   border-bottom: 1px solid rgba(137, 137, 137, 0.1);
 }
 .collapse-dropdown a {
@@ -411,16 +386,7 @@ body.sidebar-collapsed .main-content-area {
   margin-inline-start: 85px;
 }
 .dropdown-toggle::after { display: none !important; }
-.nowrap {
-  white-space: nowrap;
-}
-.table-img{
-  width: 40px;
-  height: 40px;
-}
-.text-black {
-  color: #494949;
-}
+.nowrap {white-space: nowrap;}
 .header-logo{
   width: 25px;
   height: 25px;

@@ -128,7 +128,7 @@ export default function Cookies() {
         <p className="pagetitle mb-0 fnt-color">Cookies</p>
         <div>
           <button
-            className="btn-orange"
+            className="btn-orange text-white fs-16"
             role="button"
             onClick={showOffcanvasOnAddCookies}
           >
@@ -236,7 +236,7 @@ export default function Cookies() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={cookie.image_url}
-                        className="table-img rounded-5"
+                        className="image-fluid rounded-5"
                       />
                     </td>
                     <td>

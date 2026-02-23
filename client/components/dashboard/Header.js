@@ -1,15 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 function Header() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   return (
-    <header className="header mb-0 p-2" id="header">
+    <header className="header position-relative w-auto mb-0 p-2" id="header">
       <div className="container-fluid">
         <div className="row align-items-center">
           <div className="col-md-6">
@@ -23,8 +18,7 @@ function Header() {
               <ul className="d-flex align-items-center justify-content-center justify-content-md-end ps-0 mb-0 list-unstyled gap-3 gap-md-4"> 
                 <li className="language-item">
                   <div className="notifications language">
-                    <button className="border-0 p-0 position-relative bg-transparent d-flex align-items-center"
-                      type="button"  data-bs-toggle="dropdown" aria-label="Language Selector">
+                    <button className="border-0 p-0 position-relative bg-transparent d-flex align-items-center">
                       <i className="bi bi-translate fs-20"></i>
                       <i className="bi bi-chevron-down ms-1 small"></i>
                     </button>
@@ -32,9 +26,8 @@ function Header() {
                 </li>
 
                 <li>
-                  <button className="p-0 bg-transparent border-0" onClick={toggleDarkMode}
-                    aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}>
-                    <i className={`bi ${isDarkMode ? 'bi-sun' : 'bi-moon'} fs-20`}></i></button>
+                  <button className="p-0 bg-transparent border-0">
+                    <i className="bi bi-moon fs-20"></i></button>
                 </li>
 
                 <li>
@@ -58,7 +51,7 @@ function Header() {
 
                 <li className="">
                   <div className="dropdown">
-                    <button  className="d-flex align-items-center border-0 bg-transparent p-0">
+                    <button className="d-flex align-items-center border-0 bg-transparent p-0">
                       <div className="position-relative">
                         <i className="bi bi-person-circle rounded-5 img-fluid"/>
                         <span className="bg-success border border-2 border-white rounded-circle position-absolute end-0 bottom-0"

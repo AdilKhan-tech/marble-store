@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
-import Common from "@/utils/Common";
 import { getProductByIdRoute } from "@/utils/apiRoutes";
 
 export default function Page() {

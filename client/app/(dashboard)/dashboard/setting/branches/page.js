@@ -128,7 +128,7 @@ export default function BranchPage() {
         <p className="pagetitle mb-0 fnt-color">Branches</p>
         <div>
           <button
-            className="btn-orange"
+            className="btn-orange text-white fs-16"
             onClick={showOffcanvasOnAddBranch}
             role="button"
           >

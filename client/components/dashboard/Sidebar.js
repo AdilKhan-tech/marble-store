@@ -167,8 +167,8 @@ export default function Sidebar() {
 
               {/* Collapsed dropdown */}
               {isCollapsed && activeDropdown === "Cakes" && (
-                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
-                  <div className="dropdown-header p-2">Cakes</div>
+                <div className="collapse-dropdown bg-white rounded-4 p-3 position-fixed fs-14">
+                  <div className="dropdown-header fnt-color p-2">Cakes</div>
                   <Link 
                     href="/dashboard/cake/cakeSize" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
@@ -266,8 +266,8 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "IceCream" && (
-                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
-                  <div className="dropdown-header">Ice Cream</div>
+                <div className="collapse-dropdown bg-white rounded-4 p-3 position-fixed fs-14">
+                  <div className="dropdown-header fnt-color p-2">Ice Cream</div>
                   <Link 
                     href="/dashboard/icecream/iceCreamAddon" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
@@ -341,8 +341,8 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "Cookies" && (
-                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
-                  <div className="dropdown-header">Cookies</div>
+                <div className="collapse-dropdown bg-white rounded-4 p-3 position-fixed fs-14">
+                  <div className="dropdown-header fnt-color p-2">Cookies</div>
                   <Link 
                     href="/dashboard/cookie/boxSize" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"
@@ -430,8 +430,8 @@ export default function Sidebar() {
               )}
 
               {isCollapsed && activeDropdown === "Settings" && (
-                <div className="collapse-dropdown rounded-4 p-3 position-fixed fs-14">
-                  <div className="dropdown-header">Settings</div>
+                <div className="collapse-dropdown bg-white rounded-4 p-3 position-fixed fs-14">
+                  <div className="dropdown-header fnt-color p-2">Settings</div>
                   <Link 
                     href="/dashboard/setting/branches" 
                     className="dropdown-link d-block align-items-center text-decoration-none fs-14"

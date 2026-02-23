@@ -111,7 +111,7 @@ function Profitchart() {
                         <img 
                           key={i}
                           src="assets/images/Dashboard/adil.png" 
-                          className="customer-avatar img-fluid rounded-5" 
+                          className="customer-avatar image-fluid rounded-5" 
                           alt={`user${i + 12}`}
                         />
                       ))}
@@ -178,7 +178,7 @@ function Profitchart() {
                         </td>
                         <td>
                           <div className="customer-info">
-                            <img src="assets/images/Dashboard/adil.png" className="customer-avatar-sm img-fluid rounded-5" alt="customer"/>
+                            <img src="assets/images/Dashboard/adil.png" className="customer-avatar-sm image-fluid rounded-5" alt="customer"/>
                             <span>Adil Khan</span>
                           </div>
                         </td>

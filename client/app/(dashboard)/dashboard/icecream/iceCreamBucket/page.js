@@ -127,7 +127,7 @@ export default function IceCreamBucketPage() {
           <p className="pagetitle mb-0 fnt-color">Ice Cream Bucket</p>
           <div>
             <div
-              className="btn-orange text-center"
+              className="btn-orange text-white fs-16 text-center"
               onClick={showOffcanvasOnAddIceCreamBucket}
               role="button"
             >
@@ -247,7 +247,7 @@ export default function IceCreamBucketPage() {
                       <td className="fw-normal fs-14 fnt-color">
                         <img
                           src={iceCreamBucket.image_url}
-                          className="table-img"
+                          className="image-fluid"
                         />
                       </td>
                       <td>

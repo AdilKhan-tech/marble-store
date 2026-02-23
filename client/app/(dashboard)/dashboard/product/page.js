@@ -105,7 +105,7 @@ export default function ProductPage() {
           <p className="pagetitle mb-0 fnt-color">Products</p>
           <div>
             <Link href="/dashboard/product/productForm" className="text-decoration-none">
-              <div className="btn-orange text-center" role="button">
+              <div className="btn-orange text-white fs-16 text-center" role="button">
                 <i className="bi bi-plus-circle ms-2"></i>
                 <span className="ms-1">Create</span>
               </div>
@@ -240,7 +240,7 @@ export default function ProductPage() {
                     <td className="fw-normal fs-14 fnt-color">
                       <img
                         src={product.image_url}
-                        className="table-img rounded-1"
+                        className="image-fluid rounded-1"
                       />
                     </td>
                     <td className="fw-normal fs-14 fnt-color">

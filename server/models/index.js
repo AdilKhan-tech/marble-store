@@ -208,5 +208,6 @@ module.exports = {
   Tag,
   CustomCakeSize,
 
-  CakePortionSize
+  CakePortionSize,
+  Occasion,
 };

@@ -44,7 +44,6 @@ const AddIceCreamBucket = ({closePopup,iceCreamBucketData,onAddIceCreamBucket,on
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.size) errors.push("Size is required.");
     if (!formData.price) errors.push("Price is required.");
-    if (!formData.calories) errors.push("Calories is required."); 
   
     return errors;
   };

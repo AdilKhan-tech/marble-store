@@ -59,10 +59,9 @@ const CakeSize = sequelize.define("CakeSize", {
 
   additional_price: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
     defaultValue: 0,
     validate: {
-      isFloat: { msg: "Additional price must be a number" },
       min: {
         args: [0],
         msg: "Additional price cannot be negative",
