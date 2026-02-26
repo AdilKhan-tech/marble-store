@@ -37,7 +37,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     slug: "",
     additional_price: "",
     calories: "",
-    status: "active",
+    status: "Active",
   });
 
   useEffect(() => {
@@ -82,94 +82,12 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
   
     if (!formData.name_en) errors.push("Name English is required.");
     if (!formData.name_ar) errors.push("Name Arabic is required.");
-    if (!formData.icecream_bucket_id) errors.push("IceCream Bucket is required.");
     if (!formData.slug) errors.push("Slug is required.");
     if (!formData.additional_price) errors.push("Additional price is required.");
     if (!formData.calories && formData.calories !== 0) errors.push("Calories is required.");
   
     return errors;
   };
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const validationErrors = validateForm();
-  //   setErrors(validationErrors);
-  //   if (validationErrors.length > 0) return;
-
-  //   try {
-  //     const payload = new FormData();
-  
-  //     Object.entries(formData).forEach(([key, value]) => {
-  //       payload.append(key, value);
-  //     });
-  
-  //     if (selectedFiles && selectedFiles.length > 0) {
-  //       payload.append("image_url", selectedFiles[0]);
-  //     }
-  
-  //     // ================= UPDATE =================
-  //     if (iceCreamPortionData) {
-  //       const res = await axios.put(
-  //         updateIceCreamPortionSizeById(iceCreamPortionData.id),
-  //         payload
-  //       );
-  
-  //       if (res.status === 200) {
-  //         toast.success("IceCream Portion Size updated successfully!", {
-  //           autoClose: 1000,
-  //         });
-
-  //         const selectedIceCreamBucket = iceCreamBuckets.find(
-  //           (t) =>
-  //             String(t.id) === String(formData.icecream_bucket_id)
-  //         );
-
-  //         const updatedIceCream = {
-  //           ...res.data,
-  //           iceCreamBucket: selectedIceCreamBucket || null,
-  //         };
-        
-  //         if (onUpdateIceCreamPortionSize) {
-  //           onUpdateIceCreamPortionSize(updatedIceCream);
-  //         }
-  
-  //         closePopup();
-  //       }
-  //     }
-  
-  //     // ================= CREATE =================
-  //     else {
-  //       const res = await axios.post(createIceCreamPortionSize, payload);
-  
-  //       if (res.status === 201 || res.status === 200) {
-  //         const selectedIceCreamBucket = iceCreamBuckets.find((t) =>
-  //             String(t.id) === String(formData.icecream_bucket_id)
-  //         );
-  
-  //         const createdIceCream = {
-  //           ...res.data,
-  //           iceCreamBucket: selectedIceCreamBucket || null,
-  //         };
-  
-  //         toast.success("IceCream Portion Size added successfully!", {
-  //           autoClose: 1000,
-  //           onClose: closePopup,
-  //         });
-  
-  //         if (onAddIceCreamPortionSize) onAddIceCreamPortionSize(createdIceCream);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     const backendMessage =
-  //       error?.response?.data?.message ||
-  //       error?.response?.data?.errors?.[0] ||
-  //       "Something went wrong!";
-    
-  //     toast.error(backendMessage);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -368,16 +286,16 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
             style={{ width: "50px", height: "26px" }}
             type="checkbox"
             role="switch"
-            checked={formData.status === "active"}
+            checked={formData.status === "Active"}
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                status: e.target.checked ? "active" : "inactive",
+                status: e.target.checked ? "Active" : "Inactive",
               }))
             }
           />
           <label className="form-check-label ms-2 mt-1 fs-14 fw-normal text-secondary">
-            {formData.status === "active" ? "Active" : "Inactive"}
+            {formData.status === "Active" ? "Active" : "Inactive"}
           </label>
         </div>
       </div>

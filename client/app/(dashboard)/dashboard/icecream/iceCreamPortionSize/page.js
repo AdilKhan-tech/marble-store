@@ -14,6 +14,7 @@ import Common from "@/utils/Common"
 export default function IceCreamPortionSizePage() {
   const { token } = useAxiosConfig();
   const [iceCreamPortionSizes, setIceCreamPortionSizes] = useState([]);
+  const [rawIceCreamPortionSizes, setRawIceCreamPortionSizes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [iceCreamPortionData, setIceCreamPortionSizeData] = useState(null);
   const [sortField, setSortField] = useState("id");
@@ -37,7 +38,14 @@ export default function IceCreamPortionSizePage() {
         sortField,
       }
       const response = await axios.get(getAllIceCreamPortionSizes, { params });
-      setIceCreamPortionSizes(response.data.data);
+      const rawData = response.data.data;
+      // 🔥 VERY IMPORTANT
+      setRawIceCreamPortionSizes(rawData);
+  
+      const tree = Common.buildCategoryTree(rawData);
+      const flatList = Common.flattenCategories(tree);
+  
+      setIceCreamPortionSizes(flatList);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);
 
@@ -56,7 +64,13 @@ export default function IceCreamPortionSizePage() {
     } else {
       fetchIceCreamPortionSizes();
     }
-}, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+
+  useEffect(() => {
+    const tree = Common.buildCategoryTree(rawIceCreamPortionSizes);
+    const flatList = Common.flattenCategories(tree);
+    setIceCreamPortionSizes(flatList);
+  }, [rawIceCreamPortionSizes]);
 
   const showOffcanvasOnAddCakesSize = () => {
     setIceCreamPortionSizeData(null);
@@ -86,7 +100,7 @@ export default function IceCreamPortionSizePage() {
       const response = await axios.delete(deleteIceCreamPortionSizeById(iceCreamId));
       if(response.status === 200) {
         toast.success("Ice Cream portion size deleted successfully!", {autoClose: 1000});
-        setIceCreamPortionSizes((prev) =>
+        setRawIceCreamPortionSizes((prev) =>
           prev.filter((iceCreamPortionSize) => iceCreamPortionSize.id !== iceCreamId)
         );
       }
@@ -105,17 +119,38 @@ export default function IceCreamPortionSizePage() {
     }
   };
 
-  const addIceCreamPortionSize = (newIceCream) => {
-    setIceCreamPortionSizes((prev) => [newIceCream, ...prev]);
+  const addIceCreamPortionSize = (newIceCreamPortionSize ) => {
     setShowOffcanvas(false);
+  
+    // 🔹 Always increase total count
+    setTotalEntries(prev => prev + 1);
+  
+    // 🔹 Only update UI if user is on page 1 
+    // and sorting is latest first
+    if (currentPage === 1 && sortField === "id" && sortOrder === "DESC") {
+  
+      setRawIceCreamPortionSizes(prev => {
+        const updated = [newIceCreamPortionSize, ...prev];
+  
+        // Maintain page size
+        if (updated.length > pageLimit) {
+          updated.pop();
+        }
+  
+        return updated;
+      });
+    }
   };
 
-  const updateIceCreamPortionSize = (updatedIceCream) => {
-    setIceCreamPortionSizes((prev) =>
-      prev.map((item) =>
-        item.id === updatedIceCream.id ? updatedIceCream : item
+  const updateIceCreamPortionSize = (updatedIceCreamPortionSize) => {
+    setRawIceCreamPortionSizes(prev =>
+      prev.map(item =>
+        item.id === updatedIceCreamPortionSize.id
+          ? { ...item, ...updatedIceCreamPortionSize }
+          : item
       )
     );
+  
     setShowOffcanvas(false);
   };
 
@@ -245,8 +280,8 @@ export default function IceCreamPortionSizePage() {
                         />
                         </td>
                       <td>
-                        <div className={icecream?.status === "active"? "blue-status": "red-status"}>
-                          {icecream?.status === "active"? "Active": "Inactive"}
+                        <div className={icecream?.status === "Active"? "blue-status": "red-status"}>
+                          {icecream?.status === "Active"? "Active": "Inactive"}
                         </div>
                       </td>
 

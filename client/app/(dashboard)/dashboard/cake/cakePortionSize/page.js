@@ -67,9 +67,9 @@ export default function CakePortionSizePage() {
     } else {
       fetchCakePortionSizes();
     }
-}, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
+  }, [currentPage, pageLimit, keywords, sortOrder, sortField, token]);
 
-useEffect(() => {
+  useEffect(() => {
     const tree = Common.buildCategoryTree(rawCakePortionSizes);
     const flatList = Common.flattenCategories(tree);
     setCakePortionSizes(flatList);
