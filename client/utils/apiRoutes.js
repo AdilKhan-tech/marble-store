@@ -38,6 +38,7 @@ export const getAllIceCreamPortionSizes = `${host}/icecreams/portions`
 export const createIceCreamPortionSize = `${host}/icecreams/portions`
 export const deleteIceCreamPortionSizeById =(id)=> `${host}/icecreams/portions/${id}`;
 export const updateIceCreamPortionSizeById =(id)=> `${host}/icecreams/portions/${id}`;
+export const getIceCreamPortionSizeTree = `${host}/icecreams/portions/tree`;
 
 // IcecreamAddOns
 export const getAllIcecreamAddOns = `${host}/icecreams/addons`

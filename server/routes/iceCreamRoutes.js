@@ -19,6 +19,7 @@ router.post("/portions", upload.single('image_url'), IceCreamPortionSizeControll
 router.get("/portions", IceCreamPortionSizeController.getAllIceCreamPortionSize);
 router.put("/portions/:id", upload.single('image_url'), IceCreamPortionSizeController.updateIceCreamPortionSize);
 router.delete("/portions/:id", IceCreamPortionSizeController.deleteIceCreamPortionSizeById);
+router.get("/portions/tree", IceCreamPortionSizeController.getIceCreamPortionSizeTree);
 
 
 router.post("/addOns", upload.single('image_url'), IceCreamAddOnController.createIceCreamAddOn);
