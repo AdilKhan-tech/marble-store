@@ -3,17 +3,37 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import axios from "axios";
-import {createIceCreamPortionSize, updateIceCreamPortionSizeById, getAllIceCreamBuckets} from "@/utils/apiRoutes";
+import {createIceCreamPortionSize, updateIceCreamPortionSizeById, getIceCreamPortionSizeTree} from "@/utils/apiRoutes";
+
+const flattenCategories = (iceCreamPortionSizes, level = 0) => {
+  let result = [];
+
+  iceCreamPortionSizes.forEach(iceCreamPortionSize => {
+    result.push({
+      ...iceCreamPortionSize,
+      level,
+    });
+
+    if (iceCreamPortionSize.children?.length) {
+      result = result.concat(
+        flattenCategories(iceCreamPortionSize.children, level + 1)
+      );
+    }
+  });
+
+  return result;
+};
 
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const {token} = useAxiosConfig();
+  const [parentIceCreamPortionSize, setParentIceCreamPortionSize] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errors, setErrors] = useState([]);
   const [iceCreamBuckets, setIceCreamBuckets] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
-    icecream_bucket_id: "",
+    parent_id: "",
     slug: "",
     additional_price: "",
     calories: "",
@@ -25,7 +45,7 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
       setFormData({
         name_en: iceCreamPortionData.name_en || "",
         name_ar: iceCreamPortionData.name_ar || "",
-        icecream_bucket_id: iceCreamPortionData.icecream_bucket_id || "",
+        parent_id: iceCreamPortionData.parent_id || "",
         slug: iceCreamPortionData.slug || "",
         additional_price: iceCreamPortionData.additional_price || "",
         calories: iceCreamPortionData.calories || "",
@@ -42,18 +62,15 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     }));
   };
 
-  const fetchIceCreamBuckets = async () => {
-    try {
-      const response = await axios.get(getAllIceCreamBuckets);
-        setIceCreamBuckets(response.data.data)
-    } catch (error) {
-      console.error("Error fetching IceCream Buckets", error);
-    }
+  const fetchIceCreamPortionSizeTree = async () => {
+    if (!token) return;
+    const res = await axios.get(getIceCreamPortionSizeTree);
+    const flat = flattenCategories(res.data.data);
+    setParentIceCreamPortionSize(flat);
   };
 
   useEffect(() => {
-      if (!token) return;
-      fetchIceCreamBuckets();
+    fetchIceCreamPortionSizeTree();
   }, [token]);
 
   const handleFileChange = (e) => {
@@ -74,77 +91,162 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
   };
 
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const validationErrors = validateForm();
+  //   setErrors(validationErrors);
+  //   if (validationErrors.length > 0) return;
+
+  //   try {
+  //     const payload = new FormData();
+  
+  //     Object.entries(formData).forEach(([key, value]) => {
+  //       payload.append(key, value);
+  //     });
+  
+  //     if (selectedFiles && selectedFiles.length > 0) {
+  //       payload.append("image_url", selectedFiles[0]);
+  //     }
+  
+  //     // ================= UPDATE =================
+  //     if (iceCreamPortionData) {
+  //       const res = await axios.put(
+  //         updateIceCreamPortionSizeById(iceCreamPortionData.id),
+  //         payload
+  //       );
+  
+  //       if (res.status === 200) {
+  //         toast.success("IceCream Portion Size updated successfully!", {
+  //           autoClose: 1000,
+  //         });
+
+  //         const selectedIceCreamBucket = iceCreamBuckets.find(
+  //           (t) =>
+  //             String(t.id) === String(formData.icecream_bucket_id)
+  //         );
+
+  //         const updatedIceCream = {
+  //           ...res.data,
+  //           iceCreamBucket: selectedIceCreamBucket || null,
+  //         };
+        
+  //         if (onUpdateIceCreamPortionSize) {
+  //           onUpdateIceCreamPortionSize(updatedIceCream);
+  //         }
+  
+  //         closePopup();
+  //       }
+  //     }
+  
+  //     // ================= CREATE =================
+  //     else {
+  //       const res = await axios.post(createIceCreamPortionSize, payload);
+  
+  //       if (res.status === 201 || res.status === 200) {
+  //         const selectedIceCreamBucket = iceCreamBuckets.find((t) =>
+  //             String(t.id) === String(formData.icecream_bucket_id)
+  //         );
+  
+  //         const createdIceCream = {
+  //           ...res.data,
+  //           iceCreamBucket: selectedIceCreamBucket || null,
+  //         };
+  
+  //         toast.success("IceCream Portion Size added successfully!", {
+  //           autoClose: 1000,
+  //           onClose: closePopup,
+  //         });
+  
+  //         if (onAddIceCreamPortionSize) onAddIceCreamPortionSize(createdIceCream);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     const backendMessage =
+  //       error?.response?.data?.message ||
+  //       error?.response?.data?.errors?.[0] ||
+  //       "Something went wrong!";
+    
+  //     toast.error(backendMessage);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-
+    
     try {
       const payload = new FormData();
-  
+
       Object.entries(formData).forEach(([key, value]) => {
-        payload.append(key, value);
+        if (value !== null && value !== "") {
+          payload.append(key, value);
+        }
       });
-  
-      if (selectedFiles && selectedFiles.length > 0) {
+      if (selectedFiles.length > 0) {
         payload.append("image_url", selectedFiles[0]);
       }
-  
-      // ================= UPDATE =================
+
       if (iceCreamPortionData) {
-        const res = await axios.put(
-          updateIceCreamPortionSizeById(iceCreamPortionData.id),
-          payload
-        );
-  
+        const res = await axios.put(updateIceCreamPortionSizeById(iceCreamPortionData.id), payload);
+
         if (res.status === 200) {
-          toast.success("IceCream Portion Size updated successfully!", {
+          toast.success("Category updated successfully!", {
             autoClose: 1000,
           });
 
-          const selectedIceCreamBucket = iceCreamBuckets.find(
-            (t) =>
-              String(t.id) === String(formData.icecream_bucket_id)
-          );
-
-          const updatedIceCream = {
-            ...res.data,
-            iceCreamBucket: selectedIceCreamBucket || null,
-          };
-        
           if (onUpdateIceCreamPortionSize) {
-            onUpdateIceCreamPortionSize(updatedIceCream);
+            const updated = res.data;
+
+            if (updated.parent_id) {
+              const parent = parentIceCreamPortionSize.find(
+                p => p.id === updated.parent_id
+              );
+
+              updated.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            } else {
+              updated.parent = null;
+            }
+
+            onUpdateIceCreamPortionSize(updated);
           }
-  
+
           closePopup();
         }
       }
-  
-      // ================= CREATE =================
       else {
         const res = await axios.post(createIceCreamPortionSize, payload);
-  
+
         if (res.status === 201 || res.status === 200) {
-          const selectedIceCreamBucket = iceCreamBuckets.find((t) =>
-              String(t.id) === String(formData.icecream_bucket_id)
-          );
-  
-          const createdIceCream = {
-            ...res.data,
-            iceCreamBucket: selectedIceCreamBucket || null,
-          };
-  
           toast.success("IceCream Portion Size added successfully!", {
             autoClose: 1000,
             onClose: closePopup,
           });
-  
-          if (onAddIceCreamPortionSize) onAddIceCreamPortionSize(createdIceCream);
+
+          if (onAddIceCreamPortionSize) {
+            const newIceCreamPortionSize = res.data;
+
+            if (newIceCreamPortionSize.parent_id) {
+              const parent = parentIceCreamPortionSize.find(
+                p => p.id === newIceCreamPortionSize.parent_id
+              );
+            
+              newIceCreamPortionSize.parent = parent
+                ? { id: parent.id, name_en: parent.name_en }
+                : null;
+            }
+            onAddIceCreamPortionSize(newIceCreamPortionSize);
+          }
+
+          closePopup();
         }
       }
-    } catch (error) {
+    }catch (error) {
       const backendMessage =
         error?.response?.data?.message ||
         error?.response?.data?.errors?.[0] ||
@@ -191,21 +293,27 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
 
       <div className="form-group mt-3">
         <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
-          Icecream Bucket
+          Parent Portion Size
         </label>
         <select
-          name="icecream_bucket_id"
+          name="parent_id"
           className="form-select textarea-hover-dark text-secondary"
-          value={formData.icecream_bucket_id}
-          onChange={handleChange}
+          value={formData.parent_id ?? ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              parent_id: e.target.value ? Number(e.target.value) : null
+            })
+          }
         >
-          <option value="">Select Icecream Bucket</option>
+          <option value="">None</option>
 
-          {iceCreamBuckets.map((iceCreamBucket) => (
-            <option key={iceCreamBucket.id} value={iceCreamBucket.id}>
-              {iceCreamBucket.name_en}
-            </option>
-          ))}
+          {parentIceCreamPortionSize.map(iceCreamPortionSize => (
+              <option key={iceCreamPortionSize.id} value={iceCreamPortionSize.id}>
+                {"— ".repeat(iceCreamPortionSize.level || 0)}
+                {iceCreamPortionSize.name_en}
+              </option>
+            ))}
         </select>
       </div>
 

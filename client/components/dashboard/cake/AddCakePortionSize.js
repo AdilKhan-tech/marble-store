@@ -61,7 +61,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
     setSelectedFiles(Array.from(e.target.files));
   };
 
-  const fetchCakePortionSizes = async () => {
+  const fetchCakePortionSizeTree = async () => {
     if (!token) return;
     const res = await axios.get(getCakePortionSizeTree);
     const flat = flattenCategories(res.data.data);
@@ -69,7 +69,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
   };
 
   useEffect(() => {
-    fetchCakePortionSizes();
+    fetchCakePortionSizeTree();
   }, [token]);
 
   const validateForm = () => {
@@ -197,21 +197,23 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
           onChange={handleChange}
         />
       </div>
-      <div className='row mt-3'>
-      <div className="form-group col-md-6">
-        <label className="form-label text-secondary">Slug</label>
-        <input 
-          name="slug" 
-          type="text" 
-          className="form-control form-control-lg textarea-hover-dark text-secondary"
-          value={formData.slug} 
-          onChange={handleChange}
-        />
-      </div>
 
-      <div className="form-group col-md-6">
-        <label className="form-label text-secondary">Parent Portion Size</label>
-        <select
+      <div className='row mt-3'>
+
+        <div className="form-group col-md-6">
+          <label className="form-label text-secondary">Slug</label>
+          <input 
+            name="slug" 
+            type="text" 
+            className="form-control form-control-lg textarea-hover-dark text-secondary"
+            value={formData.slug} 
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group col-md-6">
+          <label className="form-label text-secondary">Parent Portion Size</label>
+          <select
             name="parent_id"
             className="form-select textarea-hover-dark text-secondary"
             value={formData.parent_id ?? ""}
@@ -231,7 +233,7 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
               </option>
             ))}
         </select>
-      </div>
+        </div>
       </div>
       
       <div className="col-md-12 px-1 mt-3">
