@@ -124,37 +124,51 @@ class IceCreamPortionSizeController {
 
   static async updateIceCreamPortionSize(req, res, next) {
     const { id } = req.params;
+  
     try {
       const iceCreamPortionSize = await IceCreamPortionSize.findByPk(id);
       if (!iceCreamPortionSize) {
-          return res.status(404).json({ message: "Ice Cream Portion Size not found" });
+        return res.status(404).json({ message: "IceCream Portion Size not found" });
+      }
+  
+      const {name_en, name_ar, parent_id, slug, additional_price, calories,status} = req.body;
+  
+      let image_url = iceCreamPortionSize.image_url;
+      if (req.file) {
+        image_url = req.file.filename;
+      }
+  
+      let parsedParentId = null;
+      if (parent_id !== undefined && parent_id !== "" && parent_id !== "null") {
+        parsedParentId = Number(parent_id);
+      }
+  
+      if (parsedParentId === Number(id)) {
+        return res.status(400).json({
+          message: "IceCream Portion Size cannot be its own parent",
+        });
       }
 
-      const {name_en, name_ar, parent_id, slug, additional_price, calories,status} = req.body;
-      let image_url = iceCreamPortionSize.image_url;
-        if (req.file) {
-          image_url = req.file.filename;
-        }
       await iceCreamPortionSize.update({
-          name_en: name_en ?? iceCreamPortionSize.name_en,
-          name_ar: name_ar ?? iceCreamPortionSize.name_ar,
-          parent_id: parent_id ?? iceCreamPortionSize.parent_id,
-          slug: slug ?? iceCreamPortionSize.slug,
-          additional_price: additional_price ?? iceCreamPortionSize.additional_price,
-          calories: calories ?? iceCreamPortionSize.calories,
-          status: status ?? iceCreamPortionSize.status,
-          image_url: image_url
+        name_en: name_en ?? iceCreamPortionSize.name_en,
+        name_ar: name_ar ?? iceCreamPortionSize.name_ar,
+        parent_id: parsedParentId,
+        slug: slug ?? iceCreamPortionSize.slug,
+        additional_price: additional_price ?? iceCreamPortionSize.additional_price,
+        calories: calories ?? iceCreamPortionSize.calories,
+        status: status ?? iceCreamPortionSize.status,
+        image_url: image_url
       });
-
+  
       const responseData = {
         ...iceCreamPortionSize.toJSON(),
         image_url: iceCreamPortionSize.image_url
           ? `${UPLOADS_URL}/${iceCreamPortionSize.image_url}`
           : null,
       };
+  
       return res.status(200).json(responseData);
-
-    }catch (error) {
+    } catch (error) {
       next(error);
     }
   }
