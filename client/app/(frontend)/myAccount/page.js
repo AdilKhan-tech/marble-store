@@ -1,552 +1,999 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-const MyAccount = () => {
-  const [language, setLanguage] = useState("en");
+function MyAccount() {
+  const [activeTab, setActiveTab] = useState("profile");
+  const [isEditing, setIsEditing] = useState(false);
+const [editingAddress, setEditingAddress] = useState(null);
+const [isAddMode, setIsAddMode] = useState(false);
+  // ── User Data ───────────────────────────────────────
+  const [userData, setUserData] = useState({
+    name: "Muhammad Adil",
+    email: "adil.ce2007@gmail.com",
+    phone: "+92 333 5838514",
+    joinDate: "January 15, 2024",
+    totalOrders: 24,
+    totalSpent: "₨ 45,230",
+    avatar: null,
+  });
+  const [addresses, setAddresses] = useState([
+  {
+    id: 1,
+    type: 'Home',
+    address: 'House #123, Street 4, Bahria Town Phase 8, Rawalpindi',
+    isDefault: true,
+  },
+  {
+    id: 2,
+    type: 'Office',
+    address: 'Office #07, 2nd Floor, Silicon Valley Plaza, Blue Area, Islamabad',
+    isDefault: false,
+  },
+]);
 
-  useEffect(() => {
-    const sidebarLinks = document.querySelectorAll('.list-group-item-action');
-    
-    const showSection = (sectionId) => {
-      document.querySelectorAll('#profile, #security, #notifications, #payments, #orders, #settings, #help')
-        .forEach(section => section.classList.add('d-none'));
-      
-      const selectedSection = document.getElementById(sectionId.replace('#', ''));
-      if (selectedSection) selectedSection.classList.remove('d-none');
-      
-      sidebarLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === sectionId) link.classList.add('active');
-      });
-    };
-    
-    showSection('#profile');
-    
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection(link.getAttribute('href'));
-      });
-    });
-    
-    return () => {
-      sidebarLinks.forEach(link => {
-        link.removeEventListener('click', () => {});
-      });
-    };
-  }, []);
+  // ── Mock Data ────────────────────────────────────────
+  const orders = [
+    {
+      id: "#ORD-7890",
+      date: "15 Mar 2024",
+      items: 2,
+      total: "₨ 4,250",
+      status: "Delivered",
+      statusClass: "bg-success-subtle text-success",
+      image:
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200",
+      productName: "Chocolate Truffle Cake",
+      category: "Cakes",
+    },
+    {
+      id: "#ORD-7889",
+      date: "14 Mar 2024",
+      items: 1,
+      total: "₨ 1,890",
+      status: "Processing",
+      statusClass: "bg-warning-subtle text-warning",
+      image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200",
+      productName: "Butter Cookies (500g)",
+      category: "Cookies",
+    },
+    {
+      id: "#ORD-7888",
+      date: "12 Mar 2024",
+      items: 3,
+      total: "₨ 3,550",
+      status: "Shipped",
+      statusClass: "bg-primary-subtle text-primary",
+      image:
+        "https://images.unsplash.com/photo-1587248720327-8eb72564be1e?w=200",
+      productName: "Assorted Biscuits Pack",
+      category: "Biscuits",
+    },
+    {
+      id: "#ORD-7887",
+      date: "10 Mar 2024",
+      items: 5,
+      total: "₨ 6,750",
+      status: "Delivered",
+      statusClass: "bg-success-subtle text-success",
+      image:
+        "https://images.unsplash.com/photo-1606318801954-d46d46d3360a?w=200",
+      productName: "Red Velvet Cake",
+      category: "Cakes",
+    },
+    {
+      id: "#ORD-7886",
+      date: "08 Mar 2024",
+      items: 2,
+      total: "₨ 2,250",
+      status: "Delivered",
+      statusClass: "bg-success-subtle text-success",
+      image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200",
+      productName: "Chocolate Chip Cookies",
+      category: "Cookies",
+    },
+    {
+      id: "#ORD-7885",
+      date: "05 Mar 2024",
+      items: 1,
+      total: "₨ 890",
+      status: "Cancelled",
+      statusClass: "bg-danger-subtle text-danger",
+      image:
+        "https://images.unsplash.com/photo-1587248720327-8eb72564be1e?w=200",
+      productName: "Glucose Biscuits",
+      category: "Biscuits",
+    },
+    {
+      id: "#ORD-7884",
+      date: "03 Mar 2024",
+      items: 4,
+      total: "₨ 5,990",
+      status: "Processing",
+      statusClass: "bg-warning-subtle text-warning",
+      image:
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200",
+      productName: "Fresh Fruit Cake",
+      category: "Cakes",
+    },
+    {
+      id: "#ORD-7883",
+      date: "01 Mar 2024",
+      items: 3,
+      total: "₨ 3,890",
+      status: "Shipped",
+      statusClass: "bg-primary-subtle text-primary",
+      image:
+        "https://images.unsplash.com/photo-1606318801954-d46d46d3360a?w=200",
+      productName: "Black Forest Cake",
+      category: "Cakes",
+    },
+    {
+      id: "#ORD-7882",
+      date: "28 Feb 2024",
+      items: 2,
+      total: "₨ 2,990",
+      status: "Delivered",
+      statusClass: "bg-success-subtle text-success",
+      image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200",
+      productName: "Shortbread Cookies",
+      category: "Cookies",
+    },
+    {
+      id: "#ORD-7881",
+      date: "25 Feb 2024",
+      items: 6,
+      total: "₨ 7,890",
+      status: "Delivered",
+      statusClass: "bg-success-subtle text-success",
+      image:
+        "https://images.unsplash.com/photo-1587248720327-8eb72564be1e?w=200",
+      productName: "Marie Biscuits Pack",
+      category: "Biscuits",
+    },
+    {
+      id: "#ORD-7880",
+      date: "22 Feb 2024",
+      items: 1,
+      total: "₨ 2,450",
+      status: "Processing",
+      statusClass: "bg-warning-subtle text-warning",
+      image:
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200",
+      productName: "Pineapple Cake",
+      category: "Cakes",
+    },
+    {
+      id: "#ORD-7879",
+      date: "20 Feb 2024",
+      items: 3,
+      total: "₨ 4,550",
+      status: "Shipped",
+      statusClass: "bg-primary-subtle text-primary",
+      image:
+        "https://images.unsplash.com/photo-1606318801954-d46d46d3360a?w=200",
+      productName: "Wedding Cake Slice",
+      category: "Cakes",
+    },
+  ];
 
+  const wishlistItems = Array(12).fill({
+    id: 1,
+    name: "Chocolate Fudge Cake (1 kg)",
+    price: "₨ 2,450",
+    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
+    inStock: true,
+  });
+  const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    setIsEditing(false);
+    alert("Profile Updated Successfully!");
+  };
 
   return (
-    <div className="container my-5" style={{ marginTop: "100px" }}>
-      <div className="row justify-content-center">
-        <div className="col-lg-10">
-          <div className="shadow-lg border-0">
-            <div className="card-header bg-gradient text-white text-center py-4" style={{background: "linear-gradient(to right, #6a11cb, #2575fc)"}}>
-              <h2 className="mb-0 fs-1 fw-bold">My Account</h2>
-              <p className="mb-0 opacity-75">Manage your personal information and preferences</p>
+    <div className="container-fluid py-5 bg-light min-vh-100">
+      <div className="container">
+        <div className="row g-4">
+          {/* ── LEFT SIDEBAR ── */}
+          <div className="col-lg-3">
+            <div
+              className="border-0 shadow-sm sticky-top"
+              style={{ marginTop: "100px", zIndex: 10 }}
+            >
+              <div className="card-body text-center p-4">
+                <div
+                  className="avatar-circle bg-primary bg-gradient text-white mx-auto mb-3 d-flex align-items-center justify-content-center shadow"
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50%",
+                    fontSize: "2rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  {userData.name.charAt(0)}
+                </div>
+                <h6 className="fw-bold mb-1">{userData.name}</h6>
+                <p className="text-muted small mb-0">{userData.email}</p>
+              </div>
+
+              <div className="list-group list-group-flush pb-2">
+                {[
+                  { id: "profile", icon: "bi-person", label: "Profile" },
+                  { id: "orders", icon: "bi-bag-check", label: "My Orders" },
+                  { id: "wishlist", icon: "bi-heart", label: "Wishlist" },
+                  { id: "addresses", icon: "bi-geo-alt", label: "Addresses" },
+                  { id: "settings", icon: "bi-gear", label: "Settings" },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    className={`list-group-item list-group-item-action border-0 d-flex align-items-center gap-3 px-4 py-3 transition-all ${
+                      activeTab === item.id
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-secondary"
+                    }`}
+                    onClick={() => setActiveTab(item.id)}
+                  >
+                    <i className={`bi ${item.icon}`}></i>
+                    <span className="fw-medium">{item.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-            
-            <div className="card-body p-0">
-              <div className="row g-0">
-                {/* Left Sidebar */}
-                <div className="col-md-4 border-end">
-                  <div className="p-4 text-center">
-                    <div className="position-relative d-inline-block mb-3">
-                      <img 
-                        src="/assets/images/qrcode.png" 
-                        className="rounded-circle border border-3 border-primary" 
-                        alt="User Avatar" 
-                        style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                      />
-                      <div className="position-absolute bottom-0 end-0 bg-success rounded-circle p-1 border border-2 border-white">
-                        <div className="bg-success rounded-circle" style={{width: '15px', height: '15px'}}></div>
+          </div>
+
+          {/* ── MAIN CONTENT ── */}
+          <div className="col-lg-9">
+            <div
+              className="border-0 shadow-sm p-4 p-md-5 bg-white rounded-4"
+              style={{ marginTop: "100px" }}
+            >
+              {/* PROFILE SECTION */}
+              {activeTab === "profile" && (
+                <div className="animate-in">
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="fw-bold mb-0">My Profile</h4>
+                    <button
+                      className={`btn btn-sm px-4 rounded-pill ${isEditing ? "btn-secondary" : "btn-outline-primary"}`}
+                      onClick={() => setIsEditing(!isEditing)}
+                    >
+                      {isEditing ? "Cancel" : "Edit Profile"}
+                    </button>
+                  </div>
+
+                  {isEditing ? (
+                    <form onSubmit={handleProfileUpdate} className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control rounded-3"
+                          value={userData.name}
+                          onChange={(e) =>
+                            setUserData({ ...userData, name: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control rounded-3"
+                          value={userData.email}
+                          onChange={(e) =>
+                            setUserData({ ...userData, email: e.target.value })
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold">
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          className="form-control rounded-3"
+                          value={userData.phone}
+                          onChange={(e) =>
+                            setUserData({ ...userData, phone: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold">
+                          Address
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control rounded-3"
+                          value={userData.address}
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              address: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-12 mt-4">
+                        <button
+                          type="submit"
+                          className="btn btn-primary px-5 rounded-pill"
+                        >
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <div className="row g-4">
+                      <div className="col-md-6">
+                        <label className="text-muted small d-block mb-1">
+                          Full Name
+                        </label>
+                        <p className="fw-bold fs-5">{userData.name}</p>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="text-muted small d-block mb-1">
+                          Email Address
+                        </label>
+                        <p className="fw-bold fs-5">{userData.email}</p>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="text-muted small d-block mb-1">
+                          Phone Number
+                        </label>
+                        <p className="fw-bold fs-5">{userData.phone}</p>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="text-muted small d-block mb-1">
+                          Address
+                        </label>
+                        <p className="fw-bold fs-5">{userData.address}</p>
+                      </div>
+                      <div className="col-12 border-top pt-4 mt-4">
+                        <div className="row text-center">
+                          <div className="col-4">
+                            <h4 className="text-primary fw-bold mb-0">
+                              {userData.totalOrders}
+                            </h4>
+                            <small className="text-muted">Orders</small>
+                          </div>
+                          <div className="col-4 border-start border-end">
+                            <h4 className="text-primary fw-bold mb-0">Gold</h4>
+                            <small className="text-muted">Tier</small>
+                          </div>
+                          <div className="col-4">
+                            <h4 className="text-primary fw-bold mb-0">₨ 45k</h4>
+                            <small className="text-muted">Spent</small>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <h5 className="mt-3 fw-bold">John Doe</h5>
-                    <p className="text-muted mb-1">Premium Member</p>
-                    <div className="d-grid gap-2 mt-3">
-                      <button className="btn btn-outline-primary btn-sm rounded-pill">
-                        <i className="bi bi-camera"></i> Change Photo
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="list-group list-group-flush mt-3">
-                    <a href="#profile" className="list-group-item list-group-item-action active py-3">
-                      <i className="bi bi-person me-2"></i> Profile Information
-                    </a>
-                    <a href="#security" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-shield-lock me-2"></i> Security
-                    </a>
-                    <a href="#notifications" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-bell me-2"></i> Notifications
-                    </a>
-                    <a href="#payments" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-credit-card me-2"></i> Payment Methods
-                    </a>
-                    <a href="#orders" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-box-seam me-2"></i> Order History
-                    </a>
-                    <a href="#settings" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-gear me-2"></i> Settings
-                    </a>
-                    <a href="#help" className="list-group-item list-group-item-action py-3">
-                      <i className="bi bi-question-circle me-2"></i> Help Center
-                    </a>
+                  )}
+                </div>
+              )}
+
+              {/* ORDERS SECTION */}
+              {activeTab === "orders" && (
+                <div className="animate-in">
+                  <h4 className="fw-bold mb-4">Order History</h4>
+                  <div className="table-responsive">
+                    <table className="table table-hover align-middle border-top">
+                      <thead className="small text-muted">
+                        <tr>
+                          <th className="py-3">Order</th>
+                          <th className="py-3">Preview</th>
+                          <th className="py-3">Total</th>
+                          <th className="py-3">Status</th>
+                          <th className="py-3 text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order, i) => (
+                          <tr key={i}>
+                            <td className="fw-bold">
+                              {order.id}
+                              <br />
+                              <small className="text-muted fw-normal">
+                                {order.date}
+                              </small>
+                            </td>
+                            <td>
+                              <img
+                                src={order.image}
+                                className="rounded"
+                                style={{
+                                  width: "45px",
+                                  height: "45px",
+                                  objectFit: "cover",
+                                }}
+                                alt="img"
+                              />
+                            </td>
+                            <td className="fw-medium">{order.total}</td>
+                            <td>
+                              <span
+                                className={`badge rounded-pill px-3 py-2 ${order.statusClass}`}
+                              >
+                                {order.status}
+                              </span>
+                            </td>
+                            <td className="text-end">
+                              <button className="btn btn-sm btn-light border rounded-pill px-3">
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-                
-                {/* Main Content */}
-                <div className="col-md-8">
-                  <div id="profile" className="p-4">
-                    <h3 className="mb-4 fw-bold">Profile Information</h3>
-                    
-                    <div className="row mb-4">
-                      <div className="col-md-6">
-                        <div className="form-floating mb-3">
-                          <input type="text" className="form-control" id="firstName" placeholder="John" value="John" readOnly />
-                          <label htmlFor="firstName">First Name</label>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-floating mb-3">
-                          <input type="text" className="form-control" id="lastName" placeholder="Doe" value="Doe" readOnly />
-                          <label htmlFor="lastName">Last Name</label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="form-floating mb-3">
-                      <input type="email" className="form-control" id="email" placeholder="john@example.com" value="john.doe@example.com" readOnly />
-                      <label htmlFor="email">Email Address</label>
-                    </div>
-                    
-                    <div className="form-floating mb-3">
-                      <input type="tel" className="form-control" id="phone" placeholder="(123) 456-7890" value="(123) 456-7890" readOnly />
-                      <label htmlFor="phone">Phone Number</label>
-                    </div>
-                    
-                    <div className="form-floating mb-4">
-                      <input type="text" className="form-control" id="address" placeholder="123 Main St" value="123 Main Street, New York, NY 10001" readOnly />
-                      <label htmlFor="address">Address</label>
-                    </div>
-                    
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-floating mb-3">
-                          <input type="date" className="form-control" id="dob" value="1990-01-01" readOnly />
-                          <label htmlFor="dob">Date of Birth</label>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-floating mb-3">
-                          <select className="form-select" id="gender" disabled>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                          </select>
-                          <label htmlFor="gender">Gender</label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="d-flex justify-content-between mt-5">
-                      <button className="btn btn-outline-secondary btn-lg px-4">
-                        Cancel
-                      </button>
-                      <button className="btn btn-primary btn-lg px-4">
-                        <i className="bi bi-pencil me-2"></i> Edit Profile
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div id="security" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Account Security</h3>
-                    
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="card h-100 border-start border-primary border-3">
-                          <div className="card-body">
-                            <div className="d-flex align-items-center mb-2">
-                              <div className="flex-shrink-0">
-                                <i className="bi bi-shield-lock text-primary" style={{fontSize: '2rem'}}></i>
-                              </div>
-                              <div className="flex-grow-1 ms-3">
-                                <h5 className="card-title mb-1">Password</h5>
-                                <p className="card-text text-muted small mb-0">Last changed 3 months ago</p>
-                              </div>
-                            </div>
-                            <button className="btn btn-outline-primary btn-sm mt-2">Change Password</button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <div className="card h-100 border-start border-success border-3">
-                          <div className="card-body">
-                            <div className="d-flex align-items-center mb-2">
-                              <div className="flex-shrink-0">
-                                <i className="bi bi-phone-vibrate text-success" style={{fontSize: '2rem'}}></i>
-                              </div>
-                              <div className="flex-grow-1 ms-3">
-                                <h5 className="card-title mb-1">Two-Factor Auth</h5>
-                                <p className="card-text text-muted small mb-0">Enabled for extra security</p>
-                              </div>
-                            </div>
-                            <button className="btn btn-outline-success btn-sm mt-2">Manage Settings</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <h5>Login Activity</h5>
-                      <div className="table-responsive">
-                        <table className="table table-hover">
-                          <thead>
-                            <tr>
-                              <th>Date & Time</th>
-                              <th>Device</th>
-                              <th>Location</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Oct 12, 2023 10:30 AM</td>
-                              <td>Chrome on Windows</td>
-                              <td>New York, USA</td>
-                              <td><span className="badge bg-success">Active</span></td>
-                            </tr>
-                            <tr>
-                              <td>Oct 10, 2023 3:45 PM</td>
-                              <td>iPhone Safari</td>
-                              <td>California, USA</td>
-                              <td><span className="badge bg-secondary">Completed</span></td>
-                            </tr>
-                            <tr>
-                              <td>Oct 5, 2023 8:15 AM</td>
-                              <td>Android Chrome</td>
-                              <td>Texas, USA</td>
-                              <td><span className="badge bg-secondary">Completed</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div id="notifications" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Notification Preferences</h3>
-                    
-                    <div className="card mb-4">
-                      <div className="card-body">
-                        <h5>Email Notifications</h5>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="emailMarketing" defaultChecked />
-                          <label className="form-check-label" htmlFor="emailMarketing">Marketing emails</label>
-                        </div>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="emailOrders" defaultChecked />
-                          <label className="form-check-label" htmlFor="emailOrders">Order updates</label>
-                        </div>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="emailSecurity" defaultChecked />
-                          <label className="form-check-label" htmlFor="emailSecurity">Security alerts</label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="card mb-4">
-                      <div className="card-body">
-                        <h5>SMS Notifications</h5>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="smsOrders" defaultChecked />
-                          <label className="form-check-label" htmlFor="smsOrders">Order updates</label>
-                        </div>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="smsSecurity" />
-                          <label className="form-check-label" htmlFor="smsSecurity">Security alerts</label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="card">
-                      <div className="card-body">
-                        <h5>Push Notifications</h5>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="pushGeneral" defaultChecked />
-                          <label className="form-check-label" htmlFor="pushGeneral">General notifications</label>
-                        </div>
-                        <div className="form-check form-switch mb-2">
-                          <input className="form-check-input" type="checkbox" id="pushPromo" />
-                          <label className="form-check-label" htmlFor="pushPromo">Promotional offers</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div id="payments" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Payment Methods</h3>
-                    
-                    <div className="mb-4">
-                      <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Active Payment Methods</h5>
-                        <button className="btn btn-primary btn-sm">Add New</button>
-                      </div>
-                      
-                      <div className="row">
-                        <div className="col-md-6 mb-3">
-                          <div className="card">
-                            <div className="card-body">
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <i className="bi bi-credit-card" style={{fontSize: '2rem', color: '#007bff'}}></i>
-                                  <h6 className="mt-2">Visa ending in 4235</h6>
-                                  <p className="text-muted small mb-0">Expires 12/2027</p>
-                                </div>
-                                <div>
-                                  <button className="btn btn-outline-secondary btn-sm">Edit</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="col-md-6 mb-3">
-                          <div className="card">
-                            <div className="card-body">
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <i className="bi bi-credit-card" style={{fontSize: '2rem', color: '#007bff'}}></i>
-                                  <h6 className="mt-2">Mastercard ending in 6789</h6>
-                                  <p className="text-muted small mb-0">Expires 08/2026</p>
-                                </div>
-                                <div>
-                                  <button className="btn btn-outline-secondary btn-sm">Edit</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h5>Default Payment Method</h5>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name="defaultPayment" id="payment1" defaultChecked />
-                        <label className="form-check-label" htmlFor="payment1">
-                          Visa ending in 4235
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name="defaultPayment" id="payment2" />
-                        <label className="form-check-label" htmlFor="payment2">
-                          Mastercard ending in 6789
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div id="orders" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Order History</h3>
-                    
-                    <div className="table-responsive">
-                      <table className="table table-hover">
-                        <thead>
-                          <tr>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>#ORD-7842</td>
-                            <td>Oct 15, 2023</td>
-                            <td>2 Items</td>
-                            <td>$124.99</td>
-                            <td><span className="badge bg-success">Delivered</span></td>
-                            <td><button className="btn btn-outline-primary btn-sm">View</button></td>
-                          </tr>
-                          <tr>
-                            <td>#ORD-7831</td>
-                            <td>Oct 5, 2023</td>
-                            <td>1 Item</td>
-                            <td>$89.99</td>
-                            <td><span className="badge bg-success">Delivered</span></td>
-                            <td><button className="btn btn-outline-primary btn-sm">View</button></td>
-                          </tr>
-                          <tr>
-                            <td>#ORD-7812</td>
-                            <td>Sep 28, 2023</td>
-                            <td>3 Items</td>
-                            <td>$156.49</td>
-                            <td><span className="badge bg-warning">Processing</span></td>
-                            <td><button className="btn btn-outline-primary btn-sm">View</button></td>
-                          </tr>
-                          <tr>
-                            <td>#ORD-7798</td>
-                            <td>Sep 15, 2023</td>
-                            <td>1 Item</td>
-                            <td>$67.50</td>
-                            <td><span className="badge bg-success">Delivered</span></td>
-                            <td><button className="btn btn-outline-primary btn-sm">View</button></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    
-                    <nav aria-label="Order history pagination">
-                      <ul className="pagination justify-content-center">
-                        <li className="page-item disabled">
-                          <a className="page-link" href="#" tabIndex={-1}>Previous</a>
-                        </li>
-                        <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                        <li className="page-item">
-                          <a className="page-link" href="#">Next</a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                  
-                  <div id="settings" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Account Settings</h3>
-                    
-                    <div className="card mb-4">
-                      <div className="card-body">
-                        <h5>Language & Region</h5>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <select 
-                              className="form-select" 
-                              id="languageSelect" 
-                              value={language} 
-                              onChange={(e) => setLanguage(e.target.value)}
-                            >
-                              <option value="en">English (US)</option>
-                              <option value="es">Spanish</option>
-                              <option value="fr">French</option>
-                              <option value="de">German</option>
-                              <option value="ar">Arabic</option>
-                            </select>
+              )}
 
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-floating mb-3">
-                              <select className="form-select" id="regionSelect">
-                                <option value="us" selected>United States</option>
-                                <option value="ca">Canada</option>
-                                <option value="uk">United Kingdom</option>
-                                <option value="au">Australia</option>
-                                <option value="ae">United Arab Emirates</option>
-                              </select>
-                              <label htmlFor="regionSelect">Region</label>
+              {/* WISHLIST SECTION */}
+              {activeTab === "wishlist" && (
+                <div className="animate-in">
+                  <h4 className="fw-bold mb-4">My Wishlist</h4>
+                  <div className="row g-3">
+                    {wishlistItems.map((item, i) => (
+                      <div className="col-md-6 col-xl-4" key={i}>
+                        <div className="card h-100 border rounded-4 overflow-hidden hover-lift shadow-sm">
+                          <img
+                            src={item.image}
+                            className="card-img-top"
+                            style={{ height: "150px", objectFit: "cover" }}
+                            alt={item.name}
+                          />
+                          <div className="card-body p-3">
+                            <h6 className="fw-bold small mb-1 text-truncate text-center align-items-center">
+                              {item.name}
+                            </h6>
+                            <p className="text-primary fw-bold mb-3 text-center align-items-center">
+                              {item.price}
+                            </p>
+                            <div className="d-flex gap-2">
+                              <button className="btn btn-primary btn-sm w-100 rounded-pill">
+                                Add to Cart
+                              </button>
+                              <button className="btn btn-outline-danger btn-sm rounded-circle">
+                                <i className="bi bi-trash"></i>
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="card mb-4">
-                      <div className="card-body">
-                        <h5>Currency</h5>
-                        <div className="form-floating mb-3">
-                          <select className="form-select" id="currencySelect">
-                            <option value="usd" selected>USD - US Dollar ($)</option>
-                            <option value="eur">EUR - Euro (€)</option>
-                            <option value="gbp">GBP - British Pound (£)</option>
-                            <option value="aed">AED - UAE Dirham (د.إ)</option>
-                          </select>
-                          <label htmlFor="currencySelect">Preferred Currency</label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="card">
-                      <div className="card-body">
-                        <h5>Danger Zone</h5>
-                        <p className="text-muted">Permanently delete your account and all associated data</p>
-                        <button className="btn btn-outline-danger">Delete Account</button>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                  
-                  <div id="help" className="p-4 d-none">
-                    <h3 className="mb-4 fw-bold">Help Center</h3>
-                    
-                    <div className="row mb-4">
-                      <div className="col-md-4 mb-3">
-                        <div className="card h-100 text-center">
-                          <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                            <i className="bi bi-envelope-open" style={{fontSize: '2.5rem', color: '#007bff'}}></i>
-                            <h5 className="mt-3">Contact Us</h5>
-                            <p className="text-muted">Get in touch with our support team</p>
-                            <button className="btn btn-outline-primary mt-auto">Send Message</button>
+                </div>
+              )}
+
+              {/* ADDRESSES SECTION */}
+              {activeTab === "addresses" && (
+                <div className="border-0 shadow-sm">
+                  <div className="card-header bg-white border-0 px-4 py-3 d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0 fw-semibold">My Addresses</h5>
+                    <button
+                      className="btn btn-primary btn-sm px-4"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addressModal"
+                      onClick={() => {
+                        setIsAddMode(true);
+                        setEditingAddress({
+                          type: "Home",
+                          address: "",
+                          isDefault: false,
+                        });
+                      }}
+                    >
+                      <i className="bi bi-plus-lg me-1"></i> Add New
+                    </button>
+                  </div>
+
+                  <div className="card-body p-4">
+                    {addresses.length > 0 ? (
+                      addresses.map((addr, index) => (
+                        <div
+                          key={addr.id}
+                          className={` rounded-5 mb-3 border ${
+                            addr.isDefault ? "border-primary shadow-sm" : ""
+                          } hover-shadow transition-all`}
+                        >
+                          <div className="card-body p-4">
+                            <div className="d-flex justify-content-between align-items-start">
+                              <div className="d-flex align-items-start gap-3">
+                                <div
+                                  className={`p-3 rounded-circle d-flex align-items-center justify-content-center fs-4 ${
+                                    addr.isDefault
+                                      ? "bg-primary text-white"
+                                      : "bg-light text-primary"
+                                  }`}
+                                >
+                                  <i className="bi bi-geo-alt"></i>
+                                </div>
+
+                                <div>
+                                  <div className="d-flex align-items-center gap-2 mb-2">
+                                    <span
+                                      className={`badge rounded-pill px-3 py-1 ${
+                                        addr.isDefault
+                                          ? "bg-primary"
+                                          : "bg-secondary"
+                                      }`}
+                                    >
+                                      {addr.type}
+                                      {addr.isDefault && " • Default"}
+                                    </span>
+                                  </div>
+                                  <p className="mb-0 text-muted small lh-base">
+                                    {addr.address}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="dropdown">
+                                <button
+                                  className="btn btn-link text-dark p-0"
+                                  data-bs-toggle="dropdown"
+                                >
+                                  <i className="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul className="dropdown-menu dropdown-menu-end shadow">
+                                  <li>
+                                    <button
+                                      className="dropdown-item d-flex align-items-center gap-2"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#addressModal"
+                                      onClick={() => {
+                                        setIsAddMode(false);
+                                        setEditingAddress({ ...addr, index });
+                                      }}
+                                    >
+                                      <i className="bi bi-pencil text-primary"></i>{" "}
+                                      Edit
+                                    </button>
+                                  </li>
+
+                                  {!addr.isDefault && (
+                                    <li>
+                                      <button
+                                        className="dropdown-item d-flex align-items-center gap-2"
+                                        onClick={() => {
+                                          const updated = addresses.map(
+                                            (a, i) => ({
+                                              ...a,
+                                              isDefault: i === index,
+                                            }),
+                                          );
+                                          setAddresses(updated);
+                                          alert(
+                                            `"${addr.type}" is now your default address`,
+                                          );
+                                        }}
+                                      >
+                                        <i className="bi bi-check-circle text-success"></i>{" "}
+                                        Set as Default
+                                      </button>
+                                    </li>
+                                  )}
+
+                                  <li>
+                                    <hr className="dropdown-divider" />
+                                  </li>
+
+                                  <li>
+                                    <button
+                                      className="dropdown-item text-danger d-flex align-items-center gap-2"
+                                      onClick={() => {
+                                        if (
+                                          window.confirm("Delete this address?")
+                                        ) {
+                                          const updated = addresses.filter(
+                                            (_, i) => i !== index,
+                                          );
+                                          setAddresses(updated);
+                                        }
+                                      }}
+                                    >
+                                      <i className="bi bi-trash"></i> Delete
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-5 text-muted">
+                        <i className="bi bi-geo-alt display-4 mb-3"></i>
+                        <h5>No addresses added yet</h5>
+                        <p className="small mb-4">
+                          Add addresses for faster checkout
+                        </p>
+                        <button
+                          className="btn btn-outline-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addressModal"
+                          onClick={() => {
+                            setIsAddMode(true);
+                            setEditingAddress({
+                              type: "Home",
+                              address: "",
+                              isDefault: false,
+                            });
+                          }}
+                        >
+                          + Add First Address
+                        </button>
                       </div>
-                      
-                      <div className="col-md-4 mb-3">
-                        <div className="card h-100 text-center">
-                          <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                            <i className="bi bi-question-circle" style={{fontSize: '2.5rem', color: '#28a745'}}></i>
-                            <h5 className="mt-3">FAQs</h5>
-                            <p className="text-muted">Find answers to common questions</p>
-                            <button className="btn btn-outline-success mt-auto">Browse FAQs</button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="col-md-4 mb-3">
-                        <div className="card h-100 text-center">
-                          <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                            <i className="bi bi-chat-dots" style={{fontSize: '2.5rem', color: '#ffc107'}}></i>
-                            <h5 className="mt-3">Live Chat</h5>
-                            <p className="text-muted">Chat with our support agents</p>
-                            <button className="btn btn-outline-warning mt-auto">Start Chat</button>
-                          </div>
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Address Modal (Add / Edit) ─────────────────────────────────────── */}
+              <div
+                className="modal fade"
+                id="addressModal"
+                tabIndex="-1"
+                aria-labelledby="addressModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                  <div className="modal-content rounded-4 border-0 shadow">
+                    <div className="modal-header border-0 pb-0 px-4 pt-4">
+                      <h5
+                        className="modal-title fw-semibold"
+                        id="addressModalLabel"
+                      >
+                        {isAddMode ? "Add New Address" : "Edit Address"}
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                      ></button>
                     </div>
-                    
-                    <div className="card">
-                      <div className="card-body">
-                        <h5>Popular Topics</h5>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <ul className="list-unstyled">
-                              <li><a href="#" className="text-decoration-none">How to update my payment method</a></li>
-                              <li><a href="#" className="text-decoration-none">Managing my order history</a></li>
-                              <li><a href="#" className="text-decoration-none">Account security settings</a></li>
-                            </ul>
+
+                    <div className="modal-body px-4 pb-4">
+                      {editingAddress && (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+
+                            if (isAddMode) {
+                              // Add new
+                              const newAddr = {
+                                id: Date.now(),
+                                ...editingAddress,
+                              };
+                              setAddresses([...addresses, newAddr]);
+                              alert("New address added!");
+                            } else {
+                              // Edit existing
+                              const updated = addresses.map((a, i) =>
+                                i === editingAddress.index ? editingAddress : a,
+                              );
+                              setAddresses(updated);
+                              alert("Address updated!");
+                            }
+
+                            // Modal close
+                            const modalEl =
+                              document.getElementById("addressModal");
+                            const modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+
+                            // Reset form
+                            setEditingAddress(null);
+                            setIsAddMode(false);
+                          }}
+                        >
+                          <div className="row g-3">
+                            <div className="col-md-6">
+                              <label className="form-label fw-medium">
+                                Address Type
+                              </label>
+                              <select
+                                className="form-select"
+                                value={editingAddress.type}
+                                onChange={(e) =>
+                                  setEditingAddress({
+                                    ...editingAddress,
+                                    type: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="Homev6">Home</option>
+                                <option value="Office">Office</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+
+                            <div className="col-12">
+                              <label className="form-label fw-medium">
+                                Full Address
+                              </label>
+                              <textarea
+                                className="form-control"
+                                rows="4"
+                                placeholder="House #, Street, Area, City"
+                                value={editingAddress.address}
+                                onChange={(e) =>
+                                  setEditingAddress({
+                                    ...editingAddress,
+                                    address: e.target.value,
+                                  })
+                                }
+                                required
+                              />
+                            </div>
+
+                            <div className="col-12">
+                              <div className="form-check">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  id="setDefault"
+                                  checked={editingAddress.isDefault}
+                                  onChange={(e) =>
+                                    setEditingAddress({
+                                      ...editingAddress,
+                                      isDefault: e.target.checked,
+                                    })
+                                  }
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="setDefault"
+                                >
+                                  Make this my default address
+                                </label>
+                              </div>
+                            </div>
                           </div>
-                          <div className="col-md-6">
-                            <ul className="list-unstyled">
-                              <li><a href="#" className="text-decoration-none">Return and refund policy</a></li>
-                              <li><a href="#" className="text-decoration-none">Delivery options and fees</a></li>
-                              <li><a href="#" className="text-decoration-none">Using promo codes</a></li>
-                            </ul>
+
+                          <div className="mt-4 d-flex gap-3 justify-content-end">
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary px-4"
+                              data-bs-dismiss="modal"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              className="btn btn-primary px-5"
+                            >
+                              {isAddMode ? "Add Address" : "Save Changes"}
+                            </button>
                           </div>
-                        </div>
-                      </div>
+                        </form>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* SETTINGS SECTION */}
+              {activeTab === "settings" && (
+                <div className="border-0 shadow-sm animate__animated animate__fadeIn">
+                  <div className="card-header bg-white border-0 px-4 py-3">
+                    <h5 className="mb-0 fw-semibold">Account Settings</h5>
+                  </div>
+
+                  <div className="card-body p-4">
+                    {/* Notifications Section */}
+                    <h6 className="fw-bold mb-3 text-uppercase small text-muted">
+                      Notifications
+                    </h6>
+                    <div className="list-group list-group-flush border rounded-3 mb-5">
+                      <div className="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+                        <div>
+                          <h6 className="mb-1 fw-medium">
+                            Order & Delivery Updates
+                          </h6>
+                          <small className="text-muted">
+                            Get notified about order status changes
+                          </small>
+                        </div>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="orderNotif"
+                            defaultChecked
+                          />
+                        </div>
+                      </div>
+
+                      <div className="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+                        <div>
+                          <h6 className="mb-1 fw-medium">
+                            Promotions & Offers
+                          </h6>
+                          <small className="text-muted">
+                            Receive exclusive deals and discounts
+                          </small>
+                        </div>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="promoNotif"
+                            defaultChecked
+                          />
+                        </div>
+                      </div>
+
+                      <div className="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+                        <div>
+                          <h6 className="mb-1 fw-medium">SMS Notifications</h6>
+                          <small className="text-muted">
+                            Instant updates via text message
+                          </small>
+                        </div>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="smsNotif"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Security Section */}
+                    <h6 className="fw-bold mb-3 text-uppercase small text-muted">
+                      Security
+                    </h6>
+                    <div className="list-group list-group-flush border rounded-3 mb-5">
+                      <div className="list-group-item px-4 py-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h6 className="mb-1 fw-medium">Change Password</h6>
+                            <small className="text-muted">
+                              Update your password regularly
+                            </small>
+                          </div>
+                          <button className="btn btn-outline-primary btn-sm px-4">
+                            Change Password
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="list-group-item px-4 py-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h6 className="mb-1 fw-medium">
+                              Two-Factor Authentication
+                            </h6>
+                            <small className="text-muted">
+                              Add extra security to your account
+                            </small>
+                          </div>
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id="2fa"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="list-group-item px-4 py-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h6 className="mb-1 fw-medium">
+                              Logout from All Devices
+                            </h6>
+                            <small className="text-muted">
+                              Sign out everywhere except this device
+                            </small>
+                          </div>
+                          <button className="btn btn-outline-danger btn-sm px-4">
+                            Logout All
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Privacy Section */}
+                    <h6 className="fw-bold mb-3 text-uppercase small text-muted">
+                      Privacy
+                    </h6>
+                    <div className="list-group list-group-flush border rounded-3 mb-5">
+                      <div className="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+                        <div>
+                          <h6 className="mb-1 fw-medium">Profile Visibility</h6>
+                          <small className="text-muted">
+                            Allow others to see your profile
+                          </small>
+                        </div>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="profileVisible"
+                            defaultChecked
+                          />
+                        </div>
+                      </div>
+
+                      <div className="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+                        <div>
+                          <h6 className="mb-1 fw-medium">
+                            Share Order History
+                          </h6>
+                          <small className="text-muted">
+                            Show your orders to friends (coming soon)
+                          </small>
+                        </div>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="shareOrders"
+                            disabled
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Danger Zone */}
+                    <h6 className="fw-bold mb-3 text-uppercase small text-danger">
+                      Danger Zone
+                    </h6>
+                    <div className="border border-danger rounded-3 p-4 bg-danger-subtle">
+                      <h6 className="text-danger mb-2">Delete Account</h6>
+                      <p className="text-muted small mb-3">
+                        Permanently delete your account and all associated data.
+                        This action cannot be undone.
+                      </p>
+                      <button className="btn btn-danger btn-sm px-4">
+                        <i className="bi bi-trash me-1"></i> Delete My Account
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .transition-all {
+          transition: all 0.2s ease-in-out;
+        }
+        .hover-lift:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+        .hover-light:hover {
+          background-color: #f8f9fa;
+        }
+        .animate-in {
+          animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
-};
+}
 
 export default MyAccount;
