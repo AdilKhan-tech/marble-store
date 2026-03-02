@@ -104,13 +104,9 @@ export default function ProductPage() {
                   <i className="bi bi-plus"></i>
                 </button>
               </div>
-              <button 
-                className="btn text-white px-5 py-2" 
-                style={{ backgroundColor: '#212529', borderRadius: '8px' }}
-                onClick={() => handleAddToCart('We dream and achieve cookie cake')}
-              >
+              <Link href={`/product/addToCartLocation`} className="btn btn-primary rounded-5 px-4">
                 Add to Cart
-              </button>
+              </Link>
             </div>
 
             {/* Tabs - Exactly like screenshot */}
