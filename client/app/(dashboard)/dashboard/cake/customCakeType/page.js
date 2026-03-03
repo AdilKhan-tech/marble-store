@@ -12,7 +12,6 @@ import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CustomCakeTypePage() {
-  
   const {token} = useAxiosConfig();
   const [customeCakeTypes, setCustomCakeTypes] = useState([]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);

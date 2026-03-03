@@ -281,7 +281,6 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="mt-5 pt-4 border-top">
                 <div className="d-flex justify-content-end gap-3">
                   <button

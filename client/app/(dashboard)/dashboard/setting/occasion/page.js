@@ -108,15 +108,6 @@ function Occasions() {
     setShowOffcanvas(false);
   };
 
-  // const onUpdateOcassion = (updateOcassion) => {
-  //   setOccasions((prev) =>
-  //     prev.map((occasion) =>
-  //       occasion.id === updateOcassion.id ? { ...occasion, ...updateOcassion } : occasion
-  //     )
-  //   );
-  //   setShowOffcanvas(false);
-  // };
-
   const updateOcassion = (updateOcassion) => {
     setOccasions((prev) =>
       prev.map((item) =>

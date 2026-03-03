@@ -91,7 +91,6 @@ export default function Category() {
     setCurrentPage(1);
   };
 
-  // ================= DELETE =================
   const handleDelete = async (categoryId) => {
     try {
       const response = await axios.delete(
