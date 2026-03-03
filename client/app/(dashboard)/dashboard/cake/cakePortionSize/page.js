@@ -12,7 +12,6 @@ import Pagination from "@/components/dashboard/Pagination";
 import EntriesPerPageSelector from "@/components/dashboard/EntriesPerPageSelector";
 
 export default function CakePortionSizePage() {
-  
   const {token} = useAxiosConfig();
   const [cakePortionSizes, setCakePortionSizes] = useState([]);
   const [rawCakePortionSizes, setRawCakePortionSizes] = useState([]);
@@ -40,11 +39,9 @@ export default function CakePortionSizePage() {
       }
        const response = await axios.get(getAllCakePortionSizes, { params });
        const rawData = response.data.data;
-  
 
         // 🔥 VERY IMPORTANT
       setRawCakePortionSizes(rawData);
-  
       const tree = Common.buildCategoryTree(rawData);
       const flatList = Common.flattenCategories(tree);
   
@@ -147,7 +144,6 @@ export default function CakePortionSizePage() {
           : item
       )
     );
-  
     setShowOffcanvas(false);
   };
 

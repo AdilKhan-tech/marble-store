@@ -60,8 +60,6 @@ const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch 
         if (!formData.longitude) errors.push("Longitude is required.");
         if (!formData.number) errors.push("Contact number is required.");
         if (!formData.timing) errors.push("Timing is required.");
-        if (!formData.branch_store_id) errors.push("Branch Store Id is required.");
-        if (!formData.status) errors.push("Status is required.");
       
         return errors;
     };      

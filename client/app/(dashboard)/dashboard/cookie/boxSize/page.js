@@ -37,7 +37,6 @@ export default function CookieBoxSizePage() {
         sortField,
       }
       const response = await axios.get(getAllCookieBoxSizes, { params });
-      console.log("response", response.data.data)
       setCookieBoxSizes(response.data.data);
       setTotalEntries(response.data.pagination.total);
       setPageCount(response.data.pagination.pageCount);

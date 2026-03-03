@@ -89,8 +89,6 @@ class CustomCakeTypeController {
       });
     }
   }
-  
-
 
   static async updateCustomCakeTypeById(req, res, next) {
     const { id } = req.params;
@@ -131,7 +129,6 @@ class CustomCakeTypeController {
       next(error);
     }
   }
-  
 
   static async deleteCustomCakeTypeById(req, res) {
     const { id } = req.params;

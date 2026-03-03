@@ -24,6 +24,22 @@ const flattenCategories = (cakePortionSizes, level = 0) => {
   return result;
 };
 
+const getAllDescendantIds = (items, parentId) => {
+  const ids = [];
+
+  const findChildren = (id) => {
+    items.forEach((item) => {
+      if (item.parent_id === id) {
+        ids.push(item.id);
+        findChildren(item.id);
+      }
+    });
+  };
+
+  findChildren(parentId);
+  return ids;
+};
+
 const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakePortionSize, onUpdateCakePortionSize }) => {
   const { token } = useAxiosConfig();
   const [parentCakePortionSizes, setParentCakePortionSizes] = useState([]);
@@ -63,9 +79,28 @@ const AddCakePortionSize = ({ closePopup, cakePortionSizeData = null, onAddCakeP
 
   const fetchCakePortionSizeTree = async () => {
     if (!token) return;
+  
     const res = await axios.get(getCakePortionSizeTree);
     const flat = flattenCategories(res.data.data);
-    setParentCakePortionSizes(flat);
+  
+    // ✅ If Update Mode
+    if (cakePortionSizeData?.id) {
+      const currentId = cakePortionSizeData.id;
+  
+      // get all children recursively
+      const descendantIds = getAllDescendantIds(flat, currentId);
+  
+      // remove self + children
+      const filtered = flat.filter(
+        (item) =>
+          item.id !== currentId &&
+          !descendantIds.includes(item.id)
+      );
+  
+      setParentCakePortionSizes(filtered);
+    } else {
+      setParentCakePortionSizes(flat);
+    }
   };
 
   useEffect(() => {
