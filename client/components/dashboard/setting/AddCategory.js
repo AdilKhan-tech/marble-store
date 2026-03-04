@@ -24,6 +24,22 @@ const flattenCategories = (categories, level = 0) => {
   return result;
 };
 
+const getAllDescendantIds = (items, parentId) => {
+  const ids = [];
+
+  const findChildren = (id) => {
+    items.forEach((item) => {
+      if (item.parent_id === id) {
+        ids.push(item.id);
+        findChildren(item.id);
+      }
+    });
+  };
+
+  findChildren(parentId);
+  return ids;
+};
+
 const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCategory,}) => {
   const { token } = useAxiosConfig();
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -55,9 +71,28 @@ const AddCategory = ({closePopup,categoryData = null,onAddCategory,onUpdateCateg
 
   const fetchCategories = async () => {
     if (!token) return;
+
     const res = await axios.get(getCategoryTree);
     const flat = flattenCategories(res.data.data);
-    setParentCategories(flat);
+
+    // ✅ If Update Mode
+    if (categoryData?.id) {
+      const currentId = categoryData.id;
+  
+      // get all children recursively
+      const descendantIds = getAllDescendantIds(flat, currentId);
+  
+      // remove self + children
+      const filtered = flat.filter(
+        (item) =>
+          item.id !== currentId &&
+          !descendantIds.includes(item.id)
+      );
+  
+      setParentCategories(filtered);
+    } else {
+      setParentCategories(flat);
+    }
   };
   
   useEffect(() => {
