@@ -49,8 +49,8 @@ const BranchTimeRangePicker = ({ value, onChange, className = "" }) => {
     <div className={`position-relative ${className}`} ref={pickerRef}>
       <input
         type="text"
-        className="form-control form-control-lg input-hover-dark text-secondary fs-16 inputs-bg"
-        placeholder="Select Branch Time"
+        className="form-select input-hover-dark text-secondary fs-16 inputs-bg"
+        placeholder="Select Time"
         value={selectedFrom && selectedTo ? `${selectedFrom} - ${selectedTo}` : ""}
         readOnly
         onClick={() => setIsOpen(!isOpen)}
@@ -60,13 +60,13 @@ const BranchTimeRangePicker = ({ value, onChange, className = "" }) => {
       {isOpen && (
         <div className="position-absolute bottom-100 start-0 mb-1 bg-white border rounded-3 shadow-lg" style={{ zIndex: 1050, width: '320px' }}>
           <div className="d-flex justify-content-center align-items-center px-3 py-3 border-bottom fw-semibold fs-16 fnt-color">
-            Select Branch Time
+            Select Time
           </div>
 
           <div className="d-flex gap-2 px-3 py-2">
             {/* From Column (AM) */}
             <div className="w-50">
-              <div className="fw-medium fs-12 mb-1 text-dark text-center border rounded-2 py-1">Branch Timing From</div>
+              <div className="fw-medium fs-12 mb-1 text-dark text-center border rounded-2 py-1">Timing From</div>
               <div style={{ maxHeight: '180px', overflowY: 'auto', padding: '3px' }}>
                 {amHours.map(hour => (
                   <div
@@ -88,7 +88,7 @@ const BranchTimeRangePicker = ({ value, onChange, className = "" }) => {
 
             {/* To Column (PM) */}
             <div className="w-50">
-              <div className="fw-medium fs-12 mb-1 text-dark text-center border rounded-2 py-1">Branch Timing To</div>
+              <div className="fw-medium fs-12 mb-1 text-dark text-center border rounded-2 py-1">Timing To</div>
               <div style={{ maxHeight: '180px', overflowY: 'auto', padding: '3px' }}>
                 {pmHours.map(hour => (
                   <div
