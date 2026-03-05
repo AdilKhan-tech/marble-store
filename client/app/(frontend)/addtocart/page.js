@@ -72,7 +72,7 @@ export default function ProductPage() {
 
             <div className="d-flex align-items-center gap-3 my-4">
               <Link
-                href={`/product/addToCartLocation`}
+                href={`/addToCartLocation`}
                 className="btn px-4 rounded-pill"
                 style={{ background: "#e75480", color: "#fff" }}
               >

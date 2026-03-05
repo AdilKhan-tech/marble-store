@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from "react-toastify";
 import axios from "axios";
 import { createBranch, updateBranchById } from "@/utils/apiRoutes";
-import CustomTimePicker from '../../../app/(dashboard)/dashboard/general/CustomTimePicker';
+import CustomTimePicker from '../general/CustomTimePicker';
 
 const AddBranch = ({ closePopup, branchData = null, onAddBranch, onUpdateBranch }) => {
     const [errors, setErrors] = useState([]);

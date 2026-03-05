@@ -65,7 +65,7 @@ export default function Cakes() {
                         SR {product.regular_price}
                       </p>
 
-                      <Link href={`/product/addtocart`} className="btn btn-primary rounded-5 px-4">
+                      <Link href={`/addtocart`} className="btn btn-primary rounded-5 px-4">
                         Add to Cart
                       </Link>
                     </div>
