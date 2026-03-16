@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAxiosConfig from "@/hooks/useAxiosConfig";
 import { getAllProductsRoute } from "@/utils/apiRoutes";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Cakes() {
   const {token} = useAxiosConfig()
   const [products, setProducts] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (!token) return;
@@ -65,9 +66,9 @@ export default function Cakes() {
                         SR {product.regular_price}
                       </p>
 
-                      <Link href={`/addtocart`} className="btn btn-primary rounded-5 px-4">
+                      <div onClick={() => router.push(`/cakes/${product.id}/view`)} className="btn btn-primary rounded-5 px-4">
                         Add to Cart
-                      </Link>
+                      </div>
                     </div>
 
                   </div>
