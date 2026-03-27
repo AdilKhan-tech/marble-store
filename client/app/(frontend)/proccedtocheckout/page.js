@@ -5,7 +5,7 @@ export default function Cart() {
     <div className="container py-4" style={{ marginTop: "140px" }}>
       {/* TOP BAR */}
       <div
-        className="top-alert bg-light d-flex justify-content-between align-items-center px-3 py-2 mb-4"
+        className="top-alert border border-secondary rounded-3 bg-light d-flex justify-content-between align-items-center px-3 py-2 mb-4"
         style={{ fontSize: "14px" }}>
         <span>“Saudi Regions Challenge Cake” has been added to your cart.</span>
         <a href="#">Continue shopping</a>
