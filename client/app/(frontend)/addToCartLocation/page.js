@@ -150,111 +150,215 @@ const AddLocation = ({ closePopup }) => {
                   <div className="d-flex gap-3">
                     <div className="mb-3 d-flex btn-group p-0 justify-content-center gap-4 bg-outline-primary w-75 rounded-5 mx-auto">
                       <div
-                        className="bg-blue m-1 mx-auto rounded-5 w-100 text-center p-3"
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            receiving_type: "delivery",
+                          }))
+                        }
+                        className={`m-1 mx-auto rounded-5 w-100 text-center p-3 ${
+                          formData.receiving_type === "delivery"
+                            ? "bg-primary"
+                            : "bg-light"
+                        }`}
                         role="button"
                       >
-                        <span className="text-white fw-bold">Delivery</span>
+                        <span
+                          className={`fw-bold ${formData.receiving_type === "delivery" ? "text-white" : "text-dark"}`}
+                        >
+                          Delivery
+                        </span>
                       </div>
+
                       <div
-                        className="bg-blue m-1 mx-auto rounded-5 w-100 text-center p-3"
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            receiving_type: "pickup",
+                          }))
+                        }
+                        className={`m-1 mx-auto rounded-5 w-100 text-center p-3 ${
+                          formData.receiving_type === "pickup"
+                            ? "bg-primary"
+                            : "bg-light"
+                        }`}
                         role="button"
                       >
-                        <span className="text-white fw-bold">Pickup</span>
+                        <span
+                          className={`fw-bold ${formData.receiving_type === "pickup" ? "text-white" : "text-dark"}`}
+                        >
+                          Pickup
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div className="mb-4 form-group">
-                  <Form.Check
-                    type="switch"
-                    id="send-for-someone"
-                    label={
-                      <span className="fw-semibold">
-                        Send for someone
-                        <span className="text-secondary small ms-2">
-                          (Gift delivery)
-                        </span>
-                      </span>
-                    }
-                    name="send_for_someone"
-                    checked={formData.send_for_someone}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {formData.send_for_someone && (
+                {formData.receiving_type === "delivery" && (
                   <>
-                    <div className="mb-3">
-                      <input
-                        type="text"
-                        placeholder="Recipient Name"
-                        name="receiver_name"
-                        value={formData.receiver_name || ""}
+                    <div className="mb-4 form-group">
+                      <Form.Check
+                        type="switch"
+                        id="send-for-someone"
+                        label={
+                          <span className="fw-semibold">
+                            Send for someone
+                            <span className="text-secondary small ms-2">
+                              (Gift delivery)
+                            </span>
+                          </span>
+                        }
+                        name="send_for_someone"
+                        checked={formData.send_for_someone}
                         onChange={handleChange}
-                        className="mb-2 form-control form-control-lg"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Recipient Phone"
-                        name="receiver_phone"
-                        value={formData.receiver_phone || ""}
-                        onChange={handleChange}
-                        className="form-control form-control-lg"
                       />
                     </div>
 
-                    <div className="mb-4 form-group">
-                      <p className="fw-semibold form-label text-secondary small">
-                        Complete Address
-                      </p>
-                      <input
-                        type="text"
-                        value={formData.name_en}
-                        onChange={handleChange}
-                        name="name_en"
-                        placeholder="Enter complete address"
-                        className="form-control form-control-lg"
-                      />
+                    {formData.send_for_someone && (
+                      <>
+                        <div className="mb-3">
+                          <input
+                            type="text"
+                            placeholder="Recipient Name"
+                            name="receiver_name"
+                            value={formData.receiver_name || ""}
+                            onChange={handleChange}
+                            className="mb-2 form-control form-control-lg"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Recipient Phone"
+                            name="receiver_phone"
+                            value={formData.receiver_phone || ""}
+                            onChange={handleChange}
+                            className="form-control form-control-lg"
+                          />
+                        </div>
+
+                        <div className="mb-4 form-group">
+                          <p className="fw-semibold form-label text-secondary small">
+                            Complete Address
+                          </p>
+                          <input
+                            type="text"
+                            value={formData.name_en}
+                            onChange={handleChange}
+                            name="name_en"
+                            placeholder="Enter complete address"
+                            className="form-control form-control-lg"
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    <input
+                      type="text"
+                      placeholder="Address Line"
+                      name="address"
+                      className="mb-2 form-control form-control-lg"
+                    />
+
+                    <div className="mb-4">
+                      <div className="fw-semibold form-label text-secondary small mb-2">
+                        Schedule Delivery
+                      </div>
+                      <div className="g-2 row">
+                        <div className="mb-3 col-md-12">
+                          <div className="bg-light border-end-0">
+                            <Form.Control
+                              type="date"
+                              name="selected_date"
+                              value={formData.selected_date}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-3 col-md-12">
+                          <label className="form-label text-secondary">
+                            Timing
+                          </label>
+                          <CustomTimePicker
+                            value={formData.timing}
+                            onChange={(value) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                timing: value,
+                              }))
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
                   </>
                 )}
 
-                <input
-                  type="text"
-                  placeholder="Address Line"
-                  name="address"
-                  className="mb-2 form-control form-control-lg"
-                />
+                {formData.receiving_type === "pickup" && (
+                  <>
+                    <div className="mb-3">
+                      <label className="form-label text-secondary small fw-semibold">
+                        Recipient City
+                      </label>
+                      <select
+                        type="select"
+                        placeholder="Select A City"
+                        name="receiver_city"
+                        value={formData.receiver_city || ""}
+                        onChange={handleChange}
+                        className="form-select mb-2"
+                      >
+                        <option value="">Select a city</option>
+                        <option value="city1">City 1</option>
+                        <option value="city2">City 2</option>
+                        <option value="city3">City 3</option>
+                      </select>
 
-                <div className="mb-4">
-                  <div className="fw-semibold form-label text-secondary small mb-2">
-                    Schedule Delivery
-                  </div>
-                  <div className="g-2 row">
-                    <div className="mb-3 col-md-12">
-                      <div className="bg-light border-end-0">
-                        <Form.Control
-                          type="date"
-                          name="selected_date"
-                          value={formData.selected_date}
-                          onChange={handleChange}
-                        />
+                      <label className="form-label text-secondary small fw-semibold">
+                        Choose A Store
+                      </label>
+                      <select
+                        type="select"
+                        placeholder="Select a store"
+                        name="receiver_store"
+                        value={formData.receiver_store || ""}
+                        onChange={handleChange}
+                        className="form-select mb-4"
+                      >
+                        <option value="">Select a store</option>
+                        <option value="store1">Store 1</option>
+                        <option value="store2">Store 2</option>
+                        <option value="store3">Store 3</option>
+                      </select>
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="fw-semibold form-label text-secondary small mb-2">
+                        Choose date and time slot
+                      </div>
+                      <div className="g-2 row">
+                        <div className="mb-3 col-md-12">
+                          <div className="bg-light border-end-0">
+                            <Form.Control
+                              type="date"
+                              name="selected_date"
+                              value={formData.selected_date}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-3 col-md-12">
+                          <CustomTimePicker
+                            value={formData.timing}
+                            onChange={(value) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                timing: value,
+                              }))
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className="mb-3 col-md-12">
-                      <label className="form-label text-secondary">
-                        Timing
-                      </label>
-                      <CustomTimePicker
-                        value={formData.timing}
-                        onChange={(value) =>
-                          setFormData((prev) => ({ ...prev, timing: value }))
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
+                  </>
+                )}
 
                 <Link
                   href="/proccedtocheckout"
