@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 export default function Cart() {
   return (
     <div className="container py-4" style={{ marginTop: "140px" }}>
@@ -95,11 +96,13 @@ export default function Cart() {
               <b>194.00 SR</b>
             </div>
 
-            <button
-              className="btn rounded-5 text-white fw-bold w-100 mt-4"
-              style={{ background: "#e85d88" }}>
-              Proceed to checkout
-            </button>
+            <Link href="/submitOrder">
+              <button
+                className="btn rounded-5 text-white fw-bold w-100 mt-4"
+                style={{ background: "#e85d88" }}>
+                Proceed to checkout
+              </button>
+            </Link>
           </div>
         </div>
       </div>
