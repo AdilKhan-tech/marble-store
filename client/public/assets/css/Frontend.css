@@ -1,6 +1,4 @@
-body {
-  font-family: "Brandon_Grotesque-Bold", sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 .container {
   max-width: 1440px !important;
   padding-inline: 40px;
