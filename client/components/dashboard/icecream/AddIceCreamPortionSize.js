@@ -24,6 +24,22 @@ const flattenCategories = (iceCreamPortionSizes, level = 0) => {
   return result;
 };
 
+const getAllDescendantIds = (items, parentId) => {
+  const ids = [];
+
+  const findChildren = (id) => {
+    items.forEach((item) => {
+      if (item.parent_id === id) {
+        ids.push(item.id);
+        findChildren(item.id);
+      }
+    });
+  };
+
+  findChildren(parentId);
+  return ids;
+};
+
 const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCreamPortionSize, onUpdateIceCreamPortionSize }) => {
   const {token} = useAxiosConfig();
   const [parentIceCreamPortionSize, setParentIceCreamPortionSize] = useState([]);
@@ -62,20 +78,38 @@ const AddIceCreamPortionSize = ({ closePopup, iceCreamPortionData, onAddIceCream
     }));
   };
 
-  const fetchIceCreamPortionSizeTree = async () => {
-    if (!token) return;
-    const res = await axios.get(getIceCreamPortionSizeTree);
-    const flat = flattenCategories(res.data.data);
-    setParentIceCreamPortionSize(flat);
-  };
-
-  useEffect(() => {
-    fetchIceCreamPortionSizeTree();
-  }, [token]);
-
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
   };
+  const fetchIceCreamPortionSizeTree = async () => {
+    if (!token) return;
+  
+    const res = await axios.get(getIceCreamPortionSizeTree);
+    const flat = flattenCategories(res.data.data);
+  
+    // ✅ If Update Mode
+    if (iceCreamPortionData?.id) {
+      const currentId = iceCreamPortionData.id;
+  
+      // get all children recursively
+      const descendantIds = getAllDescendantIds(flat, currentId);
+  
+      // remove self + children
+      const filtered = flat.filter(
+        (item) =>
+          item.id !== currentId &&
+          !descendantIds.includes(item.id)
+      );
+  
+      setParentIceCreamPortionSize(filtered);
+    } else {
+      setParentIceCreamPortionSize(flat);
+    }
+  };
+  useEffect(() => {
+    fetchIceCreamPortionSizeTree();
+  }, [token]);
+  
 
   const validateForm = () => {
     const errors = [];
