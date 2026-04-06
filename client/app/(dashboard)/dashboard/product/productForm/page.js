@@ -170,7 +170,7 @@ const AddProduct = ({ onAddProduct }) => {
     if (!formData.name_en) errors.push("Name English is require!");
     if (!formData.name_ar) errors.push("Name Arabic is require!");
     if (!formData.description) errors.push("Description is require!");
-    if (!formData.gender_id) errors.push("Gender is require!");
+    // if (!formData.gender_id) errors.push("Gender is require!");
     return errors;
   };
 
