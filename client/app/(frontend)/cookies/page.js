@@ -5,7 +5,7 @@ function Cookies() {
     <main>
       <section className="cookies-section bg-light">
         <div className="">
-          <img style={{ marginTop: "134px", position: "relative", width: "100%" }} src="./assets/images/cooki-box.jpg" alt="cake banner"/>
+          <img style={{ position: "relative", width: "100%" }} src="./assets/images/cooki-box.jpg" alt="cake banner"/>
         </div>
         <div className="d-flex justify-content-start align-items-center ms-3 mt-3">
           <span className="new-badge rounded-5 d-flex justify-content-center text-white ms-1 fs-5">
