@@ -45,7 +45,7 @@ function Header() {
   return (
     <header>
       {/* 🔥 UPDATED HEADER */}
-      <section className="bg-sky py-4">
+      <section className="bg-sky py-3">
         <div className="container-fluid px-4">
           <div className="d-flex align-items-center justify-content-between flex-wrap">
             {/* Logo */}
@@ -86,11 +86,11 @@ function Header() {
                 data-bs-target="#myModal"
                 className="cursor d-flex align-items-center"
               >
-                <i className="bi bi-person"></i>
+                <img className="" src="./assets/images/useri.svg" alt="Logo" />
               </div>
 
               <div className="cursor d-flex align-items-center">
-                <i className="bi bi-cart"></i>
+                <img className="" src="./assets/images/carti.svg" alt="Logo" />
               </div>
             </div>
           </div>
@@ -410,7 +410,7 @@ function Header() {
       {/* 🎨 CSS */}
       <style jsx>{`
         {/* .header { background:#36aeb3; } */}
-        .logo { height:45px; }
+        .logo { height:45px; width:200px; }
 
         .nav-custom li {
           color:white;
