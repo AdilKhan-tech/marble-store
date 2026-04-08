@@ -34,7 +34,7 @@ export default function IceCreams() {
   return (
     <section>
       <img
-        style={{ marginTop: "134px", width: "100%" }}
+        style={{ width: "100%" }}
         src="/assets/images/ice-cak-bnner.jpg"
         alt="ice cream banner"
       />
@@ -52,12 +52,12 @@ export default function IceCreams() {
                     style={{ objectFit: "cover", height: "250px" }}
                   />
                   <div className="card-body text-center">
-                    <h6 className="color-brown fs-5 fw-bold">{product.name_en}</h6>
+                    <h6 className="text-center color-brown fs-15 fw-bold">{product.name_en}</h6>
                     <p className="fs-14 text-muted">{product.sku || "N/A"}</p>
-                    <p className="text-primary fs-5 fw-semibold">SR {product.regular_price}</p>
+                    <p className="text-center text-blue fs-16 fw-medium">SR {product.regular_price}</p>
                     <button
                       onClick={() => router.push(`/cakes/${product.id}/view`)}
-                      className="btn rounded-5 px-3 py-0 fs-5" type="submit"
+                      className="btn rounded-2 px-5 py-2 fs-14 fw-bold bg-pink text-white" type="submit"
                     >
                       Add to Cart
                     </button>

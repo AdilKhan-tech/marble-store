@@ -73,7 +73,7 @@ export default function ProductPage() {
   if (!product) return <p className="text-center mt-5">Product not found</p>;
 
   return (
-    <div style={{ background: "#f5f5f5", marginTop: "134px" }}>
+    <div style={{ background: "#f5f5f5" }}>
       <div className="container py-5">
         <div className="row align-items-center">
           {/* Image */}

@@ -55,17 +55,11 @@ function Occasions() {
         style={{ backgroundImage: "url('./assets/images/Group.svg')",backgroundPosition: "right",
           backgroundRepeat: "no-repeat",backgroundPositionY: "12px",backgroundSize: "62px",}}>
         <h2 className="fw-bold fs-44">By Categories</h2>
-        <div className="d-flex">
+        <div className="d-flex justify-content-center flex-wrap">
           <div className="product-card py-5 border-0 rounded-4">
             <h4 className="text-center fs-35 fw-bold">Cakes</h4>
             <a href="#">
             <img className="mt-3" src="./assets/images/Mermaid-cake-1.webp" alt="image-fluid" style={{ width: "75%" }}/>
-            </a>
-          </div>
-          <div className="product-card py-5 border-0 rounded-4">
-            <h4 className="text-center fs-35 fw-bold">Tasty Creation</h4>
-            <a href="#">
-            <img className="mt-3" src="./assets/images/77.webp" alt="image-fluid" style={{ width: "75%" }}/>
             </a>
           </div>
           <div className="product-card py-5 border-0 rounded-4">
@@ -82,7 +76,6 @@ function Occasions() {
           </div>
         </div>
       </div>
-
       <Moregift />
     </main>
   );
