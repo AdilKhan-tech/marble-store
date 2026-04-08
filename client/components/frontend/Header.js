@@ -45,41 +45,49 @@ function Header() {
   return (
     <header>
       {/* 🔥 UPDATED HEADER */}
-      <section className="bg-sky py-3">
-        <div className="container-fluid px-4">
-          <div className="d-flex align-items-center justify-content-between flex-wrap">
+      <section className="bg-sky py-1 header stickness-header font-brandon">
+        <div className="container pb-2" style={{paddingInline: "10px"}}>
+          <div className="row d-flex align-items-center mt-1 logodivMB ">
             {/* Logo */}
-            <img src="./assets/images/marble_slab_logo_en.svg" className="logo" />
+            <div className="col-md-2 col-4 moblogo">
+              <img src="./assets/images/marble_slab_logo_en.svg" className="img-fluid pb-1 ms-1" />
+            </div>
 
             {/* Nav */}
-            <ul className="d-none d-lg-flex list-unstyled gap-4 mb-0 nav-custom">
+            <div className="col-md-5 col-2 text-center mobhamburger">
+            <ul className="d-none d-lg-flex list-unstyled gap-4 mb-3 nav-custom" style={{marginInlineStart:"25px"}}>
               <li className="active">
-                <a className="nav-link mt-3 fs-18" href="./Landing" role="button">HOME</a>
+                <a className="nav-link mt-3 fw-bold fs-18" href="./Landing" role="button">HOME</a>
               </li>
               <li>
-                <a className="nav-link mt-3 fs-18" data-bs-toggle="modal" data-bs-target="#occassionModal" role="button">OCCASIONS</a>
+                <a className="nav-link mt-3 fw-bold fs-18" data-bs-toggle="modal" data-bs-target="#occassionModal" role="button">OCCASIONS</a>
               </li>
-              <li><a className="nav-link mt-3 fs-18" href="./cakes" role="button">CAKES</a></li>
-              <li><a className="nav-link mt-3 fs-18" href="./cookies" role="button">COOKIES</a></li>
-              <li><a className="nav-link mt-3 fs-18" href="./diy" role="button">DIY</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18" href="./cakes" role="button">CAKES</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18" href="./cookies" role="button">COOKIES</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18" href="./diy" role="button">DIY</a></li>
             </ul>
+            </div>
 
             {/* Search */}
-            <div className="search-bar d-none d-md-flex align-items-center">
-              <input type="text" placeholder="Search" />
+            <div className="col-md-3 col-4 d-flex text-end mt-1">
+              <input
+               type="text" 
+               className="form-control bg-white rounded-5 border px-4 py-0 border-light-brown text-brown rounded-end-0 border-end-0"
+               placeholder="Search" />
 
-              <button className="clear-btn">
+              <button className="bg-white btn-outline-success border border-light-brown border-end-0 border-start-0 rounded-start-0 rounded-end-0  px-0 py-1 font-brandon-bold text-brown fs-20 pe-1">
                 <i className="bi bi-x"></i>
               </button>
 
-              <button className="search-btn">
+              <button className="rounded-5 border-0 px-3 py-1 text-white fs-20 bg-purple rounded-start-0">
                 <i className="bi bi-search"></i>
               </button>
             </div>
 
             {/* Right */}
-            <div className="d-flex align-items-center gap-3 text-white">
-              <span className="d-none d-md-block">AR</span>
+            <div className="col-md-2 col-4 text-end">
+            <div className="d-flex justify-content-end align-items-center gap-2">
+              <span className="d-none d-md-block text-white">AR</span>
 
               <div
                 data-bs-toggle="modal"
@@ -91,6 +99,13 @@ function Header() {
 
               <div className="cursor d-flex align-items-center">
                 <img className="" src="./assets/images/carti.svg" alt="Logo" />
+                <span className="position-absolute translate-middle badge rounded-pill bg-danger" style={{ top: "35px", right: "45px" }}>
+                  3
+                </span>
+              </div>
+              <div className="cursor ms-4">
+                <i className="bi bi-list text-white fs-3"></i>
+              </div>
               </div>
             </div>
           </div>
@@ -426,6 +441,8 @@ function Header() {
         }
         .search-box input {
           border:none;
+          height:10px;
+          width:200px;
           outline:none;
         }
         .search-box button {
