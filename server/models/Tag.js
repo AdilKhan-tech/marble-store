@@ -33,7 +33,11 @@ const Tag = sequelize.define("Tag",{
   },
 
   slug:{
-    type: DataTypes.STRING,
+    type: DataTypes.STRING (255),
+    allowNull: true,
+  },
+  image_url:{
+    type: DataTypes.STRING(255),
     allowNull: true,
   },
 

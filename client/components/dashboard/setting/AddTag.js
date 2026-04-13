@@ -6,6 +6,7 @@ import { createTag, updateTagById } from "@/utils/apiRoutes";
 
 function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
   const [errors, setErrors] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -38,22 +39,48 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
-
+  
     try {
+      const payload = new FormData();
+  
+      Object.entries(formData).forEach(([key, value]) => {
+        payload.append(key, value);
+      });
+  
+      if (selectedFiles && selectedFiles.length > 0) {
+        payload.append("image_url", selectedFiles[0]);
+      }
+      
+
       if (tagData) {
-        const res = await axios.put(updateTagById(tagData.id), formData);
-        toast.success("Tag updated successfully", {
-          autoClose: 1000,
-          onClose: closePopup,
-        });
-        onUpdateTag(res.data);
-      } else {
-        const res = await axios.post(createTag, formData);
-        toast.success("Tag created successfully", {
-          autoClose: 1000,
-          onClose: closePopup,
-        });
-        onAddTag(res.data);
+        const res = await axios.put(updateTagById(tagData.id), payload);
+
+        if (res.status === 200) {
+          toast.success("Tag updated successfully!", {
+            autoClose: 1000,
+          });
+
+          if (onUpdateTag) {
+            onUpdateTag(res.data);
+          }
+
+          closePopup();
+        }
+      }
+      
+      //  CREATE
+      else {
+        const res = await axios.post(createTag, payload);
+
+        if (res.status === 201 || res.status === 200) {
+          toast.success("Tag created successfully!");
+
+          if (onAddTag) {
+            onAddTag(res.data);
+          }
+
+          closePopup();
+        }
       }
     }catch (error) {
       const backendMessage =
@@ -65,12 +92,17 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
     }
   };
 
+
   useEffect(() => {
     if (errors.length > 0) {
       errors.forEach(err => toast.error(err));
       setErrors([]);
     }
   }, [errors]);  
+
+  const handleFileChange = (e) => {
+    setSelectedFiles(Array.from(e.target.files));
+  };
 
   return (
     <form className='mt-0' onSubmit={handleSubmit}>
@@ -103,6 +135,33 @@ function AddTag({ closePopup, tagData = null, onAddTag, onUpdateTag }) {
           value={formData.slug} 
           onChange={(e)=>setFormData({...formData,slug:e.target.value})}
         />
+      </div>
+      <div className="col-md-12 px-1 mt-2">
+        <label className="form-label fs-14 fw-bold text-dark-custom text-secondary">
+          File Attachment
+        </label>
+        <div className="">
+          <input
+            type="file"
+            className="form-control form-control-lg textarea-hover-dark text-secondary"
+            id="fileInput"
+            multiple
+            onChange={handleFileChange}
+          />
+        </div>
+        <ul className="mt-2">
+          {selectedFiles.map((file, index) => (
+            <li className="list-unstyled text-muted" key={index}>
+              <span className="fs-12 fw-bold">File Size: {file.size} KB</span>
+            </li>
+          ))}
+        </ul>
+        <div className="text-danger">
+          <i className="bi bi-info-circle me-2"></i>
+          <span className="fs-14 fw-normal">
+            Supported files : GIF ,JPG , PNG, PDF , DOC , or DOCX
+          </span>
+        </div>
       </div>
 
       <div className="form-buttons mt-5 d-flex justify-content-between gap-2">

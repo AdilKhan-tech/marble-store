@@ -3,7 +3,7 @@ import React from "react";
 function Page() {
   return (
     <section>
-      <div className="px-5" style={{marginTop: "134px",position: "relative",backgroundColor: "#ffc10727",}}>
+      <div className="px-5" style={{position: "relative",backgroundColor: "#ffc10727",}}>
         <div className="row w-100 mx-auto align-items-center px-5">
           <div className="col-md-7">
             <div><h2 className="fs-60 fw-bold text-brown">Our Story</h2>

@@ -74,6 +74,9 @@ export default function IceCreams() {
             ))}
           </div>
         </div>
+          <a href="https://wa.me/+966594064708" className="whatsapp-chat" target="_blank">
+            <img style={{ width: "60px" }} src="/assets/images/whatsapp_chat.png"/>
+          </a>
       </div>
       <MoreGift/>
     </section>

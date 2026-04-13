@@ -1,5 +1,6 @@
 const Tag = require('../models/Tag');
 const getPagination = require("../utils/pagination");
+const { UPLOADS_URL } = require("../config/config");
 const { Op } = require("sequelize");
 
 class TagController {
@@ -7,14 +8,24 @@ class TagController {
     static async createTag(req, res, next) {
         try {
             const { name_en, name_ar, slug } = req.body;
+
+            const image_url = req.file ? req.file.filename : null;
  
             const tag = await Tag.create({
                 name_en,
                 name_ar,
                 slug,
+                image_url,
             });
+
+       const responseData = {
+        ...tag.toJSON(),
+        image_url: tag.image_url
+          ? `${UPLOADS_URL}/${tag.image_url}`
+          : null,
+      };
          
-            return res.status(201).json(tag);
+            return res.status(201).json(responseData);
         }catch (error) {
           next(error);
         }
@@ -50,6 +61,16 @@ class TagController {
             offset,
             order: [[finalSortField, finalSortOrder]],
           });
+
+          const data = rows.map(item => {
+            const tag = item.toJSON();
+            return {
+              ...tag,
+              image_url: tag.image_url
+                ? `${UPLOADS_URL}/${tag.image_url}`
+                : null,
+              };
+            });
       
           const pageCount = Math.ceil(count / limit);
       
@@ -60,7 +81,7 @@ class TagController {
               total: count,
               pageCount,
             },
-            data: rows,
+            data,
           });
         } catch (error) {
           return res.status(500).json({
@@ -82,13 +103,26 @@ class TagController {
             
             const { name_en, name_ar, slug } = req.body;
 
+            let image_url = tag.image_url;
+              if (req.file) {
+                image_url = req.file.filename;
+              }
+
             await tag.update({
                 name_en: name_en ?? tag.name_en,
                 name_ar: name_ar ?? tag.name_ar,
                 slug: slug ?? tag.slug,
+                image_url: image_url
             });
 
-            return res.status(200).json(tag);
+            const responseData = {
+              ...tag.toJSON(),
+              image_url: tag.image_url
+              ? `${UPLOADS_URL}/${tag.image_url}`
+              : null,
+            };
+
+            return res.status(200).json(responseData);
         }catch (error) {
           next(error);
         }
