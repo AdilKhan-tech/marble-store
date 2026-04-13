@@ -46,7 +46,7 @@ function Header() {
     <header>
       {/* 🔥 UPDATED HEADER */}
       <section className="bg-sky py-1 header stickness-header font-brandon">
-        <div className="container pb-2" style={{paddingInline: "10px"}}>
+        <div className="container pb-2" style={{paddingInline: "12px"}}>
           <div className="row d-flex align-items-center mt-1 logodivMB ">
             {/* Logo */}
             <div className="col-md-2 col-4 moblogo">
@@ -55,16 +55,16 @@ function Header() {
 
             {/* Nav */}
             <div className="col-md-5 col-2 text-center mobhamburger">
-            <ul className="d-none d-lg-flex list-unstyled gap-4 mb-3 nav-custom" style={{marginInlineStart:"25px"}}>
+            <ul className="d-none d-lg-flex list-unstyled gap-4 mb-3 nav-custom" style={{marginInlineStart:"27px"}}>
               <li className="active">
                 <a className="nav-link mt-3 fw-bold fs-18" href="./Landing" role="button">HOME</a>
               </li>
               <li>
-                <a className="nav-link mt-3 fw-bold fs-18" data-bs-toggle="modal" data-bs-target="#occassionModal" role="button">OCCASIONS</a>
+                <a className="nav-link mt-3 fw-bold fs-18 ms-2" data-bs-toggle="modal" data-bs-target="#occassionModal" role="button">OCCASIONS</a>
               </li>
-              <li><a className="nav-link mt-3 fw-bold fs-18" href="./cakes" role="button">CAKES</a></li>
-              <li><a className="nav-link mt-3 fw-bold fs-18" href="./cookies" role="button">COOKIES</a></li>
-              <li><a className="nav-link mt-3 fw-bold fs-18" href="./diy" role="button">DIY</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18 ms-2" href="./cakes" role="button">CAKES</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18 ms-2" href="./cookies" role="button">COOKIES</a></li>
+              <li><a className="nav-link mt-3 fw-bold fs-18 ms-2" href="./diy" role="button">DIY</a></li>
             </ul>
             </div>
 

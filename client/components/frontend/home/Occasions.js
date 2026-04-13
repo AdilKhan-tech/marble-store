@@ -76,7 +76,7 @@ function Occasions() {
           </div>
         </div>
       </div>
-      <Moregift />
+      {/* <Moregift /> */}
     </main>
   );
 }
