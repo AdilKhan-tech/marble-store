@@ -39,7 +39,7 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
 .tab:hover, .tab:active {
   border: 2px solid #e05b8b !important;
   color: #e05b8b !important;
-  background: white;
+  background: #f1f6fb;
 }
 .tab{
   padding: 10px;
@@ -65,31 +65,25 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
   background-color: #f0f7ff;
   transform: translateX(4px);
 }
-
 .location-item.unavailable {
   background-color: #f8f9fa;
 }
-
 .nav-tabs .nav-link {
   color: #6c757d;
   transition: all 0.2s;
 }
-
 .nav-tabs .nav-link:hover {
   color: #0d6efd;
   background: transparent;
 }
-
 .nav-tabs .nav-link.active {
   color: #0d6efd;
   background: transparent;
   border-bottom: 2px solid #0d6efd;
 }
-
 .pin-drop {
   animation: drop 0.4s ease;
 }
-
 @keyframes drop {
   0% {
     transform: translateY(-20px);
@@ -100,7 +94,6 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
     opacity: 1;
   }
 }
-
 .form-control {
   background: rgba(167, 163, 163, 0.05) !important;
   border-radius: 12px !important;
@@ -131,16 +124,13 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
   font-size: 15px;
   font-weight: 600;
 }
-
 .btn-outline-primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
 }
-
 .btn-primary {
   transition: all 0.2s;
 }
-
 .btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
@@ -151,7 +141,59 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
+.offcanvas-title {
+  color: white;
+  font-family: "Brandon_Grotesque_medium", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+.offcanvas-header{
+  background: linear-gradient(135deg, #36bac7 0%, #2ba3b3 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 2rem;
+}
+.offcanvas{
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-left: 3px solid #36bac7;
+  box-shadow: -5px 0 25px rgba(54, 186, 199, 0.1);
+}
+.offcanvas-body a {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 12px;
+  border: 2px solid #e7e7e7;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  color: #333;
+  font-family: "Brandon_Grotesque", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.whatsapp-chat {
+  position: fixed;
+  bottom: 56px;
+  left: 1250px;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 7;
+}
+.occassion-card-img{
+  object-fit: contain !important;
+  height: 140px;
+  width: 140px;
+}
 .avatar-circle {
   font-family: system-ui, sans-serif;
 }
@@ -175,12 +217,6 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
 .header ul.navbar-nav li a:focus {
   color: #a3a3a3;
 }
- /* .header-sticky{
-  position: sticky;
-  padding: 4px 0;
-  top: 0;
-  z-index: 1000;
- } */
 .card {
   width: 250px;
   border-radius: 15px;
@@ -212,6 +248,9 @@ body { font-family: "Brandon_Grotesque", sans-serif !important; }
 }
 .fs-14 {
   font-size: 14px !important;
+}
+.fs-13 {
+  font-size: 13px !important;
 }
 .fs-15 {
   font-size: 15px !important;

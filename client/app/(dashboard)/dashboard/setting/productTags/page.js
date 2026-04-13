@@ -187,6 +187,17 @@ export default function productTags() {
                           "↑↓"}
                       </span>
                     </th>
+                    <th
+                      className="fw-medium fs-14 fnt-color nowrap"
+                      onClick={() => handleSortChange("image_url")}
+                    >
+                      Image
+                      <span className="fs-10 text-secondary ms-1">
+                        {(sortField === "image_url" &&
+                          (sortOrder === "asc" ? "↑" : "↓")) ||
+                          "↑↓"}
+                      </span>
+                    </th>
                     <th className="fw-medium fs-14 fnt-color">Action</th>
                   </tr>
                 </thead>
@@ -201,6 +212,12 @@ export default function productTags() {
                       </td>
                       <td className="fw-normal fs-14 fnt-color">
                         {tag?.slug}
+                      </td>
+                      <td className="fw-normal fs-14 fnt-color">
+                        <img
+                          src={tag.image_url}
+                          className="image-fluid rounded-4"
+                        />
                       </td>
                       <td className="d-flex gap-2">
                         <div

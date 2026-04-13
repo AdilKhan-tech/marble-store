@@ -104,9 +104,28 @@ function Header() {
                 </span>
               </div>
               <div className="cursor ms-4">
-                <i className="bi bi-list text-white fs-3"></i>
+                <i className="bi bi-list text-white fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"></i>
               </div>
               </div>
+            </div>
+            <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div className="offcanvas-header">
+                <h5 className="offcanvas-title" id="offcanvasRightLabel">Quick Links</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div className="offcanvas-body mt-5">
+                <div className="d-flex flex-column">
+                    <a href="./about" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-info-circle mx-2"></i>About Us
+                    </a>
+                    <a href="./contact" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-envelope mx-2"></i>Contact                    
+                    </a>
+                    <a href="./contact" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-question-circle mx-2"></i>FAQ                    
+                    </a>
+                </div>
+             </div>
             </div>
           </div>
         </div>

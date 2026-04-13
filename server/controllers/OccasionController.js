@@ -1,5 +1,6 @@
 const Occasion = require ("../models/Occasion");
 const getPagination = require("../utils/pagination");
+const { UPLOADS_URL } = require("../config/config");
 const { Op } = require("sequelize");
 
 class OccasionController {
@@ -8,7 +9,7 @@ class OccasionController {
       try{
         const { name_en, name_ar, parent_ocassion, slug} = req.body;
 
-        const image_url = req.file?.path || null;
+        const image_url = req.file ? req.file.filename : null;
         
         const occasion = await Occasion.create({
           name_en,
@@ -17,7 +18,14 @@ class OccasionController {
           slug,
           image_url,
         });
-        return res.status(201).json(occasion);
+
+        const responseData = {
+        ...occasion.toJSON(),
+        image_url: occasion.image_url
+          ? `${UPLOADS_URL}/${occasion.image_url}`
+          : null,
+      };
+        return res.status(201).json(responseData);
       }catch (error) {
         next(error);
       }
@@ -53,6 +61,14 @@ class OccasionController {
           offset,
           order: [[finalSortField, finalSortOrder]],
         });
+
+        const data = rows.map(item => {
+        const occasion = item.toJSON();
+        return {
+          ...occasion,
+          image_url: occasion.image_url ? `${UPLOADS_URL}/${occasion.image_url}` : null,
+        };
+      });
   
         const pageCount = Math.ceil(count / limit);
   
@@ -63,7 +79,7 @@ class OccasionController {
             total: count,
             pageCount,
           },
-          data: rows,
+          data,
         });
   
       } catch (error) {
@@ -84,7 +100,10 @@ class OccasionController {
   
         const {name_en, name_ar, parent_ocassion, slug} = req.body;
   
-        const image_url = req.file?.path || occasion.image_url;
+        let image_url = occasion.image_url;
+          if (req.file) {
+            image_url = req.file.filename;
+          }
   
         await occasion.update({
           name_en: name_en ?? occasion.name_en,
@@ -93,8 +112,15 @@ class OccasionController {
           slug: slug ?? occasion.slug,
           image_url: image_url
         });
+
+        const responseData = {
+        ...occasion.toJSON(),
+        image_url: occasion.image_url
+          ? `${UPLOADS_URL}/${occasion.image_url}`
+          : null,
+      };
   
-        return res.status(200).json(occasion);
+        return res.status(200).json(responseData);
   
       }catch (error) {
         next(error);

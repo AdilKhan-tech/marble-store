@@ -178,6 +178,16 @@ function Occasions() {
                       (sortOrder === "asc" ? "↑" : "↓")) ||
                       "↑↓"}
                     </span>
+                    </th>
+                    <th
+                    className="fw-medium fs-14 fnt-color nowrap" 
+                    onClick={() => handleSortChange("image_url")}>
+                    Image
+                    <span className="fs-10 text-secondary ms-1">
+                      {(sortField === "image_url" &&
+                      (sortOrder === "asc" ? "↑" : "↓")) ||
+                      "↑↓"}
+                    </span>
                   </th>
                   <th className="fw-medium fs-14 fnt-color">Action</th>
                 </tr>
@@ -193,6 +203,13 @@ function Occasions() {
                     </td>
                     <td className="fw-normal fs-14 fnt-color">
                       {occasion.slug}
+                    </td>
+                    <td className="fw-normal fs-14 fnt-color">
+                     <img
+                      src={occasion.image_url}
+                      alt={occasion.name_en}
+                      className="image-fluid"
+                    />
                     </td>
                     <td>
                       <div className="d-flex gap-1">

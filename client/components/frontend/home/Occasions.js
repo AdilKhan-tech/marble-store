@@ -1,51 +1,46 @@
+"use client";
 import React from "react";
-import Moregift from "./Moregift";
+import axios from "axios";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
+import { getAllOcassions } from "@/utils/apiRoutes";
+import { useEffect, useState } from "react";
 
 function Occasions() {
+  const { token } = useAxiosConfig();
+  const [productOccasions, setProductOccasions] = useState([]);
+
+  const fetchProductOccasions = async () => {
+    try {
+      const res = await axios.get(getAllOcassions);
+      setProductOccasions(res.data.data);
+    } catch (err) {
+      console.error("Error fetching product Occasions", err);
+    }
+  };
+
+    useEffect(() => {
+    if (!token) return;
+    fetchProductOccasions();
+  }, [token]);
   return (
     <main>
       <div className="bg-pink">
         <div className="container">
           <h1 className="text-center occassion-text py-4">By Occassions</h1>
-          <div className="d-flex overflow-auto pb-4 mt-4 ms-3">
-            <div className="me-3">
-            <a href="#"><img src="./assets/images/anniv.png" alt="Achievement" className="image-fluid"/></a>
-              <p className="img-text">Achievement</p>
-            </div>
-            <div className="me-3">
-              <a href="#"><img src="./assets/images/birthday.png" alt="Birthday" className="image-fluid"/></a>
-              <p className="img-text">Birthday</p>
-            </div>
-            <div className="me-3">
-              <a href="#"><img src="./assets/images/eidM.png" alt="Eid" className="image-fluid" /></a>
-              <p className="img-text">Congratulation</p>
-            </div>
-            <div className="me-3">
-              <a href="#"><img src="./assets/images/getwell.png" alt="Get Well" className="image-fluid"/></a>
-              <p className="img-text">Get Well Soon</p>
-            </div>
-            <div className="me-3">
-              <a href="#"><img src="./assets/images/gradu.png" alt="Graduation" className="image-fluid"/></a>
-              <p className="img-text">Graduation</p>
-            </div>
-          </div>
-          <div className="d-flex overflow-auto pb-4 mt-4 ms-5">
-            <div className="me-3 ms-5">
-              <a href="#"><img src="./assets/images/welcome.png" alt="Holidays" className="image-fluid"/></a>
-              <p className="img-text">Holidays</p>
-            </div>
-            <div className="me-3 ms-5">
-              <a href="#"><img src="./assets/images/newborn.png" alt="New Born" className="image-fluid"/></a>
-              <p className="img-text">New Born</p>
-            </div>
-            <div className="me-3 ms-5">
-              <a href="#"><img src="./assets/images/sport.png" alt="Sports" className="image-fluid"/></a>
-              <p className="img-text">Sports</p>
-            </div>
-            <div className="me-3 ms-5">
-              <a href="#"><img src="./assets/images/wedding.png" alt="Wedding" className="image-fluid"/></a>
-              <p className="img-text">Wedding</p>
-            </div>
+          <div className="row mt-4 ms-3">
+            {productOccasions.map((occasion) => (
+              <div key={occasion.id} role="button" className="col-6 col-md-3 text-center mb-4">
+                <img
+                  className="img-fluid mb-2 occassion-card-img"
+                  src={occasion.image_url}
+                  alt={occasion.name_en}
+                />
+                <div className="fs-18 fw-bold text-brown ">
+                  {occasion.name_en}
+                </div>
+
+              </div>
+            ))}
           </div>
         </div>
       </div>

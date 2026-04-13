@@ -8,7 +8,7 @@ function Page() {
       {/* TOP CONTACT BAR */}
       <div
         className="p-4"
-        style={{ marginTop: "134px", backgroundColor: "#6d5794" }}
+        style={{ backgroundColor: "#6d5794" }}
       >
         <div className="container">
           <div className="row mt-2">
