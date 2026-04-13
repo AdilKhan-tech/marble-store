@@ -13,9 +13,15 @@ function Landing() {
               <img src="./assets/images/en-Download-App-Banner.png" className="d-block w-100" alt="..."/>
 
               <img 
-                src="./assets/images/en-home-banner.jpg" 
+                src="./assets/images/android_btn.svg" 
                 className="position-absolute"
-                style={{ bottom: "10px", left: "10px", width: "150px" }}
+                style={{ bottom: "67px", left: "75px", width: "180px" }}
+                alt="..."
+              />
+              <img 
+                src="./assets/images/ios_app_btn.svg" 
+                className="position-absolute"
+                style={{ bottom: "67px", left: "265px", width: "180px" }}
                 alt="..."
               />
             </div>
@@ -31,9 +37,9 @@ function Landing() {
         </button>
       </div>
       <div className="ms-auto py-0 text-center bg-green">
-        <p className="fs-4 fw-bold color-purple">Why You Should Order Online With Us?</p>
         <div className="">
-        <div className="row mt-3">
+        <p className="fs-3 fw-bold color-purple pt-3">Why You Should Order Online With Us?</p>
+        <div className="row">
           <div className="col-md-4">
                 <div className="d-flex align-items-center">
                     <img className="order-img" src="./assets/images/order-cake.webp" alt="Order Cake"/>
@@ -115,7 +121,7 @@ function Landing() {
           </div>
       </div>
       </div>
-      <div className="bg-light py-2">
+      {/* <div className="bg-light py-2">
         <h1 className="color-brown text-center mb-3 fs-38 fw-bold"> Mother's Day </h1>
         <div className="mt-3 d-flex container overflow-auto pb-4 ms-3">
           <div className="card border-0 rounded-4 align-items-center mx-1" role="button">
@@ -216,7 +222,7 @@ function Landing() {
             </div>
           </div>
       </div>
-      </div>
+      </div> */}
     </section>
   );
 }
