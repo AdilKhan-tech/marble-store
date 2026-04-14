@@ -37,7 +37,7 @@ const IceCreamPortionSize = sequelize.define("IceCreamPortionSize",{
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: "categories",
+      model: "icecream_portion_sizes",
       key: "id",
     },
     onDelete: "SET NULL",
