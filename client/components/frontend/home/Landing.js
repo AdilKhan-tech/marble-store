@@ -11,19 +11,22 @@ function Landing() {
           <div className="carousel-item">
             <div className="position-relative">
               <img src="./assets/images/en-Download-App-Banner.png" className="d-block w-100" alt="..."/>
-
+              <a href="https://play.google.com/store/apps/details?id=sa.marbleslab.android" target="blank">
               <img 
                 src="./assets/images/android_btn.svg" 
                 className="position-absolute"
                 style={{ bottom: "67px", left: "75px", width: "180px" }}
                 alt="..."
               />
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=sa.marbleslab.android" target="blank">
               <img 
                 src="./assets/images/ios_app_btn.svg" 
                 className="position-absolute"
                 style={{ bottom: "67px", left: "265px", width: "180px" }}
                 alt="..."
               />
+              </a>
             </div>
           </div>
         </div>
