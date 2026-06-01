@@ -26,14 +26,12 @@ function Footer() {
               <div className="col-6 col-md-3">
                 <h6 className="footer-text">Collection</h6>
                 <a className="footerlink d-block mb-2" href="#">Ready Cakes</a>
-                <a className="footerlink d-block mb-2" href="#">Ice Creams</a>
                 <a className="footerlink d-block mb-2" href="#">Cookie Box</a>
               </div>
 
               <div className="col-6 col-md-3">
                 <h6 className="footer-text">Services</h6>
                 <a className="footerlink d-block mb-2" href="#">Custom Cake</a>
-                <a className="footerlink d-block mb-2" href="#">Custom Ice Cream</a>
                 <a className="footerlink d-block mb-2" href="#">Marble Van</a>
               </div>
 
