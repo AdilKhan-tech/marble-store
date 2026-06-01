@@ -53,19 +53,19 @@ function Occasions() {
         <div className="d-flex justify-content-center flex-wrap">
           <div className="product-card py-5 border-0 rounded-4">
             <h4 className="text-center fs-35 fw-bold">Cakes</h4>
-            <a href="#">
+            <a href="/cakes">
             <img className="mt-3" src="./assets/images/Mermaid-cake-1.webp" alt="image-fluid" style={{ width: "75%" }}/>
             </a>
           </div>
           <div className="product-card py-5 border-0 rounded-4">
             <h4 className="text-center fs-35 fw-bold">Cookies</h4>
-            <a href="#">
+            <a href="/cookies">
             <img className="mt-3" src="./assets/images/cookiespg1.png" alt="image-fluid" style={{ width: "75%" }}/>
             </a>
           </div>
           <div className="product-card py-5 border-0 rounded-4">
             <h4 className="text-center fs-35 fw-bold">Marble Van</h4>
-            <a href="#">
+            <a href="/marble-van">
             <img className="mt-3" src="./assets/images/mvan.png" alt="image-fluid" style={{ width: "75%" }}/>
             </a>
           </div>

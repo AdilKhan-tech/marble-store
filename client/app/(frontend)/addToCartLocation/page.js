@@ -101,7 +101,7 @@ const AddLocation = ({ closePopup }) => {
       />
 
       <div
-        className="header-section bg-white border-bottom sticky-top"
+        className="header-section bg-white border-bottom "
         style={{ top: "134px", zIndex: 1020 }}
       >
         <div className="container-fluid px-4 py-3">
