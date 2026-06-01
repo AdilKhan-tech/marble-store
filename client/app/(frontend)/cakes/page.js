@@ -77,6 +77,7 @@ export default function IceCreams() {
         <button 
           className="rounded-5 border px-4 mb-2 py-1 text-brown fs-20 bg-transparent d-flex align-items-center gap-1 ms-2" 
           type="button"
+           data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-2" aria-controls="offcanvasRight-2"
         >
           <i className="bi bi-funnel"></i>
         </button>
@@ -118,6 +119,40 @@ export default function IceCreams() {
           <a href="https://wa.me/+923335838514" className="whatsapp-chat" target="_blank">
             <img style={{ width: "60px" }} src="/assets/images/whatsapp_chat.png"/>
           </a>
+        </div>
+
+        <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasRight-2" aria-labelledby="offcanvasRightLabel">
+              <div className="offcanvas-header bg-secondary">
+                <h5 className="offcanvas-title text-center" id="offcanvasRightLabel">Filters</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div className="offcanvas-body mt-5">
+                <div className="d-flex flex-column">
+                    <a href="./about" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-info-circle mx-2"></i>About Us
+                    </a>
+                    <a href="./contact" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-envelope mx-2"></i>Contact                    
+                    </a>
+                    <a href="./contact" className="text-decoration-none text-dark fs-18 mb-3">
+                      <i className="bi bi-question-circle mx-2"></i>FAQ                    
+                    </a>
+                </div>
+             </div>
+            </div>
+
+        <div className="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation example">
+          <ul className="pagination justify-content-end">
+            <li className="page-item"><a className="page-link ms-1 me-1 rounded-2 text-secondary" href="#">1</a></li>
+            <li className="page-item"><a className="page-link ms-1 me-1 rounded-2 text-secondary" href="#">2</a></li>
+            <li className="page-item"><a className="page-link ms-1 me-1 rounded-2 text-secondary" href="#">3</a></li>
+            <li className="page-item"><a className="page-link ms-1 me-1 rounded-2 text-secondary" href="#">4</a></li>
+            <li className="page-item">
+              <a className="page-link ms-1 me-2 rounded-2 text-secondary" href="#">Next ››</a>
+            </li>
+          </ul>
+        </nav>
         </div>
       </div>
     </section>

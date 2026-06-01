@@ -2,15 +2,20 @@
 import React, { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import useAxiosConfig from "@/hooks/useAxiosConfig";
 import getApiKeyByDomain from "@/configs/getApiKey";
+import axios from "axios";
+import { getAllOcassions } from "@/utils/apiRoutes";
 
 function Header() {
   const searchParams = useSearchParams();
   const apiKey = getApiKeyByDomain();
+  const { token } = useAxiosConfig();
 
   const [phoneNnumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const [productOccasions, setProductOccasions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
@@ -41,6 +46,20 @@ function Header() {
       setErrors("Error occurred");
     }
   };
+
+    const fetchProductOccasions = async () => {
+    try {
+      const res = await axios.get(getAllOcassions);
+      setProductOccasions(res.data.data);
+    } catch (err) {
+      console.error("Error fetching product Occasions", err);
+    }
+  };
+
+  useEffect(() => {
+    if (!token) return
+    fetchProductOccasions();
+  }, [token]);
 
   return (
     <header>
